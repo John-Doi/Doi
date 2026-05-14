@@ -437,6 +437,90 @@ body{font-size:17px;font-weight:500;}
   -webkit-text-fill-color:transparent;
   background-clip:text;
 }
+
+/* ── SCROLL TIMELINE ── */
+.tl-zone{position:relative;height:700vh;}
+.tl-pin{
+  position:sticky;top:0;height:100vh;overflow:hidden;
+  display:grid;grid-template-columns:1fr 1fr;
+  background:var(--black);border-top:1px solid var(--bd);
+}
+/* Left: SVG visual panel */
+.tl-visual{
+  position:relative;overflow:hidden;
+  background:#080808;border-right:1px solid var(--bd);
+  display:flex;align-items:center;justify-content:center;
+}
+.tl-scene{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  opacity:0;transition:opacity .6s cubic-bezier(.16,1,.3,1);pointer-events:none;
+}
+.tl-scene.tl-active{opacity:1;pointer-events:auto;}
+/* Right: step list */
+.tl-right{
+  display:flex;flex-direction:column;justify-content:center;
+  padding:0 60px;overflow:hidden;position:relative;
+}
+.tl-header{margin-bottom:36px;}
+.tl-tag{font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--og2);text-transform:uppercase;margin-bottom:8px;}
+.tl-h{font-family:var(--disp);font-size:clamp(22px,2.5vw,36px);font-weight:900;letter-spacing:-.01em;line-height:1.1;}
+.tl-h span{color:var(--og2);}
+.tl-items{display:flex;flex-direction:column;gap:0;}
+.tl-item{
+  display:flex;align-items:flex-start;gap:20px;
+  padding:14px 0;border-bottom:1px solid var(--bd);
+  cursor:default;transition:background .2s;
+}
+.tl-item:first-child{border-top:1px solid var(--bd);}
+.tl-num{
+  font-family:var(--mono);font-size:11px;letter-spacing:.1em;
+  color:var(--t3);min-width:28px;padding-top:2px;
+  transition:color .3s;
+}
+.tl-info{flex:1;}
+.tl-title{
+  font-family:var(--stencil);font-size:18px;font-weight:700;
+  letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--t3);transition:color .3s;line-height:1.2;
+}
+.tl-desc{
+  font-family:var(--body);font-size:14px;line-height:1.6;
+  color:transparent;max-height:0;overflow:hidden;
+  transition:max-height .4s cubic-bezier(.16,1,.3,1),color .3s,opacity .3s;
+  opacity:0;
+}
+.tl-item.tl-on .tl-num{color:var(--og2);}
+.tl-item.tl-on .tl-title{color:var(--t1);}
+.tl-item.tl-on .tl-desc{color:var(--t2);max-height:80px;opacity:1;}
+/* Orange left bar on active */
+.tl-item{position:relative;padding-left:16px;}
+.tl-item::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;
+  width:2px;background:var(--og-grad);
+  opacity:0;transition:opacity .3s;
+}
+.tl-item.tl-on::before{opacity:1;}
+/* Progress bar */
+.tl-progress{
+  position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:var(--bd);
+}
+.tl-progress-fill{
+  position:absolute;top:0;left:0;right:0;
+  background:var(--og-grad);
+  height:0%;transition:height .1s linear;
+}
+/* Scene shared styles */
+.tl-scene svg{width:100%;height:100%;max-width:460px;max-height:460px;}
+@media(max-width:860px){
+  .tl-zone,.tl-pin{display:none;}
+  .tl-mob{display:block!important;}
+}
+.tl-mob{display:none;}
+.tl-mob-step{padding:40px 22px;border-bottom:1px solid var(--bd);}
+.tl-mob-num{font-family:var(--mono);font-size:10px;color:var(--og2);letter-spacing:.15em;margin-bottom:6px;}
+.tl-mob-title{font-family:var(--stencil);font-size:22px;font-weight:700;letter-spacing:1.5px;color:var(--t1);margin-bottom:8px;}
+.tl-mob-desc{font-family:var(--body);font-size:15px;color:var(--t2);line-height:1.65;}
 </style>
 </head>
 <body>
@@ -606,41 +690,296 @@ body{font-size:17px;font-weight:500;}
   </div>
 </section>
 
-<!-- PROCESS -->
-<section id="process">
+<!-- PROCESS: SCROLL TIMELINE -->
+<div id="process" class="tl-zone">
+  <div class="tl-pin">
+
+    <!-- LEFT: SVG SCENES -->
+    <div class="tl-visual">
+      <div class="tl-progress"><div class="tl-progress-fill" id="tlFill"></div></div>
+
+      <!-- 01 INTAKE FORM -->
+      <div class="tl-scene tl-active" id="tls0">
+        <svg viewBox="0 0 460 460" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="80" y="60" width="300" height="340" rx="4" fill="#0d0d0d" stroke="#1c1c1c" stroke-width="1.5"/>
+          <rect x="80" y="60" width="300" height="36" rx="4" fill="#111"/>
+          <text x="100" y="84" font-family="monospace" font-size="11" fill="#FF6B00" letter-spacing="2">DØi LABS // MISSION INTAKE</text>
+          <rect x="104" y="118" width="180" height="1" fill="#1c1c1c"/>
+          <text x="104" y="113" font-family="monospace" font-size="9" fill="#585858" letter-spacing="1">CLIENT NAME</text>
+          <rect x="104" y="138" width="252" height="1" fill="#1c1c1c"/>
+          <text x="104" y="133" font-family="monospace" font-size="9" fill="#585858" letter-spacing="1">COMPANY / ORGANIZATION</text>
+          <rect x="104" y="158" width="180" height="1" fill="#1c1c1c"/>
+          <text x="104" y="153" font-family="monospace" font-size="9" fill="#585858" letter-spacing="1">EMAIL</text>
+          <rect x="104" y="190" width="252" height="28" rx="2" fill="#111" stroke="#1c1c1c" stroke-width="1"/>
+          <text x="114" y="208" font-family="monospace" font-size="9" fill="#585858" letter-spacing="1">SITE ADDRESS / LOCATION</text>
+          <rect x="104" y="232" width="252" height="52" rx="2" fill="#111" stroke="#1c1c1c" stroke-width="1"/>
+          <text x="114" y="248" font-family="monospace" font-size="9" fill="#585858" letter-spacing="1">MISSION OBJECTIVE</text>
+          <!-- Typing cursor blink -->
+          <rect x="114" y="258" width="6" height="12" fill="#FF6B00" opacity="0.9"><animate attributeName="opacity" values="0.9;0;0.9" dur="1.1s" repeatCount="indefinite"/></rect>
+          <!-- Filled fields highlight -->
+          <text x="104" y="113" font-family="monospace" font-size="9" fill="#FF6B00" letter-spacing="1" opacity="0"><animate attributeName="opacity" values="0;0;1" dur="1.5s" fill="freeze"/></text>
+          <rect x="104" y="300" width="252" height="36" rx="2" fill="#FF6B00">
+            <animate attributeName="opacity" values="0.7;1;0.7" dur="2.5s" repeatCount="indefinite"/>
+          </rect>
+          <text x="230" y="323" font-family="monospace" font-size="11" fill="#000" text-anchor="middle" font-weight="700" letter-spacing="2">SUBMIT REQUEST</text>
+          <!-- Corner tag -->
+          <text x="352" y="84" font-family="monospace" font-size="9" fill="#585858" letter-spacing="1">STEP 01/07</text>
+        </svg>
+      </div>
+
+      <!-- 02 OPERATIONAL PLANNING (map) -->
+      <div class="tl-scene" id="tls1">
+        <svg viewBox="0 0 460 460" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Map grid -->
+          <rect x="60" y="60" width="340" height="340" rx="2" fill="#090909" stroke="#1c1c1c"/>
+          <line x1="60" y1="115" x2="400" y2="115" stroke="#141414" stroke-width="1"/>
+          <line x1="60" y1="170" x2="400" y2="170" stroke="#141414" stroke-width="1"/>
+          <line x1="60" y1="225" x2="400" y2="225" stroke="#141414" stroke-width="1"/>
+          <line x1="60" y1="280" x2="400" y2="280" stroke="#141414" stroke-width="1"/>
+          <line x1="60" y1="335" x2="400" y2="335" stroke="#141414" stroke-width="1"/>
+          <line x1="115" y1="60" x2="115" y2="400" stroke="#141414" stroke-width="1"/>
+          <line x1="170" y1="60" x2="170" y2="400" stroke="#141414" stroke-width="1"/>
+          <line x1="225" y1="60" x2="225" y2="400" stroke="#141414" stroke-width="1"/>
+          <line x1="280" y1="60" x2="280" y2="400" stroke="#141414" stroke-width="1"/>
+          <line x1="335" y1="60" x2="335" y2="400" stroke="#141414" stroke-width="1"/>
+          <!-- Zone boundary -->
+          <rect x="130" y="130" width="200" height="140" rx="1" fill="rgba(255,107,0,0.05)" stroke="#FF6B00" stroke-width="1" stroke-dasharray="6 4"/>
+          <!-- Flight path -->
+          <polyline points="150,340 150,150 350,150 350,270 200,270 200,200 310,200" stroke="#FF6B00" stroke-width="2" stroke-dasharray="300" stroke-dashoffset="300" fill="none">
+            <animate attributeName="stroke-dashoffset" from="300" to="0" dur="2.5s" fill="freeze" repeatCount="indefinite"/>
+          </polyline>
+          <!-- Waypoints -->
+          <circle cx="150" cy="340" r="5" fill="#FF6B00"><animate attributeName="opacity" values="0;1" dur=".3s" begin="0s" fill="freeze"/></circle>
+          <circle cx="150" cy="150" r="5" fill="#FF6B00"><animate attributeName="opacity" values="0;1" dur=".3s" begin=".6s" fill="freeze" repeatCount="indefinite"/></circle>
+          <circle cx="350" cy="150" r="5" fill="#FF6B00"><animate attributeName="opacity" values="0;1" dur=".3s" begin="1.2s" fill="freeze" repeatCount="indefinite"/></circle>
+          <circle cx="350" cy="270" r="5" fill="#FF6B00"><animate attributeName="opacity" values="0;1" dur=".3s" begin="1.8s" fill="freeze" repeatCount="indefinite"/></circle>
+          <!-- HUD overlays -->
+          <rect x="62" y="62" width="100" height="36" rx="1" fill="#0d0d0d" stroke="#1c1c1c"/>
+          <text x="72" y="77" font-family="monospace" font-size="8" fill="#FF6B00" letter-spacing="1">AIRSPACE: B</text>
+          <text x="72" y="91" font-family="monospace" font-size="8" fill="#585858" letter-spacing="1">LAANC: CLEAR</text>
+          <rect x="62" y="362" width="120" height="36" rx="1" fill="#0d0d0d" stroke="#1c1c1c"/>
+          <text x="72" y="377" font-family="monospace" font-size="8" fill="#FF6B00" letter-spacing="1">WIND: 6 KT / 280°</text>
+          <text x="72" y="391" font-family="monospace" font-size="8" fill="#585858" letter-spacing="1">VIS: 10SM CLR</text>
+          <text x="230" y="46" font-family="monospace" font-size="9" fill="#585858" text-anchor="middle" letter-spacing="2">MISSION ROUTE // STEP 02</text>
+        </svg>
+      </div>
+
+      <!-- 03 FIELD DEPLOYMENT (M4T launch) -->
+      <div class="tl-scene" id="tls2">
+        <svg viewBox="0 0 460 460" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Ground -->
+          <rect x="60" y="360" width="340" height="40" fill="#0d0d0d" stroke="#1c1c1c"/>
+          <line x1="60" y1="360" x2="400" y2="360" stroke="#1c1c1c" stroke-width="2"/>
+          <!-- Thrust / exhaust -->
+          <line x1="120" y1="260" x2="110" y2="360" stroke="#FF6B00" stroke-width="1" stroke-dasharray="4 4" opacity="0.5"><animate attributeName="opacity" values="0.5;0.1;0.5" dur="0.4s" repeatCount="indefinite"/></line>
+          <line x1="340" y1="260" x2="350" y2="360" stroke="#FF6B00" stroke-width="1" stroke-dasharray="4 4" opacity="0.5"><animate attributeName="opacity" values="0.5;0.1;0.5" dur="0.4s" repeatCount="indefinite"/></line>
+          <!-- M4T Body (top-down perspective, isometric-ish) -->
+          <g transform="translate(230,230)">
+            <animateTransform attributeName="transform" type="translate" values="230,290;230,220;230,220" dur="2s" fill="freeze" repeatCount="indefinite"/>
+            <!-- Arms -->
+            <line x1="-90" y1="-50" x2="-30" y2="-18" stroke="#d0d0d0" stroke-width="8" stroke-linecap="round"/>
+            <line x1="90" y1="-50" x2="30" y2="-18" stroke="#d0d0d0" stroke-width="8" stroke-linecap="round"/>
+            <line x1="-90" y1="50" x2="-30" y2="18" stroke="#d0d0d0" stroke-width="8" stroke-linecap="round"/>
+            <line x1="90" y1="50" x2="30" y2="18" stroke="#d0d0d0" stroke-width="8" stroke-linecap="round"/>
+            <!-- Body -->
+            <ellipse cx="0" cy="0" rx="32" ry="22" fill="#1a1a1a" stroke="#2a2a2a"/>
+            <!-- Rotors -->
+            <ellipse cx="-90" cy="-50" rx="22" ry="5" fill="none" stroke="#FF6B00" stroke-width="1.5" opacity="0.8"><animateTransform attributeName="transform" type="rotate" from="0 -90 -50" to="360 -90 -50" dur="0.12s" repeatCount="indefinite"/></ellipse>
+            <ellipse cx="90" cy="-50" rx="22" ry="5" fill="none" stroke="#FF6B00" stroke-width="1.5" opacity="0.8"><animateTransform attributeName="transform" type="rotate" from="360 90 -50" to="0 90 -50" dur="0.12s" repeatCount="indefinite"/></ellipse>
+            <ellipse cx="-90" cy="50" rx="22" ry="5" fill="none" stroke="#FF6B00" stroke-width="1.5" opacity="0.8"><animateTransform attributeName="transform" type="rotate" from="360 -90 50" to="0 -90 50" dur="0.12s" repeatCount="indefinite"/></ellipse>
+            <ellipse cx="90" cy="50" rx="22" ry="5" fill="none" stroke="#FF6B00" stroke-width="1.5" opacity="0.8"><animateTransform attributeName="transform" type="rotate" from="0 90 50" to="360 90 50" dur="0.12s" repeatCount="indefinite"/></ellipse>
+            <!-- Camera gimbal -->
+            <rect x="-10" y="18" width="20" height="14" rx="3" fill="#111" stroke="#333"/>
+          </g>
+          <!-- Altitude indicator -->
+          <rect x="360" y="100" width="32" height="240" rx="2" fill="#090909" stroke="#1c1c1c"/>
+          <rect x="362" y="280" width="28" height="58" rx="1" fill="#FF6B00" opacity="0.3">
+            <animate attributeName="height" values="8;130;130" dur="2s" fill="freeze" repeatCount="indefinite"/>
+            <animate attributeName="y" values="330;210;210" dur="2s" fill="freeze" repeatCount="indefinite"/>
+          </rect>
+          <text x="376" y="94" font-family="monospace" font-size="8" fill="#585858" text-anchor="middle">ALT</text>
+          <!-- Status -->
+          <rect x="60" y="80" width="160" height="48" rx="2" fill="#0d0d0d" stroke="#1c1c1c"/>
+          <text x="76" y="100" font-family="monospace" font-size="9" fill="#FF6B00" letter-spacing="1">LAUNCH SEQUENCE</text>
+          <text x="76" y="116" font-family="monospace" font-size="9" fill="#585858" letter-spacing="1">M4T // ACTIVE</text>
+          <text x="230" y="46" font-family="monospace" font-size="9" fill="#585858" text-anchor="middle" letter-spacing="2">FIELD DEPLOYMENT // STEP 03</text>
+        </svg>
+      </div>
+
+      <!-- 04 DATA ACQUISITION (scan) -->
+      <div class="tl-scene" id="tls3">
+        <svg viewBox="0 0 460 460" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Aerial terrain grid -->
+          <rect x="60" y="100" width="340" height="260" rx="2" fill="#090909" stroke="#1c1c1c"/>
+          <!-- Terrain features -->
+          <rect x="100" y="140" width="80" height="60" rx="1" fill="#111" stroke="#1c1c1c"/>
+          <rect x="220" y="160" width="100" height="80" rx="1" fill="#111" stroke="#1c1c1c"/>
+          <rect x="120" y="240" width="60" height="50" rx="1" fill="#111" stroke="#1c1c1c"/>
+          <rect x="300" y="280" width="50" height="60" rx="1" fill="#111" stroke="#1c1c1c"/>
+          <!-- Thermal overlay bands -->
+          <rect x="62" y="150" width="336" height="18" fill="rgba(255,60,0,0.15)"><animate attributeName="y" from="100" to="360" dur="2.5s" repeatCount="indefinite"/></rect>
+          <rect x="62" y="150" width="336" height="1" fill="rgba(255,107,0,0.6)"><animate attributeName="y" from="100" to="360" dur="2.5s" repeatCount="indefinite"/></rect>
+          <!-- Data pulse rings -->
+          <circle cx="230" cy="230" r="20" fill="none" stroke="#FF6B00" stroke-width="1" opacity="0.8"><animate attributeName="r" values="10;80" dur="2s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.8;0" dur="2s" repeatCount="indefinite"/></circle>
+          <circle cx="230" cy="230" r="20" fill="none" stroke="#FF6B00" stroke-width="1" opacity="0.8"><animate attributeName="r" values="10;80" dur="2s" begin="0.7s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.8;0" dur="2s" begin="0.7s" repeatCount="indefinite"/></circle>
+          <!-- HUD overlays -->
+          <rect x="62" y="102" width="180" height="24" fill="#0d0d0d" stroke="#1c1c1c"/>
+          <text x="72" y="118" font-family="monospace" font-size="9" fill="#FF6B00" letter-spacing="1">THERMAL SCAN // ACTIVE</text>
+          <rect x="62" y="338" width="200" height="20" fill="#0d0d0d" stroke="#1c1c1c"/>
+          <text x="72" y="352" font-family="monospace" font-size="8" fill="#585858" letter-spacing="1">FRAMES CAPTURED: <tspan fill="#FF6B00">1,842</tspan></text>
+          <!-- RGB / THERMAL toggle -->
+          <rect x="310" y="102" width="88" height="24" rx="2" fill="#111" stroke="#1c1c1c"/>
+          <rect x="312" y="104" width="42" height="20" rx="1" fill="#FF6B00"/>
+          <text x="333" y="118" font-family="monospace" font-size="8" fill="#000" text-anchor="middle">THM</text>
+          <text x="377" y="118" font-family="monospace" font-size="8" fill="#585858" text-anchor="middle">RGB</text>
+          <text x="230" y="80" font-family="monospace" font-size="9" fill="#585858" text-anchor="middle" letter-spacing="2">DATA ACQUISITION // STEP 04</text>
+        </svg>
+      </div>
+
+      <!-- 05 PROCESSING DASHBOARD -->
+      <div class="tl-scene" id="tls4">
+        <svg viewBox="0 0 460 460" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Monitor frame -->
+          <rect x="60" y="70" width="340" height="260" rx="4" fill="#0a0a0a" stroke="#1c1c1c" stroke-width="1.5"/>
+          <rect x="60" y="70" width="340" height="28" rx="4" fill="#111"/>
+          <text x="80" y="89" font-family="monospace" font-size="10" fill="#FF6B00" letter-spacing="2">DØi // PROCESSING DASHBOARD</text>
+          <circle cx="376" cy="84" r="4" fill="#FF6B00"><animate attributeName="opacity" values="1;0.2;1" dur="1.8s" repeatCount="indefinite"/></circle>
+          <!-- Bar charts -->
+          <text x="80" y="120" font-family="monospace" font-size="8" fill="#585858" letter-spacing="1">THERMAL ANOMALIES</text>
+          <rect x="80" y="124" width="200" height="10" rx="1" fill="#1a1a1a"/>
+          <rect x="80" y="124" width="0" height="10" rx="1" fill="#FF6B00"><animate attributeName="width" from="0" to="148" dur="1.2s" fill="freeze" repeatCount="indefinite"/></rect>
+          <text x="80" y="148" font-family="monospace" font-size="8" fill="#585858" letter-spacing="1">MAPPING COVERAGE</text>
+          <rect x="80" y="152" width="200" height="10" rx="1" fill="#1a1a1a"/>
+          <rect x="80" y="152" width="0" height="10" rx="1" fill="#FF6B00"><animate attributeName="width" from="0" to="188" dur="1.6s" fill="freeze" repeatCount="indefinite"/></rect>
+          <text x="80" y="176" font-family="monospace" font-size="8" fill="#585858" letter-spacing="1">AI DETECTION SCORE</text>
+          <rect x="80" y="180" width="200" height="10" rx="1" fill="#1a1a1a"/>
+          <rect x="80" y="180" width="0" height="10" rx="1" fill="#FF6B00"><animate attributeName="width" from="0" to="176" dur="1.4s" fill="freeze" repeatCount="indefinite"/></rect>
+          <!-- Mini map -->
+          <rect x="300" y="110" width="88" height="72" rx="1" fill="#0d0d0d" stroke="#1c1c1c"/>
+          <rect x="308" y="118" width="22" height="16" rx="1" fill="#1a1a1a"/>
+          <rect x="338" y="130" width="28" height="22" rx="1" fill="#1a1a1a"/>
+          <rect x="310" y="150" width="16" height="14" rx="1" fill="#1a1a1a"/>
+          <rect x="356" y="116" width="14" height="18" rx="1" fill="#1a1a1a"/>
+          <!-- Processing log -->
+          <rect x="80" y="210" width="308" height="104" rx="2" fill="#0d0d0d" stroke="#1c1c1c"/>
+          <text x="92" y="226" font-family="monospace" font-size="8" fill="#585858">▶ Ortho generation complete — 94.2% coverage</text>
+          <text x="92" y="242" font-family="monospace" font-size="8" fill="#585858">▶ Thermal report compiled — 3 anomalies flagged</text>
+          <text x="92" y="258" font-family="monospace" font-size="8" fill="#FF6B00">▶ AI classification running...<animate attributeName="opacity" values="1;0;1" dur="0.8s" repeatCount="indefinite"/></text>
+          <text x="92" y="274" font-family="monospace" font-size="8" fill="#585858" opacity="0.4">▶ QC validation: standby</text>
+          <text x="92" y="290" font-family="monospace" font-size="8" fill="#585858" opacity="0.3">▶ Package assembly: standby</text>
+          <!-- Bottom -->
+          <rect x="120" y="348" width="4" height="28" rx="1" fill="#1c1c1c"/>
+          <rect x="336" y="348" width="4" height="28" rx="1" fill="#1c1c1c"/>
+          <rect x="124" y="372" width="212" height="4" rx="1" fill="#1c1c1c"/>
+          <text x="230" y="420" font-family="monospace" font-size="9" fill="#585858" text-anchor="middle" letter-spacing="2">PROCESSING &amp; ANALYSIS // STEP 05</text>
+        </svg>
+      </div>
+
+      <!-- 06 CLIENT DELIVERY (report) -->
+      <div class="tl-scene" id="tls5">
+        <svg viewBox="0 0 460 460" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Document -->
+          <rect x="120" y="70" width="220" height="280" rx="4" fill="#0d0d0d" stroke="#1c1c1c" stroke-width="1.5"/>
+          <rect x="120" y="70" width="220" height="36" rx="4" fill="#111"/>
+          <text x="230" y="93" font-family="monospace" font-size="10" fill="#FF6B00" text-anchor="middle" letter-spacing="1">MISSION REPORT</text>
+          <!-- Report lines -->
+          <rect x="140" y="124" width="160" height="6" rx="1" fill="#1a1a1a"/>
+          <rect x="140" y="138" width="120" height="6" rx="1" fill="#1a1a1a"/>
+          <rect x="140" y="162" width="180" height="6" rx="1" fill="#1a1a1a"/>
+          <rect x="140" y="176" width="140" height="6" rx="1" fill="#1a1a1a"/>
+          <rect x="140" y="190" width="160" height="6" rx="1" fill="#1a1a1a"/>
+          <!-- Thermal thumbnail -->
+          <rect x="140" y="214" width="76" height="52" rx="1" fill="#111" stroke="#1c1c1c"/>
+          <rect x="142" y="216" width="72" height="48" rx="1" fill="#1a0800"/>
+          <ellipse cx="178" cy="240" rx="18" ry="12" fill="#FF6B00" opacity="0.5"/>
+          <!-- Check marks appearing -->
+          <circle cx="316" cy="150" r="14" fill="rgba(255,107,0,0.1)" stroke="#FF6B00" stroke-width="1"><animate attributeName="opacity" values="0;1" dur="0.4s" begin="0.3s" fill="freeze" repeatCount="indefinite"/></circle>
+          <polyline points="309,150 314,156 323,144" stroke="#FF6B00" stroke-width="2" fill="none" stroke-dasharray="20" stroke-dashoffset="20"><animate attributeName="stroke-dashoffset" from="20" to="0" dur="0.4s" begin="0.5s" fill="freeze" repeatCount="indefinite"/></polyline>
+          <circle cx="316" cy="200" r="14" fill="rgba(255,107,0,0.1)" stroke="#FF6B00" stroke-width="1"><animate attributeName="opacity" values="0;1" dur="0.4s" begin="0.9s" fill="freeze" repeatCount="indefinite"/></circle>
+          <polyline points="309,200 314,206 323,194" stroke="#FF6B00" stroke-width="2" fill="none" stroke-dasharray="20" stroke-dashoffset="20"><animate attributeName="stroke-dashoffset" from="20" to="0" dur="0.4s" begin="1.1s" fill="freeze" repeatCount="indefinite"/></polyline>
+          <!-- Transfer progress -->
+          <rect x="120" y="370" width="220" height="36" rx="2" fill="#0d0d0d" stroke="#1c1c1c"/>
+          <rect x="132" y="382" width="180" height="8" rx="1" fill="#1a1a1a"/>
+          <rect x="132" y="382" width="0" height="8" rx="1" fill="#FF6B00"><animate attributeName="width" from="0" to="180" dur="2s" repeatCount="indefinite"/></rect>
+          <text x="320" y="392" font-family="monospace" font-size="8" fill="#FF6B00">SENT</text>
+          <text x="230" y="430" font-family="monospace" font-size="9" fill="#585858" text-anchor="middle" letter-spacing="2">CLIENT DELIVERY // STEP 06</text>
+        </svg>
+      </div>
+
+      <!-- 07 ARCHIVE VAULT -->
+      <div class="tl-scene" id="tls6">
+        <svg viewBox="0 0 460 460" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Server rack -->
+          <rect x="140" y="80" width="180" height="280" rx="4" fill="#0a0a0a" stroke="#1c1c1c" stroke-width="1.5"/>
+          <!-- Drive bays -->
+          <rect x="154" y="96" width="152" height="28" rx="2" fill="#111" stroke="#1c1c1c"/>
+          <circle cx="296" cy="110" r="4" fill="#FF6B00"><animate attributeName="opacity" values="1;0.2;1" dur="1.2s" repeatCount="indefinite"/></circle>
+          <text x="164" y="114" font-family="monospace" font-size="8" fill="#585858">MISSION_2024_RCN_001</text>
+          <rect x="154" y="130" width="152" height="28" rx="2" fill="#111" stroke="#1c1c1c"/>
+          <circle cx="296" cy="144" r="4" fill="#FF6B00"><animate attributeName="opacity" values="1;0.2;1" dur="1.8s" repeatCount="indefinite"/></circle>
+          <text x="164" y="148" font-family="monospace" font-size="8" fill="#585858">MISSION_2024_THM_007</text>
+          <rect x="154" y="164" width="152" height="28" rx="2" fill="#111" stroke="#1c1c1c"/>
+          <circle cx="296" cy="178" r="4" fill="#FF6B00"><animate attributeName="opacity" values="1;0.2;1" dur="2.2s" repeatCount="indefinite"/></circle>
+          <text x="164" y="182" font-family="monospace" font-size="8" fill="#585858">MISSION_2024_SYN_014</text>
+          <rect x="154" y="198" width="152" height="28" rx="2" fill="#111" stroke="#1c1c1c"/>
+          <rect x="296" y="204" width="8" height="16" rx="1" fill="#1a1a1a"/>
+          <text x="164" y="216" font-family="monospace" font-size="8" fill="#2a2a2a">ARCHIVING...</text>
+          <!-- Current mission being written -->
+          <rect x="154" y="232" width="152" height="28" rx="2" fill="#0d0d0d" stroke="#FF6B00" stroke-width="1">
+            <animate attributeName="stroke-opacity" values="1;0.3;1" dur="1s" repeatCount="indefinite"/>
+          </rect>
+          <text x="164" y="250" font-family="monospace" font-size="8" fill="#FF6B00">MISSION_2025_NEW...</text>
+          <rect x="154" y="266" width="152" height="28" rx="2" fill="#0d0d0d" stroke="#1c1c1c"/>
+          <rect x="154" y="300" width="152" height="28" rx="2" fill="#0d0d0d" stroke="#1c1c1c"/>
+          <rect x="154" y="334" width="152" height="16" rx="2" fill="#111"/>
+          <!-- Data stream lines -->
+          <line x1="400" y1="120" x2="322" y2="120" stroke="#FF6B00" stroke-width="1" stroke-dasharray="4 4"><animate attributeName="stroke-dashoffset" from="0" to="-16" dur="0.5s" repeatCount="indefinite"/></line>
+          <line x1="400" y1="144" x2="322" y2="144" stroke="#FF6B00" stroke-width="1" stroke-dasharray="4 4" opacity="0.5"><animate attributeName="stroke-dashoffset" from="0" to="-16" dur="0.7s" repeatCount="indefinite"/></line>
+          <line x1="400" y1="246" x2="322" y2="246" stroke="#FF6B00" stroke-width="1.5" stroke-dasharray="4 4"><animate attributeName="stroke-dashoffset" from="0" to="-16" dur="0.4s" repeatCount="indefinite"/></line>
+          <!-- Lock icon -->
+          <rect x="194" y="370" width="72" height="52" rx="4" fill="#111" stroke="#1c1c1c"/>
+          <path d="M210 378 Q230 368 250 378 L250 386 Q230 376 210 386 Z" fill="#1a1a1a"/>
+          <rect x="210" y="386" width="40" height="28" rx="2" fill="#1a1a1a"/>
+          <circle cx="230" cy="400" r="5" fill="#FF6B00" opacity="0.8"/>
+          <text x="230" y="440" font-family="monospace" font-size="9" fill="#585858" text-anchor="middle" letter-spacing="2">ARCHIVE &amp; SUPPORT // STEP 07</text>
+        </svg>
+      </div>
+    </div>
+
+    <!-- RIGHT: STEP LIST -->
+    <div class="tl-right">
+      <div class="tl-header">
+        <div class="tl-tag">How It Works</div>
+        <div class="tl-h">MISSION <span>PIPELINE</span></div>
+      </div>
+      <div class="tl-items" id="tlItems">
+        <div class="tl-item tl-on"><div class="tl-num">01</div><div class="tl-info"><div class="tl-title">Mission Intake</div><div class="tl-desc">Client consultation and site assessment. We gather objectives, airspace considerations, and deliverable requirements to build the correct deployment plan.</div></div></div>
+        <div class="tl-item"><div class="tl-num">02</div><div class="tl-info"><div class="tl-title">Operational Planning</div><div class="tl-desc">Pre-flight planning, FAA airspace verification, risk analysis, weather evaluation, and mission route configuration. Every mission structured for safety and precision.</div></div></div>
+        <div class="tl-item"><div class="tl-num">03</div><div class="tl-info"><div class="tl-title">Field Deployment</div><div class="tl-desc">Matrice 4T deployed on-site for high-resolution imaging, thermal analysis, and mapping. Operations conducted under controlled protocols and live environmental monitoring.</div></div></div>
+        <div class="tl-item"><div class="tl-num">04</div><div class="tl-info"><div class="tl-title">Data Acquisition</div><div class="tl-desc">Capturing aerial intelligence — visual imagery, thermal signatures, orthomosaic mapping, and anomaly detection — across the full mission scope.</div></div></div>
+        <div class="tl-item"><div class="tl-num">05</div><div class="tl-info"><div class="tl-title">Processing &amp; Analysis</div><div class="tl-desc">Post-mission workflows for organization, enhancement, AI analysis, and quality control. Outputs include thermal reports, 3D maps, and actionable intelligence summaries.</div></div></div>
+        <div class="tl-item"><div class="tl-num">06</div><div class="tl-info"><div class="tl-title">Client Delivery</div><div class="tl-desc">Final deliverables securely packaged and delivered — optimized for operational use, stakeholder review, insurance support, or long-term asset tracking.</div></div></div>
+        <div class="tl-item"><div class="tl-num">07</div><div class="tl-info"><div class="tl-title">Archive &amp; Support</div><div class="tl-desc">Mission data archived for future comparison and repeat inspections. Ongoing scheduling and long-term monitoring programs available for repeat clients.</div></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MOBILE FALLBACK -->
+<section class="tl-mob" id="process-mob">
   <div class="wrap">
     <div class="tag">How It Works</div>
-    <div class="sec-h">FROM QUOTE TO <span class="gh">DELIVERY</span></div>
-    <div class="sec-intro">Every DØi mission follows a structured seven-phase protocol — from initial client consultation through secure delivery and long-term archival. Precision at every step.</div>
+    <div class="sec-h">MISSION <span class="gh">PIPELINE</span></div>
   </div>
-  <div class="proc-track"><div class="pstep">
-  <div class="proc-badge-col"><div class="doi-badge"><span class="db-num">01</span></div></div>
-  <div class="pstep-text"><div class="pstep-label">MISSION INTAKE</div><div class="pstep-desc">Every operation begins with a client consultation and site assessment. We gather mission objectives, property details, operational constraints, airspace considerations, and deliverable requirements to build the correct deployment plan.</div></div>
-</div>
-<div class="pstep">
-  <div class="proc-badge-col"><div class="doi-badge"><span class="db-num">02</span></div></div>
-  <div class="pstep-text"><div class="pstep-label">OPERATIONAL PLANNING</div><div class="pstep-desc">DØi performs pre-flight planning, FAA airspace verification, risk analysis, weather evaluation, equipment preparation, and mission route configuration. Every mission is structured for safety, efficiency, and precision data capture.</div></div>
-</div>
-<div class="pstep">
-  <div class="proc-badge-col"><div class="doi-badge"><span class="db-num">03</span></div></div>
-  <div class="pstep-text"><div class="pstep-label">FIELD DEPLOYMENT</div><div class="pstep-desc">Our operators deploy on-site using advanced aerial systems equipped for high-resolution imaging, thermal analysis, mapping, and intelligence collection. Flight operations are conducted under controlled mission protocols and live environmental monitoring.</div></div>
-</div>
-<div class="pstep">
-  <div class="proc-badge-col"><div class="doi-badge"><span class="db-num">04</span></div></div>
-  <div class="pstep-text"><div class="pstep-label">DATA ACQUISITION</div><div class="pstep-desc">During flight operations, DØi captures the required aerial intelligence — including visual imagery, thermal signatures, orthomosaic mapping, site progress documentation, inspection data, or anomaly detection depending on mission scope.</div></div>
-</div>
-<div class="pstep">
-  <div class="proc-badge-col"><div class="doi-badge"><span class="db-num">05</span></div></div>
-  <div class="pstep-text"><div class="pstep-label">PROCESSING & ANALYSIS</div><div class="pstep-desc">Captured data is processed through post-mission workflows for organization, enhancement, analysis, and quality control. Depending on the mission, outputs may include thermal reports, 2D/3D maps, inspection findings, progress visuals, or actionable intelligence summaries.</div></div>
-</div>
-<div class="pstep">
-  <div class="proc-badge-col"><div class="doi-badge"><span class="db-num">06</span></div></div>
-  <div class="pstep-text"><div class="pstep-label">CLIENT DELIVERY</div><div class="pstep-desc">Final deliverables are securely organized and delivered through structured reporting packages optimized for operational use, stakeholder review, documentation, insurance support, planning, or long-term asset tracking.</div></div>
-</div>
-<div class="pstep">
-  <div class="proc-badge-col"><div class="doi-badge"><span class="db-num">07</span></div></div>
-  <div class="pstep-text"><div class="pstep-label">ARCHIVE & SUPPORT</div><div class="pstep-desc">Mission data can be securely archived for future comparison, repeat inspections, historical tracking, and recurring operational support. DØi also offers ongoing mission scheduling and long-term monitoring programs for repeat clients.</div></div>
-</div></div>
+  <div style="margin-top:32px;">
+    <div class="tl-mob-step"><div class="tl-mob-num">01 // MISSION INTAKE</div><div class="tl-mob-title">Mission Intake</div><div class="tl-mob-desc">Client consultation and site assessment. We gather objectives, airspace considerations, and deliverable requirements to build the correct deployment plan.</div></div>
+    <div class="tl-mob-step"><div class="tl-mob-num">02 // OPERATIONAL PLANNING</div><div class="tl-mob-title">Operational Planning</div><div class="tl-mob-desc">Pre-flight planning, FAA airspace verification, risk analysis, weather evaluation, and mission route configuration. Every mission structured for safety and precision.</div></div>
+    <div class="tl-mob-step"><div class="tl-mob-num">03 // FIELD DEPLOYMENT</div><div class="tl-mob-title">Field Deployment</div><div class="tl-mob-desc">Matrice 4T deployed on-site for high-resolution imaging, thermal analysis, and mapping. Operations conducted under controlled protocols and live environmental monitoring.</div></div>
+    <div class="tl-mob-step"><div class="tl-mob-num">04 // DATA ACQUISITION</div><div class="tl-mob-title">Data Acquisition</div><div class="tl-mob-desc">Capturing aerial intelligence — visual imagery, thermal signatures, orthomosaic mapping, and anomaly detection across the full mission scope.</div></div>
+    <div class="tl-mob-step"><div class="tl-mob-num">05 // PROCESSING &amp; ANALYSIS</div><div class="tl-mob-title">Processing &amp; Analysis</div><div class="tl-mob-desc">Post-mission workflows for AI analysis and quality control. Outputs include thermal reports, 3D maps, and actionable intelligence summaries.</div></div>
+    <div class="tl-mob-step"><div class="tl-mob-num">06 // CLIENT DELIVERY</div><div class="tl-mob-title">Client Delivery</div><div class="tl-mob-desc">Final deliverables securely packaged — optimized for operational use, stakeholder review, insurance support, or long-term asset tracking.</div></div>
+    <div class="tl-mob-step"><div class="tl-mob-num">07 // ARCHIVE &amp; SUPPORT</div><div class="tl-mob-title">Archive &amp; Support</div><div class="tl-mob-desc">Mission data archived for future comparison. Ongoing scheduling and long-term monitoring programs available for repeat clients.</div></div>
+  </div>
 </section>
 
 <!-- FAQ -->
@@ -876,6 +1215,35 @@ function submitForm(){
   document.getElementById('progFill').style.width='100%';
   document.getElementById('contact').scrollIntoView({behavior:'smooth',block:'start'});
 }
+
+// ── SCROLL TIMELINE ──
+(function(){
+  var zone = document.querySelector('.tl-zone');
+  var scenes = document.querySelectorAll('.tl-scene');
+  var items = document.querySelectorAll('.tl-item');
+  var fill = document.getElementById('tlFill');
+  if(!zone || !scenes.length) return;
+  var cur = 0;
+  function setStep(s){
+    if(s === cur) return;
+    scenes[cur].classList.remove('tl-active');
+    items[cur].classList.remove('tl-on');
+    cur = s;
+    scenes[cur].classList.add('tl-active');
+    items[cur].classList.add('tl-on');
+  }
+  function update(){
+    var rect = zone.getBoundingClientRect();
+    var maxScroll = zone.offsetHeight - window.innerHeight;
+    var scrolled = Math.max(0, -rect.top);
+    var progress = Math.min(1, scrolled / maxScroll);
+    var step = Math.min(scenes.length - 1, Math.floor(progress * scenes.length));
+    setStep(step);
+    if(fill) fill.style.height = (progress * 100) + '%';
+  }
+  window.addEventListener('scroll', update, {passive:true});
+  update();
+})();
 </script>
 </body>
 </html>
