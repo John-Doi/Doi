@@ -523,7 +523,8 @@ body{font-size:17px;font-weight:500;}
     border-right:none;
     border-bottom:1px solid var(--bd);
   }
-  .tl-scene svg{width:min(46vw,210px)!important;height:min(46vw,210px)!important;}
+  .tl-svg-box{width:44vw;height:44vw;max-width:200px;max-height:200px;flex-shrink:0;}
+  .tl-svg-box svg{width:100%!important;height:100%!important;display:block!important;}
   .tl-right{padding:14px 22px 10px;overflow:hidden;justify-content:flex-start;}
   .tl-header{margin-bottom:10px;}
   .tl-h{font-size:18px!important;}
@@ -717,7 +718,7 @@ body{font-size:17px;font-weight:500;}
 
       <!-- 01 INTAKE FORM -->
       <div class="tl-scene tl-active" id="tls0">
-        <svg viewBox="0 0 460 460" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <div class="tl-svg-box"><svg viewBox="0 0 460 460" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect x="80" y="60" width="300" height="340" rx="4" fill="#0d0d0d" stroke="#1c1c1c" stroke-width="1.5"/>
           <rect x="80" y="60" width="300" height="36" rx="4" fill="#111"/>
           <text x="100" y="84" font-family="monospace" font-size="11" fill="#FF6B00" letter-spacing="2">DØi LABS // MISSION INTAKE</text>
@@ -741,12 +742,12 @@ body{font-size:17px;font-weight:500;}
           <text x="230" y="323" font-family="monospace" font-size="11" fill="#000" text-anchor="middle" font-weight="700" letter-spacing="2">SUBMIT REQUEST</text>
           <!-- Corner tag -->
           <text x="352" y="84" font-family="monospace" font-size="9" fill="#585858" letter-spacing="1">STEP 01/07</text>
-        </svg>
-      </div>
+        </svg></div>
+        </div>
 
       <!-- 02 OPERATIONAL PLANNING (map) -->
       <div class="tl-scene" id="tls1">
-        <svg viewBox="0 0 460 460" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <div class="tl-svg-box"><svg viewBox="0 0 460 460" fill="none" xmlns="http://www.w3.org/2000/svg">
           <!-- Map grid -->
           <rect x="60" y="60" width="340" height="340" rx="2" fill="#090909" stroke="#1c1c1c"/>
           <line x1="60" y1="115" x2="400" y2="115" stroke="#141414" stroke-width="1"/>
@@ -778,12 +779,12 @@ body{font-size:17px;font-weight:500;}
           <text x="72" y="377" font-family="monospace" font-size="8" fill="#FF6B00" letter-spacing="1">WIND: 6 KT / 280°</text>
           <text x="72" y="391" font-family="monospace" font-size="8" fill="#585858" letter-spacing="1">VIS: 10SM CLR</text>
           <text x="230" y="46" font-family="monospace" font-size="9" fill="#585858" text-anchor="middle" letter-spacing="2">MISSION ROUTE // STEP 02</text>
-        </svg>
-      </div>
+        </svg></div>
+        </div>
 
       <!-- 03 FIELD DEPLOYMENT (M4T launch) -->
       <div class="tl-scene" id="tls2">
-        <svg viewBox="0 0 460 460" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <div class="tl-svg-box"><svg viewBox="0 0 460 460" fill="none" xmlns="http://www.w3.org/2000/svg">
           <!-- Ground -->
           <rect x="60" y="360" width="340" height="40" fill="#0d0d0d" stroke="#1c1c1c"/>
           <line x1="60" y1="360" x2="400" y2="360" stroke="#1c1c1c" stroke-width="2"/>
@@ -820,12 +821,12 @@ body{font-size:17px;font-weight:500;}
           <text x="76" y="100" font-family="monospace" font-size="9" fill="#FF6B00" letter-spacing="1">LAUNCH SEQUENCE</text>
           <text x="76" y="116" font-family="monospace" font-size="9" fill="#585858" letter-spacing="1">M4T // ACTIVE</text>
           <text x="230" y="46" font-family="monospace" font-size="9" fill="#585858" text-anchor="middle" letter-spacing="2">FIELD DEPLOYMENT // STEP 03</text>
-        </svg>
-      </div>
+        </svg></div>
+        </div>
 
       <!-- 04 DATA ACQUISITION (scan) -->
       <div class="tl-scene" id="tls3">
-        <svg viewBox="0 0 460 460" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <div class="tl-svg-box"><svg viewBox="0 0 460 460" fill="none" xmlns="http://www.w3.org/2000/svg">
           <!-- Aerial terrain grid -->
           <rect x="60" y="100" width="340" height="260" rx="2" fill="#090909" stroke="#1c1c1c"/>
           <!-- Terrain features -->
@@ -850,12 +851,12 @@ body{font-size:17px;font-weight:500;}
           <text x="333" y="118" font-family="monospace" font-size="8" fill="#000" text-anchor="middle">THM</text>
           <text x="377" y="118" font-family="monospace" font-size="8" fill="#585858" text-anchor="middle">RGB</text>
           <text x="230" y="80" font-family="monospace" font-size="9" fill="#585858" text-anchor="middle" letter-spacing="2">DATA ACQUISITION // STEP 04</text>
-        </svg>
-      </div>
+        </svg></div>
+        </div>
 
       <!-- 05 PROCESSING DASHBOARD -->
       <div class="tl-scene" id="tls4">
-        <svg viewBox="0 0 460 460" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <div class="tl-svg-box"><svg viewBox="0 0 460 460" fill="none" xmlns="http://www.w3.org/2000/svg">
           <!-- Monitor frame -->
           <rect x="60" y="70" width="340" height="260" rx="4" fill="#0a0a0a" stroke="#1c1c1c" stroke-width="1.5"/>
           <rect x="60" y="70" width="340" height="28" rx="4" fill="#111"/>
@@ -889,12 +890,12 @@ body{font-size:17px;font-weight:500;}
           <rect x="336" y="348" width="4" height="28" rx="1" fill="#1c1c1c"/>
           <rect x="124" y="372" width="212" height="4" rx="1" fill="#1c1c1c"/>
           <text x="230" y="420" font-family="monospace" font-size="9" fill="#585858" text-anchor="middle" letter-spacing="2">PROCESSING &amp; ANALYSIS // STEP 05</text>
-        </svg>
-      </div>
+        </svg></div>
+        </div>
 
       <!-- 06 CLIENT DELIVERY (report) -->
       <div class="tl-scene" id="tls5">
-        <svg viewBox="0 0 460 460" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <div class="tl-svg-box"><svg viewBox="0 0 460 460" fill="none" xmlns="http://www.w3.org/2000/svg">
           <!-- Document -->
           <rect x="120" y="70" width="220" height="280" rx="4" fill="#0d0d0d" stroke="#1c1c1c" stroke-width="1.5"/>
           <rect x="120" y="70" width="220" height="36" rx="4" fill="#111"/>
@@ -920,12 +921,12 @@ body{font-size:17px;font-weight:500;}
           <rect x="132" y="382" width="0" height="8" rx="1" fill="#FF6B00"><animate attributeName="width" from="0" to="180" dur="2s" repeatCount="indefinite"/></rect>
           <text x="320" y="392" font-family="monospace" font-size="8" fill="#FF6B00">SENT</text>
           <text x="230" y="430" font-family="monospace" font-size="9" fill="#585858" text-anchor="middle" letter-spacing="2">CLIENT DELIVERY // STEP 06</text>
-        </svg>
-      </div>
+        </svg></div>
+        </div>
 
       <!-- 07 ARCHIVE VAULT -->
       <div class="tl-scene" id="tls6">
-        <svg viewBox="0 0 460 460" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <div class="tl-svg-box"><svg viewBox="0 0 460 460" fill="none" xmlns="http://www.w3.org/2000/svg">
           <!-- Server rack -->
           <rect x="140" y="80" width="180" height="280" rx="4" fill="#0a0a0a" stroke="#1c1c1c" stroke-width="1.5"/>
           <!-- Drive bays -->
@@ -959,8 +960,8 @@ body{font-size:17px;font-weight:500;}
           <rect x="210" y="386" width="40" height="28" rx="2" fill="#1a1a1a"/>
           <circle cx="230" cy="400" r="5" fill="#FF6B00" opacity="0.8"/>
           <text x="230" y="440" font-family="monospace" font-size="9" fill="#585858" text-anchor="middle" letter-spacing="2">ARCHIVE &amp; SUPPORT // STEP 07</text>
-        </svg>
-      </div>
+        </svg></div>
+        </div>
     </div>
 
     <!-- RIGHT: STEP LIST -->
