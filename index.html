@@ -550,32 +550,89 @@ body{font-size:17px;font-weight:500;}
 /* Global squared corners */
 *,*::before,*::after{border-radius:0!important;}
 
-/* CRT scanlines */
+/* CRT scanlines (subtle) */
 body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:9998;
-  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.07) 2px,rgba(0,0,0,0.07) 4px);}
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.05) 2px,rgba(0,0,0,0.05) 4px);}
+
+/* MOUNTAIN BACKGROUND */
+.mountain-bg{
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  overflow:hidden;
+}
+.mountain-bg svg{
+  position:absolute;bottom:0;left:0;width:100%;height:100%;
+}
+.mtn-ridge{
+  transition:opacity 0.6s,transform 0.6s;
+}
+.mtn-far{fill:#0d0d0d;}
+.mtn-mid{fill:#0a0a0a;}
+.mtn-near{fill:#080808;}
+.mtn-edge{
+  stroke-width:1px;
+  stroke-opacity:0.15;
+  transition:stroke-opacity 0.4s;
+}
+.mtn-near-edge{stroke:#FF6B00;}
+.mtn-mid-edge{stroke:#FF6B00;stroke-opacity:0.06;}
+
+/* Make page content sit above mountain */
+nav,#hero,.sbar,section,footer{position:relative;z-index:1;}
+
+/* Remove orange cross (hcorners) & hero scan line */
+.hcorners,.hero-scan{display:none!important;}
 
 /* NAV */
-nav{background:#080808!important;backdrop-filter:none!important;
-  border-bottom:2px solid var(--orange)!important;height:50px!important;padding:0 40px!important;}
+nav{
+  background:rgba(5,5,5,0.92)!important;backdrop-filter:none!important;
+  border-bottom:2px solid var(--orange)!important;height:56px!important;
+  padding:0 40px!important;
+}
 nav::after{display:none!important;}
-.nav-links{gap:32px!important;}
-.nav-links a{font-family:var(--mono)!important;font-size:10px!important;
-  letter-spacing:3px!important;color:#777!important;text-transform:uppercase!important;font-weight:400!important;}
+.nav-links{gap:36px!important;}
+.nav-links a{
+  font-family:var(--mono)!important;font-size:13px!important;
+  letter-spacing:3px!important;color:#999!important;
+  text-transform:uppercase!important;font-weight:400!important;
+}
 .nav-links a:hover{color:#EAEAEA!important;}
-.nav-cta{border:1px solid var(--orange)!important;color:var(--orange)!important;
-  background:transparent!important;padding:6px 16px!important;font-size:10px!important;letter-spacing:3px!important;}
-.nav-cta:hover{background:var(--orange)!important;color:#fff!important;}
+/* Fix nav CTA — webkit-text-fill-color was making text transparent */
+.nav-cta{
+  border:1px solid var(--orange)!important;
+  color:var(--orange)!important;
+  -webkit-text-fill-color:var(--orange)!important;
+  background:transparent!important;
+  background-clip:unset!important;
+  -webkit-background-clip:unset!important;
+  padding:7px 18px!important;
+  font-size:12px!important;letter-spacing:3px!important;
+}
+.nav-cta:hover{
+  background:var(--orange)!important;
+  color:#000!important;
+  -webkit-text-fill-color:#000!important;
+}
 
 /* STATUS BAR */
-.sbar{background:#050505!important;border-bottom:1px solid #111!important;}
+.sbar{
+  background:rgba(3,3,3,0.9)!important;
+  border-bottom:1px solid #111!important;
+}
 .sdot{background:var(--orange)!important;box-shadow:0 0 6px var(--orange)!important;}
 .v{color:#EAEAEA!important;}
-.si{font-size:10px!important;letter-spacing:2px!important;}
+.si,.si span{font-size:11px!important;letter-spacing:2px!important;}
 
 /* HERO */
-.hero-h1{font-size:clamp(40px,8vw,120px)!important;line-height:0.88!important;letter-spacing:-0.04em!important;}
-.hero-cert{border:1px solid rgba(255,107,0,0.25)!important;
-  background:rgba(255,107,0,0.04)!important;letter-spacing:5px!important;color:#EAEAEA!important;}
+.hero-h1{
+  font-size:clamp(40px,8vw,120px)!important;
+  line-height:0.88!important;letter-spacing:-0.04em!important;
+}
+.hero-cert{
+  border:1px solid rgba(255,107,0,0.25)!important;
+  background:rgba(255,107,0,0.04)!important;
+  letter-spacing:4px!important;color:#EAEAEA!important;
+  font-size:12px!important;
+}
 .cert-sep{color:var(--orange)!important;}
 .hero-sub{font-size:18px!important;color:#999!important;line-height:1.85!important;}
 
@@ -584,24 +641,29 @@ nav::after{display:none!important;}
 .dim{color:transparent!important;-webkit-text-stroke:1px rgba(255,107,0,0.4)!important;}
 
 /* SECTION TAGS */
-.tag{font-family:var(--mono)!important;font-size:10px!important;letter-spacing:4px!important;
-  color:var(--orange)!important;border:1px solid rgba(255,107,0,0.2)!important;
-  background:rgba(255,107,0,0.04)!important;text-transform:uppercase!important;}
+.tag{
+  font-family:var(--mono)!important;font-size:11px!important;
+  letter-spacing:4px!important;color:var(--orange)!important;
+  border:1px solid rgba(255,107,0,0.2)!important;
+  background:rgba(255,107,0,0.04)!important;
+  text-transform:uppercase!important;
+}
 
 /* SECTION HEADINGS */
 .sec-h{font-size:clamp(32px,4.5vw,72px)!important;letter-spacing:-0.03em!important;line-height:0.88!important;}
 .sec-intro{font-size:18px!important;color:#888!important;line-height:1.9!important;}
 
-/* CARD GRIDS — orange 1px dividers */
+/* CARD GRIDS */
 .why-grid,.svc-grid,.faq-grid{
-  gap:1px!important;background:var(--orange)!important;border:1px solid var(--orange)!important;}
+  gap:1px!important;background:var(--orange)!important;
+  border:1px solid var(--orange)!important;
+}
 .svc-grid{grid-template-columns:repeat(3,1fr)!important;align-items:stretch!important;}
-/* Center the lone 5th service card */
 .svc-grid .scard:nth-child(5){grid-column:2/3!important;}
 .scard,.why-card{border:none!important;background:#0a0a0a!important;transition:background .15s!important;}
 .scard:hover,.why-card:hover{background:#0f0f0f!important;}
 
-/* FAQ — native details/summary */
+/* FAQ */
 details.faq-item{border:none!important;background:#0a0a0a!important;display:block!important;}
 details.faq-item:hover{background:#0f0f0f!important;}
 details.faq-item[open]{background:#0c0c0c!important;}
@@ -609,49 +671,48 @@ details.faq-item summary{list-style:none!important;}
 details.faq-item summary::-webkit-details-marker,
 details.faq-item summary::marker{display:none!important;}
 
-/* CARD TEXT SIZES */
+/* CARD TEXT */
 .scard-title,.why-title{font-size:20px!important;color:#EAEAEA!important;margin-bottom:12px!important;}
-.scard-desc,.why-body{font-size:16px!important;color:#888!important;line-height:1.85!important;}
+.scard-desc,.why-body{font-size:17px!important;color:#888!important;line-height:1.85!important;}
 .faq-q{font-size:18px!important;color:#EAEAEA!important;}
-.faq-a{font-size:16px!important;color:#888!important;line-height:1.85!important;}
+.faq-a{font-size:17px!important;color:#888!important;line-height:1.85!important;}
 
-/* TIMELINE IMAGES — LARGER */
+/* TIMELINE */
 .tl-svg-box{width:min(85%,360px)!important;height:min(85%,360px)!important;
   max-width:360px!important;max-height:360px!important;}
 .tl-scene svg,.tl-svg-box svg{width:100%!important;height:100%!important;display:block!important;}
+.tl-title{font-size:17px!important;}
+.tl-desc{font-size:15px!important;color:#777!important;line-height:1.75!important;}
+.tl-h{font-size:clamp(20px,2vw,28px)!important;}
 @media(max-width:860px){
   .tl-pin{grid-template-rows:min(80vw,400px) 1fr!important;}
   .tl-visual{height:min(80vw,400px)!important;}
   .tl-svg-box{width:min(74vw,360px)!important;height:min(74vw,360px)!important;
     max-width:360px!important;max-height:360px!important;}
 }
-
-/* TIMELINE TEXT */
-.tl-title{font-size:17px!important;}
-.tl-desc{font-size:15px!important;color:#777!important;line-height:1.75!important;}
-.tl-h{font-size:clamp(20px,2vw,28px)!important;}
-
-/* BUTTONS */
-.btn-pri{background:var(--orange)!important;letter-spacing:3px!important;
-  font-size:11px!important;font-family:var(--mono)!important;box-shadow:none!important;padding:14px 28px!important;}
-.btn-pri:hover{background:var(--og3)!important;}
-.btn-ghost{border:1px solid #333!important;color:#777!important;letter-spacing:3px!important;
-  font-size:11px!important;font-family:var(--mono)!important;background:transparent!important;padding:14px 28px!important;}
-.btn-ghost:hover{border-color:var(--orange)!important;color:#EAEAEA!important;}
-
-/* HERO CORNERS */
-.hc{border-color:var(--orange)!important;}
-
-/* TIMELINE */
 .tl-pin{border-top:2px solid var(--orange)!important;}
 .tl-num{color:#444!important;border-color:#222!important;}
 .tl-item.tl-on .tl-num{color:var(--orange)!important;border-color:rgba(255,107,0,0.5)!important;}
 .tl-item.tl-on .tl-title{color:var(--orange)!important;}
 #tlFill{background:var(--orange)!important;}
 
+/* BUTTONS */
+.btn-pri{
+  background:var(--orange)!important;letter-spacing:3px!important;
+  font-size:13px!important;font-family:var(--mono)!important;
+  box-shadow:none!important;padding:14px 32px!important;
+}
+.btn-pri:hover{background:var(--og3)!important;}
+.btn-ghost{
+  border:1px solid #333!important;color:#777!important;
+  letter-spacing:3px!important;font-size:13px!important;
+  font-family:var(--mono)!important;background:transparent!important;
+  padding:14px 32px!important;
+}
+.btn-ghost:hover{border-color:var(--orange)!important;color:#EAEAEA!important;}
+
 /* STATS */
 .proof-n,.hstat-n .val{color:var(--orange)!important;}
-.hstat-n .unit{font-size:13px!important;}
 
 /* CONTACT FORM */
 .intake-row input,.intake-row select,.intake-row textarea{
@@ -662,17 +723,39 @@ details.faq-item summary::marker{display:none!important;}
 .step-node.active .sn-label{color:var(--orange)!important;}
 
 /* FOOTER */
-footer{border-top:2px solid var(--orange)!important;padding:40px 52px!important;}
-.foot-inner{flex-direction:column!important;gap:24px!important;align-items:center!important;text-align:center!important;}
-.foot-contact{display:flex!important;gap:36px!important;flex-wrap:wrap!important;justify-content:center!important;}
-.foot-ci{font-family:var(--mono)!important;font-size:10px!important;letter-spacing:2px!important;
-  color:#555!important;text-decoration:none!important;text-transform:uppercase!important;transition:color .2s!important;}
+footer{border-top:2px solid var(--orange)!important;padding:48px 52px!important;}
+.foot-inner{flex-direction:column!important;gap:28px!important;align-items:center!important;text-align:center!important;}
+.foot-contact{display:flex!important;gap:40px!important;flex-wrap:wrap!important;justify-content:center!important;}
+.foot-ci{
+  font-family:var(--mono)!important;font-size:13px!important;
+  letter-spacing:2px!important;color:#888!important;
+  text-decoration:none!important;text-transform:uppercase!important;
+  transition:color .2s!important;
+}
 .foot-ci:hover{color:var(--orange)!important;}
-.fc-label{color:var(--orange)!important;}
-.foot-copy{font-size:10px!important;color:#333!important;letter-spacing:2px!important;}
+.fc-label{color:var(--orange)!important;font-size:13px!important;}
+.foot-copy{font-size:12px!important;color:#444!important;letter-spacing:2px!important;}
+.foot-links a{font-size:12px!important;letter-spacing:2px!important;color:#444!important;}
 </style>
 </head>
 <body>
+<div class="mountain-bg" id="mountainBg" aria-hidden="true">
+  <svg class="mtns mtns-3" viewBox="0 0 1440 500" preserveAspectRatio="xMidYMax meet" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <filter id="mtn-glow"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    </defs>
+    <!-- Far ridge -->
+    <path class="mtn-ridge mtn-far" d="M0,500 L0,280 L120,230 L260,200 L380,240 L520,170 L660,210 L780,160 L900,195 L1040,145 L1180,185 L1320,155 L1440,175 L1440,500 Z"/>
+    <!-- Mid ridge -->
+    <path class="mtn-ridge mtn-mid" d="M0,500 L0,340 L100,300 L230,270 L360,310 L490,250 L640,280 L770,230 L920,265 L1060,215 L1200,255 L1360,225 L1440,245 L1440,500 Z"/>
+    <!-- Near ridge -->
+    <path class="mtn-ridge mtn-near" d="M0,500 L0,400 L110,360 L240,380 L370,340 L510,365 L650,320 L800,350 L940,305 L1080,340 L1220,295 L1380,325 L1440,310 L1440,500 Z"/>
+    <!-- Near ridge highlight stroke -->
+    <path class="mtn-edge mtn-near-edge" d="M0,400 L110,360 L240,380 L370,340 L510,365 L650,320 L800,350 L940,305 L1080,340 L1220,295 L1380,325 L1440,310" fill="none"/>
+    <!-- Mid ridge highlight stroke -->
+    <path class="mtn-edge mtn-mid-edge" d="M0,340 L100,300 L230,270 L360,310 L490,250 L640,280 L770,230 L920,265 L1060,215 L1200,255 L1360,225 L1440,245" fill="none"/>
+  </svg>
+</div>
 <div class="cdot" id="cdot"></div>
 
 <nav>
@@ -1449,6 +1532,38 @@ function submitForm(){
       item.classList.toggle('open');
     });
   });
+
+// ── MOUNTAIN RIDGE PARALLAX ──
+(function(){
+  var far  = document.querySelector('.mtn-far');
+  var mid  = document.querySelector('.mtn-mid');
+  var near = document.querySelector('.mtn-near');
+  var nearEdge = document.querySelector('.mtn-near-edge');
+  var midEdge  = document.querySelector('.mtn-mid-edge');
+  if(!far) return;
+  var ticking = false;
+  function updateMountains(){
+    var sy = window.scrollY;
+    var h  = document.body.scrollHeight - window.innerHeight;
+    var p  = h > 0 ? Math.min(1, sy / h) : 0;
+    // Parallax: far moves least, near moves most
+    far.style.transform  = 'translateY(' + (sy * 0.06).toFixed(1) + 'px)';
+    mid.style.transform  = 'translateY(' + (sy * 0.12).toFixed(1) + 'px)';
+    near.style.transform = 'translateY(' + (sy * 0.20).toFixed(1) + 'px)';
+    nearEdge.style.transform = near.style.transform;
+    midEdge.style.transform  = mid.style.transform;
+    // Ridge highlight intensifies with scroll
+    var glow = 0.08 + p * 0.55;
+    var midGlow = 0.04 + p * 0.25;
+    nearEdge.style.strokeOpacity = glow.toFixed(2);
+    midEdge.style.strokeOpacity  = midGlow.toFixed(2);
+    ticking = false;
+  }
+  window.addEventListener('scroll', function(){
+    if(!ticking){ requestAnimationFrame(updateMountains); ticking=true; }
+  }, {passive:true});
+  updateMountains();
+})();
 </script>
 </body>
 </html>
