@@ -748,37 +748,93 @@ body{font-size:17px;font-weight:500;}
       <!-- 02 OPERATIONAL PLANNING (map) -->
       <div class="tl-scene" id="tls1">
           <div class="tl-svg-box"><svg viewBox="0 0 460 460" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <!-- Map grid -->
-          <rect x="60" y="60" width="340" height="340" rx="2" fill="#090909" stroke="#1c1c1c"/>
-          <line x1="60" y1="115" x2="400" y2="115" stroke="#141414" stroke-width="1"/>
-          <line x1="60" y1="170" x2="400" y2="170" stroke="#141414" stroke-width="1"/>
-          <line x1="60" y1="225" x2="400" y2="225" stroke="#141414" stroke-width="1"/>
-          <line x1="60" y1="280" x2="400" y2="280" stroke="#141414" stroke-width="1"/>
-          <line x1="60" y1="335" x2="400" y2="335" stroke="#141414" stroke-width="1"/>
-          <line x1="115" y1="60" x2="115" y2="400" stroke="#141414" stroke-width="1"/>
-          <line x1="170" y1="60" x2="170" y2="400" stroke="#141414" stroke-width="1"/>
-          <line x1="225" y1="60" x2="225" y2="400" stroke="#141414" stroke-width="1"/>
-          <line x1="280" y1="60" x2="280" y2="400" stroke="#141414" stroke-width="1"/>
-          <line x1="335" y1="60" x2="335" y2="400" stroke="#141414" stroke-width="1"/>
-          <!-- Zone boundary -->
-          <rect x="130" y="130" width="200" height="140" rx="1" fill="rgba(255,107,0,0.05)" stroke="#FF6B00" stroke-width="1" stroke-dasharray="6 4"/>
-          <!-- Flight path -->
-          <polyline points="150,340 150,150 350,150 350,270 200,270 200,200 310,200" stroke="#FF6B00" stroke-width="2" stroke-dasharray="300" stroke-dashoffset="300" fill="none">
-            <animate attributeName="stroke-dashoffset" from="300" to="0" dur="2.5s" fill="freeze" repeatCount="indefinite"/>
-          </polyline>
-          <!-- Waypoints -->
-          <circle cx="150" cy="340" r="5" fill="#FF6B00"><animate attributeName="opacity" values="0;1" dur=".3s" begin="0s" fill="freeze"/></circle>
-          <circle cx="150" cy="150" r="5" fill="#FF6B00"><animate attributeName="opacity" values="0;1" dur=".3s" begin=".6s" fill="freeze" repeatCount="indefinite"/></circle>
-          <circle cx="350" cy="150" r="5" fill="#FF6B00"><animate attributeName="opacity" values="0;1" dur=".3s" begin="1.2s" fill="freeze" repeatCount="indefinite"/></circle>
-          <circle cx="350" cy="270" r="5" fill="#FF6B00"><animate attributeName="opacity" values="0;1" dur=".3s" begin="1.8s" fill="freeze" repeatCount="indefinite"/></circle>
+          <defs>
+            <filter id="caNG" x="-100%" y="-100%" width="300%" height="300%">
+              <feGaussianBlur in="SourceGraphic" stdDeviation="4" result="b"/>
+              <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+            <filter id="caOG" x="-8%" y="-8%" width="116%" height="116%">
+              <feGaussianBlur in="SourceGraphic" stdDeviation="2.5" result="b"/>
+              <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+          </defs>
+          <!-- Background -->
+          <rect width="460" height="460" fill="#06080f"/>
+          <!-- Grid overlay -->
+          <line x1="0" y1="92" x2="460" y2="92" stroke="#0c0e18" stroke-width="1"/>
+          <line x1="0" y1="184" x2="460" y2="184" stroke="#0c0e18" stroke-width="1"/>
+          <line x1="0" y1="276" x2="460" y2="276" stroke="#0c0e18" stroke-width="1"/>
+          <line x1="0" y1="368" x2="460" y2="368" stroke="#0c0e18" stroke-width="1"/>
+          <line x1="92" y1="0" x2="92" y2="460" stroke="#0c0e18" stroke-width="1"/>
+          <line x1="184" y1="0" x2="184" y2="460" stroke="#0c0e18" stroke-width="1"/>
+          <line x1="276" y1="0" x2="276" y2="460" stroke="#0c0e18" stroke-width="1"/>
+          <line x1="368" y1="0" x2="368" y2="460" stroke="#0c0e18" stroke-width="1"/>
+          <!-- California state fill -->
+          <path d="M 52,38 L 208,29 L 226,116 L 300,203 L 393,268 L 407,333 L 407,354 L 411,420 L 315,439 L 311,432 L 267,381 L 252,376 L 190,363 L 176,320 L 137,252 L 132,236 L 115,205 L 97,192 L 67,134 L 45,91 L 54,73 L 52,38 Z" fill="#0b0d1e" stroke="#1c1e38" stroke-width="1.5"/>
+          <!-- State glow outline -->
+          <path d="M 52,38 L 208,29 L 226,116 L 300,203 L 393,268 L 407,333 L 407,354 L 411,420 L 315,439 L 311,432 L 267,381 L 252,376 L 190,363 L 176,320 L 137,252 L 132,236 L 115,205 L 97,192 L 67,134 L 45,91 L 54,73 L 52,38 Z" fill="none" stroke="rgba(255,107,0,0.30)" stroke-width="1.5" filter="url(#caOG)"/>
+          <!-- Network lines -->
+          <line x1="134" y1="116" x2="118" y2="205" stroke="rgba(255,107,0,0.18)" stroke-width="0.9" stroke-dasharray="4 4"/>
+          <line x1="118" y1="205" x2="215" y2="259" stroke="rgba(255,107,0,0.18)" stroke-width="0.9" stroke-dasharray="4 4"/>
+          <line x1="134" y1="116" x2="215" y2="259" stroke="rgba(255,107,0,0.12)" stroke-width="0.9" stroke-dasharray="4 4"/>
+          <line x1="215" y1="259" x2="272" y2="381" stroke="rgba(255,107,0,0.20)" stroke-width="0.9" stroke-dasharray="4 4"/>
+          <line x1="272" y1="381" x2="308" y2="372" stroke="rgba(255,107,0,0.24)" stroke-width="0.9" stroke-dasharray="4 4"/>
+          <line x1="272" y1="381" x2="313" y2="432" stroke="rgba(255,107,0,0.18)" stroke-width="0.9" stroke-dasharray="4 4"/>
+          <line x1="308" y1="372" x2="313" y2="432" stroke="rgba(255,107,0,0.16)" stroke-width="0.9" stroke-dasharray="4 4"/>
+          <!-- NODE: Northern California -->
+          <circle cx="134" cy="116" r="5" fill="none" stroke="#FF6B00" stroke-width="0.8">
+            <animate attributeName="r" values="5;16;5" dur="3s" begin="0s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="0.5;0;0.5" dur="3s" begin="0s" repeatCount="indefinite"/>
+          </circle>
+          <circle cx="134" cy="116" r="5" fill="#FF6B00" filter="url(#caNG)" opacity="0.8"/>
+          <circle cx="134" cy="116" r="2.5" fill="#ffc080"/>
+          <text x="142" y="113" font-family="monospace" font-size="9" fill="#FF8844" letter-spacing="0.8">NORTHERN CA</text>
+          <!-- NODE: Bay Area -->
+          <circle cx="118" cy="205" r="5" fill="none" stroke="#FF6B00" stroke-width="0.8">
+            <animate attributeName="r" values="5;16;5" dur="3s" begin="0.5s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="0.5;0;0.5" dur="3s" begin="0.5s" repeatCount="indefinite"/>
+          </circle>
+          <circle cx="118" cy="205" r="5" fill="#FF6B00" filter="url(#caNG)" opacity="0.8"/>
+          <circle cx="118" cy="205" r="2.5" fill="#ffc080"/>
+          <text x="126" y="202" font-family="monospace" font-size="9" fill="#FF8844" letter-spacing="0.8">BAY AREA</text>
+          <!-- NODE: Central Valley -->
+          <circle cx="215" cy="259" r="5" fill="none" stroke="#FF6B00" stroke-width="0.8">
+            <animate attributeName="r" values="5;16;5" dur="3s" begin="1s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="0.5;0;0.5" dur="3s" begin="1s" repeatCount="indefinite"/>
+          </circle>
+          <circle cx="215" cy="259" r="5" fill="#FF6B00" filter="url(#caNG)" opacity="0.8"/>
+          <circle cx="215" cy="259" r="2.5" fill="#ffc080"/>
+          <text x="222" y="272" font-family="monospace" font-size="9" fill="#FF8844" letter-spacing="0.8">CENTRAL VALLEY</text>
+          <!-- NODE: Los Angeles -->
+          <circle cx="272" cy="381" r="5" fill="none" stroke="#FF6B00" stroke-width="0.8">
+            <animate attributeName="r" values="5;16;5" dur="3s" begin="1.5s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="0.5;0;0.5" dur="3s" begin="1.5s" repeatCount="indefinite"/>
+          </circle>
+          <circle cx="272" cy="381" r="5" fill="#FF6B00" filter="url(#caNG)" opacity="0.8"/>
+          <circle cx="272" cy="381" r="2.5" fill="#ffc080"/>
+          <text x="264" y="375" font-family="monospace" font-size="9" fill="#FF8844" letter-spacing="0.8" text-anchor="end">LOS ANGELES</text>
+          <!-- NODE: Inland Empire -->
+          <circle cx="308" cy="372" r="5" fill="none" stroke="#FF6B00" stroke-width="0.8">
+            <animate attributeName="r" values="5;16;5" dur="3s" begin="2s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="0.5;0;0.5" dur="3s" begin="2s" repeatCount="indefinite"/>
+          </circle>
+          <circle cx="308" cy="372" r="5" fill="#FF6B00" filter="url(#caNG)" opacity="0.8"/>
+          <circle cx="308" cy="372" r="2.5" fill="#ffc080"/>
+          <text x="316" y="366" font-family="monospace" font-size="9" fill="#FF8844" letter-spacing="0.8">INLAND EMPIRE</text>
+          <!-- NODE: San Diego -->
+          <circle cx="313" cy="432" r="5" fill="none" stroke="#FF6B00" stroke-width="0.8">
+            <animate attributeName="r" values="5;16;5" dur="3s" begin="2.5s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="0.5;0;0.5" dur="3s" begin="2.5s" repeatCount="indefinite"/>
+          </circle>
+          <circle cx="313" cy="432" r="5" fill="#FF6B00" filter="url(#caNG)" opacity="0.8"/>
+          <circle cx="313" cy="432" r="2.5" fill="#ffc080"/>
+          <text x="305" y="428" font-family="monospace" font-size="9" fill="#FF8844" letter-spacing="0.8" text-anchor="end">SAN DIEGO</text>
           <!-- HUD overlays -->
-          <rect x="62" y="62" width="100" height="36" rx="1" fill="#0d0d0d" stroke="#1c1c1c"/>
-          <text x="72" y="77" font-family="monospace" font-size="8" fill="#FF6B00" letter-spacing="1">AIRSPACE: B</text>
-          <text x="72" y="91" font-family="monospace" font-size="8" fill="#585858" letter-spacing="1">LAANC: CLEAR</text>
-          <rect x="62" y="362" width="120" height="36" rx="1" fill="#0d0d0d" stroke="#1c1c1c"/>
-          <text x="72" y="377" font-family="monospace" font-size="8" fill="#FF6B00" letter-spacing="1">WIND: 6 KT / 280°</text>
-          <text x="72" y="391" font-family="monospace" font-size="8" fill="#585858" letter-spacing="1">VIS: 10SM CLR</text>
-          <text x="230" y="46" font-family="monospace" font-size="9" fill="#585858" text-anchor="middle" letter-spacing="2">MISSION ROUTE // STEP 02</text>
+          <text x="10" y="14" font-family="monospace" font-size="8" fill="#3a3a58" letter-spacing="2">COVERAGE // CALIFORNIA</text>
+          <rect x="10" y="430" width="105" height="26" rx="2" fill="#0a0c1c" stroke="#1c1e38"/>
+          <text x="16" y="443" font-family="monospace" font-size="8.5" fill="#FF8844" letter-spacing="1">6 ACTIVE ZONES</text>
+          <text x="16" y="452" font-family="monospace" font-size="7" fill="#3a3a58" letter-spacing="0.5">FAA COORDINATED</text>
+          <text x="450" y="452" font-family="monospace" font-size="7" fill="#28283a" letter-spacing="1" text-anchor="end">STEP 02 // OPS PLANNING</text>
         </svg></div>
         </div>
 
