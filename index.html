@@ -544,8 +544,8 @@ body{font-size:17px;font-weight:500;}
 .tl-mob-desc{font-family:var(--body);font-size:15px;color:var(--t2);line-height:1.65;}
 </style>
 <style id="brutalist-override">
-/* ─── INDUSTRIAL BRUTALISM // TACTICAL TELEMETRY ─── */
-:root{ --bo:rgba(255,107,0,0.2); }
+/* ─── INDUSTRIAL BRUTALISM // TACTICAL TELEMETRY v2 ─── */
+:root{ --bo:rgba(255,107,0,0.35); }
 
 /* Global squared corners */
 *,*::before,*::after{border-radius:0!important;}
@@ -562,55 +562,61 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:9998;
 .mountain-bg svg{
   position:absolute;bottom:0;left:0;width:100%;height:100%;
 }
-.mtn-ridge{
-  transition:opacity 0.6s,transform 0.6s;
-}
-.mtn-far{fill:#0d0d0d;}
-.mtn-mid{fill:#0a0a0a;}
-.mtn-near{fill:#080808;}
+.mtn-ridge{transition:transform 0.05s linear;}
+.mtn-far{fill:#1a1008;}
+.mtn-mid{fill:#120b04;}
+.mtn-near{fill:#0d0803;}
 .mtn-edge{
-  stroke-width:1px;
-  stroke-opacity:0.15;
-  transition:stroke-opacity 0.4s;
+  stroke-width:1.5px;
+  stroke-opacity:0.4;
+  transition:stroke-opacity 0.1s;
 }
 .mtn-near-edge{stroke:#FF6B00;}
-.mtn-mid-edge{stroke:#FF6B00;stroke-opacity:0.06;}
+.mtn-mid-edge{stroke:#FF6B00;stroke-opacity:0.18;}
 
-/* Make page content sit above mountain */
-nav,#hero,.sbar,section,footer{position:relative;z-index:1;}
+/* Keep nav/sbar at their fixed positions; stack sections above mountain bg */
+#hero,section,footer{position:relative;z-index:1;}
+nav,.sbar{z-index:200!important;}
 
 /* Remove orange cross (hcorners) & hero scan line */
 .hcorners,.hero-scan{display:none!important;}
 
 /* NAV */
 nav{
-  background:rgba(5,5,5,0.92)!important;backdrop-filter:none!important;
+  background:rgba(5,5,5,0.96)!important;backdrop-filter:none!important;
   border-bottom:2px solid var(--orange)!important;height:56px!important;
   padding:0 40px!important;
+  justify-content:space-between!important;
 }
 nav::after{display:none!important;}
-.nav-links{gap:36px!important;}
+.nav-brand{display:flex!important;}
+.nav-links{gap:32px!important;}
 .nav-links a{
-  font-family:var(--mono)!important;font-size:13px!important;
-  letter-spacing:3px!important;color:#999!important;
+  font-family:var(--mono)!important;font-size:12px!important;
+  letter-spacing:3px!important;color:#888!important;
   text-transform:uppercase!important;font-weight:400!important;
 }
 .nav-links a:hover{color:#EAEAEA!important;}
-/* Fix nav CTA — webkit-text-fill-color was making text transparent */
+/* Nav CTA — solid orange box, black text, fully visible */
 .nav-cta{
-  border:1px solid var(--orange)!important;
-  color:var(--orange)!important;
-  -webkit-text-fill-color:var(--orange)!important;
-  background:transparent!important;
+  display:inline-block!important;
+  border:2px solid var(--orange)!important;
+  background:var(--orange)!important;
   background-clip:unset!important;
   -webkit-background-clip:unset!important;
-  padding:7px 18px!important;
-  font-size:12px!important;letter-spacing:3px!important;
-}
-.nav-cta:hover{
-  background:var(--orange)!important;
   color:#000!important;
   -webkit-text-fill-color:#000!important;
+  padding:8px 20px!important;
+  font-size:12px!important;
+  letter-spacing:3px!important;
+  font-weight:700!important;
+  font-family:var(--mono)!important;
+  text-transform:uppercase!important;
+}
+.nav-cta:hover{
+  background:transparent!important;
+  color:var(--orange)!important;
+  -webkit-text-fill-color:var(--orange)!important;
 }
 
 /* STATUS BAR */
@@ -740,7 +746,7 @@ footer{border-top:2px solid var(--orange)!important;padding:48px 52px!important;
 </head>
 <body>
 <div class="mountain-bg" id="mountainBg" aria-hidden="true">
-  <svg class="mtns mtns-3" viewBox="0 0 1440 500" preserveAspectRatio="xMidYMax meet" xmlns="http://www.w3.org/2000/svg">
+  <svg class="mtns mtns-3" viewBox="0 0 1440 500" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg">
     <defs>
       <filter id="mtn-glow"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
     </defs>
@@ -759,7 +765,7 @@ footer{border-top:2px solid var(--orange)!important;padding:48px 52px!important;
 <div class="cdot" id="cdot"></div>
 
 <nav>
-  
+  <a href="#hero" class="nav-brand" style="display:flex!important;align-items:center;gap:10px;text-decoration:none;font-family:var(--mono);font-size:13px;letter-spacing:4px;color:#EAEAEA;text-transform:uppercase;font-weight:700;"><span style="color:var(--orange);font-size:18px;font-weight:900;">DØi</span> LABS</a>
   <ul class="nav-links">
     <li><a href="#why">Why DØi</a></li>
     <li><a href="#services">Services</a></li>
@@ -1546,17 +1552,14 @@ function submitForm(){
     var sy = window.scrollY;
     var h  = document.body.scrollHeight - window.innerHeight;
     var p  = h > 0 ? Math.min(1, sy / h) : 0;
-    // Parallax: far moves least, near moves most
-    far.style.transform  = 'translateY(' + (sy * 0.06).toFixed(1) + 'px)';
-    mid.style.transform  = 'translateY(' + (sy * 0.12).toFixed(1) + 'px)';
-    near.style.transform = 'translateY(' + (sy * 0.20).toFixed(1) + 'px)';
+    far.style.transform  = 'translateY(' + (sy * 0.04).toFixed(1) + 'px)';
+    mid.style.transform  = 'translateY(' + (sy * 0.09).toFixed(1) + 'px)';
+    near.style.transform = 'translateY(' + (sy * 0.16).toFixed(1) + 'px)';
     nearEdge.style.transform = near.style.transform;
     midEdge.style.transform  = mid.style.transform;
-    // Ridge highlight intensifies with scroll
-    var glow = 0.08 + p * 0.55;
-    var midGlow = 0.04 + p * 0.25;
-    nearEdge.style.strokeOpacity = glow.toFixed(2);
-    midEdge.style.strokeOpacity  = midGlow.toFixed(2);
+    // Edge glow: starts at 0.5 and peaks at 1.0 on full scroll
+    nearEdge.style.strokeOpacity = (0.5 + p * 0.5).toFixed(2);
+    midEdge.style.strokeOpacity  = (0.18 + p * 0.32).toFixed(2);
     ticking = false;
   }
   window.addEventListener('scroll', function(){
