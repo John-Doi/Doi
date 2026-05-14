@@ -564,16 +564,18 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:9998;
 }
 .mtn-ridge{will-change:transform;}
 .mtn-contour{will-change:transform;}
-.mtn-far{fill:#100e08;}
-.mtn-mid{fill:#0b0906;}
-.mtn-near{fill:#080705;}
-.mtn-edge{
-  stroke-width:1.5px;
-  stroke-opacity:0.5;
-}
+.mtn-far{fill:#141008;}
+.mtn-mid{fill:#0e0b05;}
+.mtn-near{fill:#0a0804;}
+.mtn-edge{stroke-width:2px;stroke-opacity:0.6;}
 .mtn-near-edge{stroke:#FF6B00;}
-.mtn-mid-edge{stroke:#FF6B00;stroke-opacity:0.2;}
+.mtn-mid-edge{stroke:#FF6B00;stroke-opacity:0.28;}
 .bp-grid-fine,.bp-grid-major{will-change:transform;}
+/* Blueprint labels — more visible, with slow drift animation */
+@keyframes bpLabelDrift{0%{transform:translateY(0);}50%{transform:translateY(-4px);}100%{transform:translateY(0);}}
+@keyframes bpFadeIn{from{opacity:0;}to{opacity:1;}}
+.mountain-bg text{animation:bpFadeIn 2s ease forwards;}
+.mtn-t1,.mtn-t2{animation:bpFadeIn 2.5s ease forwards;}
 
 /* Keep nav/sbar at their fixed positions; stack sections above mountain bg */
 #hero,section,footer{position:relative;z-index:1;}
@@ -620,8 +622,8 @@ nav::after{display:none!important;}
   -webkit-text-fill-color:var(--orange)!important;
 }
 
-/* Sbar removed — shrink hero top padding to match nav-only height */
-#hero{padding-top:80px!important;}
+/* Hero top padding: nav (56px) + sbar (~28px) */
+#hero{padding-top:110px!important;}
 
 /* HERO */
 .hero-h1{
@@ -657,15 +659,29 @@ nav::after{display:none!important;}
 .sec-h{font-size:clamp(32px,4.5vw,72px)!important;letter-spacing:-0.03em!important;line-height:0.88!important;}
 .sec-intro{font-size:18px!important;color:#888!important;line-height:1.9!important;}
 
-/* CARD GRIDS — transparent cards, visible orange dividers */
+/* CARD GRIDS — no orange bg, thin visible orange dividers, cards semi-transparent */
 .why-grid,.svc-grid,.faq-grid{
-  gap:1px!important;background:rgba(255,107,0,0.45)!important;
-  border:1px solid rgba(255,107,0,0.45)!important;
+  gap:1px!important;
+  background:rgba(255,107,0,0.3)!important;
+  border:none!important;
+  max-width:100%!important;
+  padding:0!important;
+  width:100%!important;
 }
 .svc-grid{grid-template-columns:repeat(3,1fr)!important;align-items:stretch!important;}
 .svc-grid .scard:nth-child(5){grid-column:2/3!important;}
-.scard,.why-card{border:none!important;background:rgba(6,5,4,0.82)!important;backdrop-filter:blur(4px)!important;-webkit-backdrop-filter:blur(4px)!important;transition:background .15s!important;}
-.scard:hover,.why-card:hover{background:rgba(12,10,8,0.88)!important;}
+.scard,.why-card{border:none!important;background:rgba(5,4,3,0.88)!important;transition:background .2s!important;}
+.scard:hover,.why-card:hover{background:rgba(14,11,7,0.92)!important;}
+/* Sections: dark texture full-width */
+#why,#services{
+  background:rgba(4,3,2,0.92)!important;
+  border-top:1px solid rgba(255,107,0,0.15)!important;
+  border-bottom:1px solid rgba(255,107,0,0.15)!important;
+  padding-left:0!important;
+  padding-right:0!important;
+}
+#why .sec-inner,#services .sec-inner{max-width:100%!important;padding:0 0 48px!important;}
+#why .sec-head,#services .sec-head{padding:64px 52px 40px!important;}
 
 /* FAQ */
 details.faq-item{border:none!important;background:#0a0a0a!important;display:block!important;}
@@ -726,9 +742,20 @@ details.faq-item summary::marker{display:none!important;}
 .step-node.active .sn-dot{background:var(--orange)!important;box-shadow:0 0 8px var(--orange)!important;}
 .step-node.active .sn-label{color:var(--orange)!important;}
 
+/* SBAR */
+.sbar{
+  background:rgba(3,3,3,0.96)!important;
+  border-bottom:1px solid rgba(255,107,0,0.2)!important;
+  top:56px!important;
+}
+.sdot{background:var(--orange)!important;box-shadow:0 0 6px var(--orange)!important;}
+.v{color:#EAEAEA!important;}
+.si,.si span{font-size:11px!important;letter-spacing:2px!important;}
+
 /* FOOTER */
 footer{border-top:2px solid var(--orange)!important;padding:48px 52px!important;}
 .foot-inner{flex-direction:column!important;gap:28px!important;align-items:center!important;text-align:center!important;}
+.foot-inner .logo-img{height:52px!important;opacity:0.92!important;filter:invert(1) brightness(0.95)!important;}
 .foot-contact{display:flex!important;gap:40px!important;flex-wrap:wrap!important;justify-content:center!important;}
 .foot-ci{
   font-family:var(--mono)!important;font-size:13px!important;
@@ -747,10 +774,10 @@ footer{border-top:2px solid var(--orange)!important;padding:48px 52px!important;
   <svg id="mtnSvg" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg">
     <defs>
       <pattern id="bp-fine" width="60" height="60" patternUnits="userSpaceOnUse">
-        <path d="M60 0L0 0 0 60" fill="none" stroke="rgba(255,107,0,0.055)" stroke-width="0.5"/>
+        <path d="M60 0L0 0 0 60" fill="none" stroke="rgba(255,107,0,0.10)" stroke-width="0.6"/>
       </pattern>
       <pattern id="bp-major" width="300" height="300" patternUnits="userSpaceOnUse">
-        <path d="M300 0L0 0 0 300" fill="none" stroke="rgba(255,107,0,0.09)" stroke-width="1"/>
+        <path d="M300 0L0 0 0 300" fill="none" stroke="rgba(255,107,0,0.18)" stroke-width="1.2"/>
       </pattern>
     </defs>
     <!-- Blueprint grid layers -->
@@ -770,37 +797,57 @@ footer{border-top:2px solid var(--orange)!important;padding:48px 52px!important;
     <!-- Ridge highlight edges -->
     <path class="mtn-edge mtn-near-edge" d="M0,600 L110,558 L250,578 L390,538 L540,562 L690,518 L840,548 L980,502 L1120,535 L1270,492 L1420,522 L1440,515" fill="none"/>
     <path class="mtn-edge mtn-mid-edge" d="M0,490 L100,448 L220,415 L360,450 L500,385 L660,418 L800,368 L950,405 L1090,348 L1240,385 L1380,352 L1440,370" fill="none"/>
-    <!-- Crosshair targets at peaks -->
+    <!-- Crosshair targets at peaks — prominent -->
     <g class="mtn-target mtn-t1">
-      <line x1="1000" x2="1000" y1="213" y2="237" stroke="#FF6B00" stroke-opacity="0.28" stroke-width="1"/>
-      <line x1="988" x2="1012" y1="225" y2="225" stroke="#FF6B00" stroke-opacity="0.28" stroke-width="1"/>
-      <circle cx="1000" cy="225" r="5" fill="none" stroke="#FF6B00" stroke-opacity="0.22" stroke-width="0.8"/>
+      <line x1="1000" x2="1000" y1="202" y2="248" stroke="#FF6B00" stroke-opacity="0.65" stroke-width="1"/>
+      <line x1="977" x2="1023" y1="225" y2="225" stroke="#FF6B00" stroke-opacity="0.65" stroke-width="1"/>
+      <circle cx="1000" cy="225" r="8" fill="none" stroke="#FF6B00" stroke-opacity="0.55" stroke-width="1.2"/>
+      <circle cx="1000" cy="225" r="2" fill="#FF6B00" fill-opacity="0.7"/>
     </g>
     <g class="mtn-target mtn-t2">
-      <line x1="720" x2="720" y1="237" y2="259" stroke="#FF6B00" stroke-opacity="0.18" stroke-width="0.8"/>
-      <line x1="709" x2="731" y1="248" y2="248" stroke="#FF6B00" stroke-opacity="0.18" stroke-width="0.8"/>
-      <circle cx="720" cy="248" r="4" fill="none" stroke="#FF6B00" stroke-opacity="0.14" stroke-width="0.7"/>
+      <line x1="720" x2="720" y1="232" y2="265" stroke="#FF6B00" stroke-opacity="0.45" stroke-width="0.9"/>
+      <line x1="703" x2="737" y1="248" y2="248" stroke="#FF6B00" stroke-opacity="0.45" stroke-width="0.9"/>
+      <circle cx="720" cy="248" r="6" fill="none" stroke="#FF6B00" stroke-opacity="0.38" stroke-width="1"/>
+      <circle cx="720" cy="248" r="1.5" fill="#FF6B00" fill-opacity="0.5"/>
     </g>
-    <!-- Elevation labels -->
-    <text x="1000" y="206" font-family="Share Tech Mono,monospace" font-size="8" fill="#FF6B00" fill-opacity="0.3" letter-spacing="2" text-anchor="middle">ELV 2847M</text>
-    <text x="500" y="373" font-family="Share Tech Mono,monospace" font-size="8" fill="#FF6B00" fill-opacity="0.2" letter-spacing="2" text-anchor="middle">ELV 2214M</text>
-    <text x="690" y="504" font-family="Share Tech Mono,monospace" font-size="8" fill="#FF6B00" fill-opacity="0.15" letter-spacing="2" text-anchor="middle">ELV 1620M</text>
+    <g class="mtn-target mtn-t3">
+      <line x1="450" x2="450" y1="255" y2="283" stroke="#FF6B00" stroke-opacity="0.3" stroke-width="0.8"/>
+      <line x1="436" x2="464" y1="268" y2="268" stroke="#FF6B00" stroke-opacity="0.3" stroke-width="0.8"/>
+      <circle cx="450" cy="268" r="5" fill="none" stroke="#FF6B00" stroke-opacity="0.25" stroke-width="0.8"/>
+    </g>
+    <!-- Elevation labels — more prominent -->
+    <text x="1000" y="206" font-family="Share Tech Mono,monospace" font-size="10" fill="#FF6B00" fill-opacity="0.7" letter-spacing="2" text-anchor="middle">ELV 2847M</text>
+    <text x="500" y="373" font-family="Share Tech Mono,monospace" font-size="10" fill="#FF6B00" fill-opacity="0.55" letter-spacing="2" text-anchor="middle">ELV 2214M</text>
+    <text x="690" y="504" font-family="Share Tech Mono,monospace" font-size="10" fill="#FF6B00" fill-opacity="0.42" letter-spacing="2" text-anchor="middle">ELV 1620M</text>
+    <!-- Additional labels -->
+    <text x="200" y="295" font-family="Share Tech Mono,monospace" font-size="9" fill="#FF6B00" fill-opacity="0.4" letter-spacing="2" text-anchor="middle">SECTOR A-7</text>
+    <text x="1250" y="248" font-family="Share Tech Mono,monospace" font-size="9" fill="#FF6B00" fill-opacity="0.35" letter-spacing="2" text-anchor="middle">SECTOR C-3</text>
+    <text x="800" y="340" font-family="Share Tech Mono,monospace" font-size="9" fill="#FF6B00" fill-opacity="0.32" letter-spacing="2" text-anchor="middle">OPS ZONE</text>
     <!-- Corner coordinates -->
-    <text x="14" y="888" font-family="Share Tech Mono,monospace" font-size="8" fill="#FF6B00" fill-opacity="0.22" letter-spacing="1.5">34°03'N 118°14'W</text>
-    <text x="1426" y="888" font-family="Share Tech Mono,monospace" font-size="8" fill="#FF6B00" fill-opacity="0.22" letter-spacing="1.5" text-anchor="end">GRID REF D-01</text>
-    <!-- Tick marks on grid border -->
-    <line x1="0" y1="300" x2="8" y2="300" stroke="#FF6B00" stroke-opacity="0.15" stroke-width="1"/>
-    <line x1="0" y1="600" x2="8" y2="600" stroke="#FF6B00" stroke-opacity="0.15" stroke-width="1"/>
-    <line x1="1432" y1="300" x2="1440" y2="300" stroke="#FF6B00" stroke-opacity="0.15" stroke-width="1"/>
-    <line x1="1432" y1="600" x2="1440" y2="600" stroke="#FF6B00" stroke-opacity="0.15" stroke-width="1"/>
-    <line x1="480" y1="892" x2="480" y2="900" stroke="#FF6B00" stroke-opacity="0.15" stroke-width="1"/>
-    <line x1="960" y1="892" x2="960" y2="900" stroke="#FF6B00" stroke-opacity="0.15" stroke-width="1"/>
+    <text x="14" y="16" font-family="Share Tech Mono,monospace" font-size="9" fill="#FF6B00" fill-opacity="0.45" letter-spacing="1.5">34°03'N 118°14'W</text>
+    <text x="1426" y="16" font-family="Share Tech Mono,monospace" font-size="9" fill="#FF6B00" fill-opacity="0.45" letter-spacing="1.5" text-anchor="end">34°08'N 117°52'W</text>
+    <text x="14" y="888" font-family="Share Tech Mono,monospace" font-size="9" fill="#FF6B00" fill-opacity="0.45" letter-spacing="1.5">33°58'N 118°14'W</text>
+    <text x="1426" y="888" font-family="Share Tech Mono,monospace" font-size="9" fill="#FF6B00" fill-opacity="0.45" letter-spacing="1.5" text-anchor="end">GRID REF D-01 // DOI-RECON</text>
+    <!-- Scale & classification bar -->
+    <text x="720" y="14" font-family="Share Tech Mono,monospace" font-size="8" fill="#FF6B00" fill-opacity="0.5" letter-spacing="3" text-anchor="middle">[ TACTICAL TERRAIN MAP // SCALE 1:24000 ]</text>
+    <!-- Tick marks on grid border (more) -->
+    <line x1="0" y1="300" x2="12" y2="300" stroke="#FF6B00" stroke-opacity="0.3" stroke-width="1.2"/>
+    <line x1="0" y1="450" x2="8" y2="450" stroke="#FF6B00" stroke-opacity="0.2" stroke-width="1"/>
+    <line x1="0" y1="600" x2="12" y2="600" stroke="#FF6B00" stroke-opacity="0.3" stroke-width="1.2"/>
+    <line x1="1428" y1="300" x2="1440" y2="300" stroke="#FF6B00" stroke-opacity="0.3" stroke-width="1.2"/>
+    <line x1="1428" y1="450" x2="1440" y2="450" stroke="#FF6B00" stroke-opacity="0.2" stroke-width="1"/>
+    <line x1="1428" y1="600" x2="1440" y2="600" stroke="#FF6B00" stroke-opacity="0.3" stroke-width="1.2"/>
+    <line x1="480" y1="888" x2="480" y2="900" stroke="#FF6B00" stroke-opacity="0.3" stroke-width="1.2"/>
+    <line x1="720" y1="888" x2="720" y2="900" stroke="#FF6B00" stroke-opacity="0.2" stroke-width="1"/>
+    <line x1="960" y1="888" x2="960" y2="900" stroke="#FF6B00" stroke-opacity="0.3" stroke-width="1.2"/>
+    <line x1="480" y1="0" x2="480" y2="12" stroke="#FF6B00" stroke-opacity="0.3" stroke-width="1.2"/>
+    <line x1="960" y1="0" x2="960" y2="12" stroke="#FF6B00" stroke-opacity="0.3" stroke-width="1.2"/>
   </svg>
 </div>
 <div class="cdot" id="cdot"></div>
 
 <nav>
-  <a href="#hero" class="nav-brand" style="display:flex!important;align-items:center;gap:10px;text-decoration:none;font-family:var(--mono);font-size:13px;letter-spacing:4px;color:#EAEAEA;text-transform:uppercase;font-weight:700;"><span style="color:var(--orange);font-size:18px;font-weight:900;">DØi</span> LABS</a>
+  <a href="#hero" class="nav-brand"><img id="navLogo" src="" alt="DOi Labs" style="height:32px;width:auto;display:block;filter:invert(1) brightness(0.9);mix-blend-mode:screen;"></a>
   <ul class="nav-links">
     <li><a href="#why">Why DØi</a></li>
     <li><a href="#services">Services</a></li>
@@ -809,6 +856,14 @@ footer{border-top:2px solid var(--orange)!important;padding:48px 52px!important;
     <li><a href="#contact" class="nav-cta">[ REQUEST ]</a></li>
   </ul>
 </nav>
+
+<div class="sbar">
+  <div class="si"><div class="sdot"></div><span>SYSTEMS</span>&nbsp;<span class="v">ONLINE</span></div>
+  <div class="si"><span>PLATFORM</span>&nbsp;<span class="v">DJI MATRICE 4T</span></div>
+  <div class="si"><span>DATE</span>&nbsp;<span class="v" id="sbarDate">--</span></div>
+  <div class="si"><span>SERVICE AREA</span>&nbsp;<span class="v">CALIFORNIA</span></div>
+  <div class="si"><span>LOCAL</span>&nbsp;<span class="v" id="clk">--:--:-- PT</span></div>
+</div>
 
 <!-- HERO -->
 <section id="hero">
@@ -1607,12 +1662,54 @@ function submitForm(){
   update();
 })();
 
+// ── LOGO: copy footer logo-img src to nav ──
+(function(){
+  var footerLogo = document.querySelector('.foot-inner .logo-img');
+  var navLogo = document.getElementById('navLogo');
+  if(footerLogo && navLogo) navLogo.src = footerLogo.src;
+})();
+
+// ── SBAR DATE ──
+(function(){
+  var dateEl = document.getElementById('sbarDate');
+  if(!dateEl) return;
+  var d = new Date(new Date().toLocaleString('en-US',{timeZone:'America/Los_Angeles'}));
+  var months=['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+  dateEl.textContent = d.getDate()+' '+months[d.getMonth()]+' '+d.getFullYear();
+})();
+
+// ── BLUEPRINT LABEL PARALLAX (SVG texts drift independently) ──
+(function(){
+  var labels = document.querySelectorAll('.mountain-bg text');
+  var targets = document.querySelectorAll('.mtn-target');
+  if(!labels.length) return;
+  var ticking2 = false;
+  function updateLabels(){
+    var sy = window.scrollY;
+    // labels drift at much slower rates than ridges, creating depth separation
+    labels.forEach(function(t,i){
+      var rate = [0.008,0.006,0.010,0.005,0.007,0.009,0.004,0.006,0.008,0.005,0.003,0.007][i%12];
+      var xRate = (i%3===0?0.004:i%3===1?-0.003:0.002);
+      t.style.transform='translate('+(sy*xRate).toFixed(1)+'px,'+(sy*rate).toFixed(1)+'px)';
+    });
+    targets.forEach(function(g,i){
+      var rate = [0.010,0.007,0.012][i%3];
+      g.style.transform='translateY('+(sy*rate).toFixed(1)+'px)';
+    });
+    ticking2=false;
+  }
+  window.addEventListener('scroll',function(){
+    if(!ticking2){requestAnimationFrame(updateLabels);ticking2=true;}
+  },{passive:true});
+  updateLabels();
+})();
+
 // ── HERO DESCRIPTION TYPEWRITER ──
 (function(){
   var sub = document.querySelector('.hero-sub');
   if(!sub) return;
-  var fullHTML = sub.innerHTML;
-  sub.classList.add('tw-ready');
+  var fullHTML = sub.innerHTML.trim();
+  // Build flat char array from DOM nodes
   var chars = [];
   var tmp = document.createElement('p');
   tmp.innerHTML = fullHTML;
@@ -1620,10 +1717,11 @@ function submitForm(){
     var bold = n.nodeName === 'STRONG';
     (n.textContent||'').split('').forEach(function(c){chars.push({c:c,b:bold});});
   });
-  var observer = new IntersectionObserver(function(entries){
-    if(!entries[0].isIntersecting) return;
-    observer.disconnect();
-    sub.classList.remove('tw-ready');
+  var started = false;
+  function runTypewriter(){
+    if(started) return;
+    started = true;
+    sub.style.opacity='1';
     sub.innerHTML = '';
     var cursor = document.createElement('span');
     cursor.className = 'tw-cursor';
@@ -1631,22 +1729,36 @@ function submitForm(){
     var strongEl = null;
     var idx = 0;
     function tick(){
-      if(idx >= chars.length){sub.removeChild(cursor);sub.innerHTML=fullHTML;return;}
+      if(idx >= chars.length){
+        if(cursor.parentNode) cursor.parentNode.removeChild(cursor);
+        sub.innerHTML = fullHTML;
+        return;
+      }
       var ch = chars[idx++];
-      sub.removeChild(cursor);
+      if(cursor.parentNode) cursor.parentNode.removeChild(cursor);
       if(ch.b){
-        if(!strongEl||!strongEl.parentNode){strongEl=document.createElement('strong');sub.appendChild(strongEl);}
+        if(!strongEl||!strongEl.parentNode){
+          strongEl = document.createElement('strong');
+          sub.appendChild(strongEl);
+        }
         strongEl.appendChild(document.createTextNode(ch.c));
       } else {
         strongEl = null;
         sub.appendChild(document.createTextNode(ch.c));
       }
       sub.appendChild(cursor);
-      setTimeout(tick, idx < 60 ? 22 : 14);
+      setTimeout(tick, idx < 80 ? 20 : 12);
     }
-    setTimeout(tick, 200);
-  },{threshold:0.4});
-  observer.observe(sub);
+    setTimeout(tick, 100);
+  }
+  // Trigger: whichever comes first — scroll into view OR 2.5s delay
+  sub.style.opacity = '0';
+  sub.style.transition = 'opacity 0.01s';
+  var obs = new IntersectionObserver(function(entries){
+    if(entries[0].isIntersecting){obs.disconnect();clearTimeout(fallback);runTypewriter();}
+  },{threshold:0.1,rootMargin:'0px 0px -20px 0px'});
+  obs.observe(sub);
+  var fallback = setTimeout(function(){obs.disconnect();runTypewriter();}, 2500);
 })();
 </script>
 </body>
