@@ -916,155 +916,65 @@ body{font-size:17px;font-weight:500;}
       <!-- 05 PROCESSING DASHBOARD -->
       <div class="tl-scene" id="tls4">
           <div class="tl-svg-box"><svg viewBox="0 0 460 460" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="thermGrad" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%" stop-color="#0a0520"/>
-              <stop offset="55%" stop-color="#7a2800"/>
-              <stop offset="100%" stop-color="#FF7722"/>
-            </linearGradient>
-          </defs>
+          <!-- bg -->
           <rect width="460" height="460" fill="#060810"/>
-          <text x="10" y="14" font-family="monospace" font-size="8" fill="#3a3a58" letter-spacing="2">DATA LAYERS // STACKED OUTPUT</text>
-
-          <rect x="75" y="241" width="278" height="112" rx="1" fill="rgba(0,0,0,0.4)"/>
-          <rect x="70" y="236" width="278" height="112" rx="1" fill="#141c2e" stroke="#3a4888" stroke-width="1"/>
-          <rect x="74" y="254" width="54" height="43" fill="#1e3a1e"/>
-          <rect x="130" y="254" width="38" height="43" fill="#252525"/>
-          <rect x="170" y="254" width="68" height="43" fill="#1c3018"/>
-          <rect x="240" y="254" width="48" height="43" fill="#102234"/>
-          <rect x="290" y="254" width="54" height="43" fill="#282828"/>
-          <rect x="74" y="299" width="88" height="43" fill="#1a3c1a"/>
-          <rect x="164" y="299" width="54" height="43" fill="#242424"/>
-          <rect x="220" y="299" width="88" height="43" fill="#1c3418"/>
-          <rect x="310" y="299" width="34" height="43" fill="#0e2232"/>
-          <line x1="160" y1="254" x2="160" y2="344" stroke="#0d0d12" stroke-width="3"/>
-          <line x1="74" y1="297" x2="344" y2="297" stroke="#0d0d12" stroke-width="2"/>
-          <line x1="70" y1="286" x2="348" y2="286" stroke="rgba(255,107,0,0.35)" stroke-width="1.2">
-            <animate attributeName="y1" values="254;340;254" dur="2.8s" repeatCount="indefinite"/>
-            <animate attributeName="y2" values="254;340;254" dur="2.8s" repeatCount="indefinite"/>
-          </line>
-          <rect x="74" y="240" width="87" height="13" rx="1" fill="#2a3468"/><text x="79" y="249" font-family="monospace" font-size="7.5" fill="#5577AA" letter-spacing="0.8">RGB ORTHOMOSAIC</text>
-
-          <rect x="87" y="219" width="278" height="112" rx="1" fill="rgba(0,0,0,0.4)"/>
-          <rect x="82" y="214" width="278" height="112" rx="1" fill="#12101e" stroke="#5a2878" stroke-width="1"/>
-          <ellipse cx="152" cy="278" rx="38" ry="26" fill="rgba(28,8,55,0.8)"/>
-          <ellipse cx="242" cy="283" rx="28" ry="20" fill="rgba(22,6,42,0.75)"/>
-          <ellipse cx="312" cy="270" rx="32" ry="22" fill="rgba(24,7,48,0.78)"/>
-          <ellipse cx="197" cy="270" rx="22" ry="16" fill="rgba(100,35,0,0.5)"/>
-          <ellipse cx="280" cy="288" rx="26" ry="18" fill="rgba(88,28,0,0.48)"/>
-          <ellipse cx="204" cy="266" rx="10" ry="7" fill="rgba(255,100,0,0.65)">
-            <animate attributeName="opacity" values="0.65;0.95;0.65" dur="1.7s" repeatCount="indefinite"/>
-          </ellipse>
-          <ellipse cx="287" cy="285" rx="7" ry="6" fill="rgba(255,140,0,0.6)">
-            <animate attributeName="opacity" values="0.6;0.9;0.6" dur="2.2s" repeatCount="indefinite"/>
-          </ellipse>
-          <rect x="272" y="301" width="82" height="7" rx="1" fill="url(#thermGrad)"/>
-          <text x="272" y="299" font-family="monospace" font-size="6" fill="#444">COLD</text>
-          <text x="354" y="299" font-family="monospace" font-size="6" fill="#FF8844" text-anchor="end">HOT</text>
-          <rect x="86" y="218" width="67" height="13" rx="1" fill="#44205a"/><text x="91" y="227" font-family="monospace" font-size="7.5" fill="#AA4455" letter-spacing="0.8">THERMAL MAP</text>
-
-          <rect x="99" y="197" width="278" height="112" rx="1" fill="rgba(0,0,0,0.4)"/>
-          <rect x="94" y="192" width="278" height="112" rx="1" fill="#0e1422" stroke="#224880" stroke-width="1"/>
-          <circle cx="106" cy="216" r="1.5" fill="#1a6699" opacity="0.75"/>
-          <circle cx="112" cy="232" r="1.4" fill="#1a6699" opacity="0.75"/>
-          <circle cx="106" cy="248" r="1.4" fill="#224488" opacity="0.7"/>
-          <circle cx="112" cy="264" r="1.3" fill="#224488" opacity="0.7"/>
-          <circle cx="106" cy="280" r="1.2" fill="#224488" opacity="0.7"/>
-          <circle cx="128" cy="216" r="1.5" fill="#1a6699" opacity="0.75"/>
-          <circle cx="134" cy="232" r="1.5" fill="#1a6699" opacity="0.75"/>
-          <circle cx="128" cy="248" r="1.4" fill="#1a6699" opacity="0.75"/>
-          <circle cx="134" cy="264" r="1.4" fill="#224488" opacity="0.7"/>
-          <circle cx="128" cy="280" r="1.3" fill="#224488" opacity="0.7"/>
-          <circle cx="150" cy="216" r="1.6" fill="#22AACC" opacity="0.8"/>
-          <circle cx="156" cy="232" r="1.5" fill="#1a6699" opacity="0.75"/>
-          <circle cx="150" cy="248" r="1.5" fill="#1a6699" opacity="0.75"/>
-          <circle cx="156" cy="264" r="1.4" fill="#1a6699" opacity="0.75"/>
-          <circle cx="150" cy="280" r="1.4" fill="#224488" opacity="0.7"/>
-          <circle cx="172" cy="216" r="1.6" fill="#22AACC" opacity="0.8"/>
-          <circle cx="178" cy="232" r="1.6" fill="#22AACC" opacity="0.8"/>
-          <circle cx="172" cy="248" r="1.5" fill="#1a6699" opacity="0.75"/>
-          <circle cx="178" cy="264" r="1.5" fill="#1a6699" opacity="0.75"/>
-          <circle cx="172" cy="280" r="1.4" fill="#1a6699" opacity="0.75"/>
-          <circle cx="194" cy="216" r="1.7" fill="#CC7722" opacity="0.82"/>
-          <circle cx="200" cy="232" r="1.6" fill="#22AACC" opacity="0.8"/>
-          <circle cx="194" cy="248" r="1.6" fill="#22AACC" opacity="0.8"/>
-          <circle cx="200" cy="264" r="1.5" fill="#1a6699" opacity="0.75"/>
-          <circle cx="194" cy="280" r="1.5" fill="#1a6699" opacity="0.75"/>
-          <circle cx="216" cy="216" r="1.8" fill="#CC7722" opacity="0.82"/>
-          <circle cx="222" cy="232" r="1.7" fill="#CC7722" opacity="0.82"/>
-          <circle cx="216" cy="248" r="1.6" fill="#22AACC" opacity="0.8"/>
-          <circle cx="222" cy="264" r="1.6" fill="#22AACC" opacity="0.8"/>
-          <circle cx="216" cy="280" r="1.5" fill="#1a6699" opacity="0.75"/>
-          <circle cx="238" cy="216" r="1.8" fill="#FF7733" opacity="0.9"/>
-          <circle cx="244" cy="232" r="1.8" fill="#CC7722" opacity="0.82"/>
-          <circle cx="238" cy="248" r="1.7" fill="#CC7722" opacity="0.82"/>
-          <circle cx="244" cy="264" r="1.6" fill="#22AACC" opacity="0.8"/>
-          <circle cx="238" cy="280" r="1.6" fill="#22AACC" opacity="0.8"/>
-          <circle cx="260" cy="216" r="1.8" fill="#FF7733" opacity="0.9"/>
-          <circle cx="266" cy="232" r="1.8" fill="#FF7733" opacity="0.9"/>
-          <circle cx="260" cy="248" r="1.7" fill="#CC7722" opacity="0.82"/>
-          <circle cx="266" cy="264" r="1.7" fill="#CC7722" opacity="0.82"/>
-          <circle cx="260" cy="280" r="1.6" fill="#22AACC" opacity="0.8"/>
-          <circle cx="282" cy="216" r="1.9" fill="#FF7733" opacity="0.9"/>
-          <circle cx="288" cy="232" r="1.8" fill="#FF7733" opacity="0.9"/>
-          <circle cx="282" cy="248" r="1.7" fill="#CC7722" opacity="0.82"/>
-          <circle cx="288" cy="264" r="1.7" fill="#CC7722" opacity="0.82"/>
-          <circle cx="282" cy="280" r="1.6" fill="#22AACC" opacity="0.8"/>
-          <circle cx="304" cy="216" r="1.9" fill="#FF7733" opacity="0.9"/>
-          <circle cx="310" cy="232" r="1.8" fill="#FF7733" opacity="0.9"/>
-          <circle cx="304" cy="248" r="1.8" fill="#FF7733" opacity="0.9"/>
-          <circle cx="310" cy="264" r="1.7" fill="#CC7722" opacity="0.82"/>
-          <circle cx="304" cy="280" r="1.6" fill="#CC7722" opacity="0.82"/>
-          <circle cx="326" cy="216" r="1.9" fill="#FF7733" opacity="0.9"/>
-          <circle cx="332" cy="232" r="1.8" fill="#FF7733" opacity="0.9"/>
-          <circle cx="326" cy="248" r="1.8" fill="#FF7733" opacity="0.9"/>
-          <circle cx="332" cy="264" r="1.7" fill="#CC7722" opacity="0.82"/>
-          <circle cx="326" cy="280" r="1.7" fill="#CC7722" opacity="0.82"/>
-          <circle cx="348" cy="216" r="1.9" fill="#FF7733" opacity="0.9"/>
-          <circle cx="354" cy="232" r="1.9" fill="#FF7733" opacity="0.9"/>
-          <circle cx="348" cy="248" r="1.8" fill="#FF7733" opacity="0.9"/>
-          <circle cx="354" cy="264" r="1.7" fill="#CC7722" opacity="0.82"/>
-          <circle cx="348" cy="280" r="1.7" fill="#CC7722" opacity="0.82"/>
-          <rect x="98" y="196" width="67" height="13" rx="1" fill="#183468"/><text x="103" y="205" font-family="monospace" font-size="7.5" fill="#2288BB" letter-spacing="0.8">POINT CLOUD</text>
-
-          <rect x="111" y="175" width="278" height="112" rx="1" fill="rgba(0,0,0,0.4)"/>
-          <rect x="106" y="170" width="278" height="112" rx="1" fill="#14100c" stroke="#604020" stroke-width="1"/>
-          <rect x="124" y="196" width="55" height="36" fill="none" stroke="#FF6B00" stroke-width="1.2" stroke-dasharray="3 2"/><text x="127" y="205" font-family="monospace" font-size="7" fill="#FF8844">M1</text>
-          <rect x="196" y="190" width="44" height="50" fill="none" stroke="#FF6B00" stroke-width="1.2" stroke-dasharray="3 2"/><text x="199" y="199" font-family="monospace" font-size="7" fill="#FF8844">M2</text>
-          <rect x="258" y="203" width="62" height="38" fill="none" stroke="#FF6B00" stroke-width="1.2" stroke-dasharray="3 2"/><text x="261" y="212" font-family="monospace" font-size="7" fill="#FF8844">M3</text>
-          <rect x="334" y="188" width="36" height="30" fill="none" stroke="#FF6B00" stroke-width="1.2" stroke-dasharray="3 2"/><text x="337" y="197" font-family="monospace" font-size="7" fill="#FF8844">M4</text>
+          <!-- main panel -->
+          <rect x="40" y="50" width="380" height="360" rx="2" fill="#0e1220" stroke="#2a3258" stroke-width="1"/>
+          <!-- header bar -->
+          <rect x="40" y="50" width="380" height="36" rx="2" fill="#141a30"/>
+          <text x="56" y="73" font-family="monospace" font-size="10" fill="#FF6B00" letter-spacing="2">DØi // PROCESSING &amp; ANALYSIS</text>
           
-          <line x1="106" y1="225" x2="384" y2="225" stroke="rgba(255,107,0,0.4)" stroke-width="1">
-            <animate attributeName="y1" values="188;274;188" dur="2.4s" repeatCount="indefinite"/>
-            <animate attributeName="y2" values="188;274;188" dur="2.4s" repeatCount="indefinite"/>
-          </line>
-          <text x="110" y="270" font-family="monospace" font-size="6" fill="#664422" letter-spacing="1">CONF</text>
-          <rect x="134" y="264" width="50" height="5" rx="1" fill="#28200e"/>
-          <rect x="134" y="264" width="44" height="5" rx="1" fill="#FF6B00" opacity="0.7"/>
-          <rect x="192" y="264" width="50" height="5" rx="1" fill="#28200e"/>
-          <rect x="192" y="264" width="39" height="5" rx="1" fill="#FF6B00" opacity="0.6"/>
-          <rect x="250" y="264" width="50" height="5" rx="1" fill="#28200e"/>
-          <rect x="250" y="264" width="47" height="5" rx="1" fill="#FF6B00" opacity="0.75"/>
-          <rect x="110" y="174" width="77" height="13" rx="1" fill="#503018"/><text x="115" y="183" font-family="monospace" font-size="7.5" fill="#FF8844" letter-spacing="0.8">AI INSPECTION</text>
+          <!-- row 0: RGB ORTHOMOSAIC -->
+          <rect x="52" y="110" width="356" height="48" rx="2" fill="#1c3060" stroke="#4488CC" stroke-width="1" stroke-opacity="0.6"/>
+          <rect x="52" y="110" width="6" height="48" rx="1" fill="#4488CC"/>
+          <text x="72" y="128" font-family="monospace" font-size="10" fill="#4488CC" letter-spacing="1">RGB ORTHOMOSAIC</text>
+          <text x="72" y="142" font-family="monospace" font-size="8" fill="#4488CC" opacity="0.55" letter-spacing="0.5">GeoTIFF / JPEG</text>
+          <rect x="290" y="126" width="106" height="8" rx="2" fill="rgba(0,0,0,0.4)"/>
+          <rect x="290" y="126" width="103" height="8" rx="2" fill="#4488CC" opacity="0.7"/>
+          <text x="402" y="133" font-family="monospace" font-size="7" fill="#4488CC" text-anchor="end">100%</text>
 
-          <rect x="123" y="153" width="278" height="112" rx="1" fill="rgba(0,0,0,0.4)"/>
-          <rect x="118" y="148" width="278" height="112" rx="1" fill="#0c1a12" stroke="#206030" stroke-width="1"/>
-          <rect x="118" y="148" width="278" height="17" rx="1" fill="#142a1e"/>
-          <text x="126" y="159" font-family="monospace" font-size="8" fill="#44BB66" letter-spacing="1.5">MISSION REPORT // DØi LABS</text>
-          <rect x="126" y="172" width="142" height="5" rx="1" fill="#223828"/>
-          <rect x="126" y="181" width="118" height="5" rx="1" fill="#1e301e"/>
-          <rect x="126" y="190" width="132" height="5" rx="1" fill="#223828"/>
-          <rect x="126" y="199" width="100" height="5" rx="1" fill="#1e301e"/>
-          <rect x="126" y="208" width="125" height="5" rx="1" fill="#223828"/>
-          <rect x="302" y="176" width="14" height="52" rx="1" fill="#FF6B00" opacity="0.55"/><rect x="320" y="188" width="14" height="40" rx="1" fill="#FF6B00" opacity="0.55"/><rect x="338" y="171" width="14" height="57" rx="1" fill="#FF6B00" opacity="0.55"/><rect x="356" y="184" width="14" height="44" rx="1" fill="#FF6B00" opacity="0.55"/><rect x="374" y="166" width="14" height="62" rx="1" fill="#FF6B00" opacity="0.55"/>
-          <line x1="300" y1="230" x2="392" y2="230" stroke="#1a2e1a" stroke-width="1"/>
-          <rect x="126" y="243" width="76" height="12" rx="1" fill="rgba(50,180,80,0.12)" stroke="rgba(50,180,80,0.3)"/>
-          <text x="132" y="252" font-family="monospace" font-size="7" fill="#44BB66" letter-spacing="1">DELIVERED</text>
-          <rect x="122" y="152" width="72" height="13" rx="1" fill="#184820"/><text x="127" y="161" font-family="monospace" font-size="7.5" fill="#66CC88" letter-spacing="0.8">FINAL REPORT</text>
+          <!-- row 1: THERMAL MAP -->
+          <rect x="52" y="170" width="356" height="48" rx="2" fill="#481848" stroke="#AA44AA" stroke-width="1" stroke-opacity="0.6"/>
+          <rect x="52" y="170" width="6" height="48" rx="1" fill="#AA44AA"/>
+          <text x="72" y="188" font-family="monospace" font-size="10" fill="#AA44AA" letter-spacing="1">THERMAL MAP</text>
+          <text x="72" y="202" font-family="monospace" font-size="8" fill="#AA44AA" opacity="0.55" letter-spacing="0.5">Radiometric CSV</text>
+          <rect x="290" y="186" width="106" height="8" rx="2" fill="rgba(0,0,0,0.4)"/>
+          <rect x="290" y="186" width="93" height="8" rx="2" fill="#AA44AA" opacity="0.7"/>
+          <text x="402" y="193" font-family="monospace" font-size="7" fill="#AA44AA" text-anchor="end">100%</text>
 
-          <text x="10" y="452" font-family="monospace" font-size="7" fill="#28283a" letter-spacing="1">STEP 05 // PROCESSING &amp; ANALYSIS</text>
-          <rect x="318" y="438" width="134" height="18" rx="1" fill="#0a0c12" stroke="#1c2030"/>
-          <text x="324" y="449" font-family="monospace" font-size="7.5" fill="#FF8844" letter-spacing="0.8">5 DELIVERABLE LAYERS</text>
+          <!-- row 2: POINT CLOUD -->
+          <rect x="52" y="230" width="356" height="48" rx="2" fill="#103848" stroke="#22AACC" stroke-width="1" stroke-opacity="0.6"/>
+          <rect x="52" y="230" width="6" height="48" rx="1" fill="#22AACC"/>
+          <text x="72" y="248" font-family="monospace" font-size="10" fill="#22AACC" letter-spacing="1">POINT CLOUD</text>
+          <text x="72" y="262" font-family="monospace" font-size="8" fill="#22AACC" opacity="0.55" letter-spacing="0.5">LAS / LAZ</text>
+          <rect x="290" y="246" width="106" height="8" rx="2" fill="rgba(0,0,0,0.4)"/>
+          <rect x="290" y="246" width="110" height="8" rx="2" fill="#22AACC" opacity="0.7"/>
+          <text x="402" y="253" font-family="monospace" font-size="7" fill="#22AACC" text-anchor="end">100%</text>
+
+          <!-- row 3: AI INSPECTION -->
+          <rect x="52" y="290" width="356" height="48" rx="2" fill="#3c1c08" stroke="#FF6B00" stroke-width="1" stroke-opacity="0.6"/>
+          <rect x="52" y="290" width="6" height="48" rx="1" fill="#FF6B00"/>
+          <text x="72" y="308" font-family="monospace" font-size="10" fill="#FF6B00" letter-spacing="1">AI INSPECTION</text>
+          <text x="72" y="322" font-family="monospace" font-size="8" fill="#FF6B00" opacity="0.55" letter-spacing="0.5">PDF / JSON</text>
+          <rect x="290" y="306" width="106" height="8" rx="2" fill="rgba(0,0,0,0.4)"/>
+          <rect x="290" y="306" width="86" height="8" rx="2" fill="#FF6B00" opacity="0.7"/>
+          <text x="402" y="313" font-family="monospace" font-size="7" fill="#FF6B00" text-anchor="end">100%</text>
+
+          <!-- row 4: FINAL REPORT -->
+          <rect x="52" y="350" width="356" height="48" rx="2" fill="#0c3018" stroke="#44BB66" stroke-width="1" stroke-opacity="0.6"/>
+          <rect x="52" y="350" width="6" height="48" rx="1" fill="#44BB66"/>
+          <text x="72" y="368" font-family="monospace" font-size="10" fill="#44BB66" letter-spacing="1">FINAL REPORT</text>
+          <text x="72" y="382" font-family="monospace" font-size="8" fill="#44BB66" opacity="0.55" letter-spacing="0.5">PDF Delivered</text>
+          <rect x="290" y="366" width="106" height="8" rx="2" fill="rgba(0,0,0,0.4)"/>
+          <rect x="290" y="366" width="113" height="8" rx="2" fill="#44BB66" opacity="0.7"/>
+          <text x="402" y="373" font-family="monospace" font-size="7" fill="#44BB66" text-anchor="end">100%</text>
+          <circle cx="62" cy="350" r="3" fill="#FF6B00">
+            <animate attributeName="opacity" values="1;0.2;1" dur="1.4s" repeatCount="indefinite"/>
+          </circle>
+          <!-- footer -->
+          <rect x="52" y="388" width="356" height="16" rx="1" fill="#0a0e1a"/>
+          <text x="58" y="399" font-family="monospace" font-size="7.5" fill="#44BB66" letter-spacing="1">ALL LAYERS PROCESSED — READY FOR DELIVERY</text>
+          <text x="230" y="446" font-family="monospace" font-size="8" fill="#3a3a58" text-anchor="middle" letter-spacing="2">STEP 05 // PROCESSING &amp; ANALYSIS</text>
         </svg></div>
         </div>
 
@@ -1211,16 +1121,7 @@ body{font-size:17px;font-weight:500;}
 </section>
 
 <!-- CTA -->
-<section id="cta-band">
-  <div class="wrap">
-    <div class="cta-band-h">READY TO SEE YOUR <span>SITE FROM ABOVE?</span></div>
-    <p class="cta-band-p">Tell us what you need. We'll respond within one business day with a clear scope, timeline, and price — no obligation.</p>
-    <div class="cta-acts">
-      <a href="#contact" class="btn-pri"><svg width="9" height="9" viewBox="0 0 10 10" fill="currentColor"><polygon points="0,0 10,5 0,10"/></svg>GET A FREE QUOTE</a>
-      <a href="#services" class="btn-ghost">VIEW SERVICES</a>
-    </div>
-  </div>
-</section>
+
 
 <!-- CONTACT -->
 <section id="contact">
