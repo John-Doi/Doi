@@ -1,4 +1,88 @@
-<!DOCTYPE html>
+#!/usr/bin/env python3
+
+DRONE_MAIN  = "IMG_4044.webp"
+DRONE_FLY   = "IMG_4045.webp"
+VIDEO_FILE  = "_imagine-public_share-videos_db0d29c6-75a5-485f-bc1d-72feb7115e67_hd.mp4"
+BG_WHY      = "D92BA55E-36E7-48DF-9269-094B136883BA.png"
+
+STEPS = [
+    ("06919491-6C2B-45CF-9C85-601D32BFAC9F.png", "RCN-01 · INTAKE",      "MISSION INTAKE",
+     "Every operation begins with a client consultation and site assessment. We gather mission objectives, property details, airspace constraints, and deliverable requirements to build the correct deployment plan."),
+    ("CBED9937-245F-4118-9F60-13298EFD03FD.png", "OPS-02 · PLANNING",    "OPERATIONAL PLANNING",
+     "DØi performs pre-flight planning, FAA airspace verification, risk analysis, weather evaluation, and mission route configuration. Every mission is structured for safety, efficiency, and precision data capture."),
+    ("26721F3E-B47C-4151-BE3C-22BE642708E6.png", "SYN-03 · INTEL",       "INTELLIGENCE ANALYSIS",
+     "DØi analyzes all collected data to identify threats, patterns, and opportunities. We assess risks, validate intel, and generate actionable insights that drive mission success and protect assets on the ground."),
+    ("C61D48F2-DEC0-4CF1-A878-9E8B0E367EE7.png", "EXE-04 · EXECUTION",   "MISSION EXECUTION",
+     "DØi executes missions with precision and purpose. Real-time data, advanced payloads, and autonomous capabilities deliver actionable intelligence when it matters most. Every mission. Every detail. Every advantage."),
+    ("30B9913C-3ABA-4C13-ABF7-42353E6242EB.png", "ANL-05 · POST-OPS",    "POST-MISSION ANALYSIS",
+     "DØi transforms raw data into actionable intelligence. We analyze, validate, and deliver insights that inform decisions, optimize operations, and drive mission success. Every dataset. Every advantage."),
+    ("E9D566CE-BDDB-4C42-A612-00B7E73D43E2.png", "DAT-06 · PROCESSING",  "DATA PROCESSING & MODELING",
+     "Raw data is processed and transformed into intelligent 3D models and maps. We clean, structure, and enrich every dataset to ensure accuracy and reliability. Precision in processing. Confidence in every model."),
+    ("EB6D5C86-02AE-49B8-A805-6BC7E33F5B65.png", "QCV-07 · VALIDATION",  "QUALITY CONTROL & VALIDATION",
+     "Every dataset undergoes rigorous quality control to ensure accuracy, completeness, and reliability. We validate, verify, and cross-check every detail so you can trust the results. Precision verified. Confidence delivered."),
+]
+
+TICKER_ITEMS = [
+    ("highlight", "FAA PART 107 CERTIFIED"),
+    ("dim",       "DJI ENTERPRISE PARTNER"),
+    ("highlight", "THERMAL IMAGING · M4T"),
+    ("dim",       "CALIFORNIA OPERATIONS"),
+    ("highlight", "REAL-TIME DATA DELIVERY"),
+    ("dim",       "CONSTRUCTION & INSPECTION"),
+    ("highlight", "NIGHT OPS 107.29 AUTHORIZED"),
+    ("dim",       "PRECISION MAPPING · 2CM GSD"),
+    ("highlight", "AI-ASSISTED INTELLIGENCE"),
+    ("dim",       "72-HOUR RAPID DEPLOYMENT"),
+]
+
+def ticker_html():
+    items = ""
+    for cls, label in TICKER_ITEMS * 2:
+        items += f'<span class="t-item {cls}">{label}</span><span class="t-sep">///</span>'
+    return items
+
+def pipeline_imgs_html():
+    out = ""
+    for i, (img, *_) in enumerate(STEPS):
+        active = ' active' if i == 0 else ''
+        out += f'      <img class="pl-img{active}" src="{img}" alt="Step {i+1}" loading="{"eager" if i==0 else "lazy"}">\n'
+    return out
+
+def pipeline_steps_html():
+    out = ""
+    for i, (_, code, title, body) in enumerate(STEPS):
+        num = str(i+1).zfill(2)
+        active = ' active' if i == 0 else ''
+        out += f"""      <div class="pl-step{active}">
+        <div class="step-bg-num">{num}</div>
+        <div class="step-code">{code}</div>
+        <h3 class="step-title">{title}</h3>
+        <p class="step-body">{body}</p>
+      </div>\n"""
+    return out
+
+def dots_html():
+    out = ""
+    for i in range(len(STEPS)):
+        active = ' active' if i == 0 else ''
+        out += f'      <div class="pl-dot{active}"></div>\n'
+    return out
+
+def mobile_pipeline_html():
+    out = ""
+    for i, (img, code, title, body) in enumerate(STEPS):
+        num = str(i+1).zfill(2)
+        out += f"""    <div class="mob-step">
+      <img class="mob-step-img" src="{img}" alt="{title}" loading="lazy">
+      <div class="mob-step-content">
+        <div class="step-code">{code}</div>
+        <h3 class="step-title">{title}</h3>
+        <p class="step-body">{body}</p>
+      </div>
+    </div>\n"""
+    return out
+
+html = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -9,7 +93,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <style>
-:root {
+:root {{
   --bg:#080808;--surf:#0e0e0e;--card:#111;--card2:#141414;
   --bd:#1e1e1e;--bd2:#2a2a2a;
   --og:#f08c00;--tiger:#ff6b1a;
@@ -17,347 +101,347 @@
   --mono:'Share Tech Mono',monospace;
   --disp:'Orbitron',sans-serif;
   --body:'Rajdhani',sans-serif;
-}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-html{scroll-behavior:smooth;}
-body{font-family:var(--body);font-size:17px;line-height:1.6;background:var(--bg);color:var(--t1);overflow-x:hidden;cursor:crosshair;}
-body::before{
+}}
+*,*::before,*::after{{box-sizing:border-box;margin:0;padding:0;}}
+html{{scroll-behavior:smooth;}}
+body{{font-family:var(--body);font-size:17px;line-height:1.6;background:var(--bg);color:var(--t1);overflow-x:hidden;cursor:crosshair;}}
+body::before{{
   content:'';position:fixed;inset:0;
   background-image:linear-gradient(rgba(240,140,0,.022) 1px,transparent 1px),linear-gradient(90deg,rgba(240,140,0,.022) 1px,transparent 1px);
   background-size:52px 52px;pointer-events:none;z-index:0;
-}
+}}
 
 /* ── NAV ── */
-.nav{
+.nav{{
   position:fixed;top:0;left:0;right:0;z-index:200;
   display:flex;align-items:center;justify-content:space-between;
   padding:0 48px;height:60px;
   background:rgba(8,8,8,.9);backdrop-filter:blur(16px);
   border-bottom:1px solid var(--bd);
-}
-.nav-logo{font-family:var(--disp);font-size:16px;font-weight:900;color:var(--t1);text-decoration:none;letter-spacing:.06em;}
-.nav-logo em{color:var(--og);font-style:normal;}
-.nav-links{display:flex;gap:28px;list-style:none;}
-.nav-links a{font-family:var(--mono);font-size:10px;color:var(--t2);text-decoration:none;letter-spacing:.14em;text-transform:uppercase;transition:color .2s;}
-.nav-links a:hover{color:var(--og);}
-.nav-cta{
+}}
+.nav-logo{{font-family:var(--disp);font-size:16px;font-weight:900;color:var(--t1);text-decoration:none;letter-spacing:.06em;}}
+.nav-logo em{{color:var(--og);font-style:normal;}}
+.nav-links{{display:flex;gap:28px;list-style:none;}}
+.nav-links a{{font-family:var(--mono);font-size:10px;color:var(--t2);text-decoration:none;letter-spacing:.14em;text-transform:uppercase;transition:color .2s;}}
+.nav-links a:hover{{color:var(--og);}}
+.nav-cta{{
   font-family:var(--mono);font-size:10px;letter-spacing:.12em;font-weight:700;
   background:var(--og);color:#000;border:none;padding:8px 22px;cursor:crosshair;
   clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);
   transition:background .2s;
-}
-.nav-cta:hover{background:var(--tiger);}
+}}
+.nav-cta:hover{{background:var(--tiger);}}
 
 /* ── HERO SCROLL ZONE ── */
-.hero-zone{height:300vh;position:relative;}
-.hero-pin{
+.hero-zone{{height:300vh;position:relative;}}
+.hero-pin{{
   position:sticky;top:0;height:100vh;overflow:hidden;
   display:flex;flex-direction:column;background:var(--bg);
-}
-.hero-video{position:absolute;inset:0;z-index:0;overflow:hidden;}
-.hero-video video{width:100%;height:100%;object-fit:cover;opacity:.15;}
-.hero-video::after{
+}}
+.hero-video{{position:absolute;inset:0;z-index:0;overflow:hidden;}}
+.hero-video video{{width:100%;height:100%;object-fit:cover;opacity:.15;}}
+.hero-video::after{{
   content:'';position:absolute;inset:0;
   background:linear-gradient(120deg,rgba(8,8,8,.95) 0%,rgba(8,8,8,.55) 55%,rgba(8,8,8,.9) 100%);
-}
+}}
 
-.hero-inner{
+.hero-inner{{
   position:relative;z-index:1;flex:1;
   display:grid;grid-template-columns:1fr 1fr;
   align-items:center;padding:80px 60px 0;gap:20px;
-}
-.hero-left{display:flex;flex-direction:column;gap:22px;}
-.hero-eyebrow{
+}}
+.hero-left{{display:flex;flex-direction:column;gap:22px;}}
+.hero-eyebrow{{
   font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--og);
   text-transform:uppercase;display:flex;align-items:center;gap:12px;
-}
-.hero-eyebrow::before{content:'';display:block;width:24px;height:1px;background:var(--og);}
-.hero-h1{
+}}
+.hero-eyebrow::before{{content:'';display:block;width:24px;height:1px;background:var(--og);}}
+.hero-h1{{
   font-family:var(--disp);font-size:clamp(38px,5vw,76px);
   font-weight:900;line-height:1;letter-spacing:-.02em;
-}
-.hero-h1 .og{color:var(--og);display:block;}
-.hero-sub{font-size:clamp(15px,1.4vw,19px);color:var(--t2);line-height:1.55;max-width:440px;}
-.hero-platform{
+}}
+.hero-h1 .og{{color:var(--og);display:block;}}
+.hero-sub{{font-size:clamp(15px,1.4vw,19px);color:var(--t2);line-height:1.55;max-width:440px;}}
+.hero-platform{{
   font-family:var(--mono);font-size:11px;color:var(--t3);letter-spacing:.08em;
   padding:10px 0;border-top:1px solid var(--bd);border-bottom:1px solid var(--bd);
-}
-.hero-platform span{color:var(--og);}
-.hero-btns{display:flex;gap:14px;flex-wrap:wrap;}
-.btn-p{
+}}
+.hero-platform span{{color:var(--og);}}
+.hero-btns{{display:flex;gap:14px;flex-wrap:wrap;}}
+.btn-p{{
   font-family:var(--mono);font-size:11px;letter-spacing:.12em;font-weight:700;
   background:var(--og);color:#000;border:none;padding:14px 32px;cursor:crosshair;
   clip-path:polygon(10px 0%,100% 0%,calc(100% - 10px) 100%,0% 100%);
   transition:background .2s,transform .2s;
-}
-.btn-p:hover{background:var(--tiger);transform:translateY(-2px);}
-.btn-g{
+}}
+.btn-p:hover{{background:var(--tiger);transform:translateY(-2px);}}
+.btn-g{{
   font-family:var(--mono);font-size:11px;letter-spacing:.12em;
   background:transparent;color:var(--t1);border:1px solid var(--bd2);
   padding:14px 32px;cursor:crosshair;transition:border-color .2s,color .2s;
-}
-.btn-g:hover{border-color:var(--og);color:var(--og);}
+}}
+.btn-g:hover{{border-color:var(--og);color:var(--og);}}
 
 /* ── DRONE ── */
-.hero-right{
+.hero-right{{
   position:relative;display:flex;align-items:center;justify-content:center;
-}
-#heroDrone{
+}}
+#heroDrone{{
   width:100%;max-width:620px;will-change:transform,opacity;
   filter:drop-shadow(0 30px 60px rgba(255,107,26,.2));
-}
-#heroDrone img{width:100%;height:auto;display:block;}
-.tele{
+}}
+#heroDrone img{{width:100%;height:auto;display:block;}}
+.tele{{
   position:absolute;font-family:var(--mono);font-size:10px;
   color:var(--og);letter-spacing:.1em;pointer-events:none;
-}
-.tele-line{
+}}
+.tele-line{{
   display:flex;align-items:center;gap:8px;
   background:rgba(8,8,8,.85);border:1px solid rgba(240,140,0,.35);padding:5px 10px;
-}
-.tele-dot{width:5px;height:5px;border-radius:50%;background:var(--og);animation:tdot 2.4s ease-in-out infinite;}
-@keyframes tdot{0%,100%{opacity:1;}50%{opacity:.15;}}
-.tele-alt{top:12%;right:-10px;}
-.tele-spd{bottom:28%;right:-20px;}
-.tele-bat{top:32%;left:-30px;}
-.reticle{
+}}
+.tele-dot{{width:5px;height:5px;border-radius:50%;background:var(--og);animation:tdot 2.4s ease-in-out infinite;}}
+@keyframes tdot{{0%,100%{{opacity:1;}}50%{{opacity:.15;}}}}
+.tele-alt{{top:12%;right:-10px;}}
+.tele-spd{{bottom:28%;right:-20px;}}
+.tele-bat{{top:32%;left:-30px;}}
+.reticle{{
   position:absolute;bottom:18%;left:50%;transform:translateX(-50%);
   width:72px;height:72px;pointer-events:none;
   animation:rpulse 3s ease-in-out infinite;
-}
-@keyframes rpulse{0%,100%{opacity:.35;transform:translateX(-50%) scale(1);}50%{opacity:.75;transform:translateX(-50%) scale(1.08);}}
+}}
+@keyframes rpulse{{0%,100%{{opacity:.35;transform:translateX(-50%) scale(1);}}50%{{opacity:.75;transform:translateX(-50%) scale(1.08);}}}}
 
 /* Scroll hint */
-.scroll-hint{
+.scroll-hint{{
   position:absolute;bottom:20px;left:50%;transform:translateX(-50%);
   z-index:2;display:flex;flex-direction:column;align-items:center;gap:6px;
   font-family:var(--mono);font-size:9px;color:var(--t3);letter-spacing:.18em;
   animation:shint 2.5s ease-in-out infinite;
-}
-.scroll-hint::after{content:'';display:block;width:1px;height:36px;background:linear-gradient(to bottom,var(--t3),transparent);}
-@keyframes shint{0%,100%{opacity:.35;}50%{opacity:.9;}}
+}}
+.scroll-hint::after{{content:'';display:block;width:1px;height:36px;background:linear-gradient(to bottom,var(--t3),transparent);}}
+@keyframes shint{{0%,100%{{opacity:.35;}}50%{{opacity:.9;}}}}
 
 /* ── TICKER ── */
-.hero-ticker{
+.hero-ticker{{
   position:relative;z-index:1;height:34px;overflow:hidden;
   border-top:1px solid var(--bd);background:rgba(14,14,14,.9);flex-shrink:0;
-}
-.ticker-track{
+}}
+.ticker-track{{
   display:flex;white-space:nowrap;height:100%;align-items:center;
   animation:tick 36s linear infinite;
-}
-.t-item{font-family:var(--mono);font-size:10px;color:var(--t3);letter-spacing:.14em;padding:0 32px;text-transform:uppercase;}
-.t-item.highlight{color:var(--og);}
-.t-sep{color:var(--bd2);font-family:var(--mono);}
-@keyframes tick{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+}}
+.t-item{{font-family:var(--mono);font-size:10px;color:var(--t3);letter-spacing:.14em;padding:0 32px;text-transform:uppercase;}}
+.t-item.highlight{{color:var(--og);}}
+.t-sep{{color:var(--bd2);font-family:var(--mono);}}
+@keyframes tick{{from{{transform:translateX(0);}}to{{transform:translateX(-50%);}}}}
 
 /* ── PROOF BAND ── */
-.proof-band{
+.proof-band{{
   position:relative;z-index:1;
   display:grid;grid-template-columns:repeat(4,1fr);
   background:var(--surf);border-top:1px solid var(--bd);border-bottom:1px solid var(--bd);
-}
-.proof-item{
+}}
+.proof-item{{
   padding:48px 44px;border-right:1px solid var(--bd);
   opacity:0;transform:translateY(16px);
   transition:opacity .5s,transform .5s cubic-bezier(.16,1,.3,1);
-}
-.proof-item:last-child{border-right:none;}
-.proof-item.revealed{opacity:1;transform:translateY(0);}
-.proof-num{font-family:var(--disp);font-size:clamp(44px,5.5vw,80px);font-weight:900;color:var(--og);line-height:1;letter-spacing:-.02em;}
-.proof-label{font-family:var(--mono);font-size:10px;color:var(--t3);letter-spacing:.14em;text-transform:uppercase;margin-top:6px;}
+}}
+.proof-item:last-child{{border-right:none;}}
+.proof-item.revealed{{opacity:1;transform:translateY(0);}}
+.proof-num{{font-family:var(--disp);font-size:clamp(44px,5.5vw,80px);font-weight:900;color:var(--og);line-height:1;letter-spacing:-.02em;}}
+.proof-label{{font-family:var(--mono);font-size:10px;color:var(--t3);letter-spacing:.14em;text-transform:uppercase;margin-top:6px;}}
 
 /* ── SEC HEAD ── */
-.sec-head{text-align:center;padding:80px 60px 0;}
-.sec-tag{
+.sec-head{{text-align:center;padding:80px 60px 0;}}
+.sec-tag{{
   font-family:var(--mono);font-size:10px;letter-spacing:.22em;color:var(--og);
   text-transform:uppercase;margin-bottom:12px;
   display:flex;align-items:center;justify-content:center;gap:16px;
-}
-.sec-tag::before,.sec-tag::after{content:'';display:block;width:28px;height:1px;background:var(--og);opacity:.6;}
-.sec-title{font-family:var(--disp);font-size:clamp(26px,3.2vw,52px);font-weight:900;letter-spacing:-.01em;line-height:1.1;}
-.sec-title span{color:var(--og);}
-.sec-desc{font-size:17px;color:var(--t2);max-width:520px;margin:14px auto 0;line-height:1.6;}
+}}
+.sec-tag::before,.sec-tag::after{{content:'';display:block;width:28px;height:1px;background:var(--og);opacity:.6;}}
+.sec-title{{font-family:var(--disp);font-size:clamp(26px,3.2vw,52px);font-weight:900;letter-spacing:-.01em;line-height:1.1;}}
+.sec-title span{{color:var(--og);}}
+.sec-desc{{font-size:17px;color:var(--t2);max-width:520px;margin:14px auto 0;line-height:1.6;}}
 
 /* ── PIPELINE (desktop sticky) ── */
-.pipeline-zone{height:800vh;position:relative;}
-.pipeline-pin{
+.pipeline-zone{{height:800vh;position:relative;}}
+.pipeline-pin{{
   position:sticky;top:0;height:100vh;overflow:hidden;
   display:grid;grid-template-columns:1fr 1fr;
-}
-.pl-images{position:relative;overflow:hidden;}
-.pl-img{
+}}
+.pl-images{{position:relative;overflow:hidden;}}
+.pl-img{{
   position:absolute;inset:0;object-fit:cover;width:100%;height:100%;
   opacity:0;transition:opacity .7s cubic-bezier(.16,1,.3,1);
-}
-.pl-img.active{opacity:1;}
-.pl-content{
+}}
+.pl-img.active{{opacity:1;}}
+.pl-content{{
   display:flex;flex-direction:column;padding:60px;
   background:var(--surf);border-left:1px solid var(--bd);
   position:relative;overflow:hidden;
-}
-.pl-steps{position:relative;flex:1;}
-.pl-step{
+}}
+.pl-steps{{position:relative;flex:1;}}
+.pl-step{{
   position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;
   opacity:0;transform:translateY(28px);pointer-events:none;
   transition:opacity .5s cubic-bezier(.16,1,.3,1),transform .5s cubic-bezier(.16,1,.3,1);
-}
-.pl-step.active{opacity:1;transform:translateY(0);pointer-events:auto;}
-.step-bg-num{
+}}
+.pl-step.active{{opacity:1;transform:translateY(0);pointer-events:auto;}}
+.step-bg-num{{
   position:absolute;top:-30px;right:-10px;
   font-family:var(--disp);font-size:clamp(100px,12vw,160px);font-weight:900;
   color:rgba(240,140,0,.05);line-height:1;pointer-events:none;user-select:none;
-}
-.step-code{font-family:var(--mono);font-size:10px;color:var(--og);letter-spacing:.2em;margin-bottom:16px;display:flex;align-items:center;gap:10px;}
-.step-code::before{content:'';display:block;width:18px;height:1px;background:var(--og);}
-.step-title{font-family:var(--disp);font-size:clamp(22px,2.2vw,36px);font-weight:900;color:var(--t1);line-height:1.1;margin-bottom:20px;}
-.step-body{font-size:15px;color:var(--t2);line-height:1.75;max-width:380px;}
-.pl-dots{
+}}
+.step-code{{font-family:var(--mono);font-size:10px;color:var(--og);letter-spacing:.2em;margin-bottom:16px;display:flex;align-items:center;gap:10px;}}
+.step-code::before{{content:'';display:block;width:18px;height:1px;background:var(--og);}}
+.step-title{{font-family:var(--disp);font-size:clamp(22px,2.2vw,36px);font-weight:900;color:var(--t1);line-height:1.1;margin-bottom:20px;}}
+.step-body{{font-size:15px;color:var(--t2);line-height:1.75;max-width:380px;}}
+.pl-dots{{
   display:flex;gap:8px;padding-top:32px;border-top:1px solid var(--bd);margin-top:auto;
-}
-.pl-dot{
+}}
+.pl-dot{{
   width:6px;height:6px;border-radius:50%;background:var(--bd2);
   transition:background .3s,transform .3s;cursor:pointer;
-}
-.pl-dot.active{background:var(--og);transform:scale(1.5);}
+}}
+.pl-dot.active{{background:var(--og);transform:scale(1.5);}}
 
 /* Mobile pipeline (replaces sticky on small screens) */
-.mob-pipeline{display:none;}
-.mob-step{border-bottom:1px solid var(--bd);}
-.mob-step-img{width:100%;height:260px;object-fit:cover;display:block;}
-.mob-step-content{padding:32px 20px;background:var(--surf);}
+.mob-pipeline{{display:none;}}
+.mob-step{{border-bottom:1px solid var(--bd);}}
+.mob-step-img{{width:100%;height:260px;object-fit:cover;display:block;}}
+.mob-step-content{{padding:32px 20px;background:var(--surf);}}
 
 /* ── WHY CARDS ── */
-.why-section{position:relative;z-index:1;padding:0 0 80px;background:var(--bg);border-top:1px solid var(--bd);}
-.why-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.06;pointer-events:none;}
-.why-grid{
+.why-section{{position:relative;z-index:1;padding:0 0 80px;background:var(--bg);border-top:1px solid var(--bd);}}
+.why-bg{{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.06;pointer-events:none;}}
+.why-grid{{
   position:relative;display:grid;grid-template-columns:repeat(3,1fr);
   gap:1px;background:var(--bd);border:1px solid var(--bd);margin:40px 60px 0;
-}
-.why-card{
+}}
+.why-card{{
   background:var(--card);padding:40px;display:flex;flex-direction:column;gap:14px;
   opacity:0;transform:translateY(18px);
   transition:opacity .5s,transform .5s cubic-bezier(.16,1,.3,1),background .3s;
-}
-.why-card.revealed{opacity:1;transform:translateY(0);}
-.why-card:hover{background:var(--card2);}
-.why-icon{
+}}
+.why-card.revealed{{opacity:1;transform:translateY(0);}}
+.why-card:hover{{background:var(--card2);}}
+.why-icon{{
   width:40px;height:40px;border:1px solid var(--bd2);
   display:flex;align-items:center;justify-content:center;color:var(--og);
-}
-.why-code{font-family:var(--mono);font-size:10px;color:var(--og);letter-spacing:.15em;}
-.why-title{font-family:var(--disp);font-size:15px;font-weight:700;color:var(--t1);letter-spacing:.03em;}
-.why-body{font-size:14px;color:var(--t2);line-height:1.65;}
+}}
+.why-code{{font-family:var(--mono);font-size:10px;color:var(--og);letter-spacing:.15em;}}
+.why-title{{font-family:var(--disp);font-size:15px;font-weight:700;color:var(--t1);letter-spacing:.03em;}}
+.why-body{{font-size:14px;color:var(--t2);line-height:1.65;}}
 
 /* ── SERVICES ── */
-.svc-section{position:relative;z-index:1;padding:0 0 80px;background:var(--surf);border-top:1px solid var(--bd);}
-.svc-grid{
+.svc-section{{position:relative;z-index:1;padding:0 0 80px;background:var(--surf);border-top:1px solid var(--bd);}}
+.svc-grid{{
   display:grid;grid-template-columns:repeat(3,1fr);
   gap:1px;background:var(--bd);border:1px solid var(--bd);margin:40px 60px 0;
-}
-.svc-card{
+}}
+.svc-card{{
   background:var(--card);padding:44px;position:relative;overflow:hidden;
   opacity:0;transform:translateY(18px);
   transition:opacity .5s,transform .5s cubic-bezier(.16,1,.3,1);
-}
-.svc-card.revealed{opacity:1;transform:translateY(0);}
-.svc-card::before{
+}}
+.svc-card.revealed{{opacity:1;transform:translateY(0);}}
+.svc-card::before{{
   content:'';position:absolute;top:0;left:0;right:0;height:2px;
   background:linear-gradient(90deg,var(--og),transparent);opacity:0;transition:opacity .3s;
-}
-.svc-card:hover::before{opacity:1;}
-.svc-div{font-family:var(--mono);font-size:10px;color:var(--og);letter-spacing:.2em;margin-bottom:20px;}
-.svc-title{font-family:var(--disp);font-size:17px;font-weight:700;color:var(--t1);margin-bottom:12px;letter-spacing:.02em;}
-.svc-body{font-size:14px;color:var(--t2);line-height:1.65;}
-.svc-wm{
+}}
+.svc-card:hover::before{{opacity:1;}}
+.svc-div{{font-family:var(--mono);font-size:10px;color:var(--og);letter-spacing:.2em;margin-bottom:20px;}}
+.svc-title{{font-family:var(--disp);font-size:17px;font-weight:700;color:var(--t1);margin-bottom:12px;letter-spacing:.02em;}}
+.svc-body{{font-size:14px;color:var(--t2);line-height:1.65;}}
+.svc-wm{{
   position:absolute;bottom:-16px;right:-8px;font-family:var(--disp);
   font-size:72px;font-weight:900;color:rgba(240,140,0,.04);
   line-height:1;pointer-events:none;user-select:none;
-}
+}}
 
 /* ── TRUST ── */
-.trust-section{
+.trust-section{{
   position:relative;z-index:1;padding:0 60px 80px;
   background:var(--bg);border-top:1px solid var(--bd);
-}
-.trust-grid{
+}}
+.trust-grid{{
   display:grid;grid-template-columns:repeat(6,1fr);gap:1px;
   background:var(--bd);border:1px solid var(--bd);margin-top:40px;
-}
-.trust-item{
+}}
+.trust-item{{
   background:var(--card);padding:28px 16px;text-align:center;
   opacity:0;transform:translateY(10px);
   transition:opacity .4s,transform .4s;
-}
-.trust-item.revealed{opacity:1;transform:translateY(0);}
-.trust-icon{font-size:22px;color:var(--og);}
-.trust-label{font-family:var(--mono);font-size:10px;color:var(--t3);letter-spacing:.1em;margin-top:8px;text-transform:uppercase;}
+}}
+.trust-item.revealed{{opacity:1;transform:translateY(0);}}
+.trust-icon{{font-size:22px;color:var(--og);}}
+.trust-label{{font-family:var(--mono);font-size:10px;color:var(--t3);letter-spacing:.1em;margin-top:8px;text-transform:uppercase;}}
 
 /* ── FORM ── */
-.form-section{position:relative;z-index:1;padding:80px 60px;background:var(--surf);border-top:1px solid var(--bd);}
-.form-inner{max-width:860px;margin:0 auto;}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:40px;}
-.form-group{display:flex;flex-direction:column;gap:6px;}
-.form-group.full{grid-column:1/-1;}
-.form-label{font-family:var(--mono);font-size:10px;color:var(--t3);letter-spacing:.15em;text-transform:uppercase;}
-.form-input,.form-select,.form-textarea{
+.form-section{{position:relative;z-index:1;padding:80px 60px;background:var(--surf);border-top:1px solid var(--bd);}}
+.form-inner{{max-width:860px;margin:0 auto;}}
+.form-grid{{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:40px;}}
+.form-group{{display:flex;flex-direction:column;gap:6px;}}
+.form-group.full{{grid-column:1/-1;}}
+.form-label{{font-family:var(--mono);font-size:10px;color:var(--t3);letter-spacing:.15em;text-transform:uppercase;}}
+.form-input,.form-select,.form-textarea{{
   background:var(--card);border:1px solid var(--bd);color:var(--t1);
   font-family:var(--body);font-size:16px;padding:12px 16px;outline:none;
   transition:border-color .2s;-webkit-appearance:none;
-}
-.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--og);}
-.form-textarea{resize:vertical;min-height:110px;}
-.form-submit{
+}}
+.form-input:focus,.form-select:focus,.form-textarea:focus{{border-color:var(--og);}}
+.form-textarea{{resize:vertical;min-height:110px;}}
+.form-submit{{
   margin-top:20px;width:100%;font-family:var(--mono);font-size:13px;
   letter-spacing:.15em;font-weight:700;background:var(--og);color:#000;
   border:none;padding:18px;cursor:crosshair;
   clip-path:polygon(12px 0%,100% 0%,calc(100% - 12px) 100%,0% 100%);
   transition:background .2s;
-}
-.form-submit:hover{background:var(--tiger);}
+}}
+.form-submit:hover{{background:var(--tiger);}}
 
 /* ── FOOTER ── */
-footer{
+footer{{
   position:relative;z-index:1;background:var(--bg);
   border-top:1px solid var(--bd);padding:60px 60px 36px;
-}
-.foot-inner{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:60px;margin-bottom:40px;}
-.foot-brand{display:flex;flex-direction:column;gap:14px;}
-.foot-logo{font-family:var(--disp);font-size:22px;font-weight:900;color:var(--t1);letter-spacing:.06em;}
-.foot-logo em{color:var(--og);font-style:normal;}
-.foot-tag{font-family:var(--mono);font-size:10px;color:var(--t3);letter-spacing:.12em;}
-.foot-col-title{font-family:var(--mono);font-size:10px;color:var(--og);letter-spacing:.2em;text-transform:uppercase;margin-bottom:16px;}
-.foot-links{list-style:none;display:flex;flex-direction:column;gap:10px;}
-.foot-links a{font-size:14px;color:var(--t2);text-decoration:none;transition:color .2s;}
-.foot-links a:hover{color:var(--og);}
-.foot-bottom{
+}}
+.foot-inner{{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:60px;margin-bottom:40px;}}
+.foot-brand{{display:flex;flex-direction:column;gap:14px;}}
+.foot-logo{{font-family:var(--disp);font-size:22px;font-weight:900;color:var(--t1);letter-spacing:.06em;}}
+.foot-logo em{{color:var(--og);font-style:normal;}}
+.foot-tag{{font-family:var(--mono);font-size:10px;color:var(--t3);letter-spacing:.12em;}}
+.foot-col-title{{font-family:var(--mono);font-size:10px;color:var(--og);letter-spacing:.2em;text-transform:uppercase;margin-bottom:16px;}}
+.foot-links{{list-style:none;display:flex;flex-direction:column;gap:10px;}}
+.foot-links a{{font-size:14px;color:var(--t2);text-decoration:none;transition:color .2s;}}
+.foot-links a:hover{{color:var(--og);}}
+.foot-bottom{{
   border-top:1px solid var(--bd);padding-top:24px;
   display:flex;justify-content:space-between;align-items:center;
-}
-.foot-copy{font-family:var(--mono);font-size:10px;color:var(--t3);letter-spacing:.1em;}
+}}
+.foot-copy{{font-family:var(--mono);font-size:10px;color:var(--t3);letter-spacing:.1em;}}
 
 /* ── MOBILE ── */
-@media(max-width:900px){
-  .nav-links,.nav-cta{display:none;}
-  .nav{padding:0 20px;}
-  .hero-inner{grid-template-columns:1fr;padding:80px 20px 20px;}
-  .hero-right{display:none;}
-  .proof-band{grid-template-columns:repeat(2,1fr);}
-  .proof-item{padding:32px 20px;border-right:none;border-bottom:1px solid var(--bd);}
-  .pipeline-zone,.pipeline-pin{display:none;}
-  .mob-pipeline{display:block;}
-  .why-grid,.svc-grid{grid-template-columns:1fr;margin:40px 20px 0;}
-  .trust-section{padding:0 20px 60px;}
-  .trust-grid{grid-template-columns:repeat(3,1fr);}
-  .form-section{padding:60px 20px;}
-  .form-grid{grid-template-columns:1fr;}
-  footer{padding:40px 20px 24px;}
-  .foot-inner{grid-template-columns:1fr;gap:36px;}
-  .sec-head{padding:60px 20px 0;}
-}
-@media(prefers-reduced-motion:reduce){
-  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;}
-}
+@media(max-width:900px){{
+  .nav-links,.nav-cta{{display:none;}}
+  .nav{{padding:0 20px;}}
+  .hero-inner{{grid-template-columns:1fr;padding:80px 20px 20px;}}
+  .hero-right{{display:none;}}
+  .proof-band{{grid-template-columns:repeat(2,1fr);}}
+  .proof-item{{padding:32px 20px;border-right:none;border-bottom:1px solid var(--bd);}}
+  .pipeline-zone,.pipeline-pin{{display:none;}}
+  .mob-pipeline{{display:block;}}
+  .why-grid,.svc-grid{{grid-template-columns:1fr;margin:40px 20px 0;}}
+  .trust-section{{padding:0 20px 60px;}}
+  .trust-grid{{grid-template-columns:repeat(3,1fr);}}
+  .form-section{{padding:60px 20px;}}
+  .form-grid{{grid-template-columns:1fr;}}
+  footer{{padding:40px 20px 24px;}}
+  .foot-inner{{grid-template-columns:1fr;gap:36px;}}
+  .sec-head{{padding:60px 20px 0;}}
+}}
+@media(prefers-reduced-motion:reduce){{
+  *,*::before,*::after{{animation-duration:.01ms!important;transition-duration:.01ms!important;}}
+}}
 </style>
 </head>
 <body>
@@ -371,7 +455,7 @@ footer{
     <li><a href="#services">SERVICES</a></li>
     <li><a href="#contact">CONTACT</a></li>
   </ul>
-  <button class="nav-cta" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">DEPLOY NOW</button>
+  <button class="nav-cta" onclick="document.getElementById('contact').scrollIntoView({{behavior:'smooth'}})">DEPLOY NOW</button>
 </nav>
 
 <!-- HERO SCROLL ZONE -->
@@ -379,7 +463,7 @@ footer{
   <div class="hero-pin">
     <div class="hero-video">
       <video autoplay muted loop playsinline>
-        <source src="_imagine-public_share-videos_db0d29c6-75a5-485f-bc1d-72feb7115e67_hd.mp4" type="video/mp4">
+        <source src="{VIDEO_FILE}" type="video/mp4">
       </video>
     </div>
     <div class="hero-inner">
@@ -393,13 +477,13 @@ footer{
           CERT: <span>FAA 107.29</span>
         </div>
         <div class="hero-btns">
-          <button class="btn-p" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">REQUEST MISSION BRIEF</button>
-          <button class="btn-g" onclick="document.getElementById('pipeline').scrollIntoView({behavior:'smooth'})">VIEW PIPELINE →</button>
+          <button class="btn-p" onclick="document.getElementById('contact').scrollIntoView({{behavior:'smooth'}})">REQUEST MISSION BRIEF</button>
+          <button class="btn-g" onclick="document.getElementById('pipeline').scrollIntoView({{behavior:'smooth'}})">VIEW PIPELINE →</button>
         </div>
       </div>
       <div class="hero-right">
         <div id="heroDrone">
-          <img src="IMG_4044.webp" alt="DJI Matrice 4T" loading="eager">
+          <img src="{DRONE_MAIN}" alt="DJI Matrice 4T" loading="eager">
           <div class="tele tele-alt"><div class="tele-line"><div class="tele-dot"></div>ALT: 120M AGL</div></div>
           <div class="tele tele-spd"><div class="tele-line"><div class="tele-dot"></div>SPD: 15.2 M/S</div></div>
           <div class="tele tele-bat"><div class="tele-line"><div class="tele-dot"></div>BAT: 94%</div></div>
@@ -420,7 +504,7 @@ footer{
         </div>
       </div>
     </div>
-    <div class="hero-ticker"><div class="ticker-track"><span class="t-item highlight">FAA PART 107 CERTIFIED</span><span class="t-sep">///</span><span class="t-item dim">DJI ENTERPRISE PARTNER</span><span class="t-sep">///</span><span class="t-item highlight">THERMAL IMAGING · M4T</span><span class="t-sep">///</span><span class="t-item dim">CALIFORNIA OPERATIONS</span><span class="t-sep">///</span><span class="t-item highlight">REAL-TIME DATA DELIVERY</span><span class="t-sep">///</span><span class="t-item dim">CONSTRUCTION & INSPECTION</span><span class="t-sep">///</span><span class="t-item highlight">NIGHT OPS 107.29 AUTHORIZED</span><span class="t-sep">///</span><span class="t-item dim">PRECISION MAPPING · 2CM GSD</span><span class="t-sep">///</span><span class="t-item highlight">AI-ASSISTED INTELLIGENCE</span><span class="t-sep">///</span><span class="t-item dim">72-HOUR RAPID DEPLOYMENT</span><span class="t-sep">///</span><span class="t-item highlight">FAA PART 107 CERTIFIED</span><span class="t-sep">///</span><span class="t-item dim">DJI ENTERPRISE PARTNER</span><span class="t-sep">///</span><span class="t-item highlight">THERMAL IMAGING · M4T</span><span class="t-sep">///</span><span class="t-item dim">CALIFORNIA OPERATIONS</span><span class="t-sep">///</span><span class="t-item highlight">REAL-TIME DATA DELIVERY</span><span class="t-sep">///</span><span class="t-item dim">CONSTRUCTION & INSPECTION</span><span class="t-sep">///</span><span class="t-item highlight">NIGHT OPS 107.29 AUTHORIZED</span><span class="t-sep">///</span><span class="t-item dim">PRECISION MAPPING · 2CM GSD</span><span class="t-sep">///</span><span class="t-item highlight">AI-ASSISTED INTELLIGENCE</span><span class="t-sep">///</span><span class="t-item dim">72-HOUR RAPID DEPLOYMENT</span><span class="t-sep">///</span></div></div>
+    <div class="hero-ticker"><div class="ticker-track">{ticker_html()}</div></div>
     <div class="scroll-hint">SCROLL TO DEPLOY</div>
   </div>
 </section>
@@ -437,72 +521,16 @@ footer{
 <div class="pipeline-zone" id="pipeline">
   <div class="pipeline-pin">
     <div class="pl-images">
-      <img class="pl-img active" src="06919491-6C2B-45CF-9C85-601D32BFAC9F.png" alt="Step 1" loading="eager">
-      <img class="pl-img" src="CBED9937-245F-4118-9F60-13298EFD03FD.png" alt="Step 2" loading="lazy">
-      <img class="pl-img" src="26721F3E-B47C-4151-BE3C-22BE642708E6.png" alt="Step 3" loading="lazy">
-      <img class="pl-img" src="C61D48F2-DEC0-4CF1-A878-9E8B0E367EE7.png" alt="Step 4" loading="lazy">
-      <img class="pl-img" src="30B9913C-3ABA-4C13-ABF7-42353E6242EB.png" alt="Step 5" loading="lazy">
-      <img class="pl-img" src="E9D566CE-BDDB-4C42-A612-00B7E73D43E2.png" alt="Step 6" loading="lazy">
-      <img class="pl-img" src="EB6D5C86-02AE-49B8-A805-6BC7E33F5B65.png" alt="Step 7" loading="lazy">
-    </div>
+{pipeline_imgs_html()}    </div>
     <div class="pl-content">
       <div class="sec-head" style="padding:0 0 32px;text-align:left;">
         <div class="sec-tag" style="justify-content:flex-start;">MISSION PIPELINE</div>
         <h2 class="sec-title">7-STEP <span>OPERATION</span></h2>
       </div>
       <div class="pl-steps">
-      <div class="pl-step active">
-        <div class="step-bg-num">01</div>
-        <div class="step-code">RCN-01 · INTAKE</div>
-        <h3 class="step-title">MISSION INTAKE</h3>
-        <p class="step-body">Every operation begins with a client consultation and site assessment. We gather mission objectives, property details, airspace constraints, and deliverable requirements to build the correct deployment plan.</p>
-      </div>
-      <div class="pl-step">
-        <div class="step-bg-num">02</div>
-        <div class="step-code">OPS-02 · PLANNING</div>
-        <h3 class="step-title">OPERATIONAL PLANNING</h3>
-        <p class="step-body">DØi performs pre-flight planning, FAA airspace verification, risk analysis, weather evaluation, and mission route configuration. Every mission is structured for safety, efficiency, and precision data capture.</p>
-      </div>
-      <div class="pl-step">
-        <div class="step-bg-num">03</div>
-        <div class="step-code">SYN-03 · INTEL</div>
-        <h3 class="step-title">INTELLIGENCE ANALYSIS</h3>
-        <p class="step-body">DØi analyzes all collected data to identify threats, patterns, and opportunities. We assess risks, validate intel, and generate actionable insights that drive mission success and protect assets on the ground.</p>
-      </div>
-      <div class="pl-step">
-        <div class="step-bg-num">04</div>
-        <div class="step-code">EXE-04 · EXECUTION</div>
-        <h3 class="step-title">MISSION EXECUTION</h3>
-        <p class="step-body">DØi executes missions with precision and purpose. Real-time data, advanced payloads, and autonomous capabilities deliver actionable intelligence when it matters most. Every mission. Every detail. Every advantage.</p>
-      </div>
-      <div class="pl-step">
-        <div class="step-bg-num">05</div>
-        <div class="step-code">ANL-05 · POST-OPS</div>
-        <h3 class="step-title">POST-MISSION ANALYSIS</h3>
-        <p class="step-body">DØi transforms raw data into actionable intelligence. We analyze, validate, and deliver insights that inform decisions, optimize operations, and drive mission success. Every dataset. Every advantage.</p>
-      </div>
-      <div class="pl-step">
-        <div class="step-bg-num">06</div>
-        <div class="step-code">DAT-06 · PROCESSING</div>
-        <h3 class="step-title">DATA PROCESSING & MODELING</h3>
-        <p class="step-body">Raw data is processed and transformed into intelligent 3D models and maps. We clean, structure, and enrich every dataset to ensure accuracy and reliability. Precision in processing. Confidence in every model.</p>
-      </div>
-      <div class="pl-step">
-        <div class="step-bg-num">07</div>
-        <div class="step-code">QCV-07 · VALIDATION</div>
-        <h3 class="step-title">QUALITY CONTROL & VALIDATION</h3>
-        <p class="step-body">Every dataset undergoes rigorous quality control to ensure accuracy, completeness, and reliability. We validate, verify, and cross-check every detail so you can trust the results. Precision verified. Confidence delivered.</p>
-      </div>
-      </div>
+{pipeline_steps_html()}      </div>
       <div class="pl-dots">
-      <div class="pl-dot active"></div>
-      <div class="pl-dot"></div>
-      <div class="pl-dot"></div>
-      <div class="pl-dot"></div>
-      <div class="pl-dot"></div>
-      <div class="pl-dot"></div>
-      <div class="pl-dot"></div>
-      </div>
+{dots_html()}      </div>
     </div>
   </div>
 </div>
@@ -513,67 +541,11 @@ footer{
     <div class="sec-tag">MISSION PIPELINE</div>
     <h2 class="sec-title">7-STEP <span>OPERATION</span></h2>
   </div>
-    <div class="mob-step">
-      <img class="mob-step-img" src="06919491-6C2B-45CF-9C85-601D32BFAC9F.png" alt="MISSION INTAKE" loading="lazy">
-      <div class="mob-step-content">
-        <div class="step-code">RCN-01 · INTAKE</div>
-        <h3 class="step-title">MISSION INTAKE</h3>
-        <p class="step-body">Every operation begins with a client consultation and site assessment. We gather mission objectives, property details, airspace constraints, and deliverable requirements to build the correct deployment plan.</p>
-      </div>
-    </div>
-    <div class="mob-step">
-      <img class="mob-step-img" src="CBED9937-245F-4118-9F60-13298EFD03FD.png" alt="OPERATIONAL PLANNING" loading="lazy">
-      <div class="mob-step-content">
-        <div class="step-code">OPS-02 · PLANNING</div>
-        <h3 class="step-title">OPERATIONAL PLANNING</h3>
-        <p class="step-body">DØi performs pre-flight planning, FAA airspace verification, risk analysis, weather evaluation, and mission route configuration. Every mission is structured for safety, efficiency, and precision data capture.</p>
-      </div>
-    </div>
-    <div class="mob-step">
-      <img class="mob-step-img" src="26721F3E-B47C-4151-BE3C-22BE642708E6.png" alt="INTELLIGENCE ANALYSIS" loading="lazy">
-      <div class="mob-step-content">
-        <div class="step-code">SYN-03 · INTEL</div>
-        <h3 class="step-title">INTELLIGENCE ANALYSIS</h3>
-        <p class="step-body">DØi analyzes all collected data to identify threats, patterns, and opportunities. We assess risks, validate intel, and generate actionable insights that drive mission success and protect assets on the ground.</p>
-      </div>
-    </div>
-    <div class="mob-step">
-      <img class="mob-step-img" src="C61D48F2-DEC0-4CF1-A878-9E8B0E367EE7.png" alt="MISSION EXECUTION" loading="lazy">
-      <div class="mob-step-content">
-        <div class="step-code">EXE-04 · EXECUTION</div>
-        <h3 class="step-title">MISSION EXECUTION</h3>
-        <p class="step-body">DØi executes missions with precision and purpose. Real-time data, advanced payloads, and autonomous capabilities deliver actionable intelligence when it matters most. Every mission. Every detail. Every advantage.</p>
-      </div>
-    </div>
-    <div class="mob-step">
-      <img class="mob-step-img" src="30B9913C-3ABA-4C13-ABF7-42353E6242EB.png" alt="POST-MISSION ANALYSIS" loading="lazy">
-      <div class="mob-step-content">
-        <div class="step-code">ANL-05 · POST-OPS</div>
-        <h3 class="step-title">POST-MISSION ANALYSIS</h3>
-        <p class="step-body">DØi transforms raw data into actionable intelligence. We analyze, validate, and deliver insights that inform decisions, optimize operations, and drive mission success. Every dataset. Every advantage.</p>
-      </div>
-    </div>
-    <div class="mob-step">
-      <img class="mob-step-img" src="E9D566CE-BDDB-4C42-A612-00B7E73D43E2.png" alt="DATA PROCESSING & MODELING" loading="lazy">
-      <div class="mob-step-content">
-        <div class="step-code">DAT-06 · PROCESSING</div>
-        <h3 class="step-title">DATA PROCESSING & MODELING</h3>
-        <p class="step-body">Raw data is processed and transformed into intelligent 3D models and maps. We clean, structure, and enrich every dataset to ensure accuracy and reliability. Precision in processing. Confidence in every model.</p>
-      </div>
-    </div>
-    <div class="mob-step">
-      <img class="mob-step-img" src="EB6D5C86-02AE-49B8-A805-6BC7E33F5B65.png" alt="QUALITY CONTROL & VALIDATION" loading="lazy">
-      <div class="mob-step-content">
-        <div class="step-code">QCV-07 · VALIDATION</div>
-        <h3 class="step-title">QUALITY CONTROL & VALIDATION</h3>
-        <p class="step-body">Every dataset undergoes rigorous quality control to ensure accuracy, completeness, and reliability. We validate, verify, and cross-check every detail so you can trust the results. Precision verified. Confidence delivered.</p>
-      </div>
-    </div>
-</div>
+{mobile_pipeline_html()}</div>
 
 <!-- WHY DØi -->
 <section class="why-section" id="mission">
-  <img class="why-bg" src="D92BA55E-36E7-48DF-9269-094B136883BA.png" alt="">
+  <img class="why-bg" src="{BG_WHY}" alt="">
   <div style="position:relative;">
     <div class="sec-head">
       <div class="sec-tag">CAPABILITY OVERVIEW</div>
@@ -726,7 +698,7 @@ const heroZone = document.querySelector('.hero-zone');
 const heroDrone = document.getElementById('heroDrone');
 let lastScroll = -1;
 
-function updateHero() {
+function updateHero() {{
   if (!heroZone || !heroDrone) return;
   const rect = heroZone.getBoundingClientRect();
   const maxScroll = heroZone.offsetHeight - window.innerHeight;
@@ -736,7 +708,7 @@ function updateHero() {
   let tx, ty, scale, opacity, rot;
   const t = performance.now() / 1000;
 
-  if (progress < 0.25) {
+  if (progress < 0.25) {{
     const p = progress / 0.25;
     const ease = 1 - Math.pow(1 - p, 3);
     tx = 110 * (1 - ease);
@@ -744,13 +716,13 @@ function updateHero() {
     scale = 0.72 + 0.28 * ease;
     opacity = Math.min(1, ease * 1.6);
     rot = 7 * (1 - ease);
-  } else if (progress < 0.72) {
+  }} else if (progress < 0.72) {{
     tx = Math.sin(t * 0.4) * 2;
     ty = Math.sin(t * 0.7) * 9;
     scale = 1;
     opacity = 1;
     rot = Math.sin(t * 0.5) * 1.5;
-  } else {
+  }} else {{
     const p = (progress - 0.72) / 0.28;
     const ease = p * p;
     tx = -110 * ease;
@@ -758,16 +730,16 @@ function updateHero() {
     scale = 1 - 0.28 * ease;
     opacity = Math.max(0, 1 - ease * 1.6);
     rot = -8 * ease;
-  }
+  }}
 
-  heroDrone.style.transform = `translateX(${tx.toFixed(1)}%) translateY(${ty.toFixed(1)}px) scale(${scale.toFixed(3)}) rotate(${rot.toFixed(2)}deg)`;
+  heroDrone.style.transform = `translateX(${{tx.toFixed(1)}}%) translateY(${{ty.toFixed(1)}}px) scale(${{scale.toFixed(3)}}) rotate(${{rot.toFixed(2)}}deg)`;
   heroDrone.style.opacity = opacity.toFixed(3);
-}
+}}
 
-function heroLoop() {
+function heroLoop() {{
   updateHero();
   requestAnimationFrame(heroLoop);
-}
+}}
 heroLoop();
 
 // ── PIPELINE SCROLL ──
@@ -777,7 +749,7 @@ const plSteps = document.querySelectorAll('.pl-step');
 const plDots = document.querySelectorAll('.pl-dot');
 let curStep = 0;
 
-function updatePipeline() {
+function updatePipeline() {{
   if (!plZone || !plImgs.length) return;
   const rect = plZone.getBoundingClientRect();
   const maxScroll = plZone.offsetHeight - window.innerHeight;
@@ -792,36 +764,41 @@ function updatePipeline() {
   plSteps[step].classList.add('active');
   plDots[step].classList.add('active');
   curStep = step;
-}
-window.addEventListener('scroll', updatePipeline, {passive:true});
+}}
+window.addEventListener('scroll', updatePipeline, {{passive:true}});
 updatePipeline();
 
 // ── INTERSECTION REVEALS ──
 const revealEls = document.querySelectorAll('.why-card, .svc-card, .trust-item, .proof-item');
-const io = new IntersectionObserver((entries) => {
-  entries.forEach((e, i) => {
-    if (e.isIntersecting) {
+const io = new IntersectionObserver((entries) => {{
+  entries.forEach((e, i) => {{
+    if (e.isIntersecting) {{
       setTimeout(() => e.target.classList.add('revealed'), i * 70);
       io.unobserve(e.target);
-    }
-  });
-}, {threshold: 0.1});
+    }}
+  }});
+}}, {{threshold: 0.1}});
 revealEls.forEach(el => io.observe(el));
 
 // ── FORM ──
-function handleSubmit(e) {
+function handleSubmit(e) {{
   e.preventDefault();
   const btn = e.target.querySelector('.form-submit');
   btn.textContent = 'MISSION BRIEF RECEIVED — STANDBY FOR CONTACT';
   btn.style.background = '#22c55e';
   btn.style.clipPath = 'none';
-  setTimeout(() => {
+  setTimeout(() => {{
     btn.textContent = 'SUBMIT MISSION BRIEF →';
     btn.style.background = '';
     btn.style.clipPath = '';
     e.target.reset();
-  }, 5000);
-}
+  }}, 5000);
+}}
 </script>
 </body>
-</html>
+</html>"""
+
+with open('/home/user/Doi/doilabs-v2.html', 'w') as f:
+    f.write(html)
+
+print(f"Written: {{len(html):,}} bytes")
