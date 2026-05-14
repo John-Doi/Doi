@@ -546,10 +546,7 @@ body{font-size:17px;font-weight:500;}
 <style id="brutalist-override">
 /* ─── INDUSTRIAL BRUTALISM // TACTICAL TELEMETRY ─── */
 :root{
-  --orange:#E61919;--og1:#FF2A2A;--og2:#E61919;--og3:#CC0000;
-  --og-grad:#E61919;--og-grad-h:#E61919;
-  --oglow:rgba(230,25,25,0.18);--odim:rgba(230,25,25,0.05);
-  --bo:rgba(230,25,25,0.4);--bd:#1e1e1e;
+  --bo:rgba(255,107,0,0.2);
 }
 *,*::before,*::after{border-radius:0!important;}
 body::after{
@@ -558,7 +555,7 @@ body::after{
 }
 nav{
   background:#080808!important;backdrop-filter:none!important;
-  border-bottom:2px solid #E61919!important;height:50px!important;
+  border-bottom:2px solid var(--orange)!important;height:50px!important;
   padding:0 40px!important;
 }
 nav::after{display:none!important;}
@@ -570,29 +567,29 @@ nav::after{display:none!important;}
 }
 .nav-links a:hover{color:#EAEAEA!important;}
 .nav-cta{
-  border:1px solid #E61919!important;color:#E61919!important;
+  border:1px solid var(--orange)!important;color:var(--orange)!important;
   background:transparent!important;padding:6px 16px!important;
   font-size:9px!important;letter-spacing:3px!important;
 }
-.nav-cta:hover{background:#E61919!important;color:#fff!important;}
+.nav-cta:hover{background:var(--orange)!important;color:#fff!important;}
 .sbar{background:#050505!important;border-bottom:1px solid #111!important;}
-.sdot{background:#E61919!important;box-shadow:0 0 6px #E61919!important;}
+.sdot{background:var(--orange)!important;box-shadow:0 0 6px var(--orange)!important;}
 .v{color:#EAEAEA!important;}
 .hero-h1{
   font-size:clamp(52px,10vw,148px)!important;
   line-height:0.86!important;letter-spacing:-0.04em!important;
 }
 .hero-cert{
-  border:1px solid rgba(230,25,25,0.4)!important;
-  background:rgba(230,25,25,0.04)!important;
+  border:1px solid rgba(255,107,0,0.25)!important;
+  background:rgba(255,107,0,0.04)!important;
   letter-spacing:5px!important;color:#EAEAEA!important;
 }
-.cert-sep{color:#E61919!important;}
+.cert-sep{color:var(--orange)!important;}
 .tag{
   font-family:var(--mono)!important;font-size:9px!important;
-  letter-spacing:4px!important;color:#E61919!important;
-  border:1px solid rgba(230,25,25,0.3)!important;
-  background:rgba(230,25,25,0.04)!important;
+  letter-spacing:4px!important;color:var(--orange)!important;
+  border:1px solid rgba(255,107,0,0.2)!important;
+  background:rgba(255,107,0,0.04)!important;
   text-transform:uppercase!important;
 }
 .sec-h{
@@ -600,8 +597,8 @@ nav::after{display:none!important;}
   letter-spacing:-0.03em!important;line-height:0.88!important;
 }
 .why-grid,.svc-grid,.faq-grid{
-  gap:1px!important;background:#E61919!important;
-  border:1px solid #E61919!important;
+  gap:1px!important;background:var(--orange)!important;
+  border:1px solid var(--orange)!important;
 }
 .scard,.why-card,.faq-item{
   border:none!important;background:#0a0a0a!important;
@@ -611,36 +608,36 @@ nav::after{display:none!important;}
 .faq-item:hover{background:#0e0e0e!important;}
 .faq-item.open{background:#0c0c0c!important;}
 .btn-pri{
-  background:#E61919!important;
+  background:var(--orange)!important;
   letter-spacing:4px!important;font-size:9px!important;
   font-family:var(--mono)!important;box-shadow:none!important;
 }
-.btn-pri:hover{background:#CC0000!important;}
+.btn-pri:hover{background:var(--og3)!important;}
 .btn-ghost{
   border:1px solid #2a2a2a!important;color:#555!important;
   letter-spacing:4px!important;font-size:9px!important;
   font-family:var(--mono)!important;background:transparent!important;
 }
-.btn-ghost:hover{border-color:#E61919!important;color:#EAEAEA!important;}
-.hc{border-color:#E61919!important;}
-.tl-pin{border-top:2px solid #E61919!important;}
+.btn-ghost:hover{border-color:var(--orange)!important;color:#EAEAEA!important;}
+.hc{border-color:var(--orange)!important;}
+.tl-pin{border-top:2px solid var(--orange)!important;}
 .tl-num{color:#333!important;border-color:#222!important;}
-.tl-item.tl-on .tl-num{color:#E61919!important;border-color:rgba(230,25,25,0.5)!important;}
-.tl-item.tl-on .tl-title{color:#E61919!important;}
-#tlFill{background:#E61919!important;}
-.proof-n,.hstat-n .val{color:#E61919!important;}
+.tl-item.tl-on .tl-num{color:var(--orange)!important;border-color:rgba(255,107,0,0.5)!important;}
+.tl-item.tl-on .tl-title{color:var(--orange)!important;}
+#tlFill{background:var(--orange)!important;}
+.proof-n,.hstat-n .val{color:var(--orange)!important;}
 .why-title,.scard-title{color:#EAEAEA!important;}
 .why-body,.scard-body,.sec-intro{color:#666!important;}
 .intake-row input,.intake-row select,.intake-row textarea{
   border:1px solid #1e1e1e!important;background:#080808!important;
 }
 .intake-row input:focus,.intake-row select:focus,.intake-row textarea:focus{
-  border-color:#E61919!important;box-shadow:none!important;
+  border-color:var(--orange)!important;box-shadow:none!important;
   outline:none!important;
 }
-.step-node.active .sn-dot{background:#E61919!important;box-shadow:0 0 8px #E61919!important;}
-.step-node.active .sn-label{color:#E61919!important;}
-footer{border-top:2px solid #E61919!important;}
+.step-node.active .sn-dot{background:var(--orange)!important;box-shadow:0 0 8px var(--orange)!important;}
+.step-node.active .sn-label{color:var(--orange)!important;}
+footer{border-top:2px solid var(--orange)!important;}
 </style>
 </head>
 <body>
@@ -982,7 +979,7 @@ footer{border-top:2px solid #E61919!important;}
       <div class="tl-scene" id="tls3">
           <div class="tl-svg-box"><svg viewBox="0 0 460 460" fill="none" xmlns="http://www.w3.org/2000/svg">
           <!-- Scan field -->
-          <rect x="60" y="100" width="340" height="260" rx="2" fill="#06080f" stroke="#E61919" stroke-width="0.5" stroke-opacity="0.3"/>
+          <rect x="60" y="100" width="340" height="260" rx="2" fill="#06080f" stroke="#FF6B00" stroke-width="0.5" stroke-opacity="0.3"/>
           <!-- Grid lines -->
           <line x1="60" y1="143" x2="400" y2="143" stroke="#1a1a2e" stroke-width="0.5"/>
           <line x1="60" y1="187" x2="400" y2="187" stroke="#1a1a2e" stroke-width="0.5"/>
@@ -1015,8 +1012,8 @@ footer{border-top:2px solid #E61919!important;}
       <div class="tl-scene" id="tls4">
           <div class="tl-svg-box"><svg viewBox="0 0 460 460" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect width="460" height="460" fill="#050508"/>
-          <text x="230" y="40" font-family="monospace" font-size="11" fill="#E61919" text-anchor="middle" letter-spacing="3">DØi // PROCESSING &amp; ANALYSIS</text>
-          <line x1="40" y1="54" x2="420" y2="54" stroke="#E61919" stroke-width="0.5" stroke-opacity="0.5"/>
+          <text x="230" y="40" font-family="monospace" font-size="11" fill="#FF6B00" text-anchor="middle" letter-spacing="3">DØi // PROCESSING &amp; ANALYSIS</text>
+          <line x1="40" y1="54" x2="420" y2="54" stroke="#FF6B00" stroke-width="0.5" stroke-opacity="0.5"/>
           <rect x="40" y="64" width="380" height="52" fill="none" stroke="#3377CC" stroke-width="1.5"/>
           <rect x="40" y="64" width="5" height="52" fill="#3377CC"/>
           <text x="56" y="88" font-family="monospace" font-size="11" fill="#55AAFF" letter-spacing="1">RGB ORTHOMOSAIC</text>
@@ -1032,18 +1029,18 @@ footer{border-top:2px solid #E61919!important;}
           <text x="56" y="216" font-family="monospace" font-size="11" fill="#22CCEE" letter-spacing="1">POINT CLOUD</text>
           <text x="56" y="234" font-family="monospace" font-size="8" fill="#0088BB" letter-spacing="1">LAS · LAZ · COMPLETE</text>
           <circle cx="406" cy="218" r="7" fill="#22CCEE"/>
-          <rect x="40" y="256" width="380" height="52" fill="none" stroke="#E61919" stroke-width="1.5"/>
-          <rect x="40" y="256" width="5" height="52" fill="#E61919"/>
-          <text x="56" y="280" font-family="monospace" font-size="11" fill="#FF4444" letter-spacing="1">AI INSPECTION</text>
-          <text x="56" y="298" font-family="monospace" font-size="8" fill="#E61919" letter-spacing="1">PDF · JSON · IN PROGRESS</text>
-          <circle cx="406" cy="282" r="7" fill="#FF4444"><animate attributeName="opacity" values="1;0.3;1" dur="1.2s" repeatCount="indefinite"/></circle>
+          <rect x="40" y="256" width="380" height="52" fill="none" stroke="#FF6B00" stroke-width="1.5"/>
+          <rect x="40" y="256" width="5" height="52" fill="#FF6B00"/>
+          <text x="56" y="280" font-family="monospace" font-size="11" fill="#FF8833" letter-spacing="1">AI INSPECTION</text>
+          <text x="56" y="298" font-family="monospace" font-size="8" fill="#FF6B00" letter-spacing="1">PDF · JSON · IN PROGRESS</text>
+          <circle cx="406" cy="282" r="7" fill="#FF8833"><animate attributeName="opacity" values="1;0.3;1" dur="1.2s" repeatCount="indefinite"/></circle>
           <rect x="40" y="320" width="380" height="52" fill="none" stroke="#22AA44" stroke-width="1.5"/>
           <rect x="40" y="320" width="5" height="52" fill="#22AA44"/>
           <text x="56" y="344" font-family="monospace" font-size="11" fill="#44DD66" letter-spacing="1">FINAL REPORT</text>
           <text x="56" y="362" font-family="monospace" font-size="8" fill="#22AA44" letter-spacing="1">PDF Delivered · READY</text>
           <circle cx="406" cy="346" r="7" fill="#44DD66"/>
-          <line x1="40" y1="390" x2="420" y2="390" stroke="#E61919" stroke-width="0.5" stroke-opacity="0.5"/>
-          <text x="230" y="412" font-family="monospace" font-size="8" fill="#E61919" text-anchor="middle" letter-spacing="1">5 DELIVERABLES — READY FOR CLIENT</text>
+          <line x1="40" y1="390" x2="420" y2="390" stroke="#FF6B00" stroke-width="0.5" stroke-opacity="0.5"/>
+          <text x="230" y="412" font-family="monospace" font-size="8" fill="#FF6B00" text-anchor="middle" letter-spacing="1">5 DELIVERABLES — READY FOR CLIENT</text>
           <text x="230" y="446" font-family="monospace" font-size="7" fill="#2a2a50" text-anchor="middle" letter-spacing="2">STEP 05 // PROCESSING &amp; ANALYSIS</text>
         </svg></div>
         </div>
