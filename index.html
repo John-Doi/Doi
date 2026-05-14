@@ -562,17 +562,18 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:9998;
 .mountain-bg svg{
   position:absolute;bottom:0;left:0;width:100%;height:100%;
 }
-.mtn-ridge{transition:transform 0.05s linear;}
-.mtn-far{fill:#1a1008;}
-.mtn-mid{fill:#120b04;}
-.mtn-near{fill:#0d0803;}
+.mtn-ridge{will-change:transform;}
+.mtn-contour{will-change:transform;}
+.mtn-far{fill:#100e08;}
+.mtn-mid{fill:#0b0906;}
+.mtn-near{fill:#080705;}
 .mtn-edge{
   stroke-width:1.5px;
-  stroke-opacity:0.4;
-  transition:stroke-opacity 0.1s;
+  stroke-opacity:0.5;
 }
 .mtn-near-edge{stroke:#FF6B00;}
-.mtn-mid-edge{stroke:#FF6B00;stroke-opacity:0.18;}
+.mtn-mid-edge{stroke:#FF6B00;stroke-opacity:0.2;}
+.bp-grid-fine,.bp-grid-major{will-change:transform;}
 
 /* Keep nav/sbar at their fixed positions; stack sections above mountain bg */
 #hero,section,footer{position:relative;z-index:1;}
@@ -619,14 +620,8 @@ nav::after{display:none!important;}
   -webkit-text-fill-color:var(--orange)!important;
 }
 
-/* STATUS BAR */
-.sbar{
-  background:rgba(3,3,3,0.9)!important;
-  border-bottom:1px solid #111!important;
-}
-.sdot{background:var(--orange)!important;box-shadow:0 0 6px var(--orange)!important;}
-.v{color:#EAEAEA!important;}
-.si,.si span{font-size:11px!important;letter-spacing:2px!important;}
+/* Sbar removed — shrink hero top padding to match nav-only height */
+#hero{padding-top:80px!important;}
 
 /* HERO */
 .hero-h1{
@@ -640,7 +635,10 @@ nav::after{display:none!important;}
   font-size:12px!important;
 }
 .cert-sep{color:var(--orange)!important;}
-.hero-sub{font-size:18px!important;color:#999!important;line-height:1.85!important;}
+.hero-sub{font-size:18px!important;color:#999!important;line-height:1.85!important;margin-top:52px!important;}
+.hero-sub.tw-ready{visibility:hidden;}
+@keyframes twBlink{0%,49%{opacity:1;}50%,100%{opacity:0;}}
+.tw-cursor{display:inline-block;width:2px;height:1.1em;background:var(--orange);vertical-align:text-bottom;margin-left:1px;animation:twBlink 0.65s steps(1) infinite;}
 
 /* GHOST / OUTLINE TEXT → orange stroke */
 .gh{color:transparent!important;-webkit-text-stroke:1px rgba(255,107,0,0.55)!important;}
@@ -659,15 +657,15 @@ nav::after{display:none!important;}
 .sec-h{font-size:clamp(32px,4.5vw,72px)!important;letter-spacing:-0.03em!important;line-height:0.88!important;}
 .sec-intro{font-size:18px!important;color:#888!important;line-height:1.9!important;}
 
-/* CARD GRIDS */
+/* CARD GRIDS — transparent cards, visible orange dividers */
 .why-grid,.svc-grid,.faq-grid{
-  gap:1px!important;background:var(--orange)!important;
-  border:1px solid var(--orange)!important;
+  gap:1px!important;background:rgba(255,107,0,0.45)!important;
+  border:1px solid rgba(255,107,0,0.45)!important;
 }
 .svc-grid{grid-template-columns:repeat(3,1fr)!important;align-items:stretch!important;}
 .svc-grid .scard:nth-child(5){grid-column:2/3!important;}
-.scard,.why-card{border:none!important;background:#0a0a0a!important;transition:background .15s!important;}
-.scard:hover,.why-card:hover{background:#0f0f0f!important;}
+.scard,.why-card{border:none!important;background:rgba(6,5,4,0.82)!important;backdrop-filter:blur(4px)!important;-webkit-backdrop-filter:blur(4px)!important;transition:background .15s!important;}
+.scard:hover,.why-card:hover{background:rgba(12,10,8,0.88)!important;}
 
 /* FAQ */
 details.faq-item{border:none!important;background:#0a0a0a!important;display:block!important;}
@@ -746,20 +744,57 @@ footer{border-top:2px solid var(--orange)!important;padding:48px 52px!important;
 </head>
 <body>
 <div class="mountain-bg" id="mountainBg" aria-hidden="true">
-  <svg class="mtns mtns-3" viewBox="0 0 1440 500" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg">
+  <svg id="mtnSvg" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg">
     <defs>
-      <filter id="mtn-glow"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      <pattern id="bp-fine" width="60" height="60" patternUnits="userSpaceOnUse">
+        <path d="M60 0L0 0 0 60" fill="none" stroke="rgba(255,107,0,0.055)" stroke-width="0.5"/>
+      </pattern>
+      <pattern id="bp-major" width="300" height="300" patternUnits="userSpaceOnUse">
+        <path d="M300 0L0 0 0 300" fill="none" stroke="rgba(255,107,0,0.09)" stroke-width="1"/>
+      </pattern>
     </defs>
-    <!-- Far ridge -->
-    <path class="mtn-ridge mtn-far" d="M0,500 L0,280 L120,230 L260,200 L380,240 L520,170 L660,210 L780,160 L900,195 L1040,145 L1180,185 L1320,155 L1440,175 L1440,500 Z"/>
-    <!-- Mid ridge -->
-    <path class="mtn-ridge mtn-mid" d="M0,500 L0,340 L100,300 L230,270 L360,310 L490,250 L640,280 L770,230 L920,265 L1060,215 L1200,255 L1360,225 L1440,245 L1440,500 Z"/>
-    <!-- Near ridge -->
-    <path class="mtn-ridge mtn-near" d="M0,500 L0,400 L110,360 L240,380 L370,340 L510,365 L650,320 L800,350 L940,305 L1080,340 L1220,295 L1380,325 L1440,310 L1440,500 Z"/>
-    <!-- Near ridge highlight stroke -->
-    <path class="mtn-edge mtn-near-edge" d="M0,400 L110,360 L240,380 L370,340 L510,365 L650,320 L800,350 L940,305 L1080,340 L1220,295 L1380,325 L1440,310" fill="none"/>
-    <!-- Mid ridge highlight stroke -->
-    <path class="mtn-edge mtn-mid-edge" d="M0,340 L100,300 L230,270 L360,310 L490,250 L640,280 L770,230 L920,265 L1060,215 L1200,255 L1360,225 L1440,245" fill="none"/>
+    <!-- Blueprint grid layers -->
+    <rect class="bp-grid-fine" width="1440" height="900" fill="url(#bp-fine)"/>
+    <rect class="bp-grid-major" width="1440" height="900" fill="url(#bp-major)"/>
+    <!-- Far ridge body -->
+    <path class="mtn-ridge mtn-far" d="M0,900 L0,390 L90,348 L200,308 L320,345 L450,268 L590,305 L720,248 L860,285 L1000,225 L1150,262 L1300,228 L1440,248 L1440,900 Z"/>
+    <!-- Far ridge contour lines (topo) -->
+    <path class="mtn-contour mtn-c-far1" d="M0,342 L90,303 L200,265 L320,300 L450,225 L590,260 L720,204 L860,240 L1000,182 L1150,218 L1300,184 L1440,204" fill="none" stroke="#FF6B00" stroke-width="0.5" stroke-opacity="0.12" stroke-dasharray="4,8"/>
+    <path class="mtn-contour mtn-c-far2" d="M0,295 L90,258 L200,222 L320,255 L450,183 L590,216 L720,162 L860,196 L1000,140 L1150,175 L1300,142 L1440,162" fill="none" stroke="#FF6B00" stroke-width="0.4" stroke-opacity="0.07" stroke-dasharray="3,10"/>
+    <!-- Mid ridge body -->
+    <path class="mtn-ridge mtn-mid" d="M0,900 L0,490 L100,448 L220,415 L360,450 L500,385 L660,418 L800,368 L950,405 L1090,348 L1240,385 L1380,352 L1440,370 L1440,900 Z"/>
+    <!-- Mid contour -->
+    <path class="mtn-contour mtn-c-mid1" d="M0,443 L100,402 L220,370 L360,405 L500,342 L660,372 L800,324 L950,360 L1090,305 L1240,340 L1380,308 L1440,325" fill="none" stroke="#FF6B00" stroke-width="0.5" stroke-opacity="0.09" stroke-dasharray="4,8"/>
+    <!-- Near ridge body -->
+    <path class="mtn-ridge mtn-near" d="M0,900 L0,600 L110,558 L250,578 L390,538 L540,562 L690,518 L840,548 L980,502 L1120,535 L1270,492 L1420,522 L1440,515 L1440,900 Z"/>
+    <!-- Ridge highlight edges -->
+    <path class="mtn-edge mtn-near-edge" d="M0,600 L110,558 L250,578 L390,538 L540,562 L690,518 L840,548 L980,502 L1120,535 L1270,492 L1420,522 L1440,515" fill="none"/>
+    <path class="mtn-edge mtn-mid-edge" d="M0,490 L100,448 L220,415 L360,450 L500,385 L660,418 L800,368 L950,405 L1090,348 L1240,385 L1380,352 L1440,370" fill="none"/>
+    <!-- Crosshair targets at peaks -->
+    <g class="mtn-target mtn-t1">
+      <line x1="1000" x2="1000" y1="213" y2="237" stroke="#FF6B00" stroke-opacity="0.28" stroke-width="1"/>
+      <line x1="988" x2="1012" y1="225" y2="225" stroke="#FF6B00" stroke-opacity="0.28" stroke-width="1"/>
+      <circle cx="1000" cy="225" r="5" fill="none" stroke="#FF6B00" stroke-opacity="0.22" stroke-width="0.8"/>
+    </g>
+    <g class="mtn-target mtn-t2">
+      <line x1="720" x2="720" y1="237" y2="259" stroke="#FF6B00" stroke-opacity="0.18" stroke-width="0.8"/>
+      <line x1="709" x2="731" y1="248" y2="248" stroke="#FF6B00" stroke-opacity="0.18" stroke-width="0.8"/>
+      <circle cx="720" cy="248" r="4" fill="none" stroke="#FF6B00" stroke-opacity="0.14" stroke-width="0.7"/>
+    </g>
+    <!-- Elevation labels -->
+    <text x="1000" y="206" font-family="Share Tech Mono,monospace" font-size="8" fill="#FF6B00" fill-opacity="0.3" letter-spacing="2" text-anchor="middle">ELV 2847M</text>
+    <text x="500" y="373" font-family="Share Tech Mono,monospace" font-size="8" fill="#FF6B00" fill-opacity="0.2" letter-spacing="2" text-anchor="middle">ELV 2214M</text>
+    <text x="690" y="504" font-family="Share Tech Mono,monospace" font-size="8" fill="#FF6B00" fill-opacity="0.15" letter-spacing="2" text-anchor="middle">ELV 1620M</text>
+    <!-- Corner coordinates -->
+    <text x="14" y="888" font-family="Share Tech Mono,monospace" font-size="8" fill="#FF6B00" fill-opacity="0.22" letter-spacing="1.5">34°03'N 118°14'W</text>
+    <text x="1426" y="888" font-family="Share Tech Mono,monospace" font-size="8" fill="#FF6B00" fill-opacity="0.22" letter-spacing="1.5" text-anchor="end">GRID REF D-01</text>
+    <!-- Tick marks on grid border -->
+    <line x1="0" y1="300" x2="8" y2="300" stroke="#FF6B00" stroke-opacity="0.15" stroke-width="1"/>
+    <line x1="0" y1="600" x2="8" y2="600" stroke="#FF6B00" stroke-opacity="0.15" stroke-width="1"/>
+    <line x1="1432" y1="300" x2="1440" y2="300" stroke="#FF6B00" stroke-opacity="0.15" stroke-width="1"/>
+    <line x1="1432" y1="600" x2="1440" y2="600" stroke="#FF6B00" stroke-opacity="0.15" stroke-width="1"/>
+    <line x1="480" y1="892" x2="480" y2="900" stroke="#FF6B00" stroke-opacity="0.15" stroke-width="1"/>
+    <line x1="960" y1="892" x2="960" y2="900" stroke="#FF6B00" stroke-opacity="0.15" stroke-width="1"/>
   </svg>
 </div>
 <div class="cdot" id="cdot"></div>
@@ -774,14 +809,6 @@ footer{border-top:2px solid var(--orange)!important;padding:48px 52px!important;
     <li><a href="#contact" class="nav-cta">[ REQUEST ]</a></li>
   </ul>
 </nav>
-
-<div class="sbar">
-  <div class="si"><div class="sdot"></div><span>SYSTEMS</span>&nbsp;<span class="v">OPERATIONAL</span></div>
-  <div class="si"><span>PLATFORM</span>&nbsp;<span class="v">DJI MATRICE 4T</span></div>
-  <div class="si"><span>CERT</span>&nbsp;<span class="v">FAA PART 107 CERTIFIED</span></div>
-  <div class="si"><span>SERVICE AREA</span>&nbsp;<span class="v">CALIFORNIA</span></div>
-  <div class="si"><span>LOCAL</span>&nbsp;<span class="v" id="clk">--:--:-- PT</span></div>
-</div>
 
 <!-- HERO -->
 <section id="hero">
@@ -808,7 +835,6 @@ footer{border-top:2px solid var(--orange)!important;padding:48px 52px!important;
   <p class="hero-sub">
     <strong>Aerial photography, thermal inspection, precision mapping, surveillance, and AI data processing</strong> — professional results, fast turnaround, and California-based operators who know the terrain.
   </p>
-  <div class="hero-cert">FAA PART 107 CERTIFIED <span class="cert-sep">·</span> INSURED OPERATIONS <span class="cert-sep">·</span> 24–48H TURNAROUND <span class="cert-sep">·</span> CALIFORNIA OPERATIONS</div>
   <div class="hero-stats">
     <div class="hstat"><div class="hstat-n"><span class="val">5</span><span class="unit">SVC</span></div><div class="hstat-l">Service<br>Types</div></div>
     <div class="hstat"><div class="hstat-n"><span class="val">4K</span><span class="unit">+RTK</span></div><div class="hstat-l">Imaging<br>Capability</div></div>
@@ -1539,33 +1565,88 @@ function submitForm(){
     });
   });
 
-// ── MOUNTAIN RIDGE PARALLAX ──
+// ── MILITARY BLUEPRINT PARALLAX ──
 (function(){
-  var far  = document.querySelector('.mtn-far');
-  var mid  = document.querySelector('.mtn-mid');
-  var near = document.querySelector('.mtn-near');
+  var far      = document.querySelector('.mtn-far');
+  var cFar1    = document.querySelector('.mtn-c-far1');
+  var cFar2    = document.querySelector('.mtn-c-far2');
+  var mid      = document.querySelector('.mtn-mid');
+  var cMid1    = document.querySelector('.mtn-c-mid1');
+  var near     = document.querySelector('.mtn-near');
   var nearEdge = document.querySelector('.mtn-near-edge');
   var midEdge  = document.querySelector('.mtn-mid-edge');
+  var gridFine = document.querySelector('.bp-grid-fine');
+  var gridMaj  = document.querySelector('.bp-grid-major');
   if(!far) return;
   var ticking = false;
-  function updateMountains(){
+  function update(){
     var sy = window.scrollY;
     var h  = document.body.scrollHeight - window.innerHeight;
     var p  = h > 0 ? Math.min(1, sy / h) : 0;
-    far.style.transform  = 'translateY(' + (sy * 0.04).toFixed(1) + 'px)';
-    mid.style.transform  = 'translateY(' + (sy * 0.09).toFixed(1) + 'px)';
-    near.style.transform = 'translateY(' + (sy * 0.16).toFixed(1) + 'px)';
-    nearEdge.style.transform = near.style.transform;
-    midEdge.style.transform  = mid.style.transform;
-    // Edge glow: starts at 0.5 and peaks at 1.0 on full scroll
+    var fT = 'translate('+(sy*0.018).toFixed(1)+'px,'+(sy*0.035).toFixed(1)+'px)';
+    var mT = 'translateY('+(sy*0.085).toFixed(1)+'px)';
+    var nT = 'translate('+(-sy*0.012).toFixed(1)+'px,'+(sy*0.15).toFixed(1)+'px)';
+    var gT = 'translate('+(sy*0.025).toFixed(1)+'px,'+(sy*0.018).toFixed(1)+'px)';
+    far.style.transform = fT;
+    if(cFar1) cFar1.style.transform = fT;
+    if(cFar2) cFar2.style.transform = fT;
+    mid.style.transform = mT;
+    if(cMid1) cMid1.style.transform = mT;
+    near.style.transform = nT;
+    nearEdge.style.transform = nT;
+    midEdge.style.transform  = mT;
+    if(gridFine) gridFine.style.transform = gT;
+    if(gridMaj)  gridMaj.style.transform  = gT;
     nearEdge.style.strokeOpacity = (0.5 + p * 0.5).toFixed(2);
-    midEdge.style.strokeOpacity  = (0.18 + p * 0.32).toFixed(2);
+    midEdge.style.strokeOpacity  = (0.2  + p * 0.3).toFixed(2);
     ticking = false;
   }
-  window.addEventListener('scroll', function(){
-    if(!ticking){ requestAnimationFrame(updateMountains); ticking=true; }
-  }, {passive:true});
-  updateMountains();
+  window.addEventListener('scroll',function(){
+    if(!ticking){requestAnimationFrame(update);ticking=true;}
+  },{passive:true});
+  update();
+})();
+
+// ── HERO DESCRIPTION TYPEWRITER ──
+(function(){
+  var sub = document.querySelector('.hero-sub');
+  if(!sub) return;
+  var fullHTML = sub.innerHTML;
+  sub.classList.add('tw-ready');
+  var chars = [];
+  var tmp = document.createElement('p');
+  tmp.innerHTML = fullHTML;
+  tmp.childNodes.forEach(function(n){
+    var bold = n.nodeName === 'STRONG';
+    (n.textContent||'').split('').forEach(function(c){chars.push({c:c,b:bold});});
+  });
+  var observer = new IntersectionObserver(function(entries){
+    if(!entries[0].isIntersecting) return;
+    observer.disconnect();
+    sub.classList.remove('tw-ready');
+    sub.innerHTML = '';
+    var cursor = document.createElement('span');
+    cursor.className = 'tw-cursor';
+    sub.appendChild(cursor);
+    var strongEl = null;
+    var idx = 0;
+    function tick(){
+      if(idx >= chars.length){sub.removeChild(cursor);sub.innerHTML=fullHTML;return;}
+      var ch = chars[idx++];
+      sub.removeChild(cursor);
+      if(ch.b){
+        if(!strongEl||!strongEl.parentNode){strongEl=document.createElement('strong');sub.appendChild(strongEl);}
+        strongEl.appendChild(document.createTextNode(ch.c));
+      } else {
+        strongEl = null;
+        sub.appendChild(document.createTextNode(ch.c));
+      }
+      sub.appendChild(cursor);
+      setTimeout(tick, idx < 60 ? 22 : 14);
+    }
+    setTimeout(tick, 200);
+  },{threshold:0.4});
+  observer.observe(sub);
 })();
 </script>
 </body>
