@@ -767,6 +767,83 @@ footer{border-top:2px solid var(--orange)!important;padding:48px 52px!important;
 .fc-label{color:var(--orange)!important;font-size:13px!important;}
 .foot-copy{font-size:12px!important;color:#444!important;letter-spacing:2px!important;}
 .foot-links a{font-size:12px!important;letter-spacing:2px!important;color:#444!important;}
+
+/* === TACTICAL DOCUMENT TEMPLATE — WHY + SERVICES === */
+
+/* Center-align section headers */
+#why .why-intro, #services .wrap {
+  text-align: center !important;
+}
+#why .why-intro .sec-intro, #services .wrap .sec-intro {
+  max-width: 720px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+#why .why-intro .tag, #services .wrap .tag {
+  display: inline-flex !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+/* Center FAQ header too */
+#faq .wrap {
+  text-align: center !important;
+}
+#faq .wrap .sec-intro {
+  max-width: 720px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+#faq .wrap .tag {
+  display: inline-flex !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+/* Clip decorations to section bounds */
+#why, #services, #faq, #contact, #proof { overflow: hidden !important; }
+
+/* Subtle tactical grid overlay — all tactical sections */
+#why::before, #services::before, #faq::before, #contact::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,107,0,0.022) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,107,0,0.022) 1px, transparent 1px);
+  background-size: 44px 44px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Corner bracket decorations */
+.tac-corner {
+  position: absolute;
+  width: 32px; height: 32px;
+  border-color: rgba(255,107,0,0.75);
+  border-style: solid;
+  pointer-events: none;
+  z-index: 20;
+}
+.tac-tl { top: 18px; left: 18px; border-width: 2px 0 0 2px; }
+.tac-tr { top: 18px; right: 18px; border-width: 2px 2px 0 0; }
+.tac-bl { bottom: 18px; left: 18px; border-width: 0 0 2px 2px; }
+.tac-br { bottom: 18px; right: 18px; border-width: 0 2px 2px 0; }
+
+/* Diamond accent (bottom-right) */
+.tac-diamond {
+  position: absolute;
+  bottom: 14px; right: 14px;
+  width: 8px; height: 8px;
+  background: rgba(255,107,0,0.9);
+  transform: rotate(45deg);
+  pointer-events: none;
+  z-index: 21;
+}
+
+/* Hex cluster positioning */
+.tac-hex-left { position: absolute; left: 0; top: 0; pointer-events: none; z-index: 1; }
+.tac-hex-right { position: absolute; right: 0; bottom: 0; pointer-events: none; z-index: 1; }
 </style>
 </head>
 <body>
@@ -907,6 +984,60 @@ footer{border-top:2px solid var(--orange)!important;padding:48px 52px!important;
 
 <!-- WHY DØI -->
 <section id="why">
+  <!-- Tactical document template decorations -->
+  <div class="tac-corner tac-tl" aria-hidden="true"></div>
+  <div class="tac-corner tac-tr" aria-hidden="true"></div>
+  <div class="tac-corner tac-bl" aria-hidden="true"></div>
+  <div class="tac-corner tac-br" aria-hidden="true"></div>
+  <div class="tac-diamond" aria-hidden="true"></div>
+  <!-- Left gray hex cluster -->
+  <div class="tac-hex-left" aria-hidden="true">
+    <svg viewBox="0 0 90 302" width="90" height="302" xmlns="http://www.w3.org/2000/svg">
+      <!-- Col 1 (x=24) -->
+      <polygon points="24,0 44.8,12 44.8,36 24,48 3.2,36 3.2,12" fill="rgba(20,16,12,0.5)" stroke="rgba(100,85,65,0.28)" stroke-width="1"/>
+      <polygon points="24,36 44.8,48 44.8,72 24,84 3.2,72 3.2,48" fill="rgba(20,16,12,0.5)" stroke="rgba(100,85,65,0.28)" stroke-width="1"/>
+      <polygon points="24,72 44.8,84 44.8,108 24,120 3.2,108 3.2,84" fill="rgba(20,16,12,0.5)" stroke="rgba(100,85,65,0.28)" stroke-width="1"/>
+      <polygon points="24,108 44.8,120 44.8,144 24,156 3.2,144 3.2,120" fill="rgba(20,16,12,0.5)" stroke="rgba(100,85,65,0.28)" stroke-width="1"/>
+      <polygon points="24,144 44.8,156 44.8,180 24,192 3.2,180 3.2,156" fill="rgba(20,16,12,0.5)" stroke="rgba(100,85,65,0.28)" stroke-width="1"/>
+      <polygon points="24,180 44.8,192 44.8,216 24,228 3.2,216 3.2,192" fill="rgba(20,16,12,0.5)" stroke="rgba(100,85,65,0.28)" stroke-width="1"/>
+      <polygon points="24,216 44.8,228 44.8,252 24,264 3.2,252 3.2,228" fill="rgba(20,16,12,0.5)" stroke="rgba(100,85,65,0.28)" stroke-width="1"/>
+      <polygon points="24,252 44.8,264 44.8,288 24,300 3.2,288 3.2,264" fill="rgba(20,16,12,0.5)" stroke="rgba(100,85,65,0.28)" stroke-width="1"/>
+      <!-- Col 2 (x=65.5, offset +18) -->
+      <polygon points="65.5,18 86.3,30 86.3,54 65.5,66 44.7,54 44.7,30" fill="rgba(20,16,12,0.5)" stroke="rgba(100,85,65,0.22)" stroke-width="1"/>
+      <polygon points="65.5,54 86.3,66 86.3,90 65.5,102 44.7,90 44.7,66" fill="rgba(20,16,12,0.5)" stroke="rgba(100,85,65,0.22)" stroke-width="1"/>
+      <polygon points="65.5,90 86.3,102 86.3,126 65.5,138 44.7,126 44.7,102" fill="rgba(20,16,12,0.5)" stroke="rgba(100,85,65,0.22)" stroke-width="1"/>
+      <polygon points="65.5,126 86.3,138 86.3,162 65.5,174 44.7,162 44.7,138" fill="rgba(20,16,12,0.5)" stroke="rgba(100,85,65,0.22)" stroke-width="1"/>
+      <polygon points="65.5,162 86.3,174 86.3,198 65.5,210 44.7,198 44.7,174" fill="rgba(20,16,12,0.5)" stroke="rgba(100,85,65,0.22)" stroke-width="1"/>
+      <polygon points="65.5,198 86.3,210 86.3,234 65.5,246 44.7,234 44.7,210" fill="rgba(20,16,12,0.5)" stroke="rgba(100,85,65,0.22)" stroke-width="1"/>
+      <polygon points="65.5,234 86.3,246 86.3,270 65.5,282 44.7,270 44.7,246" fill="rgba(20,16,12,0.5)" stroke="rgba(100,85,65,0.22)" stroke-width="1"/>
+    </svg>
+  </div>
+  <!-- Right orange hex cluster (glows toward bottom-right) -->
+  <div class="tac-hex-right" aria-hidden="true">
+    <svg viewBox="0 0 107 145" width="107" height="145" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <filter id="hex-glow-why" x="-40%" y="-40%" width="180%" height="180%">
+          <feGaussianBlur stdDeviation="2.5" result="blur"/>
+          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+      <!-- Col 1 (x=20) — farthest from corner, dimmest -->
+      <polygon points="20,0 37.3,10 37.3,30 20,40 2.7,30 2.7,10" fill="rgba(255,107,0,0.04)" stroke="rgba(255,107,0,0.18)" stroke-width="1" opacity="0.5"/>
+      <polygon points="20,30 37.3,40 37.3,60 20,70 2.7,60 2.7,40" fill="rgba(255,107,0,0.05)" stroke="rgba(255,107,0,0.22)" stroke-width="1" opacity="0.6"/>
+      <polygon points="20,60 37.3,70 37.3,90 20,100 2.7,90 2.7,70" fill="rgba(255,107,0,0.06)" stroke="rgba(255,107,0,0.28)" stroke-width="1" opacity="0.7"/>
+      <polygon points="20,90 37.3,100 37.3,120 20,130 2.7,120 2.7,100" fill="rgba(255,107,0,0.08)" stroke="rgba(255,107,0,0.35)" stroke-width="1" opacity="0.8"/>
+      <!-- Col 2 (x=54.6) — medium brightness -->
+      <polygon points="54.6,15 71.9,25 71.9,45 54.6,55 37.3,45 37.3,25" fill="rgba(255,107,0,0.05)" stroke="rgba(255,107,0,0.25)" stroke-width="1" opacity="0.55"/>
+      <polygon points="54.6,45 71.9,55 71.9,75 54.6,85 37.3,75 37.3,55" fill="rgba(255,107,0,0.07)" stroke="rgba(255,107,0,0.32)" stroke-width="1" opacity="0.68"/>
+      <polygon points="54.6,75 71.9,85 71.9,105 54.6,115 37.3,105 37.3,85" fill="rgba(255,107,0,0.09)" stroke="rgba(255,107,0,0.4)" stroke-width="1" opacity="0.82" filter="url(#hex-glow-why)"/>
+      <polygon points="54.6,105 71.9,115 71.9,135 54.6,145 37.3,135 37.3,115" fill="rgba(255,107,0,0.12)" stroke="rgba(255,107,0,0.55)" stroke-width="1.5" opacity="0.95" filter="url(#hex-glow-why)"/>
+      <!-- Col 3 (x=89.2) — closest to corner, brightest -->
+      <polygon points="89.2,0 106.5,10 106.5,30 89.2,40 71.9,30 71.9,10" fill="rgba(255,107,0,0.07)" stroke="rgba(255,107,0,0.32)" stroke-width="1" opacity="0.6"/>
+      <polygon points="89.2,30 106.5,40 106.5,60 89.2,70 71.9,60 71.9,40" fill="rgba(255,107,0,0.1)" stroke="rgba(255,107,0,0.45)" stroke-width="1.2" opacity="0.78" filter="url(#hex-glow-why)"/>
+      <polygon points="89.2,60 106.5,70 106.5,90 89.2,100 71.9,90 71.9,70" fill="rgba(255,107,0,0.14)" stroke="rgba(255,107,0,0.6)" stroke-width="1.5" opacity="0.9" filter="url(#hex-glow-why)"/>
+      <polygon points="89.2,90 106.5,100 106.5,120 89.2,130 71.9,120 71.9,100" fill="rgba(255,107,0,0.18)" stroke="rgba(255,107,0,0.75)" stroke-width="1.5" opacity="1" filter="url(#hex-glow-why)"/>
+    </svg>
+  </div>
   <div class="why-intro">
     <div class="tag">[ WHY DØi LABS ]</div>
     <div class="sec-h">WHAT MAKES US <span class="gh">DIFFERENT</span></div>
@@ -936,12 +1067,61 @@ footer{border-top:2px solid var(--orange)!important;padding:48px 52px!important;
     <div class="why-card">
   <div class="why-title">California-Based Operations</div>
       <div class="why-body">DØi Labs operates throughout California — from the Bay Area and Los Angeles to San Diego, the Central Valley, and beyond. We know California airspace regulations, local terrain, and coastal operating conditions. One call covers your entire in-state portfolio.</div>
-    </details>
+    </div>
   </div>
 </section>
 
 <!-- SERVICES -->
 <section id="services">
+  <!-- Tactical document template decorations -->
+  <div class="tac-corner tac-tl" aria-hidden="true"></div>
+  <div class="tac-corner tac-tr" aria-hidden="true"></div>
+  <div class="tac-corner tac-bl" aria-hidden="true"></div>
+  <div class="tac-corner tac-br" aria-hidden="true"></div>
+  <div class="tac-diamond" aria-hidden="true"></div>
+  <!-- Left gray hex cluster -->
+  <div class="tac-hex-left" aria-hidden="true">
+    <svg viewBox="0 0 90 302" width="90" height="302" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="24,0 44.8,12 44.8,36 24,48 3.2,36 3.2,12" fill="rgba(20,16,12,0.5)" stroke="rgba(100,85,65,0.28)" stroke-width="1"/>
+      <polygon points="24,36 44.8,48 44.8,72 24,84 3.2,72 3.2,48" fill="rgba(20,16,12,0.5)" stroke="rgba(100,85,65,0.28)" stroke-width="1"/>
+      <polygon points="24,72 44.8,84 44.8,108 24,120 3.2,108 3.2,84" fill="rgba(20,16,12,0.5)" stroke="rgba(100,85,65,0.28)" stroke-width="1"/>
+      <polygon points="24,108 44.8,120 44.8,144 24,156 3.2,144 3.2,120" fill="rgba(20,16,12,0.5)" stroke="rgba(100,85,65,0.28)" stroke-width="1"/>
+      <polygon points="24,144 44.8,156 44.8,180 24,192 3.2,180 3.2,156" fill="rgba(20,16,12,0.5)" stroke="rgba(100,85,65,0.28)" stroke-width="1"/>
+      <polygon points="24,180 44.8,192 44.8,216 24,228 3.2,216 3.2,192" fill="rgba(20,16,12,0.5)" stroke="rgba(100,85,65,0.28)" stroke-width="1"/>
+      <polygon points="24,216 44.8,228 44.8,252 24,264 3.2,252 3.2,228" fill="rgba(20,16,12,0.5)" stroke="rgba(100,85,65,0.28)" stroke-width="1"/>
+      <polygon points="24,252 44.8,264 44.8,288 24,300 3.2,288 3.2,264" fill="rgba(20,16,12,0.5)" stroke="rgba(100,85,65,0.28)" stroke-width="1"/>
+      <polygon points="65.5,18 86.3,30 86.3,54 65.5,66 44.7,54 44.7,30" fill="rgba(20,16,12,0.5)" stroke="rgba(100,85,65,0.22)" stroke-width="1"/>
+      <polygon points="65.5,54 86.3,66 86.3,90 65.5,102 44.7,90 44.7,66" fill="rgba(20,16,12,0.5)" stroke="rgba(100,85,65,0.22)" stroke-width="1"/>
+      <polygon points="65.5,90 86.3,102 86.3,126 65.5,138 44.7,126 44.7,102" fill="rgba(20,16,12,0.5)" stroke="rgba(100,85,65,0.22)" stroke-width="1"/>
+      <polygon points="65.5,126 86.3,138 86.3,162 65.5,174 44.7,162 44.7,138" fill="rgba(20,16,12,0.5)" stroke="rgba(100,85,65,0.22)" stroke-width="1"/>
+      <polygon points="65.5,162 86.3,174 86.3,198 65.5,210 44.7,198 44.7,174" fill="rgba(20,16,12,0.5)" stroke="rgba(100,85,65,0.22)" stroke-width="1"/>
+      <polygon points="65.5,198 86.3,210 86.3,234 65.5,246 44.7,234 44.7,210" fill="rgba(20,16,12,0.5)" stroke="rgba(100,85,65,0.22)" stroke-width="1"/>
+      <polygon points="65.5,234 86.3,246 86.3,270 65.5,282 44.7,270 44.7,246" fill="rgba(20,16,12,0.5)" stroke="rgba(100,85,65,0.22)" stroke-width="1"/>
+    </svg>
+  </div>
+  <!-- Right orange hex cluster -->
+  <div class="tac-hex-right" aria-hidden="true">
+    <svg viewBox="0 0 107 145" width="107" height="145" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <filter id="hex-glow-svc" x="-40%" y="-40%" width="180%" height="180%">
+          <feGaussianBlur stdDeviation="2.5" result="blur"/>
+          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+      <polygon points="20,0 37.3,10 37.3,30 20,40 2.7,30 2.7,10" fill="rgba(255,107,0,0.04)" stroke="rgba(255,107,0,0.18)" stroke-width="1" opacity="0.5"/>
+      <polygon points="20,30 37.3,40 37.3,60 20,70 2.7,60 2.7,40" fill="rgba(255,107,0,0.05)" stroke="rgba(255,107,0,0.22)" stroke-width="1" opacity="0.6"/>
+      <polygon points="20,60 37.3,70 37.3,90 20,100 2.7,90 2.7,70" fill="rgba(255,107,0,0.06)" stroke="rgba(255,107,0,0.28)" stroke-width="1" opacity="0.7"/>
+      <polygon points="20,90 37.3,100 37.3,120 20,130 2.7,120 2.7,100" fill="rgba(255,107,0,0.08)" stroke="rgba(255,107,0,0.35)" stroke-width="1" opacity="0.8"/>
+      <polygon points="54.6,15 71.9,25 71.9,45 54.6,55 37.3,45 37.3,25" fill="rgba(255,107,0,0.05)" stroke="rgba(255,107,0,0.25)" stroke-width="1" opacity="0.55"/>
+      <polygon points="54.6,45 71.9,55 71.9,75 54.6,85 37.3,75 37.3,55" fill="rgba(255,107,0,0.07)" stroke="rgba(255,107,0,0.32)" stroke-width="1" opacity="0.68"/>
+      <polygon points="54.6,75 71.9,85 71.9,105 54.6,115 37.3,105 37.3,85" fill="rgba(255,107,0,0.09)" stroke="rgba(255,107,0,0.4)" stroke-width="1" opacity="0.82" filter="url(#hex-glow-svc)"/>
+      <polygon points="54.6,105 71.9,115 71.9,135 54.6,145 37.3,135 37.3,115" fill="rgba(255,107,0,0.12)" stroke="rgba(255,107,0,0.55)" stroke-width="1.5" opacity="0.95" filter="url(#hex-glow-svc)"/>
+      <polygon points="89.2,0 106.5,10 106.5,30 89.2,40 71.9,30 71.9,10" fill="rgba(255,107,0,0.07)" stroke="rgba(255,107,0,0.32)" stroke-width="1" opacity="0.6"/>
+      <polygon points="89.2,30 106.5,40 106.5,60 89.2,70 71.9,60 71.9,40" fill="rgba(255,107,0,0.1)" stroke="rgba(255,107,0,0.45)" stroke-width="1.2" opacity="0.78" filter="url(#hex-glow-svc)"/>
+      <polygon points="89.2,60 106.5,70 106.5,90 89.2,100 71.9,90 71.9,70" fill="rgba(255,107,0,0.14)" stroke="rgba(255,107,0,0.6)" stroke-width="1.5" opacity="0.9" filter="url(#hex-glow-svc)"/>
+      <polygon points="89.2,90 106.5,100 106.5,120 89.2,130 71.9,120 71.9,100" fill="rgba(255,107,0,0.18)" stroke="rgba(255,107,0,0.75)" stroke-width="1.5" opacity="1" filter="url(#hex-glow-svc)"/>
+    </svg>
+  </div>
   <div class="wrap">
     <div class="tag">[ SERVICES ]</div>
     <div class="sec-h">WHAT WE <span class="gh">DELIVER</span></div>
@@ -997,12 +1177,16 @@ footer{border-top:2px solid var(--orange)!important;padding:48px 52px!important;
 
 <!-- PROOF -->
 <section id="proof">
+  <div class="tac-corner tac-tl" aria-hidden="true"></div>
+  <div class="tac-corner tac-tr" aria-hidden="true"></div>
+  <div class="tac-corner tac-bl" aria-hidden="true"></div>
+  <div class="tac-corner tac-br" aria-hidden="true"></div>
   <div class="proof-inner">
     <div class="proof-item"><div class="proof-n">4K<span>+RTK</span></div><div class="proof-l">Imaging<br>Resolution</div></div>
     <div class="proof-item"><div class="proof-n">2<span>CM</span></div><div class="proof-l">Survey<br>Accuracy</div></div>
     <div class="proof-item"><div class="proof-n">±2°<span>C</span></div><div class="proof-l">Thermal<br>Precision</div></div>
     <div class="proof-item"><div class="proof-n">107<span>P</span></div><div class="proof-l">FAA Part 107<br>Certified</div></div>
-  </details>
+  </div>
 </section>
 
 <!-- PROCESS: SCROLL TIMELINE -->
@@ -1356,6 +1540,45 @@ footer{border-top:2px solid var(--orange)!important;padding:48px 52px!important;
 
 <!-- FAQ -->
 <section id="faq">
+  <div class="tac-corner tac-tl" aria-hidden="true"></div>
+  <div class="tac-corner tac-tr" aria-hidden="true"></div>
+  <div class="tac-corner tac-bl" aria-hidden="true"></div>
+  <div class="tac-corner tac-br" aria-hidden="true"></div>
+  <div class="tac-diamond" aria-hidden="true"></div>
+  <div class="tac-hex-left" aria-hidden="true">
+    <svg viewBox="0 0 90 302" width="90" height="302" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="24,0 44.8,12 44.8,36 24,48 3.2,36 3.2,12" fill="rgba(20,16,12,0.5)" stroke="rgba(100,85,65,0.28)" stroke-width="1"/>
+      <polygon points="24,36 44.8,48 44.8,72 24,84 3.2,72 3.2,48" fill="rgba(20,16,12,0.5)" stroke="rgba(100,85,65,0.28)" stroke-width="1"/>
+      <polygon points="24,72 44.8,84 44.8,108 24,120 3.2,108 3.2,84" fill="rgba(20,16,12,0.5)" stroke="rgba(100,85,65,0.28)" stroke-width="1"/>
+      <polygon points="24,108 44.8,120 44.8,144 24,156 3.2,144 3.2,120" fill="rgba(20,16,12,0.5)" stroke="rgba(100,85,65,0.28)" stroke-width="1"/>
+      <polygon points="24,144 44.8,156 44.8,180 24,192 3.2,180 3.2,156" fill="rgba(20,16,12,0.5)" stroke="rgba(100,85,65,0.28)" stroke-width="1"/>
+      <polygon points="24,180 44.8,192 44.8,216 24,228 3.2,216 3.2,192" fill="rgba(20,16,12,0.5)" stroke="rgba(100,85,65,0.28)" stroke-width="1"/>
+      <polygon points="65.5,18 86.3,30 86.3,54 65.5,66 44.7,54 44.7,30" fill="rgba(20,16,12,0.5)" stroke="rgba(100,85,65,0.22)" stroke-width="1"/>
+      <polygon points="65.5,54 86.3,66 86.3,90 65.5,102 44.7,90 44.7,66" fill="rgba(20,16,12,0.5)" stroke="rgba(100,85,65,0.22)" stroke-width="1"/>
+      <polygon points="65.5,90 86.3,102 86.3,126 65.5,138 44.7,126 44.7,102" fill="rgba(20,16,12,0.5)" stroke="rgba(100,85,65,0.22)" stroke-width="1"/>
+      <polygon points="65.5,126 86.3,138 86.3,162 65.5,174 44.7,162 44.7,138" fill="rgba(20,16,12,0.5)" stroke="rgba(100,85,65,0.22)" stroke-width="1"/>
+      <polygon points="65.5,162 86.3,174 86.3,198 65.5,210 44.7,198 44.7,174" fill="rgba(20,16,12,0.5)" stroke="rgba(100,85,65,0.22)" stroke-width="1"/>
+    </svg>
+  </div>
+  <div class="tac-hex-right" aria-hidden="true">
+    <svg viewBox="0 0 107 145" width="107" height="145" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <filter id="hex-glow-faq" x="-40%" y="-40%" width="180%" height="180%">
+          <feGaussianBlur stdDeviation="2.5" result="blur"/>
+          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+      <polygon points="20,0 37.3,10 37.3,30 20,40 2.7,30 2.7,10" fill="rgba(255,107,0,0.04)" stroke="rgba(255,107,0,0.18)" stroke-width="1" opacity="0.5"/>
+      <polygon points="20,30 37.3,40 37.3,60 20,70 2.7,60 2.7,40" fill="rgba(255,107,0,0.06)" stroke="rgba(255,107,0,0.28)" stroke-width="1" opacity="0.65"/>
+      <polygon points="20,60 37.3,70 37.3,90 20,100 2.7,90 2.7,70" fill="rgba(255,107,0,0.08)" stroke="rgba(255,107,0,0.35)" stroke-width="1" opacity="0.8"/>
+      <polygon points="54.6,15 71.9,25 71.9,45 54.6,55 37.3,45 37.3,25" fill="rgba(255,107,0,0.05)" stroke="rgba(255,107,0,0.25)" stroke-width="1" opacity="0.55"/>
+      <polygon points="54.6,45 71.9,55 71.9,75 54.6,85 37.3,75 37.3,55" fill="rgba(255,107,0,0.09)" stroke="rgba(255,107,0,0.4)" stroke-width="1" opacity="0.78" filter="url(#hex-glow-faq)"/>
+      <polygon points="54.6,75 71.9,85 71.9,105 54.6,115 37.3,105 37.3,85" fill="rgba(255,107,0,0.12)" stroke="rgba(255,107,0,0.55)" stroke-width="1.5" opacity="0.95" filter="url(#hex-glow-faq)"/>
+      <polygon points="89.2,0 106.5,10 106.5,30 89.2,40 71.9,30 71.9,10" fill="rgba(255,107,0,0.07)" stroke="rgba(255,107,0,0.32)" stroke-width="1" opacity="0.6"/>
+      <polygon points="89.2,30 106.5,40 106.5,60 89.2,70 71.9,60 71.9,40" fill="rgba(255,107,0,0.12)" stroke="rgba(255,107,0,0.5)" stroke-width="1.2" opacity="0.85" filter="url(#hex-glow-faq)"/>
+      <polygon points="89.2,60 106.5,70 106.5,90 89.2,100 71.9,90 71.9,70" fill="rgba(255,107,0,0.18)" stroke="rgba(255,107,0,0.75)" stroke-width="1.5" opacity="1" filter="url(#hex-glow-faq)"/>
+    </svg>
+  </div>
   <div class="wrap">
     <div class="tag">Common Questions</div>
     <div class="sec-h">WHAT CLIENTS <span class="gh">ASK US</span></div>
@@ -1394,11 +1617,46 @@ footer{border-top:2px solid var(--orange)!important;padding:48px 52px!important;
 
 <!-- CONTACT -->
 <section id="contact">
+  <div class="tac-corner tac-tl" aria-hidden="true"></div>
+  <div class="tac-corner tac-tr" aria-hidden="true"></div>
+  <div class="tac-corner tac-bl" aria-hidden="true"></div>
+  <div class="tac-corner tac-br" aria-hidden="true"></div>
+  <div class="tac-diamond" aria-hidden="true"></div>
+  <div class="tac-hex-left" aria-hidden="true">
+    <svg viewBox="0 0 90 260" width="90" height="260" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="24,0 44.8,12 44.8,36 24,48 3.2,36 3.2,12" fill="rgba(20,16,12,0.5)" stroke="rgba(100,85,65,0.28)" stroke-width="1"/>
+      <polygon points="24,36 44.8,48 44.8,72 24,84 3.2,72 3.2,48" fill="rgba(20,16,12,0.5)" stroke="rgba(100,85,65,0.28)" stroke-width="1"/>
+      <polygon points="24,72 44.8,84 44.8,108 24,120 3.2,108 3.2,84" fill="rgba(20,16,12,0.5)" stroke="rgba(100,85,65,0.28)" stroke-width="1"/>
+      <polygon points="24,108 44.8,120 44.8,144 24,156 3.2,144 3.2,120" fill="rgba(20,16,12,0.5)" stroke="rgba(100,85,65,0.28)" stroke-width="1"/>
+      <polygon points="24,144 44.8,156 44.8,180 24,192 3.2,180 3.2,156" fill="rgba(20,16,12,0.5)" stroke="rgba(100,85,65,0.28)" stroke-width="1"/>
+      <polygon points="24,180 44.8,192 44.8,216 24,228 3.2,216 3.2,192" fill="rgba(20,16,12,0.5)" stroke="rgba(100,85,65,0.28)" stroke-width="1"/>
+      <polygon points="65.5,18 86.3,30 86.3,54 65.5,66 44.7,54 44.7,30" fill="rgba(20,16,12,0.5)" stroke="rgba(100,85,65,0.22)" stroke-width="1"/>
+      <polygon points="65.5,54 86.3,66 86.3,90 65.5,102 44.7,90 44.7,66" fill="rgba(20,16,12,0.5)" stroke="rgba(100,85,65,0.22)" stroke-width="1"/>
+      <polygon points="65.5,90 86.3,102 86.3,126 65.5,138 44.7,126 44.7,102" fill="rgba(20,16,12,0.5)" stroke="rgba(100,85,65,0.22)" stroke-width="1"/>
+      <polygon points="65.5,126 86.3,138 86.3,162 65.5,174 44.7,162 44.7,138" fill="rgba(20,16,12,0.5)" stroke="rgba(100,85,65,0.22)" stroke-width="1"/>
+    </svg>
+  </div>
+  <div class="tac-hex-right" aria-hidden="true">
+    <svg viewBox="0 0 107 145" width="107" height="145" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <filter id="hex-glow-cta" x="-40%" y="-40%" width="180%" height="180%">
+          <feGaussianBlur stdDeviation="2.5" result="blur"/>
+          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+      <polygon points="20,30 37.3,40 37.3,60 20,70 2.7,60 2.7,40" fill="rgba(255,107,0,0.05)" stroke="rgba(255,107,0,0.22)" stroke-width="1" opacity="0.6"/>
+      <polygon points="20,60 37.3,70 37.3,90 20,100 2.7,90 2.7,70" fill="rgba(255,107,0,0.08)" stroke="rgba(255,107,0,0.35)" stroke-width="1" opacity="0.75"/>
+      <polygon points="54.6,45 71.9,55 71.9,75 54.6,85 37.3,75 37.3,55" fill="rgba(255,107,0,0.07)" stroke="rgba(255,107,0,0.32)" stroke-width="1" opacity="0.7"/>
+      <polygon points="54.6,75 71.9,85 71.9,105 54.6,115 37.3,105 37.3,85" fill="rgba(255,107,0,0.12)" stroke="rgba(255,107,0,0.55)" stroke-width="1.5" opacity="0.92" filter="url(#hex-glow-cta)"/>
+      <polygon points="89.2,30 106.5,40 106.5,60 89.2,70 71.9,60 71.9,40" fill="rgba(255,107,0,0.1)" stroke="rgba(255,107,0,0.45)" stroke-width="1.2" opacity="0.8" filter="url(#hex-glow-cta)"/>
+      <polygon points="89.2,60 106.5,70 106.5,90 89.2,100 71.9,90 71.9,70" fill="rgba(255,107,0,0.18)" stroke="rgba(255,107,0,0.75)" stroke-width="1.5" opacity="1" filter="url(#hex-glow-cta)"/>
+    </svg>
+  </div>
   <div class="intake-wrap">
-    <div style="margin-bottom:36px;">
-      <div class="tag">Request a Quote</div>
+    <div style="margin-bottom:36px;text-align:center;">
+      <div class="tag" style="display:inline-flex;">Request a Quote</div>
       <div class="sec-h">TELL US ABOUT <span class="gh">YOUR PROJECT</span></div>
-      <div class="sec-intro" style="font-size:17px;max-width:520px;">Fill out the form below. We review every submission and respond within one business day with a scope, timeline, and quote.</div>
+      <div class="sec-intro" style="font-size:17px;max-width:520px;margin:12px auto 0;">Fill out the form below. We review every submission and respond within one business day with a scope, timeline, and quote.</div>
     </div>
     <div class="intake-stepper">
       <div class="step-node active"><div class="step-num">01</div><div class="step-lbl">Contact</div></div>
