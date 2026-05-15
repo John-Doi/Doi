@@ -42,24 +42,27 @@ body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;bac
   width:min(720px,90vw);
   height:auto;
   mix-blend-mode:screen;
-  /* Aggressive radial fade — fully transparent at all 4 edges, opaque only center */
   -webkit-mask-image:radial-gradient(
-    circle at 50% 50%,
+    ellipse 52% 56% at 50% 50%,
     black 0%,
-    black 38%,
-    rgba(0,0,0,0.92) 52%,
-    rgba(0,0,0,0.6) 64%,
-    rgba(0,0,0,0.2) 78%,
-    transparent 92%
+    black 6%,
+    rgba(0,0,0,0.95) 16%,
+    rgba(0,0,0,0.78) 28%,
+    rgba(0,0,0,0.48) 41%,
+    rgba(0,0,0,0.18) 54%,
+    rgba(0,0,0,0.05) 64%,
+    transparent 78%
   );
   mask-image:radial-gradient(
-    circle at 50% 50%,
+    ellipse 52% 56% at 50% 50%,
     black 0%,
-    black 38%,
-    rgba(0,0,0,0.92) 52%,
-    rgba(0,0,0,0.6) 64%,
-    rgba(0,0,0,0.2) 78%,
-    transparent 92%
+    black 6%,
+    rgba(0,0,0,0.95) 16%,
+    rgba(0,0,0,0.78) 28%,
+    rgba(0,0,0,0.48) 41%,
+    rgba(0,0,0,0.18) 54%,
+    rgba(0,0,0,0.05) 64%,
+    transparent 78%
   );
   opacity:0.95;
   border-radius:0;
@@ -1070,44 +1073,49 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
   position: relative !important;
   z-index: 2 !important;
   mix-blend-mode: screen !important;
+  /* brightness pushes near-black video pixels to pure black so screen shows nothing */
+  filter: brightness(0.58) contrast(1.15) !important;
   -webkit-mask-image: radial-gradient(
-    ellipse 60% 66% at 50% 50%,
-    black 0%, black 14%,
-    rgba(0,0,0,0.92) 24%,
-    rgba(0,0,0,0.76) 35%,
-    rgba(0,0,0,0.50) 48%,
-    rgba(0,0,0,0.22) 61%,
-    rgba(0,0,0,0.07) 72%,
-    rgba(0,0,0,0.02) 81%,
-    transparent 88%
+    ellipse 52% 56% at 50% 50%,
+    black 0%,
+    black 6%,
+    rgba(0,0,0,0.95) 16%,
+    rgba(0,0,0,0.78) 28%,
+    rgba(0,0,0,0.48) 41%,
+    rgba(0,0,0,0.18) 54%,
+    rgba(0,0,0,0.05) 64%,
+    rgba(0,0,0,0.01) 72%,
+    transparent 78%
   ) !important;
   mask-image: radial-gradient(
-    ellipse 60% 66% at 50% 50%,
-    black 0%, black 14%,
-    rgba(0,0,0,0.92) 24%,
-    rgba(0,0,0,0.76) 35%,
-    rgba(0,0,0,0.50) 48%,
-    rgba(0,0,0,0.22) 61%,
-    rgba(0,0,0,0.07) 72%,
-    rgba(0,0,0,0.02) 81%,
-    transparent 88%
+    ellipse 52% 56% at 50% 50%,
+    black 0%,
+    black 6%,
+    rgba(0,0,0,0.95) 16%,
+    rgba(0,0,0,0.78) 28%,
+    rgba(0,0,0,0.48) 41%,
+    rgba(0,0,0,0.18) 54%,
+    rgba(0,0,0,0.05) 64%,
+    rgba(0,0,0,0.01) 72%,
+    transparent 78%
   ) !important;
 }
 
-/* Edge-kill: darkens the ring around the video so blend is invisible */
+/* Edge-kill: opaque dark ring that completely buries any remnant video edge */
 .hero-logo-wrap::after {
   content: "" !important;
   position: absolute !important;
-  inset: -18% !important;
+  inset: -25% !important;
   pointer-events: none !important;
   z-index: 3 !important;
   background: radial-gradient(
-    ellipse 56% 62% at 50% 50%,
-    transparent 0%, transparent 40%,
-    rgba(9,9,11,0.28) 54%,
-    rgba(9,9,11,0.62) 70%,
-    rgba(9,9,11,0.88) 84%,
-    rgba(9,9,11,0.96) 94%
+    ellipse 48% 52% at 50% 50%,
+    transparent 0%,
+    transparent 28%,
+    rgba(9,9,11,0.45) 42%,
+    rgba(9,9,11,0.80) 57%,
+    rgba(9,9,11,0.94) 70%,
+    rgba(9,9,11,0.99) 82%
   ) !important;
 }
 
@@ -1123,32 +1131,33 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
 /* ─── 12. ORANGE HEX PARALLAX ─── */
 .ohex-cluster {
   position: fixed; pointer-events: none; z-index: 1;
-  will-change: transform; transition: transform 0.08s linear;
+  will-change: transform;
 }
 
 /* ─── 13. MOBILE ─── */
 @media (max-width: 768px) {
   .hero-logo-cin {
+    filter: brightness(0.55) contrast(1.18) !important;
     -webkit-mask-image: radial-gradient(
-      ellipse 68% 58% at 50% 50%,
-      black 0%, black 12%,
-      rgba(0,0,0,0.86) 24%,
-      rgba(0,0,0,0.56) 38%,
-      rgba(0,0,0,0.22) 54%,
-      rgba(0,0,0,0.06) 68%,
-      transparent 80%
+      ellipse 60% 52% at 50% 50%,
+      black 0%, black 5%,
+      rgba(0,0,0,0.92) 15%,
+      rgba(0,0,0,0.64) 28%,
+      rgba(0,0,0,0.28) 42%,
+      rgba(0,0,0,0.07) 56%,
+      transparent 68%
     ) !important;
     mask-image: radial-gradient(
-      ellipse 68% 58% at 50% 50%,
-      black 0%, black 12%,
-      rgba(0,0,0,0.86) 24%,
-      rgba(0,0,0,0.56) 38%,
-      rgba(0,0,0,0.22) 54%,
-      rgba(0,0,0,0.06) 68%,
-      transparent 80%
+      ellipse 60% 52% at 50% 50%,
+      black 0%, black 5%,
+      rgba(0,0,0,0.92) 15%,
+      rgba(0,0,0,0.64) 28%,
+      rgba(0,0,0,0.28) 42%,
+      rgba(0,0,0,0.07) 56%,
+      transparent 68%
     ) !important;
   }
-  .hero-logo-wrap::after { inset: -28% !important; }
+  .hero-logo-wrap::after { inset: -35% !important; }
 }
 </style>
 
@@ -2466,37 +2475,29 @@ function submitForm(){
 <script>
 (function() {
   var clusters = [
-    { el: document.getElementById('ohex-br'), rx: -0.04, ry: -0.06 },
-    { el: document.getElementById('ohex-bl'), rx:  0.05, ry: -0.05 },
-    { el: document.getElementById('ohex-tr'), rx: -0.03, ry:  0.07 },
-    { el: document.getElementById('ohex-tl'), rx:  0.04, ry:  0.06 },
-    { el: document.getElementById('ohex-mr'), rx: -0.035,ry:  0.04 }
+    { el: document.getElementById('ohex-br'), rx: -0.10, ry: -0.14, phase: 0.0 },
+    { el: document.getElementById('ohex-bl'), rx:  0.12, ry: -0.11, phase: 1.4 },
+    { el: document.getElementById('ohex-tr'), rx: -0.07, ry:  0.16, phase: 2.6 },
+    { el: document.getElementById('ohex-tl'), rx:  0.09, ry:  0.13, phase: 0.9 },
+    { el: document.getElementById('ohex-mr'), rx: -0.08, ry:  0.09, phase: 2.0 }
   ];
 
-  var ticking = false;
-  var lastY = 0;
-
-  function updateClusters(scrollY) {
+  function loop() {
+    var scrollY = window.pageYOffset;
+    var t = Date.now() / 1000;
     clusters.forEach(function(c) {
       if (!c.el) return;
-      var tx = scrollY * c.rx;
-      var ty = scrollY * c.ry;
-      c.el.style.transform = 'translate(' + tx.toFixed(1) + 'px,' + ty.toFixed(1) + 'px)';
+      var sx = scrollY * c.rx;
+      var sy = scrollY * c.ry;
+      /* slow idle drift — amplitude 8px, independent per cluster */
+      var ix = Math.sin(t * 0.28 + c.phase) * 8;
+      var iy = Math.cos(t * 0.20 + c.phase) * 10;
+      c.el.style.transform = 'translate(' + (sx + ix).toFixed(1) + 'px,' + (sy + iy).toFixed(1) + 'px)';
     });
+    requestAnimationFrame(loop);
   }
+  loop();
 
-  window.addEventListener('scroll', function() {
-    lastY = window.pageYOffset;
-    if (!ticking) {
-      requestAnimationFrame(function() {
-        updateClusters(lastY);
-        ticking = false;
-      });
-      ticking = true;
-    }
-  }, { passive: true });
-
-  updateClusters(0);
 })();
 </script>
 </body>
