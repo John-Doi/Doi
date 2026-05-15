@@ -778,17 +778,28 @@ details.faq-item summary::marker{display:none!important;}
 .hcorners { display: flex !important; }
 .hc { border-color: rgba(210,115,30,0.55) !important; width: 28px !important; height: 28px !important; }
 
-/* Hide logo video — replaced by static shield */
-video.hero-logo-cin { display: none !important; }
+/* Restore logo video — shield SVG is watermark behind it */
+video.hero-logo-cin { display: block !important; position: relative; z-index: 2; }
 
-/* Shield SVG sizing */
+/* Shield SVG — absolute watermark BEHIND the video */
 .hero-shield-svg {
-  display: block;
-  width: min(300px, 68vw);
-  height: auto;
-  animation: fadeUp 1.1s ease both;
-  filter: drop-shadow(0 4px 24px rgba(0,0,0,0.8));
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  width: min(360px, 80vw) !important;
+  height: auto !important;
+  opacity: 0.28 !important;
+  z-index: 1 !important;
+  pointer-events: none !important;
+  filter: drop-shadow(0 0 32px rgba(200,120,40,0.12)) !important;
+  animation: shieldPulse 8s ease-in-out infinite !important;
 }
+@keyframes shieldPulse {
+  0%, 100% { opacity: 0.28; }
+  50% { opacity: 0.38; }
+}
+.hero-logo-wrap { position: relative !important; }
 
 /* RECON cert badge */
 .hero-recon-badge {
@@ -812,6 +823,33 @@ video.hero-logo-cin { display: none !important; }
   height: 1px !important;
   background: rgba(210,115,30,0.4) !important;
 }
+
+/* ── HEX CLUSTER ANIMATIONS — subtle drift ── */
+@keyframes hexDriftUp {
+  0%   { transform: translateY(0px);  }
+  35%  { transform: translateY(-7px); }
+  65%  { transform: translateY(-4px); }
+  100% { transform: translateY(0px);  }
+}
+@keyframes hexDriftDown {
+  0%   { transform: translateY(0px); }
+  40%  { transform: translateY(6px); }
+  70%  { transform: translateY(3px); }
+  100% { transform: translateY(0px); }
+}
+@keyframes hexFadeBreath {
+  0%, 100% { opacity: 1;    }
+  50%       { opacity: 0.72; }
+}
+.tac-hex-left  { animation: hexDriftUp   13s ease-in-out infinite !important; }
+.tac-hex-right { animation: hexDriftDown 10s ease-in-out infinite !important; }
+/* Stagger for each section so they don't all move in sync */
+#services .tac-hex-left  { animation-delay: -3s !important; }
+#services .tac-hex-right { animation-delay: -5s !important; }
+#faq .tac-hex-left       { animation-delay: -7s !important; }
+#faq .tac-hex-right      { animation-delay: -2s !important; }
+#contact .tac-hex-left   { animation-delay: -9s !important; }
+#contact .tac-hex-right  { animation-delay: -4s !important; }
 
 /* Amber orange for primary accents — site-wide warmth */
 :root { --orange: #D06818 !important; --og2: #D06818 !important; --og1: #E07820 !important; --og3: #A85010 !important; }
@@ -916,8 +954,218 @@ footer{border-top:2px solid var(--orange)!important;padding:48px 52px!important;
 .tac-hex-left { position: absolute; left: 0; top: 0; pointer-events: none; z-index: 1; }
 .tac-hex-right { position: absolute; right: 0; bottom: 0; pointer-events: none; z-index: 1; }
 </style>
+
+<style id="cinematic-bg">
+/* ══════════════════════════════════════════════════════════
+   GLOBAL MATTE-BLACK HEX TEXTURE — CINEMATIC ENVIRONMENT
+   ══════════════════════════════════════════════════════════ */
+
+/* ─── 1. BASE DARK GROUND ─── */
+html { background: #0b0a08 !important; }
+body { background: transparent !important; }
+
+/* ─── 2. MAIN TEXTURE LAYER: grid + atmospheric radial glow ─── */
+/* Override existing body::before with full texture */
+body::before {
+  content: "" !important;
+  position: fixed !important;
+  inset: -6% !important;
+  width: 112% !important;
+  height: 112% !important;
+  z-index: 0 !important;
+  pointer-events: none !important;
+  background-color: #0d0c0a !important;
+  background-image:
+    /* Center atmospheric upward glow — matches matte-black doc */
+    radial-gradient(ellipse 85% 60% at 50% 18%, rgba(26,23,17,0.94) 0%, transparent 62%),
+    /* Edge vignette darkening */
+    radial-gradient(ellipse 100% 100% at 50% 50%, transparent 40%, rgba(4,3,2,0.72) 100%),
+    /* Fine tactile grid */
+    linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px) !important;
+  background-size: 100% 100%, 100% 100%, 22px 22px, 22px 22px !important;
+  will-change: transform !important;
+  animation: texParallax 32s ease-in-out infinite !important;
+}
+@keyframes texParallax {
+  0%, 100% { transform: translate(0px, 0px);    }
+  20%       { transform: translate(-8px, -5px);  }
+  45%       { transform: translate(-4px, -12px); }
+  65%       { transform: translate(7px,  -7px);  }
+  82%       { transform: translate(4px,  -2px);  }
+}
+
+/* ─── 3. GRAIN NOISE OVERLAY ─── */
+.grain-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0.06;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='256' height='256' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 256px 256px;
+}
+
+/* ─── 4. CORNER HEX PATTERNS (global) ─── */
+.hex-corner-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  /* top-left, top-right, bottom-left, bottom-right */
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='130' height='150'%3E%3Cg fill='%230d0c0a' stroke='%231c1a16' stroke-width='1'%3E%3Cpolygon points='-22,19 -11,0 11,0 22,19 11,38 -11,38' opacity='.9'/%3E%3Cpolygon points='-22,57 -11,38 11,38 22,57 11,76 -11,76' opacity='.7'/%3E%3Cpolygon points='-22,95 -11,76 11,76 22,95 11,114 -11,114' opacity='.5'/%3E%3Cpolygon points='11,0 22,-19 44,-19 55,0 44,19 22,19' opacity='.9'/%3E%3Cpolygon points='11,38 22,19 44,19 55,38 44,57 22,57' opacity='.8'/%3E%3Cpolygon points='11,76 22,57 44,57 55,76 44,95 22,95' opacity='.65'/%3E%3Cpolygon points='11,114 22,95 44,95 55,114 44,133 22,133' opacity='.45'/%3E%3Cpolygon points='44,19 55,0 77,0 88,19 77,38 55,38' opacity='.75'/%3E%3Cpolygon points='44,57 55,38 77,38 88,57 77,76 55,76' opacity='.55'/%3E%3Cpolygon points='77,0 88,-19 110,-19 121,0 110,19 88,19' opacity='.55'/%3E%3Cpolygon points='77,38 88,19 110,19 121,38 110,57 88,57' opacity='.38'/%3E%3C/g%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='130' height='150'%3E%3Cg fill='%230d0c0a' stroke='%231c1a16' stroke-width='1' transform='scale(-1,1) translate(-130,0)'%3E%3Cpolygon points='-22,19 -11,0 11,0 22,19 11,38 -11,38' opacity='.9'/%3E%3Cpolygon points='-22,57 -11,38 11,38 22,57 11,76 -11,76' opacity='.7'/%3E%3Cpolygon points='-22,95 -11,76 11,76 22,95 11,114 -11,114' opacity='.5'/%3E%3Cpolygon points='11,0 22,-19 44,-19 55,0 44,19 22,19' opacity='.9'/%3E%3Cpolygon points='11,38 22,19 44,19 55,38 44,57 22,57' opacity='.8'/%3E%3Cpolygon points='11,76 22,57 44,57 55,76 44,95 22,95' opacity='.65'/%3E%3Cpolygon points='44,19 55,0 77,0 88,19 77,38 55,38' opacity='.75'/%3E%3Cpolygon points='44,57 55,38 77,38 88,57 77,76 55,76' opacity='.55'/%3E%3Cpolygon points='77,0 88,-19 110,-19 121,0 110,19 88,19' opacity='.55'/%3E%3C/g%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='130' height='150'%3E%3Cg fill='%230d0c0a' stroke='%231c1a16' stroke-width='1' transform='scale(1,-1) translate(0,-150)'%3E%3Cpolygon points='-22,19 -11,0 11,0 22,19 11,38 -11,38' opacity='.9'/%3E%3Cpolygon points='-22,57 -11,38 11,38 22,57 11,76 -11,76' opacity='.7'/%3E%3Cpolygon points='11,0 22,-19 44,-19 55,0 44,19 22,19' opacity='.9'/%3E%3Cpolygon points='11,38 22,19 44,19 55,38 44,57 22,57' opacity='.8'/%3E%3Cpolygon points='11,76 22,57 44,57 55,76 44,95 22,95' opacity='.65'/%3E%3Cpolygon points='44,19 55,0 77,0 88,19 77,38 55,38' opacity='.75'/%3E%3Cpolygon points='77,0 88,-19 110,-19 121,0 110,19 88,19' opacity='.55'/%3E%3C/g%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='130' height='150'%3E%3Cg fill='%230d0c0a' stroke='%231c1a16' stroke-width='1' transform='scale(-1,-1) translate(-130,-150)'%3E%3Cpolygon points='-22,19 -11,0 11,0 22,19 11,38 -11,38' opacity='.9'/%3E%3Cpolygon points='-22,57 -11,38 11,38 22,57 11,76 -11,76' opacity='.7'/%3E%3Cpolygon points='11,0 22,-19 44,-19 55,0 44,19 22,19' opacity='.9'/%3E%3Cpolygon points='11,38 22,19 44,19 55,38 44,57 22,57' opacity='.8'/%3E%3Cpolygon points='44,19 55,0 77,0 88,19 77,38 55,38' opacity='.75'/%3E%3Cpolygon points='77,0 88,-19 110,-19 121,0 110,19 88,19' opacity='.55'/%3E%3C/g%3E%3C/svg%3E");
+  background-position: top left, top right, bottom left, bottom right;
+  background-repeat: no-repeat;
+  background-size: 130px 150px;
+}
+
+/* ─── 5. HIDE MOUNTAIN / BLUEPRINT ─── */
+.mountain-bg { opacity: 0 !important; pointer-events: none !important; }
+
+/* ─── 6. SECTIONS: semi-transparent to breathe with global texture ─── */
+#why, #services, #faq, #contact {
+  background: rgba(11,10,8,0.9) !important;
+}
+#proof { background: rgba(9,8,6,0.92) !important; }
+
+/* ─── 7. HERO: transparent — global texture shows directly ─── */
+#hero {
+  background: transparent !important;
+  background-image: none !important;
+}
+/* Hero vignette: subtle darkening at top & bottom edges only */
+#hero::after {
+  display: block !important;
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  pointer-events: none !important;
+  z-index: 1 !important;
+  background:
+    linear-gradient(to bottom, rgba(11,10,8,0.55) 0%, transparent 18%, transparent 75%, rgba(8,7,5,0.75) 100%) !important;
+}
+
+/* ─── 8. AMBIENT ORANGE GLOW behind hero video ─── */
+.hero-logo-wrap::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 150%;
+  height: 150%;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 65% 70% at 50% 52%,
+    rgba(208,104,24,0.13) 0%,
+    rgba(208,104,24,0.07) 30%,
+    rgba(208,104,24,0.02) 55%,
+    transparent 72%
+  );
+  filter: blur(22px);
+  animation: ambientGlowPulse 7s ease-in-out infinite;
+}
+@keyframes ambientGlowPulse {
+  0%, 100% { opacity: 0.75; transform: translate(-50%, -50%) scale(1);    }
+  50%       { opacity: 1;    transform: translate(-50%, -50%) scale(1.1);  }
+}
+
+/* ─── 9. VIDEO: deep feathered radial dissolve into bg ─── */
+.hero-logo-cin {
+  -webkit-mask-image: radial-gradient(
+    ellipse 60% 70% at 50% 50%,
+    black 0%,
+    black 20%,
+    rgba(0,0,0,0.97) 34%,
+    rgba(0,0,0,0.9)  45%,
+    rgba(0,0,0,0.72) 57%,
+    rgba(0,0,0,0.42) 67%,
+    rgba(0,0,0,0.18) 77%,
+    rgba(0,0,0,0.05) 86%,
+    transparent 94%
+  ) !important;
+  mask-image: radial-gradient(
+    ellipse 60% 70% at 50% 50%,
+    black 0%,
+    black 20%,
+    rgba(0,0,0,0.97) 34%,
+    rgba(0,0,0,0.9)  45%,
+    rgba(0,0,0,0.72) 57%,
+    rgba(0,0,0,0.42) 67%,
+    rgba(0,0,0,0.18) 77%,
+    rgba(0,0,0,0.05) 86%,
+    transparent 94%
+  ) !important;
+  mix-blend-mode: screen !important;
+}
+
+/* ─── 10. SHIELD watermark breathes more naturally ─── */
+.hero-shield-svg {
+  opacity: 0.22 !important;
+  filter: drop-shadow(0 0 40px rgba(208,104,24,0.1)) !important;
+}
+</style>
+
+<style id="cold-hero">
+/* ── Cold matte-black hero ─────────────────────────────── */
+
+/* Remove orange crosshair brackets */
+#hero .hcorners { display: none !important; }
+
+/* Remove orange ambient haze behind video */
+.hero-logo-wrap::before { display: none !important; }
+
+/* Hero background: cool dark atmospheric, no orange */
+#hero::before {
+  background:
+    radial-gradient(ellipse 55% 45% at 50% 0%, rgba(22,24,28,0.82) 0%, transparent 70%),
+    radial-gradient(ellipse 80% 50% at 50% 100%, rgba(8,9,11,0.9) 0%, transparent 65%),
+    radial-gradient(ellipse 40% 35% at 0% 50%, rgba(18,20,24,0.5) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 35% at 100% 50%, rgba(18,20,24,0.5) 0%, transparent 70%) !important;
+}
+
+/* RECON badge → cool graphite */
+.hero-recon-badge {
+  color: rgba(118,116,112,0.62) !important;
+}
+
+/* // DRONE RECON prefix → graphite, no orange gradient */
+.hero-h1 .og {
+  background: none !important;
+  -webkit-background-clip: unset !important;
+  background-clip: unset !important;
+  -webkit-text-fill-color: rgba(98,96,90,0.72) !important;
+  color: rgba(98,96,90,0.72) !important;
+}
+
+/* Wider video mask for more seamless global bg blending */
+.hero-logo-cin {
+  -webkit-mask-image: radial-gradient(ellipse 72% 80% at 50% 50%,
+    black 0%, black 22%, rgba(0,0,0,0.96) 36%, rgba(0,0,0,0.88) 47%,
+    rgba(0,0,0,0.68) 58%, rgba(0,0,0,0.38) 70%, rgba(0,0,0,0.14) 81%,
+    rgba(0,0,0,0.04) 89%, transparent 96%) !important;
+  mask-image: radial-gradient(ellipse 72% 80% at 50% 50%,
+    black 0%, black 22%, rgba(0,0,0,0.96) 36%, rgba(0,0,0,0.88) 47%,
+    rgba(0,0,0,0.68) 58%, rgba(0,0,0,0.38) 70%, rgba(0,0,0,0.14) 81%,
+    rgba(0,0,0,0.04) 89%, transparent 96%) !important;
+}
+
+/* Subtle cool tint on hero tac-corners (keep structure, lose orange warmth) */
+#hero .tac-corner {
+  border-color: rgba(80,82,86,0.28) !important;
+}
+</style>
+
 </head>
 <body>
+<div class="grain-overlay" aria-hidden="true"></div>
+<div class="hex-corner-bg" aria-hidden="true"></div>
 <div class="mountain-bg" id="mountainBg" aria-hidden="true">
   <svg id="mtnSvg" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg">
     <defs>
