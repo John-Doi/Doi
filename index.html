@@ -758,25 +758,20 @@ details.faq-item summary::marker{display:none!important;}
   background: #0d0b08 !important;
   background-image: none !important;
 }
-/* Remove the existing radial vignette ::after — replaced by corner glow */
+/* Hero pseudo-elements — managed by cinematic-bg block */
 #hero::after { display: none !important; }
-/* Orange corner glow matching document template amber fade */
 #hero::before {
   content: "" !important;
   position: absolute !important;
   inset: 0 !important;
   background:
-    radial-gradient(ellipse 35% 30% at 0% 0%, rgba(210,115,30,0.16) 0%, transparent 100%),
-    radial-gradient(ellipse 35% 30% at 100% 0%, rgba(210,115,30,0.16) 0%, transparent 100%),
-    radial-gradient(ellipse 35% 30% at 0% 100%, rgba(210,115,30,0.12) 0%, transparent 100%),
-    radial-gradient(ellipse 35% 30% at 100% 100%, rgba(210,115,30,0.18) 0%, transparent 100%),
-    radial-gradient(ellipse 60% 60% at 50% 50%, rgba(200,108,20,0.04) 0%, transparent 100%) !important;
+    radial-gradient(ellipse 55% 40% at 50% 0%, rgba(14,15,18,0.85) 0%, transparent 70%),
+    radial-gradient(ellipse 70% 45% at 50% 100%, rgba(6,7,9,0.9) 0%, transparent 65%) !important;
   pointer-events: none !important;
   z-index: 0 !important;
 }
-/* Re-enable hero corner brackets */
-.hcorners { display: flex !important; }
-.hc { border-color: rgba(210,115,30,0.55) !important; width: 28px !important; height: 28px !important; }
+/* Corner brackets — hidden in hero */
+.hcorners { display: none !important; }
 
 /* Restore logo video — shield SVG is watermark behind it */
 video.hero-logo-cin { display: block !important; position: relative; z-index: 2; }
@@ -792,7 +787,7 @@ video.hero-logo-cin { display: block !important; position: relative; z-index: 2;
   opacity: 0.28 !important;
   z-index: 1 !important;
   pointer-events: none !important;
-  filter: drop-shadow(0 0 32px rgba(200,120,40,0.12)) !important;
+  filter: none !important;
   animation: shieldPulse 8s ease-in-out infinite !important;
 }
 @keyframes shieldPulse {
@@ -806,7 +801,7 @@ video.hero-logo-cin { display: block !important; position: relative; z-index: 2;
   font-family: var(--mono) !important;
   font-size: 10px !important;
   letter-spacing: 4px !important;
-  color: rgba(210,115,30,0.85) !important;
+  color: rgba(110,108,104,0.58) !important;
   text-transform: uppercase !important;
   margin-bottom: 20px !important;
   display: flex !important;
@@ -821,8 +816,19 @@ video.hero-logo-cin { display: block !important; position: relative; z-index: 2;
   flex: 1 !important;
   max-width: 60px !important;
   height: 1px !important;
-  background: rgba(210,115,30,0.4) !important;
+  background: rgba(100,98,94,0.2) !important;
 }
+
+/* Hero h1 // prefix — graphite, no orange gradient */
+.hero-h1 .og {
+  background: none !important;
+  -webkit-background-clip: unset !important;
+  background-clip: unset !important;
+  -webkit-text-fill-color: rgba(95,93,88,0.70) !important;
+  color: rgba(95,93,88,0.70) !important;
+}
+/* Hero tac-corners — dim graphite, no orange */
+#hero .tac-corner { border-color: rgba(72,74,78,0.22) !important; }
 
 /* ── HEX CLUSTER ANIMATIONS — subtle drift ── */
 @keyframes hexDriftUp {
@@ -1050,57 +1056,37 @@ body::before {
     linear-gradient(to bottom, rgba(11,10,8,0.55) 0%, transparent 18%, transparent 75%, rgba(8,7,5,0.75) 100%) !important;
 }
 
-/* ─── 8. AMBIENT ORANGE GLOW behind hero video ─── */
+/* ─── 8. AMBIENT GLOW behind hero video — neutral, no orange ─── */
 .hero-logo-wrap::before {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 150%;
-  height: 150%;
-  z-index: 0;
-  pointer-events: none;
-  background: radial-gradient(
-    ellipse 65% 70% at 50% 52%,
-    rgba(208,104,24,0.13) 0%,
-    rgba(208,104,24,0.07) 30%,
-    rgba(208,104,24,0.02) 55%,
-    transparent 72%
-  );
-  filter: blur(22px);
-  animation: ambientGlowPulse 7s ease-in-out infinite;
-}
-@keyframes ambientGlowPulse {
-  0%, 100% { opacity: 0.75; transform: translate(-50%, -50%) scale(1);    }
-  50%       { opacity: 1;    transform: translate(-50%, -50%) scale(1.1);  }
+  display: none;
+  content: none;
 }
 
 /* ─── 9. VIDEO: deep feathered radial dissolve into bg ─── */
 .hero-logo-cin {
   -webkit-mask-image: radial-gradient(
-    ellipse 60% 70% at 50% 50%,
+    ellipse 72% 80% at 50% 50%,
     black 0%,
-    black 20%,
-    rgba(0,0,0,0.97) 34%,
-    rgba(0,0,0,0.9)  45%,
-    rgba(0,0,0,0.72) 57%,
-    rgba(0,0,0,0.42) 67%,
-    rgba(0,0,0,0.18) 77%,
-    rgba(0,0,0,0.05) 86%,
-    transparent 94%
+    black 22%,
+    rgba(0,0,0,0.96) 36%,
+    rgba(0,0,0,0.88) 47%,
+    rgba(0,0,0,0.68) 58%,
+    rgba(0,0,0,0.38) 70%,
+    rgba(0,0,0,0.14) 81%,
+    rgba(0,0,0,0.04) 89%,
+    transparent 96%
   ) !important;
   mask-image: radial-gradient(
-    ellipse 60% 70% at 50% 50%,
+    ellipse 72% 80% at 50% 50%,
     black 0%,
-    black 20%,
-    rgba(0,0,0,0.97) 34%,
-    rgba(0,0,0,0.9)  45%,
-    rgba(0,0,0,0.72) 57%,
-    rgba(0,0,0,0.42) 67%,
-    rgba(0,0,0,0.18) 77%,
-    rgba(0,0,0,0.05) 86%,
-    transparent 94%
+    black 22%,
+    rgba(0,0,0,0.96) 36%,
+    rgba(0,0,0,0.88) 47%,
+    rgba(0,0,0,0.68) 58%,
+    rgba(0,0,0,0.38) 70%,
+    rgba(0,0,0,0.14) 81%,
+    rgba(0,0,0,0.04) 89%,
+    transparent 96%
   ) !important;
   mix-blend-mode: screen !important;
 }
@@ -1108,59 +1094,10 @@ body::before {
 /* ─── 10. SHIELD watermark breathes more naturally ─── */
 .hero-shield-svg {
   opacity: 0.22 !important;
-  filter: drop-shadow(0 0 40px rgba(208,104,24,0.1)) !important;
+  filter: none !important;
 }
 </style>
 
-<style id="cold-hero">
-/* ── Cold matte-black hero ─────────────────────────────── */
-
-/* Remove orange crosshair brackets */
-#hero .hcorners { display: none !important; }
-
-/* Remove orange ambient haze behind video */
-.hero-logo-wrap::before { display: none !important; }
-
-/* Hero background: cool dark atmospheric, no orange */
-#hero::before {
-  background:
-    radial-gradient(ellipse 55% 45% at 50% 0%, rgba(22,24,28,0.82) 0%, transparent 70%),
-    radial-gradient(ellipse 80% 50% at 50% 100%, rgba(8,9,11,0.9) 0%, transparent 65%),
-    radial-gradient(ellipse 40% 35% at 0% 50%, rgba(18,20,24,0.5) 0%, transparent 70%),
-    radial-gradient(ellipse 40% 35% at 100% 50%, rgba(18,20,24,0.5) 0%, transparent 70%) !important;
-}
-
-/* RECON badge → cool graphite */
-.hero-recon-badge {
-  color: rgba(118,116,112,0.62) !important;
-}
-
-/* // DRONE RECON prefix → graphite, no orange gradient */
-.hero-h1 .og {
-  background: none !important;
-  -webkit-background-clip: unset !important;
-  background-clip: unset !important;
-  -webkit-text-fill-color: rgba(98,96,90,0.72) !important;
-  color: rgba(98,96,90,0.72) !important;
-}
-
-/* Wider video mask for more seamless global bg blending */
-.hero-logo-cin {
-  -webkit-mask-image: radial-gradient(ellipse 72% 80% at 50% 50%,
-    black 0%, black 22%, rgba(0,0,0,0.96) 36%, rgba(0,0,0,0.88) 47%,
-    rgba(0,0,0,0.68) 58%, rgba(0,0,0,0.38) 70%, rgba(0,0,0,0.14) 81%,
-    rgba(0,0,0,0.04) 89%, transparent 96%) !important;
-  mask-image: radial-gradient(ellipse 72% 80% at 50% 50%,
-    black 0%, black 22%, rgba(0,0,0,0.96) 36%, rgba(0,0,0,0.88) 47%,
-    rgba(0,0,0,0.68) 58%, rgba(0,0,0,0.38) 70%, rgba(0,0,0,0.14) 81%,
-    rgba(0,0,0,0.04) 89%, transparent 96%) !important;
-}
-
-/* Subtle cool tint on hero tac-corners (keep structure, lose orange warmth) */
-#hero .tac-corner {
-  border-color: rgba(80,82,86,0.28) !important;
-}
-</style>
 
 </head>
 <body>
@@ -1329,8 +1266,8 @@ body::before {
       <circle cx="100" cy="120" r="4" fill="#1c1a10"/>
 
       <!-- Orange diagonal slashes — DOi signature mark -->
-      <line x1="152" y1="17" x2="178" y2="45" stroke="#C87828" stroke-width="4.5" stroke-linecap="round" filter="url(#s-slash-glow)" opacity="0.95"/>
-      <line x1="22" y1="204" x2="48" y2="230" stroke="#C87828" stroke-width="4.5" stroke-linecap="round" filter="url(#s-slash-glow)" opacity="0.95"/>
+      <line x1="152" y1="17" x2="178" y2="45" stroke="rgba(80,80,80,0.35)" stroke-width="4.5" stroke-linecap="round" opacity="0.6"/>
+      <line x1="22" y1="204" x2="48" y2="230" stroke="rgba(80,80,80,0.35)" stroke-width="4.5" stroke-linecap="round" opacity="0.6"/>
     </svg>
   </div>
   <div class="hero-recon-badge">DØi LABS &nbsp;·&nbsp; RECON DIVISION &nbsp;·&nbsp; EST. 2024</div>
