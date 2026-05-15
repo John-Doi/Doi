@@ -1098,14 +1098,10 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
   display: block !important;
   position: relative !important;
   z-index: 2 !important;
-  /* fill wrap width; height auto preserves original aspect ratio exactly */
+  /* fill wrap width; height auto = natural aspect ratio, zero distortion */
   width: 100% !important;
   max-width: none !important;
   height: auto !important;
-  /* cap height so ultra-wide viewports don't make hero absurdly tall */
-  max-height: min(88vh, 940px) !important;
-  object-fit: cover !important;
-  object-position: center center !important;
   mix-blend-mode: screen !important;
   filter: brightness(0.90) contrast(1.05);
   /* widescreen edge-only mask — wider horizontal ellipse so left/right
@@ -1181,7 +1177,6 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
 @media (max-width: 768px) {
   .hero-logo-cin {
     filter: brightness(0.88) contrast(1.05);
-    max-height: 62vh !important;
     -webkit-mask-image: radial-gradient(
       ellipse 76% 65% at 50% 50%,
       black 0%, black 46%,
