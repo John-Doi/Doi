@@ -1088,61 +1088,75 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
 /* ─── 10. VIDEO — screen blend + aggressive feathered mask ─── */
 .hero-logo-wrap {
   position: relative !important;
+  width: 100vw !important;
+  /* break out of hero content padding to reach full viewport edge */
+  margin-left: calc(50% - 50vw) !important;
+  margin-right: 0 !important;
+  overflow: hidden !important;
 }
 .hero-logo-cin {
   display: block !important;
   position: relative !important;
   z-index: 2 !important;
+  /* fill wrap width; height auto preserves original aspect ratio exactly */
+  width: 100% !important;
+  max-width: none !important;
+  height: auto !important;
+  /* cap height so ultra-wide viewports don't make hero absurdly tall */
+  max-height: min(88vh, 940px) !important;
+  object-fit: cover !important;
+  object-position: center center !important;
   mix-blend-mode: screen !important;
-  /* light filter — center stays visible; JS scroll handler takes over on scroll */
   filter: brightness(0.90) contrast(1.05);
-  /* edge-only mask: center fully opaque, fade only at perimeter */
+  /* widescreen edge-only mask — wider horizontal ellipse so left/right
+     sides dissolve into the page while center logo stays fully visible */
   -webkit-mask-image: radial-gradient(
-    ellipse 72% 76% at 50% 50%,
+    ellipse 80% 68% at 50% 50%,
     black 0%,
-    black 52%,
-    rgba(0,0,0,0.88) 64%,
-    rgba(0,0,0,0.50) 76%,
-    rgba(0,0,0,0.12) 86%,
-    transparent 94%
+    black 50%,
+    rgba(0,0,0,0.90) 62%,
+    rgba(0,0,0,0.52) 74%,
+    rgba(0,0,0,0.14) 85%,
+    transparent 93%
   ) !important;
   mask-image: radial-gradient(
-    ellipse 72% 76% at 50% 50%,
+    ellipse 80% 68% at 50% 50%,
     black 0%,
-    black 52%,
-    rgba(0,0,0,0.88) 64%,
-    rgba(0,0,0,0.50) 76%,
-    rgba(0,0,0,0.12) 86%,
-    transparent 94%
+    black 50%,
+    rgba(0,0,0,0.90) 62%,
+    rgba(0,0,0,0.52) 74%,
+    rgba(0,0,0,0.14) 85%,
+    transparent 93%
   ) !important;
 }
 
-/* edge-kill: DOM vignette — center is fully clear */
+/* edge-kill: DOM vignette — wide ellipse matches full-width cinematic format */
 .hero-vignette {
   position: absolute;
-  inset: -45%;
+  inset: -30%;
   z-index: 5;
   pointer-events: none;
+  /* wider horizontal ellipse: left/right edges dissolve, center stays clear */
   background: radial-gradient(
-    ellipse 55% 58% at 50% 50%,
+    ellipse 62% 52% at 50% 50%,
     transparent 0%,
-    transparent 46%,
-    rgba(9,9,11,0.30) 58%,
-    rgba(9,9,11,0.72) 70%,
-    rgba(9,9,11,0.94) 80%,
+    transparent 44%,
+    rgba(9,9,11,0.28) 57%,
+    rgba(9,9,11,0.68) 70%,
+    rgba(9,9,11,0.92) 80%,
     #09090b 90%
   );
 }
 @media (max-width: 768px) {
   .hero-vignette {
-    inset: -50%;
+    inset: -35%;
     background: radial-gradient(
-      ellipse 52% 55% at 50% 50%,
+      ellipse 60% 50% at 50% 50%,
       transparent 0%,
-      transparent 42%,
-      rgba(9,9,11,0.35) 55%,
-      rgba(9,9,11,0.75) 68%,
-      rgba(9,9,11,0.95) 78%,
+      transparent 40%,
+      rgba(9,9,11,0.32) 54%,
+      rgba(9,9,11,0.72) 68%,
+      rgba(9,9,11,0.94) 78%,
       #09090b 88%
     );
   }
@@ -1167,20 +1181,21 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
 @media (max-width: 768px) {
   .hero-logo-cin {
     filter: brightness(0.88) contrast(1.05);
+    max-height: 62vh !important;
     -webkit-mask-image: radial-gradient(
-      ellipse 68% 72% at 50% 50%,
-      black 0%, black 48%,
-      rgba(0,0,0,0.85) 62%,
-      rgba(0,0,0,0.45) 74%,
-      rgba(0,0,0,0.10) 84%,
+      ellipse 76% 65% at 50% 50%,
+      black 0%, black 46%,
+      rgba(0,0,0,0.86) 60%,
+      rgba(0,0,0,0.44) 72%,
+      rgba(0,0,0,0.10) 83%,
       transparent 92%
     ) !important;
     mask-image: radial-gradient(
-      ellipse 68% 72% at 50% 50%,
-      black 0%, black 48%,
-      rgba(0,0,0,0.85) 62%,
-      rgba(0,0,0,0.45) 74%,
-      rgba(0,0,0,0.10) 84%,
+      ellipse 76% 65% at 50% 50%,
+      black 0%, black 46%,
+      rgba(0,0,0,0.86) 60%,
+      rgba(0,0,0,0.44) 72%,
+      rgba(0,0,0,0.10) 83%,
       transparent 92%
     ) !important;
   }
