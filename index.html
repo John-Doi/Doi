@@ -67,9 +67,11 @@ body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;bac
   opacity:0.95;
   border-radius:0;
   transition:opacity .6s;
-  will-change:opacity;
+  will-change:opacity,filter;
   position:relative;
   z-index:2;
+  /* Dark initial state — JS will maintain this on scroll */
+  filter:brightness(0.58) contrast(1.15);
 }
 @keyframes logoFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-12px);}}
 
@@ -1073,8 +1075,8 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
   position: relative !important;
   z-index: 2 !important;
   mix-blend-mode: screen !important;
-  /* brightness pushes near-black video pixels to pure black so screen shows nothing */
-  filter: brightness(0.58) contrast(1.15) !important;
+  /* brightness set here as initial; JS scroll handler maintains it on scroll */
+  filter: brightness(0.58) contrast(1.15);
   -webkit-mask-image: radial-gradient(
     ellipse 52% 56% at 50% 50%,
     black 0%,
@@ -1137,7 +1139,7 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
 /* ─── 13. MOBILE ─── */
 @media (max-width: 768px) {
   .hero-logo-cin {
-    filter: brightness(0.55) contrast(1.18) !important;
+    filter: brightness(0.55) contrast(1.18);
     -webkit-mask-image: radial-gradient(
       ellipse 60% 52% at 50% 50%,
       black 0%, black 5%,
@@ -2173,7 +2175,8 @@ setInterval(tick,1000);tick();
     if(!t){requestAnimationFrame(function(){
       const p=Math.min(window.scrollY/(window.innerHeight*0.55),1);
       logo.style.opacity=(0.88*(1-p*0.95)).toFixed(3);
-      logo.style.filter=`brightness(${Math.max(0.05,(1.05-p*1.0)).toFixed(2)}) contrast(1.08) saturate(${Math.max(0,(1.0-p*1.0)).toFixed(2)})`;
+      /* Start dark (0.58) so screen-blend shows nothing in black areas; fade out on scroll */
+      logo.style.filter=`brightness(${Math.max(0.04,(0.58-p*0.54)).toFixed(2)}) contrast(1.15) saturate(${Math.max(0,(1.0-p*1.0)).toFixed(2)})`;
       logo.style.animationPlayState=p>0.25?'paused':'running';
       t=false;
     });t=true;}
