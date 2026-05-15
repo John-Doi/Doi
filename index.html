@@ -2216,13 +2216,8 @@ function submitForm(){
     scenes[cur].classList.add('tl-active');
     items[cur].classList.add('tl-on');
   }
-  function getOffsetTop(el){
-    var t=0; while(el){t+=el.offsetTop;el=el.offsetParent;} return t;
-  }
-  var zoneTop = 0;
-  function cacheZoneTop(){ zoneTop = getOffsetTop(zone); }
   function update(){
-    var scrollY = window.pageYOffset || document.documentElement.scrollTop;
+    var rect = zone.getBoundingClientRect();
     var maxScroll = zone.offsetHeight - window.innerHeight;
     if(maxScroll <= 0) return;
     var scrolled = Math.max(0, -rect.top);
