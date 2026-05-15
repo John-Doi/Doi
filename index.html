@@ -1085,23 +1085,24 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
 /* ─── 9. AMBIENT GLOW off ─── */
 .hero-logo-wrap::before { display: none !important; content: none !important; }
 
-/* ─── 10. VIDEO — screen blend + aggressive feathered mask ─── */
+/* ─── 10. VIDEO — full-width, centered directly on the video element ─── */
 .hero-logo-wrap {
   position: relative !important;
-  width: 100vw !important;
-  /* break out of hero content padding to reach full viewport edge */
-  margin-left: calc(50% - 50vw) !important;
-  margin-right: 0 !important;
+  /* block so flex doesn't interfere with video's own centering */
+  display: block !important;
   overflow: hidden !important;
+  /* wrap stays content-width; video breaks out independently */
 }
 .hero-logo-cin {
   display: block !important;
   position: relative !important;
   z-index: 2 !important;
-  /* fill wrap width; height auto = natural aspect ratio, zero distortion */
-  width: 100% !important;
-  max-width: none !important;
+  /* full viewport width, centered via margin trick — no distortion */
+  width: 100vw !important;
+  max-width: 100vw !important;
   height: auto !important;
+  /* center the 100vw video within the content-width wrap */
+  margin-left: calc(50% - 50vw) !important;
   mix-blend-mode: screen !important;
   filter: brightness(0.90) contrast(1.05);
   /* widescreen edge-only mask — wider horizontal ellipse so left/right
