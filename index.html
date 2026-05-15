@@ -674,7 +674,7 @@ nav::after{display:none!important;}
   width:100%!important;
 }
 .svc-grid{grid-template-columns:repeat(3,1fr)!important;align-items:stretch!important;}
-.svc-grid .scard:nth-child(5){grid-column:2/3!important;}
+/* 6 cards fill 3×2 naturally */
 .scard,.why-card{border:none!important;background:rgba(5,4,3,0.88)!important;transition:background .2s!important;}
 .scard:hover,.why-card:hover{background:rgba(14,11,7,0.92)!important;}
 /* Sections: dark texture full-width */
@@ -753,25 +753,28 @@ details.faq-item summary::marker{display:none!important;}
   border-bottom:1px solid rgba(255,107,0,0.2)!important;
   top:56px!important;
 }
+@media(max-width:768px){
+  .sbar{font-size:11px!important;letter-spacing:1.5px!important;padding:7px 14px!important;gap:14px!important;}
+  .si,.si span{font-size:11px!important;letter-spacing:1.5px!important;}
+}
 .sdot{background:var(--orange)!important;box-shadow:0 0 6px var(--orange)!important;}
 .v{color:#EAEAEA!important;}
 .si,.si span{font-size:11px!important;letter-spacing:2px!important;}
 
-/* ═══ HERO: RECON DOCUMENT STYLE ═══ */
-/* Solid dark background — blocks mountain, matches RECON document */
+/* ═══ HERO: TRANSPARENT — grid surface shows through ═══ */
 #hero {
-  background: #0d0b08 !important;
+  background: transparent !important;
   background-image: none !important;
 }
-/* Hero pseudo-elements — managed by cinematic-bg block */
+/* soft top/bottom vignette only — not a full black overlay */
 #hero::after { display: none !important; }
 #hero::before {
   content: "" !important;
   position: absolute !important;
   inset: 0 !important;
   background:
-    radial-gradient(ellipse 55% 40% at 50% 0%, rgba(14,15,18,0.85) 0%, transparent 70%),
-    radial-gradient(ellipse 70% 45% at 50% 100%, rgba(6,7,9,0.9) 0%, transparent 65%) !important;
+    radial-gradient(ellipse 80% 35% at 50% 0%, rgba(9,9,11,0.65) 0%, transparent 100%),
+    radial-gradient(ellipse 80% 30% at 50% 100%, rgba(6,7,9,0.55) 0%, transparent 100%) !important;
   pointer-events: none !important;
   z-index: 0 !important;
 }
@@ -824,13 +827,30 @@ video.hero-logo-cin { display: block !important; position: relative; z-index: 2;
   background: rgba(100,98,94,0.2) !important;
 }
 
-/* Hero h1 // prefix — burnt orange gradient restored */
+/* Hero h1 — burnt orange gradient, inline-block so // is decorative prefix */
 .hero-h1 .og {
+  display: inline-block !important;
+  position: relative !important;
   background: var(--og-grad-h) !important;
   -webkit-background-clip: text !important;
   background-clip: text !important;
   -webkit-text-fill-color: transparent !important;
   color: transparent !important;
+}
+/* // prefix floats left without affecting center alignment */
+.hero-h1 .og::before {
+  content: "// " !important;
+  position: absolute !important;
+  right: 100% !important;
+  bottom: 0 !important;
+  white-space: nowrap !important;
+  background: var(--og-grad-h) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  font-size: 0.6em !important;
+  opacity: 0.7 !important;
+  letter-spacing: 0.05em !important;
 }
 /* Hero tac-corners — dim graphite, no orange */
 #hero .tac-corner { border-color: rgba(72,74,78,0.22) !important; }
@@ -1074,59 +1094,56 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
   position: relative !important;
   z-index: 2 !important;
   mix-blend-mode: screen !important;
-  /* brightness set here as initial; JS scroll handler maintains it on scroll */
-  filter: brightness(0.55) contrast(1.18);
+  /* light filter — center stays visible; JS scroll handler takes over on scroll */
+  filter: brightness(0.90) contrast(1.05);
+  /* edge-only mask: center fully opaque, fade only at perimeter */
   -webkit-mask-image: radial-gradient(
-    ellipse 44% 48% at 50% 50%,
+    ellipse 72% 76% at 50% 50%,
     black 0%,
-    black 5%,
-    rgba(0,0,0,0.92) 14%,
-    rgba(0,0,0,0.70) 24%,
-    rgba(0,0,0,0.38) 34%,
-    rgba(0,0,0,0.10) 44%,
-    rgba(0,0,0,0.02) 52%,
-    transparent 60%
+    black 52%,
+    rgba(0,0,0,0.88) 64%,
+    rgba(0,0,0,0.50) 76%,
+    rgba(0,0,0,0.12) 86%,
+    transparent 94%
   ) !important;
   mask-image: radial-gradient(
-    ellipse 44% 48% at 50% 50%,
+    ellipse 72% 76% at 50% 50%,
     black 0%,
-    black 5%,
-    rgba(0,0,0,0.92) 14%,
-    rgba(0,0,0,0.70) 24%,
-    rgba(0,0,0,0.38) 34%,
-    rgba(0,0,0,0.10) 44%,
-    rgba(0,0,0,0.02) 52%,
-    transparent 60%
+    black 52%,
+    rgba(0,0,0,0.88) 64%,
+    rgba(0,0,0,0.50) 76%,
+    rgba(0,0,0,0.12) 86%,
+    transparent 94%
   ) !important;
 }
 
-/* edge-kill: DOM vignette — reliable cross-browser / Safari */
+/* edge-kill: DOM vignette — center is fully clear */
 .hero-vignette {
   position: absolute;
-  inset: -50%;
+  inset: -45%;
   z-index: 5;
   pointer-events: none;
   background: radial-gradient(
-    ellipse 38% 42% at 50% 50%,
+    ellipse 55% 58% at 50% 50%,
     transparent 0%,
-    transparent 18%,
-    rgba(9,9,11,0.35) 30%,
-    rgba(9,9,11,0.72) 42%,
-    rgba(9,9,11,0.93) 52%,
-    #09090b 62%
+    transparent 46%,
+    rgba(9,9,11,0.30) 58%,
+    rgba(9,9,11,0.72) 70%,
+    rgba(9,9,11,0.94) 80%,
+    #09090b 90%
   );
 }
 @media (max-width: 768px) {
   .hero-vignette {
-    inset: -55%;
+    inset: -50%;
     background: radial-gradient(
-      ellipse 34% 38% at 50% 50%,
+      ellipse 52% 55% at 50% 50%,
       transparent 0%,
-      transparent 14%,
-      rgba(9,9,11,0.40) 26%,
-      rgba(9,9,11,0.78) 38%,
-      rgba(9,9,11,0.95) 50%,
-      #09090b 60%
+      transparent 42%,
+      rgba(9,9,11,0.35) 55%,
+      rgba(9,9,11,0.75) 68%,
+      rgba(9,9,11,0.95) 78%,
+      #09090b 88%
     );
   }
 }
@@ -1149,24 +1166,22 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
 /* ─── 13. MOBILE ─── */
 @media (max-width: 768px) {
   .hero-logo-cin {
-    filter: brightness(0.52) contrast(1.20);
+    filter: brightness(0.88) contrast(1.05);
     -webkit-mask-image: radial-gradient(
-      ellipse 40% 44% at 50% 50%,
-      black 0%, black 4%,
-      rgba(0,0,0,0.88) 13%,
-      rgba(0,0,0,0.60) 22%,
-      rgba(0,0,0,0.28) 32%,
-      rgba(0,0,0,0.06) 42%,
-      transparent 52%
+      ellipse 68% 72% at 50% 50%,
+      black 0%, black 48%,
+      rgba(0,0,0,0.85) 62%,
+      rgba(0,0,0,0.45) 74%,
+      rgba(0,0,0,0.10) 84%,
+      transparent 92%
     ) !important;
     mask-image: radial-gradient(
-      ellipse 40% 44% at 50% 50%,
-      black 0%, black 4%,
-      rgba(0,0,0,0.88) 13%,
-      rgba(0,0,0,0.60) 22%,
-      rgba(0,0,0,0.28) 32%,
-      rgba(0,0,0,0.06) 42%,
-      transparent 52%
+      ellipse 68% 72% at 50% 50%,
+      black 0%, black 48%,
+      rgba(0,0,0,0.85) 62%,
+      rgba(0,0,0,0.45) 74%,
+      rgba(0,0,0,0.10) 84%,
+      transparent 92%
     ) !important;
   }
 
@@ -1349,7 +1364,7 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
   <div class="hero-recon-badge">DØi LABS &nbsp;·&nbsp; RECON DIVISION &nbsp;·&nbsp; EST. 2024</div>
 
   <h1 class="hero-h1">
-    <span class="og">// DRONE RECON</span><br>
+    <span class="og">DRONE RECON</span><br>
     <span class="dim">DIVISION</span><br>
     ADVANCED AERIAL<br>INTELLIGENCE
   </h1>
@@ -1561,6 +1576,15 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
   <div class="scard-desc">Raw drone data means nothing without analysis. We run automated defect detection, change analysis between missions, and anomaly classification — delivering structured intelligence reports your team can act on immediately.</div>
   <div class="scard-who">WHO NEEDS THIS: Operations managers, asset owners, inspectors, analysts, project managers.</div>
   <div class="scard-specs"><div class="sspec"><span class="sk">ENGINE</span><span class="sv">AUTOMATED AI DETECTION</span></div><div class="sspec"><span class="sk">CAPABILITY</span><span class="sv">MULTI-SORTIE COMPARISON</span></div><div class="sspec"><span class="sk">OUTPUT</span><span class="sv">STRUCTURED INTEL REPORT</span></div><div class="sspec"><span class="sk">TURNAROUND</span><span class="sv">24–48H POST-MISSION</span></div></div>
+</div><div class="scard">
+  <div class="scard-top">
+  <svg class="svc-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#D06818" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+  <div class="scard-code"><span class="sb-slash">//</span><span class="sb-code">SVC-06</span></div>
+  </div>
+  <div class="scard-title">3D Modeling & Reconstruction</div>
+  <div class="scard-desc">We convert drone-captured imagery into usable 3D models, site reconstructions, and visual reference assets for planning, inspections, documentation, and client reporting. This gives clients a clearer understanding of structures, terrain, access points, and site conditions without relying only on flat photos.</div>
+  <div class="scard-who">WHO NEEDS THIS: Architects, developers, facility managers, insurance adjusters, engineers, and anyone who needs to understand a site in three dimensions.</div>
+  <div class="scard-specs"><div class="sspec"><span class="sk">OUTPUT</span><span class="sv">PHOTOGRAMMETRIC 3D MODEL</span></div><div class="sspec"><span class="sk">FORMAT</span><span class="sv">OBJ / FBX / GLTF / PDF</span></div><div class="sspec"><span class="sk">USE CASE</span><span class="sv">PLANNING / INSPECTION / REPORTING</span></div><div class="sspec"><span class="sk">TURNAROUND</span><span class="sv">3–5 BUSINESS DAYS</span></div></div>
 </div></div>
 </section>
 
@@ -2187,7 +2211,7 @@ setInterval(tick,1000);tick();
       const p=Math.min(window.scrollY/(window.innerHeight*0.55),1);
       logo.style.opacity=(0.88*(1-p*0.95)).toFixed(3);
       /* Start dark (0.58) so screen-blend shows nothing in black areas; fade out on scroll */
-      logo.style.filter=`brightness(${Math.max(0.04,(0.58-p*0.54)).toFixed(2)}) contrast(1.15) saturate(${Math.max(0,(1.0-p*1.0)).toFixed(2)})`;
+      logo.style.filter=`brightness(${Math.max(0.04,(0.90-p*0.86)).toFixed(2)}) contrast(1.05) saturate(${Math.max(0,(1.0-p*1.0)).toFixed(2)})`;
       logo.style.animationPlayState=p>0.25?'paused':'running';
       t=false;
     });t=true;}
@@ -2410,113 +2434,5 @@ function submitForm(){
 })();
 </script>
 
-<!-- ═══ ORANGE HEX PARALLAX CLUSTERS ═══ -->
-<!-- Bottom-right cluster -->
-<div class="ohex-cluster" id="ohex-br" style="bottom:0;right:0;transform-origin:bottom right;">
-<svg width="220" height="260" viewBox="0 0 220 260" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-<g fill="none" stroke="#D06818" stroke-width="1">
-<polygon points="186,10 199,32 186,54 160,54 147,32 160,10" opacity=".55"/>
-<polygon points="160,54 173,76 160,98 134,98 121,76 134,54" opacity=".45"/>
-<polygon points="134,98 147,120 134,142 108,142 95,120 108,98" opacity=".38"/>
-<polygon points="108,142 121,164 108,186 82,186 69,164 82,142" opacity=".28"/>
-<polygon points="82,186 95,208 82,230 56,230 43,208 56,186" opacity=".20"/>
-<polygon points="160,10 173,32 160,54 134,54 121,32 134,10" opacity=".30" stroke="#D06818" stroke-width="0.5"/>
-<polygon points="134,54 147,76 134,98 108,98 95,76 108,54" opacity=".22" stroke="#D06818" stroke-width="0.5"/>
-<polygon points="186,54 199,76 186,98 160,98 147,76 160,54" opacity=".18"/>
-<polygon points="108,186 121,208 108,230 82,230 69,208 82,186" opacity=".16"/>
-<!-- orange accent dot -->
-<circle cx="186" cy="32" r="2.5" fill="#D06818" opacity=".65"/>
-<circle cx="160" cy="76" r="1.8" fill="#D06818" opacity=".40"/>
-<circle cx="134" cy="120" r="1.5" fill="#D06818" opacity=".30"/>
-</g>
-</svg>
-</div>
-
-<!-- Bottom-left cluster -->
-<div class="ohex-cluster" id="ohex-bl" style="bottom:0;left:0;transform-origin:bottom left;">
-<svg width="180" height="220" viewBox="0 0 180 220" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-<g fill="none" stroke="#D06818" stroke-width="1">
-<polygon points="20,8 33,30 20,52 -6,52 -19,30 -6,8" opacity=".50"/>
-<polygon points="46,52 59,74 46,96 20,96 7,74 20,52" opacity=".42"/>
-<polygon points="20,96 33,118 20,140 -6,140 -19,118 -6,96" opacity=".32"/>
-<polygon points="46,140 59,162 46,184 20,184 7,162 20,140" opacity=".24"/>
-<polygon points="72,8 85,30 72,52 46,52 33,30 46,8" opacity=".28" stroke-width="0.5"/>
-<polygon points="72,96 85,118 72,140 46,140 33,118 46,96" opacity=".18" stroke-width="0.5"/>
-<circle cx="20" cy="30" r="2.5" fill="#D06818" opacity=".60"/>
-<circle cx="46" cy="74" r="1.8" fill="#D06818" opacity=".38"/>
-</g>
-</svg>
-</div>
-
-<!-- Top-right cluster -->
-<div class="ohex-cluster" id="ohex-tr" style="top:0;right:0;transform-origin:top right;">
-<svg width="160" height="180" viewBox="0 0 160 180" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-<g fill="none" stroke="#D06818" stroke-width="1">
-<polygon points="138,8 151,30 138,52 112,52 99,30 112,8" opacity=".45"/>
-<polygon points="112,52 125,74 112,96 86,96 73,74 86,52" opacity=".35"/>
-<polygon points="86,96 99,118 86,140 60,140 47,118 60,96" opacity=".25"/>
-<polygon points="112,8 125,30 112,52 86,52 73,30 86,8" opacity=".22" stroke-width="0.5"/>
-<circle cx="138" cy="30" r="2.2" fill="#D06818" opacity=".55"/>
-<circle cx="112" cy="74" r="1.6" fill="#D06818" opacity=".32"/>
-</g>
-</svg>
-</div>
-
-<!-- Top-left cluster (smaller, more subtle) -->
-<div class="ohex-cluster" id="ohex-tl" style="top:60px;left:0;transform-origin:top left;">
-<svg width="120" height="140" viewBox="0 0 120 140" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-<g fill="none" stroke="#D06818" stroke-width="0.8">
-<polygon points="-4,8 9,30 -4,52 -30,52 -43,30 -30,8" opacity=".38"/>
-<polygon points="22,52 35,74 22,96 -4,96 -17,74 -4,52" opacity=".28"/>
-<polygon points="22,8 35,30 22,52 -4,52 -17,30 -4,8" opacity=".18"/>
-<circle cx="-4" cy="30" r="1.8" fill="#D06818" opacity=".45"/>
-</g>
-</svg>
-</div>
-
-<!-- Mid-right accent strip -->
-<div class="ohex-cluster" id="ohex-mr" style="top:50%;right:0;margin-top:-80px;transform-origin:center right;">
-<svg width="80" height="160" viewBox="0 0 80 160" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-<g fill="none" stroke="#D06818" stroke-width="0.8">
-<polygon points="64,8 77,30 64,52 38,52 25,30 38,8" opacity=".32"/>
-<polygon points="38,52 51,74 38,96 12,96 -1,74 12,52" opacity=".24"/>
-<polygon points="64,96 77,118 64,140 38,140 25,118 38,96" opacity=".18"/>
-<circle cx="64" cy="30" r="1.5" fill="#D06818" opacity=".42"/>
-</g>
-</svg>
-</div>
-
-<script>
-(function() {
-  var clusters = [
-    { el: document.getElementById('ohex-br'), rx: -0.025, ry: -0.035, phase: 0.0 },
-    { el: document.getElementById('ohex-bl'), rx:  0.030, ry: -0.028, phase: 1.4 },
-    { el: document.getElementById('ohex-tr'), rx: -0.018, ry:  0.040, phase: 2.6 },
-    { el: document.getElementById('ohex-tl'), rx:  0.022, ry:  0.032, phase: 0.9 },
-    { el: document.getElementById('ohex-mr'), rx: -0.020, ry:  0.024, phase: 2.0 }
-  ];
-
-  function loop() {
-    var scrollY = window.pageYOffset;
-    var t = Date.now() / 1000;
-    /* glow pulse: breathe opacity 0.55 → 1.0 on each cluster */
-    clusters.forEach(function(c) {
-      if (!c.el) return;
-      var sx = scrollY * c.rx;
-      var sy = scrollY * c.ry;
-      /* slow idle drift — amplitude 5px, independent per cluster */
-      var ix = Math.sin(t * 0.18 + c.phase) * 5;
-      var iy = Math.cos(t * 0.14 + c.phase) * 6;
-      c.el.style.transform = 'translate(' + (sx + ix).toFixed(1) + 'px,' + (sy + iy).toFixed(1) + 'px)';
-      /* soft glow pulse — vary filter brightness */
-      var glow = 0.75 + Math.sin(t * 0.35 + c.phase) * 0.25;
-      c.el.style.opacity = glow.toFixed(2);
-    });
-    requestAnimationFrame(loop);
-  }
-  loop();
-
-})();
-</script>
 </body>
 </html>
