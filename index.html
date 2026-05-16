@@ -2249,9 +2249,11 @@ function submitForm(){
   });
   window.addEventListener('resize',placeDrone);
 
+  /* play animation once only */
+  var played=false;
   var io=new IntersectionObserver(function(entries){
     entries.forEach(function(e){
-      if(e.isIntersecting) showDrone(); else hideDrone();
+      if(e.isIntersecting&&!played){played=true;showDrone();io.disconnect();}
     });
   },{threshold:0.15});
   io.observe(hero);
