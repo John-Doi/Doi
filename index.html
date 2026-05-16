@@ -115,9 +115,9 @@ section{position:relative;z-index:2;}
 .bc.br{bottom:10px;right:10px;border-width:0 1px 1px 0;}
 
 /* Hero recon video row */
-.hero-recon-row{display:inline-flex;align-items:center;gap:clamp(12px,2vw,28px);vertical-align:middle;position:relative;}
-.hero-recon-vid{width:clamp(120px,14vw,200px);height:auto;flex-shrink:0;opacity:0;transform:translateX(calc(100% + clamp(12px,2vw,28px)));transition:transform 0.7s cubic-bezier(0.22,1,0.36,1),opacity 0.5s ease;}
-.hero-recon-vid.hr-visible{opacity:1;transform:translateX(0);}
+.hero-recon-row{display:inline-block;position:relative;vertical-align:middle;}
+.hero-recon-vid{position:absolute;right:100%;top:50%;width:clamp(120px,14vw,200px);height:auto;transform:translateY(-50%) translateX(100%);opacity:0;transition:transform 0.75s cubic-bezier(0.22,1,0.36,1),opacity 0.5s ease;pointer-events:none;}
+.hero-recon-vid.hr-visible{opacity:1;transform:translateY(-50%) translateX(0);}
 /* HERO */
 #hero{
   min-height:100vh;display:flex;flex-direction:column;
