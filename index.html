@@ -116,7 +116,7 @@ section{position:relative;z-index:2;}
 
 /* Hero recon video row */
 .hero-recon-row{display:inline-flex;align-items:center;gap:clamp(12px,2vw,28px);vertical-align:middle;position:relative;}
-.hero-recon-vid{width:clamp(200px,26vw,380px);height:auto;flex-shrink:0;opacity:0;transform:translateX(120px);animation:droneIn 1s cubic-bezier(0.22,1,0.36,1) 0.5s forwards;}
+.hero-recon-vid{width:auto;height:clamp(150px,18vh,230px);flex-shrink:0;opacity:0;transform:translateX(120px);animation:droneIn 1s cubic-bezier(0.22,1,0.36,1) 0.5s forwards;}
 .hero-recon-vid.hr-visible{opacity:1;transform:translateX(0);}
 @keyframes droneIn{from{opacity:0;transform:translateX(120px);}to{opacity:1;transform:translateX(0);}}
 /* HERO */
@@ -637,13 +637,12 @@ nav::after{display:none!important;}
 }
 
 /* Hero top padding: nav (56px) + sbar (~28px) */
-#hero{padding-top:110px!important;overflow:visible!important;}
+#hero{padding-top:110px!important;}
 
 /* HERO */
 .hero-h1{
-  font-size:clamp(32px,6vw,110px)!important;
+  font-size:clamp(52px,7.5vw,120px)!important;
   line-height:0.92!important;letter-spacing:-0.02em!important;
-  position:relative!important;z-index:10!important;
 }
 .hero-cert{
   border:1px solid rgba(255,107,0,0.25)!important;
@@ -1104,7 +1103,6 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
 /* ─── 10. VIDEO — original size, seamless edge blend ─── */
 .hero-logo-wrap {
   position: relative !important;
-  z-index: 1 !important;
 }
 .hero-logo-cin {
   display: block !important;
