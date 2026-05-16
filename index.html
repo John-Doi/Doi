@@ -1868,13 +1868,13 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
         <div class="tl-h">MISSION <span>PIPELINE</span></div>
       </div>
       <div class="tl-items" id="tlItems">
-        <div class="tl-item tl-on"><div class="tl-num">01</div><div class="tl-info"><div class="tl-title">Mission Intake</div><div class="tl-desc">Client consultation and site assessment. We gather objectives, airspace considerations, and deliverable requirements to build the correct deployment plan.</div></div></div>
-        <div class="tl-item"><div class="tl-num">02</div><div class="tl-info"><div class="tl-title">Operational Planning</div><div class="tl-desc">Pre-flight planning, FAA airspace verification, risk analysis, weather evaluation, and mission route configuration. Every mission structured for safety and precision.</div></div></div>
-        <div class="tl-item"><div class="tl-num">03</div><div class="tl-info"><div class="tl-title">Field Deployment</div><div class="tl-desc">Matrice 4T deployed on-site for high-resolution imaging, thermal analysis, and mapping. Operations conducted under controlled protocols and live environmental monitoring.</div></div></div>
-        <div class="tl-item"><div class="tl-num">04</div><div class="tl-info"><div class="tl-title">Data Acquisition</div><div class="tl-desc">Capturing aerial intelligence — visual imagery, thermal signatures, orthomosaic mapping, and anomaly detection — across the full mission scope.</div></div></div>
-        <div class="tl-item"><div class="tl-num">05</div><div class="tl-info"><div class="tl-title">Processing &amp; Analysis</div><div class="tl-desc">Post-mission workflows for organization, enhancement, AI analysis, and quality control. Outputs include thermal reports, 3D maps, and actionable intelligence summaries.</div></div></div>
-        <div class="tl-item"><div class="tl-num">06</div><div class="tl-info"><div class="tl-title">Client Delivery</div><div class="tl-desc">Final deliverables securely packaged and delivered — optimized for operational use, stakeholder review, insurance support, or long-term asset tracking.</div></div></div>
-        <div class="tl-item"><div class="tl-num">07</div><div class="tl-info"><div class="tl-title">Archive &amp; Support</div><div class="tl-desc">Mission data archived for future comparison and repeat inspections. Ongoing scheduling and long-term monitoring programs available for repeat clients.</div></div></div>
+        <div class="tl-item tl-on" onclick="tlStep(0)"><div class="tl-num">01</div><div class="tl-info"><div class="tl-title">Mission Intake</div><div class="tl-desc">Client consultation and site assessment. We gather objectives, airspace considerations, and deliverable requirements to build the correct deployment plan.</div></div></div>
+        <div class="tl-item" onclick="tlStep(1)"><div class="tl-num">02</div><div class="tl-info"><div class="tl-title">Operational Planning</div><div class="tl-desc">Pre-flight planning, FAA airspace verification, risk analysis, weather evaluation, and mission route configuration. Every mission structured for safety and precision.</div></div></div>
+        <div class="tl-item" onclick="tlStep(2)"><div class="tl-num">03</div><div class="tl-info"><div class="tl-title">Field Deployment</div><div class="tl-desc">Matrice 4T deployed on-site for high-resolution imaging, thermal analysis, and mapping. Operations conducted under controlled protocols and live environmental monitoring.</div></div></div>
+        <div class="tl-item" onclick="tlStep(3)"><div class="tl-num">04</div><div class="tl-info"><div class="tl-title">Data Acquisition</div><div class="tl-desc">Capturing aerial intelligence — visual imagery, thermal signatures, orthomosaic mapping, and anomaly detection — across the full mission scope.</div></div></div>
+        <div class="tl-item" onclick="tlStep(4)"><div class="tl-num">05</div><div class="tl-info"><div class="tl-title">Processing &amp; Analysis</div><div class="tl-desc">Post-mission workflows for organization, enhancement, AI analysis, and quality control. Outputs include thermal reports, 3D maps, and actionable intelligence summaries.</div></div></div>
+        <div class="tl-item" onclick="tlStep(5)"><div class="tl-num">06</div><div class="tl-info"><div class="tl-title">Client Delivery</div><div class="tl-desc">Final deliverables securely packaged and delivered — optimized for operational use, stakeholder review, insurance support, or long-term asset tracking.</div></div></div>
+        <div class="tl-item" onclick="tlStep(6)"><div class="tl-num">07</div><div class="tl-info"><div class="tl-title">Archive &amp; Support</div><div class="tl-desc">Mission data archived for future comparison and repeat inspections. Ongoing scheduling and long-term monitoring programs available for repeat clients.</div></div></div>
       </div>
     </div>
   </div>
@@ -2203,27 +2203,20 @@ function submitForm(){
 }
 
 // ── CLICK TIMELINE ──
-(function(){
+var _tlCur = 0;
+function tlStep(s){
   var zone = document.querySelector('.tl-zone');
   if(!zone) return;
   var scenes = zone.querySelectorAll('.tl-scene');
   var items = zone.querySelectorAll('.tl-item');
   var fill = document.getElementById('tlFill');
-  if(!scenes.length || !items.length) return;
-  var n = scenes.length;
-  var cur = 0;
-  function setStep(s){
-    scenes[cur].classList.remove('tl-active');
-    items[cur].classList.remove('tl-on');
-    cur = s;
-    scenes[cur].classList.add('tl-active');
-    items[cur].classList.add('tl-on');
-    if(fill) fill.style.height = ((s + 1) / n * 100) + '%';
-  }
-  items.forEach(function(item, i){
-    item.addEventListener('click', function(){ setStep(i); });
-  });
-})();
+  if(scenes[_tlCur]) scenes[_tlCur].classList.remove('tl-active');
+  if(items[_tlCur]) items[_tlCur].classList.remove('tl-on');
+  _tlCur = s;
+  if(scenes[_tlCur]) scenes[_tlCur].classList.add('tl-active');
+  if(items[_tlCur]) items[_tlCur].classList.add('tl-on');
+  if(fill) fill.style.height = ((s + 1) / scenes.length * 100) + '%';
+}
   // FAQ accordion
   document.querySelectorAll('.faq-q').forEach(function(q){
     q.addEventListener('click',function(){
