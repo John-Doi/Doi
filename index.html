@@ -116,8 +116,7 @@ section{position:relative;z-index:2;}
 
 /* Hero recon video row */
 /* Hero drone video — floats left of DRONE RECON, positioned by JS */
-.hero-drone-vid{position:absolute;width:clamp(130px,13vw,210px);height:auto;mix-blend-mode:screen;opacity:0;transform:translateX(60px);transition:transform 0.8s cubic-bezier(0.22,1,0.36,1),opacity 0.6s ease;pointer-events:none;z-index:6;}
-.hero-drone-vid.hr-visible{opacity:1;transform:translateX(0);}
+.hero-drone-vid{position:absolute;width:clamp(130px,13vw,210px);height:auto;mix-blend-mode:screen;opacity:0;pointer-events:none;z-index:6;}
 /* HERO */
 #hero{
   min-height:100vh;display:flex;flex-direction:column;
@@ -2197,42 +2196,59 @@ function submitForm(){
   var v=document.getElementById('heroReconVid');
   var hero=document.getElementById('hero');
   if(!v||!hero) return;
+  var visible=false;
+  var GAP=20;
 
   function placeDrone(){
     var og=document.querySelector('.hero-h1 .og');
     if(!og) return;
     var or_=og.getBoundingClientRect();
     var hr=hero.getBoundingClientRect();
-    // Vertically center drone on the og span
-    var top=or_.top - hr.top + or_.height/2 - v.offsetHeight/2;
-    // Horizontally: left edge of og, minus drone width minus gap
-    var gap=16;
-    var left=or_.left - hr.left - v.offsetWidth - gap;
+    var vw=v.offsetWidth||140;
+    var vh=v.offsetHeight||vw*1.1;
+    var top=or_.top-hr.top+or_.height/2-vh/2;
+    var left=or_.left-hr.left-vw-GAP;
     v.style.top=top+'px';
     v.style.left=left+'px';
-    // Initial slide-in offset: start behind the text
-    if(!v.classList.contains('hr-visible')){
-      v.style.transform='translateX('+(v.offsetWidth+gap)+'px)';
+    if(!visible){
+      v.style.transition='none';
+      v.style.transform='translateX('+(vw+GAP)+'px)';
+      v.style.opacity='0';
+      v.offsetHeight; // force reflow
     }
   }
 
-  // Position on load and resize
-  window.addEventListener('load', placeDrone);
-  window.addEventListener('resize', placeDrone);
+  function showDrone(){
+    placeDrone();
+    visible=true;
+    v.style.transition='transform 0.85s cubic-bezier(0.22,1,0.36,1),opacity 0.6s ease';
+    v.style.transform='translateX(0)';
+    v.style.opacity='1';
+    v.play().catch(function(){});
+  }
+
+  function hideDrone(){
+    var vw=v.offsetWidth||140;
+    visible=false;
+    v.style.transition='transform 0.5s ease,opacity 0.4s ease';
+    v.style.transform='translateX('+(vw+GAP)+'px)';
+    v.style.opacity='0';
+    v.pause();
+  }
+
   placeDrone();
+  window.addEventListener('load',function(){
+    placeDrone();
+    var hr=hero.getBoundingClientRect();
+    if(hr.top<window.innerHeight*0.85) showDrone();
+  });
+  window.addEventListener('resize',placeDrone);
 
   var io=new IntersectionObserver(function(entries){
     entries.forEach(function(e){
-      if(e.isIntersecting){
-        placeDrone();
-        setTimeout(function(){v.classList.add('hr-visible');},50);
-        v.play();
-      } else {
-        v.classList.remove('hr-visible');
-        v.pause();
-      }
+      if(e.isIntersecting) showDrone(); else hideDrone();
     });
-  },{threshold:0.3,rootMargin:'-50px 0px'});
+  },{threshold:0.15});
   io.observe(hero);
 })();
 </script>
