@@ -2207,11 +2207,11 @@ function submitForm(){
     var hr=hero.getBoundingClientRect();
     var vw=v.offsetWidth||140;
     var vh=v.offsetHeight||vw*1.1;
-    /* vertically align drone with the hero stats row (5 SVC types) */
-    var stats=document.querySelector('.hero-stats');
-    var anchor=stats?stats.getBoundingClientRect():or_;
+    /* position drone right next to the 5 SVC stat */
+    var svc=document.querySelector('.hero-stats .hstat');
+    var anchor=svc?svc.getBoundingClientRect():or_;
     var top=anchor.top-hr.top+anchor.height/2-vh/2;
-    var left=or_.left-hr.left-vw*0.1;
+    var left=anchor.left-hr.left-vw-8;
     v.style.top=top+'px';
     v.style.left=left+'px';
     if(!visible){
