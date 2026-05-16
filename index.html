@@ -1877,6 +1877,25 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
     </div>
   </div>
 </div>
+<script>
+!function(){
+  var IDS=['tls0','tls1','tls2','tls3','tls4','tls5','tls6'];
+  function step(s){
+    for(var i=0;i<IDS.length;i++){
+      var sc=document.getElementById(IDS[i]);
+      if(sc) sc.style.cssText='position:absolute;inset:0;display:'+(i===s?'flex':'none')+';align-items:center;justify-content:center;pointer-events:'+(i===s?'auto':'none');
+    }
+    var box=document.getElementById('tlItems');
+    if(box){var li=box.querySelectorAll('.tl-item');for(var j=0;j<li.length;j++)li[j].classList.toggle('tl-on',j===s);}
+    var fill=document.getElementById('tlFill');
+    if(fill)fill.style.height=((s+1)/IDS.length*100)+'%';
+  }
+  window.tlStep=step;
+  step(0);
+  var box=document.getElementById('tlItems');
+  if(box){var li=box.querySelectorAll('.tl-item');for(var j=0;j<li.length;j++)(function(idx){li[idx].addEventListener('click',function(){step(idx);});})(j);}
+}();
+</script>
 
 <!-- MOBILE FALLBACK -->
 <section class="tl-mob" id="process-mob">
@@ -2200,23 +2219,6 @@ function submitForm(){
   document.getElementById('contact').scrollIntoView({behavior:'smooth',block:'start'});
 }
 
-// ── CLICK TIMELINE ──
-var _tlCur = 0;
-function tlStep(s){
-  var zone = document.querySelector('.tl-zone');
-  if(!zone) return;
-  var scenes = zone.querySelectorAll('.tl-scene');
-  var items = zone.querySelectorAll('.tl-item');
-  var n = scenes.length;
-  for(var i=0;i<n;i++){
-    scenes[i].style.display = (i===s) ? 'flex' : 'none';
-    items[i].classList.toggle('tl-on', i===s);
-  }
-  _tlCur = s;
-  var fill = document.getElementById('tlFill');
-  if(fill) fill.style.height = ((s+1)/n*100)+'%';
-}
-tlStep(0);
   // FAQ accordion
   document.querySelectorAll('.faq-q').forEach(function(q){
     q.addEventListener('click',function(){
