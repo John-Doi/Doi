@@ -2200,8 +2200,6 @@ function submitForm(){
   var hero=document.getElementById('hero');
   if(!v||!hero) return;
   var visible=false;
-  var GAP=-28;
-
   function placeDrone(){
     var og=document.querySelector('.hero-h1 .og');
     if(!og) return;
@@ -2209,15 +2207,16 @@ function submitForm(){
     var hr=hero.getBoundingClientRect();
     var vw=v.offsetWidth||140;
     var vh=v.offsetHeight||vw*1.1;
-    var top=or_.top-hr.top+or_.height/2-vh/2;
-    var left=or_.left-hr.left-vw-GAP;
+    /* position drone under the D: top overlaps bottom ~20% of text, left aligns to D */
+    var top=or_.top-hr.top+or_.height*0.8;
+    var left=or_.left-hr.left-vw*0.1;
     v.style.top=top+'px';
     v.style.left=left+'px';
     if(!visible){
       v.style.transition='none';
-      v.style.transform='translateX('+(vw+GAP)+'px)';
+      v.style.transform='translateY('+(vh+40)+'px)';
       v.style.opacity='0';
-      v.offsetHeight; // force reflow
+      v.offsetHeight;
     }
   }
 
@@ -2225,16 +2224,16 @@ function submitForm(){
     placeDrone();
     visible=true;
     v.style.transition='transform 0.85s cubic-bezier(0.22,1,0.36,1),opacity 0.6s ease';
-    v.style.transform='translateX(0)';
+    v.style.transform='translateY(0)';
     v.style.opacity='1';
     v.play().catch(function(){});
   }
 
   function hideDrone(){
-    var vw=v.offsetWidth||140;
+    var vh=v.offsetHeight||140;
     visible=false;
     v.style.transition='transform 0.5s ease,opacity 0.4s ease';
-    v.style.transform='translateX('+(vw+GAP)+'px)';
+    v.style.transform='translateY('+(vh+40)+'px)';
     v.style.opacity='0';
     v.pause();
   }
