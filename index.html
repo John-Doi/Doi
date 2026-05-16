@@ -114,11 +114,6 @@ section{position:relative;z-index:2;}
 .bc.tl{top:10px;left:10px;border-width:1px 0 0 1px;}
 .bc.br{bottom:10px;right:10px;border-width:0 1px 1px 0;}
 
-/* Hero recon video row */
-/* Hero drone video — floats left of DRONE RECON, positioned by JS */
-
-/* Drone hero image */
-
 /* HERO */
 #hero{
   min-height:100vh;display:flex;flex-direction:column;
@@ -159,7 +154,7 @@ section{position:relative;z-index:2;}
 }
 .hero-h1{font-family:var(--disp);font-weight:900;font-size:clamp(44px,6.5vw,100px);line-height:0.88;letter-spacing:-2px;text-transform:uppercase;color:var(--t1);margin-bottom:16px;animation:fadeUp 1s .18s ease both;}
 .hero-h1 .dim{color:transparent;-webkit-text-stroke:1px rgba(255,255,255,0.18);}
-.hero-h1 .og{background:none;-webkit-text-fill-color:transparent;color:transparent;-webkit-text-stroke:3px #FF6B00;}
+.hero-h1 .og{background:var(--og-grad-h);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 .hero-sub{font-family:var(--body);font-size:20px;line-height:1.78;color:var(--t2);max-width:600px;margin:0 auto 14px;animation:fadeUp 1s .24s ease both;font-weight:500;}
 .hero-sub strong{color:var(--t1);font-weight:600;}
 /* TRUST INDICATORS */
@@ -637,7 +632,7 @@ nav::after{display:none!important;}
 }
 
 /* Hero top padding: nav (56px) + sbar (~28px) */
-#hero{padding-top:110px!important;overflow:visible!important;}
+#hero{padding-top:110px!important;}
 
 /* HERO */
 .hero-h1{
@@ -838,23 +833,30 @@ video.hero-logo-cin { display: block !important; position: relative; z-index: 2;
 
 /* Hero h1 — burnt orange gradient, inline-block so // is decorative prefix */
 .hero-h1 .og {
-  display: inline !important;
-  background: none !important;
-  -webkit-background-clip: unset !important;
-  background-clip: unset !important;
+  display: inline-block !important;
+  position: relative !important;
+  font-size: 1.6em !important;
+  line-height: 0.9 !important;
+  background: var(--og-grad-h) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
   -webkit-text-fill-color: transparent !important;
   color: transparent !important;
-  -webkit-text-stroke: 2px #FF6B00 !important;
 }
-/* // prefix — inline with DRONE RECON */
+/* // prefix floats left without affecting center alignment */
 .hero-h1 .og::before {
   content: "// " !important;
-  display: inline !important;
+  position: absolute !important;
+  right: 100% !important;
+  bottom: 0 !important;
+  white-space: nowrap !important;
+  background: var(--og-grad-h) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
   -webkit-text-fill-color: transparent !important;
-  color: transparent !important;
-  -webkit-text-stroke: 1px rgba(255,107,0,0.6) !important;
-  font-size: 0.55em !important;
-  vertical-align: middle !important;
+  font-size: 0.6em !important;
+  opacity: 0.7 !important;
+  letter-spacing: 0.05em !important;
 }
 /* Hero tac-corners — dim graphite, no orange */
 #hero .tac-corner { border-color: rgba(72,74,78,0.22) !important; }
@@ -1399,9 +1401,6 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
     <a href="#contact" class="btn-pri"><svg width="9" height="9" viewBox="0 0 10 10" fill="currentColor"><polygon points="0,0 10,5 0,10"/></svg>/// GET A QUOTE</a>
     <a href="#services" class="btn-ghost">// VIEW SERVICES</a>
   </div>
-  
-  
-  
   <div class="hero-unit-id" style="position:absolute;bottom:24px;right:36px;font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:3px;color:#333;text-transform:uppercase;">UNIT D-01 // REV 2.6 // SYSTEMS NOMINAL</div>
 </section>
 
@@ -2187,7 +2186,6 @@ function submitForm(){
   var fallback = setTimeout(function(){obs.disconnect();runTypewriter();}, 2500);
 })();
 </script>
-
 
 </body>
 </html>
