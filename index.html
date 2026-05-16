@@ -116,9 +116,8 @@ section{position:relative;z-index:2;}
 
 /* Hero recon video row */
 .hero-recon-row{display:inline-flex;align-items:center;gap:clamp(12px,2vw,28px);vertical-align:middle;position:relative;}
-.hero-recon-vid{width:auto;height:clamp(150px,18vh,230px);flex-shrink:0;opacity:0;transform:translateX(120px);animation:droneIn 1s cubic-bezier(0.22,1,0.36,1) 0.5s forwards;}
+.hero-recon-vid{width:clamp(120px,14vw,200px);height:auto;flex-shrink:0;opacity:0;transform:translateX(calc(100% + clamp(12px,2vw,28px)));transition:transform 0.7s cubic-bezier(0.22,1,0.36,1),opacity 0.5s ease;}
 .hero-recon-vid.hr-visible{opacity:1;transform:translateX(0);}
-@keyframes droneIn{from{opacity:0;transform:translateX(120px);}to{opacity:1;transform:translateX(0);}}
 /* HERO */
 #hero{
   min-height:100vh;display:flex;flex-direction:column;
@@ -363,7 +362,7 @@ footer::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;back
 @media(max-width:600px){
   .svc-grid,.why-grid,.faq-grid,.proof-inner{grid-template-columns:1fr;padding:0 22px;}
   .deliverables-grid{grid-template-columns:1fr;}
-  .hero-h1{font-size:42px;letter-spacing:-1px;}.hero-recon-vid{display:none!important;}
+  .hero-h1{font-size:42px;letter-spacing:-1px;}
   .pstep{grid-template-columns:1fr;gap:8px;}
   .nav-links li:not(:last-child){display:none;}
 }
@@ -637,7 +636,7 @@ nav::after{display:none!important;}
 }
 
 /* Hero top padding: nav (56px) + sbar (~28px) */
-#hero{padding-top:110px!important;}
+#hero{padding-top:110px!important;background:#000!important;}
 
 /* HERO */
 .hero-h1{
@@ -1103,6 +1102,7 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
 /* ─── 10. VIDEO — original size, seamless edge blend ─── */
 .hero-logo-wrap {
   position: relative !important;
+  /* flex centering from base CSS, no overflow clip so vignette can breathe */
 }
 .hero-logo-cin {
   display: block !important;
@@ -2197,10 +2197,10 @@ function submitForm(){
   if(!v) return;
   var io=new IntersectionObserver(function(entries){
     entries.forEach(function(e){
-      if(e.isIntersecting){v.classList.add('hr-visible');}
-      else{v.classList.remove('hr-visible');}
+      if(e.isIntersecting){v.classList.add('hr-visible');v.play();}
+      else{v.classList.remove('hr-visible');v.pause();}
     });
-  },{threshold:0.1});
+  },{threshold:0.2});
   io.observe(v);
 })();
 </script>
