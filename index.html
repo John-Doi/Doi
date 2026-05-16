@@ -2207,8 +2207,10 @@ function submitForm(){
     var hr=hero.getBoundingClientRect();
     var vw=v.offsetWidth||140;
     var vh=v.offsetHeight||vw*1.1;
-    /* position drone under the D: top overlaps bottom ~20% of text, left aligns to D */
-    var top=or_.top-hr.top+or_.height*0.8;
+    /* vertically align drone with the hero stats row (5 SVC types) */
+    var stats=document.querySelector('.hero-stats');
+    var anchor=stats?stats.getBoundingClientRect():or_;
+    var top=anchor.top-hr.top+anchor.height/2-vh/2;
     var left=or_.left-hr.left-vw*0.1;
     v.style.top=top+'px';
     v.style.left=left+'px';
