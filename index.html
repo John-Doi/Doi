@@ -119,17 +119,18 @@ section{position:relative;z-index:2;}
 
 /* Drone hero image */
 @keyframes droneSlideIn{
-  from{transform:translateX(180px);opacity:0;}
+  from{transform:translateX(200px);opacity:0;}
   to{transform:translateX(0);opacity:1;}
 }
 .hero-drone-img{
   position:absolute;
+  top:35%;
+  left:2%;
   width:clamp(140px,14vw,220px);
   height:auto;
   pointer-events:none;
-  z-index:6;
-  opacity:0;
-  animation:droneSlideIn 0.9s cubic-bezier(0.22,1,0.36,1) 0.3s forwards;
+  z-index:10;
+  animation:droneSlideIn 0.9s cubic-bezier(0.22,1,0.36,1) 0.2s both;
 }
 /* HERO */
 #hero{
