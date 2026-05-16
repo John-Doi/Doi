@@ -2198,10 +2198,10 @@ function submitForm(){
   if(!v) return;
   var io=new IntersectionObserver(function(entries){
     entries.forEach(function(e){
-      if(e.isIntersecting){v.classList.add('hr-visible');v.play();}
-      else{v.classList.remove('hr-visible');v.pause();}
+      if(e.isIntersecting){v.classList.add('hr-visible');}
+      else{v.classList.remove('hr-visible');}
     });
-  },{threshold:0.2});
+  },{threshold:0.1});
   io.observe(v);
 })();
 </script>
