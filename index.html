@@ -2210,7 +2210,7 @@ function submitForm(){
     /* position drone right next to the 5 SVC stat */
     var svc=document.querySelector('.hero-stats .hstat');
     var anchor=svc?svc.getBoundingClientRect():or_;
-    var top=anchor.top-hr.top+anchor.height/2-vh/2;
+    var top=anchor.top-hr.top+anchor.height/2-vh/2-80;
     var left=anchor.left-hr.left-vw-8;
     v.style.top=top+'px';
     v.style.left=left+'px';
