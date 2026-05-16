@@ -2203,10 +2203,12 @@ function submitForm(){
 // ── SCROLL TIMELINE ──
 (function(){
   var zone = document.querySelector('.tl-zone');
-  var scenes = document.querySelectorAll('.tl-scene');
-  var items = document.querySelectorAll('.tl-item');
+  if(!zone) return;
+  var scenes = zone.querySelectorAll('.tl-scene');
+  var items = zone.querySelectorAll('.tl-item');
   var fill = document.getElementById('tlFill');
-  if(!zone || !scenes.length) return;
+  if(!scenes.length || !items.length) return;
+  var n = scenes.length;
   var cur = 0;
   function setStep(s){
     if(s === cur) return;
@@ -2216,19 +2218,19 @@ function submitForm(){
     scenes[cur].classList.add('tl-active');
     items[cur].classList.add('tl-on');
   }
-  function update(){
+  function tick(){
     var rect = zone.getBoundingClientRect();
     var maxScroll = zone.offsetHeight - window.innerHeight;
-    if(maxScroll <= 0) return;
-    var scrolled = Math.max(0, -rect.top);
-    var progress = Math.min(1, scrolled / maxScroll);
-    var step = Math.min(scenes.length - 1, Math.floor(progress * scenes.length));
-    setStep(step);
-    if(fill) fill.style.height = (progress * 100) + '%';
+    if(maxScroll > 0){
+      var scrolled = Math.max(0, -rect.top);
+      var progress = Math.min(1, scrolled / maxScroll);
+      var step = Math.min(n - 1, Math.floor(progress * n));
+      setStep(step);
+      if(fill) fill.style.height = (progress * 100) + '%';
+    }
+    requestAnimationFrame(tick);
   }
-  window.addEventListener('scroll', update, {passive:true});
-  window.addEventListener('resize', update);
-  update();
+  requestAnimationFrame(tick);
 })();
   // FAQ accordion
   document.querySelectorAll('.faq-q').forEach(function(q){
