@@ -447,9 +447,9 @@ body{font-size:17px;font-weight:500;}
 }
 
 /* ── SCROLL TIMELINE ── */
-.tl-zone{position:relative;height:700vh;}
+.tl-zone{position:relative;}
 .tl-pin{
-  position:sticky;top:0;height:100vh;overflow:hidden;
+  position:relative;overflow:hidden;
   display:grid;grid-template-columns:1fr 1fr;
   background:var(--black);border-top:1px solid var(--bd);
 }
@@ -458,6 +458,7 @@ body{font-size:17px;font-weight:500;}
   position:relative;overflow:hidden;
   background:#080808;border-right:1px solid var(--bd);
   display:flex;align-items:center;justify-content:center;
+  height:clamp(420px,50vw,620px);
 }
 .tl-scene{
   position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
@@ -527,7 +528,6 @@ body{font-size:17px;font-weight:500;}
 .tl-scene-vid{width:100%;height:100%;object-fit:contain;display:block;}
 
 @media(max-width:860px){
-  .tl-zone{height:560vh;}
   .tl-pin{
     grid-template-columns:1fr;
     grid-template-rows:min(56vw,280px) 1fr;
@@ -1205,7 +1205,7 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
 }
 
 /* ensure timeline sticky pin is not overridden */
-.tl-pin { position: sticky !important; }
+/* tl-pin: position managed by base CSS */
 </style>
 
 
