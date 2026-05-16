@@ -2210,13 +2210,18 @@ function tlStep(s){
   var scenes = zone.querySelectorAll('.tl-scene');
   var items = zone.querySelectorAll('.tl-item');
   var fill = document.getElementById('tlFill');
-  if(scenes[_tlCur]) scenes[_tlCur].classList.remove('tl-active');
-  if(items[_tlCur]) items[_tlCur].classList.remove('tl-on');
+  var n = scenes.length;
+  for(var i = 0; i < n; i++){
+    scenes[i].style.opacity = (i === s) ? '1' : '0';
+    scenes[i].style.pointerEvents = (i === s) ? 'auto' : 'none';
+    scenes[i].style.zIndex = (i === s) ? '2' : '1';
+    items[i].classList.toggle('tl-on', i === s);
+  }
   _tlCur = s;
-  if(scenes[_tlCur]) scenes[_tlCur].classList.add('tl-active');
-  if(items[_tlCur]) items[_tlCur].classList.add('tl-on');
-  if(fill) fill.style.height = ((s + 1) / scenes.length * 100) + '%';
+  if(fill) fill.style.height = ((s + 1) / n * 100) + '%';
 }
+// Init: force scene 0 visible via inline style on load
+document.addEventListener('DOMContentLoaded', function(){ tlStep(0); });
   // FAQ accordion
   document.querySelectorAll('.faq-q').forEach(function(q){
     q.addEventListener('click',function(){
