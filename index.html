@@ -118,20 +118,16 @@ section{position:relative;z-index:2;}
 /* Hero drone video — floats left of DRONE RECON, positioned by JS */
 
 /* Drone hero image */
-@keyframes droneSlideIn{
-  from{transform:translateX(200px);opacity:0;}
-  to{transform:translateX(0);opacity:1;}
-}
 .hero-drone-img{
-  position:absolute;
-  top:35%;
-  left:2%;
+  position:fixed;
   width:clamp(140px,14vw,220px);
   height:auto;
   pointer-events:none;
-  z-index:10;
-  animation:droneSlideIn 0.9s cubic-bezier(0.22,1,0.36,1) 0.2s both;
+  z-index:9999;
+  opacity:0;
+  transition:transform 0.85s cubic-bezier(0.22,1,0.36,1),opacity 0.5s ease;
 }
+.hero-drone-img.drone-visible{opacity:1;transform:translateX(0)!important;}
 /* HERO */
 #hero{
   min-height:100vh;display:flex;flex-direction:column;
@@ -861,12 +857,11 @@ video.hero-logo-cin { display: block !important; position: relative; z-index: 2;
   -webkit-text-fill-color: transparent !important;
   color: transparent !important;
 }
-/* // prefix floats left without affecting center alignment */
+/* // prefix — inline so "// DRONE RECON" centers as one unit */
 .hero-h1 .og::before {
   content: "// " !important;
-  position: absolute !important;
-  right: 100% !important;
-  bottom: 0 !important;
+  position: static !important;
+  display: inline !important;
   white-space: nowrap !important;
   background: var(--og-grad-h) !important;
   -webkit-background-clip: text !important;
@@ -875,6 +870,7 @@ video.hero-logo-cin { display: block !important; position: relative; z-index: 2;
   font-size: 0.6em !important;
   opacity: 0.7 !important;
   letter-spacing: 0.05em !important;
+  vertical-align: middle !important;
 }
 /* Hero tac-corners — dim graphite, no orange */
 #hero .tac-corner { border-color: rgba(72,74,78,0.22) !important; }
@@ -2211,18 +2207,33 @@ function submitForm(){
 <script>
 (function(){
   var img=document.getElementById('heroReconImg');
-  var hero=document.getElementById('hero');
-  if(!img||!hero) return;
+  if(!img) return;
+
   function place(){
     var og=document.querySelector('.hero-h1 .og');
     if(!og) return;
-    var or_=og.getBoundingClientRect();
-    var hr=hero.getBoundingClientRect();
-    var gap=18;
-    img.style.top=(or_.top-hr.top+or_.height/2-img.offsetHeight/2)+'px';
-    img.style.left=(or_.left-hr.left-img.offsetWidth-gap)+'px';
+    var r=og.getBoundingClientRect();
+    var gap=16;
+    var iw=img.offsetWidth||160;
+    var ih=img.offsetHeight||iw;
+    // Final resting position: left of .og, vertically centered on it
+    var finalLeft=r.left-iw-gap;
+    var top=r.top+r.height/2-ih/2;
+    img.style.top=top+'px';
+    img.style.left=finalLeft+'px';
+    // Start: drone at center of DRONE RECON (behind text)
+    var startOffset=r.left+r.width/2-finalLeft-iw/2;
+    if(!img.classList.contains('drone-visible')){
+      img.style.transform='translateX('+startOffset+'px)';
+    }
   }
-  window.addEventListener('load',place);
+
+  window.addEventListener('load',function(){
+    place();
+    setTimeout(function(){
+      img.classList.add('drone-visible');
+    },200);
+  });
   window.addEventListener('resize',place);
   place();
 })();
