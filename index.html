@@ -477,8 +477,10 @@ body{font-size:17px;font-weight:500;}
 .tl-item{
   display:flex;align-items:flex-start;gap:20px;
   padding:14px 0;border-bottom:1px solid var(--bd);
-  cursor:default;transition:background .2s;
+  cursor:pointer;transition:background .2s;
 }
+.tl-item:hover .tl-title{color:var(--t1);}
+.tl-item:hover .tl-num{color:var(--og2);}
 .tl-item:first-child{border-top:1px solid var(--bd);}
 .tl-num{
   font-family:var(--mono);font-size:11px;letter-spacing:.1em;
@@ -2200,7 +2202,7 @@ function submitForm(){
   document.getElementById('contact').scrollIntoView({behavior:'smooth',block:'start'});
 }
 
-// ── SCROLL TIMELINE ──
+// ── CLICK TIMELINE ──
 (function(){
   var zone = document.querySelector('.tl-zone');
   if(!zone) return;
@@ -2211,26 +2213,16 @@ function submitForm(){
   var n = scenes.length;
   var cur = 0;
   function setStep(s){
-    if(s === cur) return;
     scenes[cur].classList.remove('tl-active');
     items[cur].classList.remove('tl-on');
     cur = s;
     scenes[cur].classList.add('tl-active');
     items[cur].classList.add('tl-on');
+    if(fill) fill.style.height = ((s + 1) / n * 100) + '%';
   }
-  function tick(){
-    var rect = zone.getBoundingClientRect();
-    var maxScroll = zone.offsetHeight - window.innerHeight;
-    if(maxScroll > 0){
-      var scrolled = Math.max(0, -rect.top);
-      var progress = Math.min(1, scrolled / maxScroll);
-      var step = Math.min(n - 1, Math.floor(progress * n));
-      setStep(step);
-      if(fill) fill.style.height = (progress * 100) + '%';
-    }
-    requestAnimationFrame(tick);
-  }
-  requestAnimationFrame(tick);
+  items.forEach(function(item, i){
+    item.addEventListener('click', function(){ setStep(i); });
+  });
 })();
   // FAQ accordion
   document.querySelectorAll('.faq-q').forEach(function(q){
