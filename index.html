@@ -1251,6 +1251,9 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
 /* ── GLOBAL: suppress CSS // prefix (// now baked into HTML) ── */
 .hero-h1 .og::before{content:none!important;}
 
+/* ── GLOBAL: vet flag inline alignment ── */
+.vet-flag{display:inline-block;vertical-align:middle;margin:0 3px -1px;}
+
 /* ── TABLET (iPad portrait: 601–1020px) ── */
 @media(max-width:1020px){
   nav{padding:0 24px!important;}
@@ -1273,11 +1276,14 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
   nav{padding:0 16px!important;}
   .sbar{display:none!important;}
 
-  /* Hero */
-  #hero{padding-top:72px!important;}
-  .hero-h1{font-size:clamp(36px,11vw,48px)!important;letter-spacing:-0.5px!important;}
-  .hero-sub{font-size:16px!important;margin-top:20px!important;padding:0 4px!important;}
-  .hero-cert{font-size:10px!important;letter-spacing:2px!important;padding:7px 12px!important;}
+  /* Hero — full center alignment */
+  #hero{padding-top:72px!important;align-items:center!important;text-align:center!important;}
+  .hero-recon-badge{text-align:center!important;justify-content:center!important;}
+  .hero-cert{text-align:center!important;margin-left:auto!important;margin-right:auto!important;font-size:10px!important;letter-spacing:2px!important;padding:7px 14px!important;}
+  .hero-h1{font-size:clamp(36px,11vw,48px)!important;letter-spacing:-0.5px!important;text-align:center!important;width:100%!important;}
+  .hero-h1 .og{display:block!important;text-align:center!important;}
+  .hero-h1 .dim{display:block!important;text-align:center!important;}
+  .hero-sub{font-size:16px!important;margin-top:20px!important;padding:0 16px!important;text-align:center!important;}
   .hero-stats{width:100%!important;margin-bottom:20px!important;}
   .hero-acts{gap:10px!important;}
   .btn-pri,.btn-ghost{padding:12px 20px!important;font-size:12px!important;letter-spacing:2px!important;}
@@ -1502,6 +1508,15 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
     </svg>
   </div>
   <div class="hero-recon-badge">DØi LABS &nbsp;·&nbsp; RECON DIVISION &nbsp;·&nbsp; EST. 2024</div>
+
+  <div class="hero-cert">
+    FAA PART 107
+    <span class="cert-sep">·</span>
+    <svg class="vet-flag" width="20" height="13" viewBox="0 0 20 13" xmlns="http://www.w3.org/2000/svg" aria-label="American flag"><rect width="20" height="13" fill="#111"/><rect width="20" height="1" y="0" fill="#C06015"/><rect width="20" height="1" y="2" fill="#C06015"/><rect width="20" height="1" y="4" fill="#C06015"/><rect width="20" height="1" y="6" fill="#C06015"/><rect width="20" height="1" y="8" fill="#C06015"/><rect width="20" height="1" y="10" fill="#C06015"/><rect width="20" height="1" y="12" fill="#C06015"/><rect width="8" height="7" fill="#1a1a3a"/><circle cx="1.3" cy="1.3" r="0.55" fill="rgba(208,104,24,0.9)"/><circle cx="2.7" cy="1.3" r="0.55" fill="rgba(208,104,24,0.9)"/><circle cx="4.0" cy="1.3" r="0.55" fill="rgba(208,104,24,0.9)"/><circle cx="5.3" cy="1.3" r="0.55" fill="rgba(208,104,24,0.9)"/><circle cx="6.7" cy="1.3" r="0.55" fill="rgba(208,104,24,0.9)"/><circle cx="2.0" cy="2.8" r="0.55" fill="rgba(208,104,24,0.9)"/><circle cx="3.3" cy="2.8" r="0.55" fill="rgba(208,104,24,0.9)"/><circle cx="4.7" cy="2.8" r="0.55" fill="rgba(208,104,24,0.9)"/><circle cx="6.0" cy="2.8" r="0.55" fill="rgba(208,104,24,0.9)"/><circle cx="1.3" cy="4.3" r="0.55" fill="rgba(208,104,24,0.9)"/><circle cx="2.7" cy="4.3" r="0.55" fill="rgba(208,104,24,0.9)"/><circle cx="4.0" cy="4.3" r="0.55" fill="rgba(208,104,24,0.9)"/><circle cx="5.3" cy="4.3" r="0.55" fill="rgba(208,104,24,0.9)"/><circle cx="6.7" cy="4.3" r="0.55" fill="rgba(208,104,24,0.9)"/><circle cx="2.0" cy="5.7" r="0.55" fill="rgba(208,104,24,0.9)"/><circle cx="3.3" cy="5.7" r="0.55" fill="rgba(208,104,24,0.9)"/><circle cx="4.7" cy="5.7" r="0.55" fill="rgba(208,104,24,0.9)"/><circle cx="6.0" cy="5.7" r="0.55" fill="rgba(208,104,24,0.9)"/></svg>
+    VETERAN-OWNED
+    <span class="cert-sep">·</span>
+    INSURED
+  </div>
 
   <h1 class="hero-h1">
     <span class="og">// DRONE RECON</span><br>
