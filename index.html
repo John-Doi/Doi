@@ -1236,6 +1236,15 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
 /* ── GLOBAL: OCTAGONS BEHIND ALL CONTENT ── */
 .tac-hex-left,.tac-hex-right{z-index:-1!important;}
 
+/* ── GLOBAL: WHY-TITLES — burnt orange ── */
+.why-title{
+  background:var(--og-grad-h)!important;
+  -webkit-background-clip:text!important;
+  background-clip:text!important;
+  -webkit-text-fill-color:transparent!important;
+  color:transparent!important;
+}
+
 /* ── GLOBAL: WHO NEEDS THIS — white, readable ── */
 .scard-who{color:#F0EDE8!important;font-size:11px!important;}
 
@@ -1582,27 +1591,27 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
   <div class="why-grid">
     <div class="why-card">
   <div class="why-title">Commercial-Grade Equipment</div>
-      <div class="why-body">We operate the DJI Matrice 4T — a quad-sensor enterprise platform with a 48MP wide camera, 15× optical zoom, and FLIR 640×512 radiometric thermal imaging. The same platform used by military contractors, utility companies, and first responders. Not a drone from a big-box store.</div>
+      <div class="why-body">DØi Labs deploys the DJI Matrice 4T — a quad-sensor enterprise UAS with a 48MP mechanical-shutter wide camera, 15× optical zoom, and a FLIR 640×512 radiometric thermal array. This is the same airframe class used by utility operators, government agencies, and industrial inspection firms. Every mission runs on certified, field-proven hardware purpose-built for commercial data collection.</div>
     </div>
     <div class="why-card">
   <div class="why-title">FAA Certified & Insured</div>
-      <div class="why-body">Every DØi pilot holds an FAA Part 107 Remote Pilot Certificate. We handle airspace authorization, NOTAM filing, and regulatory compliance — so your project runs legally from day one. We carry full commercial drone insurance on every operation.</div>
+      <div class="why-body">All DØi operators hold active FAA Part 107 Remote Pilot Certificates with current medical and knowledge standards. Pre-mission workflow includes LAANC authorization, NOTAM review, and site risk assessment for every deployment. We carry commercial hull and liability insurance across all operations — ensuring your project is legally compliant and operationally protected from day one.</div>
     </div>
     <div class="why-card">
   <div class="why-title">24–48 Hour Turnaround</div>
-      <div class="why-body">We know your project has a timeline. Standard deliverable packages are processed and delivered within 24–48 hours of flight completion. Complex mapping and AI analysis projects are scoped with a delivery window at the time of booking.</div>
+      <div class="why-body">Mission-critical timelines require dependable processing. Standard deliverables — orthomosaics, thermal reports, edited video, and inspection logs — are released within 24 to 48 hours of flight completion. Complex AI analysis and survey-grade mapping are scoped with a defined SLA at booking. No ambiguity, no queue delays — just structured output on a predictable schedule.</div>
     </div>
     <div class="why-card">
   <div class="why-title">Data You Can Actually Use</div>
-      <div class="why-body">We don't hand you a USB drive full of raw files and call it a day. Every deliverable is organized, labeled, and formatted for your application — whether that's a real estate listing, an engineering report, an insurance claim, or a board presentation.</div>
+      <div class="why-body">Every deliverable is structured for direct downstream integration — georeferenced GeoTIFF orthomosaics, LAS/LAZ point clouds, 10-bit 4K H.265 footage, calibrated radiometric thermal data, and 3D models in OBJ, GLTF, or FBX. Whether your workflow runs on ArcGIS, AutoCAD, Pix4D, or Agisoft, your data arrives properly formatted, labeled, and ready for immediate use.</div>
     </div>
     <div class="why-card">
   <div class="why-title">One Vendor, Six Capabilities</div>
-      <div class="why-body">Most drone companies do one thing. DØi Labs covers aerial photography, thermal inspection, survey-grade mapping, surveillance, and AI analysis — under one contract, one point of contact, and one consistent standard of quality.</div>
+      <div class="why-body">Coordinating multiple specialty subcontractors adds procurement overhead, scheduling risk, and inconsistent QC across deliverables. DØi Labs consolidates aerial photography, precision mapping, thermal inspection, surveillance overwatch, AI data processing, and 3D reconstruction under a single contract, single point of contact, and unified operational standard — reducing project complexity and execution risk.</div>
     </div>
     <div class="why-card">
   <div class="why-title">California-Based Operations</div>
-      <div class="why-body">DØi Labs operates throughout California — from the Bay Area and Los Angeles to San Diego, the Central Valley, and beyond. We know California airspace regulations, local terrain, and coastal operating conditions. One call covers your entire in-state portfolio.</div>
+      <div class="why-body">DØi Labs maintains active operational coverage across California — including Class B/C/D airspace corridors around LAX, SFO, SAN, and SJC, coastal restricted zones, agricultural corridors, and urban industrial sites. Our pilots have direct experience with LAANC workflows, Title 14 CFR Part 107 waiver requirements, and California-specific terrain and regulatory environments from the Bay Area to the Southern border.</div>
     </div>
   </div>
 </section>
@@ -2356,7 +2365,7 @@ function submitForm(){
       if(e.isIntersecting){showDrone();}
       else{hideDrone();}
     });
-  },{threshold:0,rootMargin:'0px 0px -48% 0px'});
+  },{threshold:0,rootMargin:'0px 0px -32% 0px'});
   io.observe(heroActs||hero);
 })();
 </script>
