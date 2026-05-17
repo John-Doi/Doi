@@ -991,8 +991,8 @@ footer{border-top:2px solid var(--orange)!important;padding:48px 52px!important;
 }
 
 /* Hex cluster positioning */
-.tac-hex-left { position: absolute; left: 0; top: 0; pointer-events: none; z-index: 1; }
-.tac-hex-right { position: absolute; right: 0; bottom: 0; pointer-events: none; z-index: 1; }
+.tac-hex-left { position: absolute; left: 0; top: 0; pointer-events: none; z-index: 0; }
+.tac-hex-right { position: absolute; right: 0; bottom: 0; pointer-events: none; z-index: 0; }
 /* ── LOGO VIDEO (corner + footer) ── */
 .nav-logo-vid,.logo-vid{mix-blend-mode:screen!important;display:block!important;}
 .nav-logo-vid{height:32px!important;width:auto!important;filter:brightness(1.1)!important;}
@@ -1217,6 +1217,25 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
 </style>
 
 <style id="responsive-fix">
+/* ── GLOBAL: OFF-WHITE TEXT ── */
+.sec-intro,.about-body,.why-body,.faq-a,.pstep-desc,.scard-desc,.cta-band-p,.panel-sub{
+  color:#E8E4DC!important;
+}
+.scard-title,.why-title,.tl-title{color:#F5F2EC!important;}
+.faq-q{color:#F5F2EC!important;}
+.hero-sub{color:#E0DDD5!important;}
+.tl-desc{color:#D0CDC5!important;}
+.foot-ci{color:#C8C4BC!important;}
+.hstat-l{color:#9A9690!important;}
+.nav-links a{color:#C8C4BC!important;}
+
+/* ── GLOBAL: LOGOS 2× ── */
+.nav-logo-vid{height:64px!important;width:auto!important;}
+.foot-inner .logo-vid{height:104px!important;width:auto!important;}
+
+/* ── GLOBAL: OCTAGONS BEHIND CONTENT ── */
+.tac-hex-left,.tac-hex-right{z-index:0!important;}
+
 /* ── TABLET (iPad portrait: 601–1020px) ── */
 @media(max-width:1020px){
   nav{padding:0 24px!important;}
@@ -1248,8 +1267,16 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
   .hero-acts{gap:10px!important;}
   .btn-pri,.btn-ghost{padding:12px 20px!important;font-size:12px!important;letter-spacing:2px!important;}
 
-  /* Hide drone — too wide for phone screens */
-  .hero-drone-vid{display:none!important;}
+  /* Drone on mobile: smaller, pinned to bottom-right, animation still works */
+  .hero-drone-vid{
+    display:block!important;
+    width:min(180px,48vw)!important;
+    right:0!important;
+    left:auto!important;
+    bottom:10px!important;
+    top:auto!important;
+    clip-path:inset(0 0 18% 0)!important;
+  }
 
   /* Grids: single column */
   .svc-grid,.why-grid,.faq-grid{
@@ -1278,7 +1305,6 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
   /* Footer */
   footer{padding:28px 16px!important;}
   .foot-contact{flex-direction:column!important;gap:16px!important;}
-  .foot-ci{font-size:12px!important;}
 }
 
 /* ── SMALL PHONE (≤390px) ── */
@@ -1545,7 +1571,7 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
   <div class="why-intro">
     <div class="tag">[ WHY DØi LABS ]</div>
     <div class="sec-h">WHAT MAKES US <span class="gh">DIFFERENT</span></div>
-    <div class="sec-intro">We're not a hobby operation with a consumer drone. DØi Labs is a professional aerial services company equipped with commercial-grade systems, operated by certified pilots, delivering results your business can actually use.</div>
+    <div class="sec-intro">DØi Labs delivers professional aerial intelligence services built around precision, reliability, and operational excellence. Our certified pilots operate commercial-grade systems engineered for high-quality data capture, actionable insights, and dependable mission execution across commercial, industrial, and specialized operations.</div>
   </div>
   <div class="why-grid">
     <div class="why-card">
