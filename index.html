@@ -1292,6 +1292,8 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
   .hero-h1{font-size:clamp(36px,11vw,48px)!important;letter-spacing:-0.5px!important;text-align:center!important;width:100%!important;}
   .hero-h1 .og{display:block!important;text-align:center!important;}
   .hero-h1 .dim{display:block!important;text-align:center!important;}
+  /* hide <br> after block-level spans — they double the line gap */
+  .hero-h1 .og+br,.hero-h1 .dim+br{display:none!important;}
   .hero-sub{font-size:16px!important;margin-top:20px!important;padding:0 16px!important;text-align:center!important;}
   .hero-stats{width:100%!important;margin-bottom:20px!important;}
   .hero-acts{gap:10px!important;}
@@ -2394,10 +2396,15 @@ function submitForm(){
 })();
 </script>
 <script>
-/* logo videos: play on view */
+/* logo videos: play on view + iOS Safari first-interaction fallback */
 (function(){
-  document.querySelectorAll('.nav-logo-vid,.hero-logo-cin').forEach(function(vid){
-    vid.play().catch(function(){});
+  var vids=document.querySelectorAll('.nav-logo-vid,.hero-logo-cin');
+  function tryPlay(){ vids.forEach(function(v){ v.play().catch(function(){}); }); }
+  tryPlay();
+  ['touchstart','pointerdown','scroll'].forEach(function(evt){
+    document.addEventListener(evt,tryPlay,{once:true,passive:true});
+  });
+  vids.forEach(function(vid){
     new IntersectionObserver(function(entries){
       if(entries[0].isIntersecting) vid.play().catch(function(){});
     },{threshold:0.1}).observe(vid);
