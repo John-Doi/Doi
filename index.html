@@ -1216,6 +1216,78 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
 .hero-drone-vid{clip-path:inset(0 0 22% 0)!important;}
 </style>
 
+<style id="responsive-fix">
+/* ── TABLET (iPad portrait: 601–1020px) ── */
+@media(max-width:1020px){
+  nav{padding:0 24px!important;}
+  .sbar{padding:5px 18px!important;gap:16px!important;}
+  #why .sec-head,#services .sec-head{padding:48px 32px 32px!important;}
+  .why-intro{padding:0 24px!important;}
+  .wrap,.intake-wrap{padding:0 24px!important;}
+  footer{padding:36px 32px!important;}
+  .foot-contact{gap:24px!important;}
+  /* svc-grid: force 2-col on tablet (overrides brutalist 3-col !important) */
+  .svc-grid{grid-template-columns:1fr 1fr!important;padding:0 24px!important;}
+  .why-grid,.faq-grid{padding:0 24px!important;}
+  /* Drone: scale down on tablet */
+  .hero-drone-vid{width:clamp(220px,28vw,360px)!important;}
+}
+
+/* ── MOBILE (iPhone: ≤600px) ── */
+@media(max-width:600px){
+  /* Nav */
+  nav{padding:0 16px!important;}
+  .sbar{display:none!important;}
+
+  /* Hero */
+  #hero{padding-top:72px!important;}
+  .hero-h1{font-size:clamp(36px,11vw,48px)!important;letter-spacing:-0.5px!important;}
+  .hero-sub{font-size:16px!important;margin-top:20px!important;padding:0 4px!important;}
+  .hero-cert{font-size:10px!important;letter-spacing:2px!important;padding:7px 12px!important;}
+  .hero-stats{width:100%!important;margin-bottom:20px!important;}
+  .hero-acts{gap:10px!important;}
+  .btn-pri,.btn-ghost{padding:12px 20px!important;font-size:12px!important;letter-spacing:2px!important;}
+
+  /* Hide drone — too wide for phone screens */
+  .hero-drone-vid{display:none!important;}
+
+  /* Grids: single column */
+  .svc-grid,.why-grid,.faq-grid{
+    grid-template-columns:1fr!important;
+    padding:0 16px!important;
+  }
+  .proof-inner{
+    grid-template-columns:1fr 1fr!important;
+    padding:0 16px!important;
+  }
+
+  /* Wrappers */
+  .wrap,.why-intro,.intake-wrap{padding:0 16px!important;}
+
+  /* Section headers */
+  #why .sec-head,#services .sec-head{padding:36px 16px 24px!important;}
+  .sec-h{font-size:clamp(28px,9vw,42px)!important;}
+  .sec-intro{font-size:16px!important;}
+
+  /* Process timeline */
+  .tl-right{padding:14px 16px 10px!important;}
+
+  /* Contact form */
+  .panel{padding:20px 14px!important;}
+
+  /* Footer */
+  footer{padding:28px 16px!important;}
+  .foot-contact{flex-direction:column!important;gap:16px!important;}
+  .foot-ci{font-size:12px!important;}
+}
+
+/* ── SMALL PHONE (≤390px) ── */
+@media(max-width:390px){
+  .hero-h1{font-size:clamp(30px,12vw,38px)!important;}
+  .hero-stats{grid-template-columns:1fr 1fr!important;}
+}
+</style>
+
 </head>
 <body>
 <div class="grain-overlay" aria-hidden="true"></div>
