@@ -1251,6 +1251,9 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
 /* ── GLOBAL: suppress CSS // prefix (// now baked into HTML) ── */
 .hero-h1 .og::before{content:none!important;}
 
+/* ── GLOBAL: DRONE/RECON/DIVISION same size+spacing as ADVANCED AERIAL/INTELLIGENCE ── */
+.hero-h1 .og{font-size:1em!important;line-height:0.92!important;}
+
 /* ── GLOBAL: ghost spacer aligns RECON's R under DRONE's D ── */
 .og-ghost{visibility:hidden;}
 
@@ -2376,10 +2379,7 @@ function submitForm(){
   }
 
   placeDrone();
-  window.addEventListener('load',function(){
-    placeDrone();
-    setTimeout(function(){ showDrone(); }, 700);
-  });
+  window.addEventListener('load',function(){ placeDrone(); });
   window.addEventListener('resize',placeDrone);
 
   /* show drone when GET A QUOTE reaches mid-screen; restart on scroll back */
@@ -2391,6 +2391,17 @@ function submitForm(){
     });
   },{threshold:0,rootMargin:'0px 0px -32% 0px'});
   io.observe(heroActs||hero);
+})();
+</script>
+<script>
+/* logo videos: play on view */
+(function(){
+  document.querySelectorAll('.nav-logo-vid,.hero-logo-cin').forEach(function(vid){
+    vid.play().catch(function(){});
+    new IntersectionObserver(function(entries){
+      if(entries[0].isIntersecting) vid.play().catch(function(){});
+    },{threshold:0.1}).observe(vid);
+  });
 })();
 </script>
 </body>
