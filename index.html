@@ -1254,8 +1254,19 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
 /* ── GLOBAL: DRONE/RECON 30% larger than base h1 ── */
 .hero-h1 .og{font-size:1.3em!important;line-height:0.92!important;}
 
-/* ── GLOBAL: ghost spacer aligns RECON's R under DRONE's D ── */
-.og-ghost{visibility:hidden;}
+/* ── GLOBAL: hide // prefix + ghost — center D/R cleanly on all screens ── */
+.og-prefix{display:none!important;}
+.og-ghost{display:none!important;}
+
+/* ── GLOBAL: hero logo fills first viewport — scroll reveals DRONE RECON ── */
+#hero{justify-content:flex-start!important;padding-top:0!important;}
+.hero-logo-wrap{
+  min-height:100vh!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  padding-top:80px!important;
+}
 
 /* ── GLOBAL: hero-cert above GET A QUOTE ── */
 .hero-cert{margin-bottom:16px!important;margin-top:8px!important;}
@@ -1294,8 +1305,8 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
   .hero-h1 .dim{display:block!important;text-align:center!important;}
   /* hide <br> after block-level spans — they double the line gap */
   .hero-h1 .og+br,.hero-h1 .dim+br{display:none!important;}
-  /* hide // prefix + ghost so D/R center to ADVANCED AERIAL/INTELLIGENCE */
-  .og-prefix,.og-ghost{display:none!important;}
+  /* logo wrap: smaller on mobile, no need for full 100vh */
+  .hero-logo-wrap{min-height:60vh!important;padding-top:64px!important;}
   .hero-sub{font-size:16px!important;margin-top:20px!important;padding:0 16px!important;text-align:center!important;}
   .hero-stats{width:100%!important;margin-bottom:20px!important;}
   .hero-acts{gap:10px!important;}
@@ -2386,15 +2397,15 @@ function submitForm(){
   window.addEventListener('load',function(){ placeDrone(); });
   window.addEventListener('resize',placeDrone);
 
-  /* show drone when GET A QUOTE reaches mid-screen; restart on scroll back */
-  var heroActs=document.querySelector('.hero-acts');
+  /* show drone when DRONE text scrolls to mid-screen; hide when scrolled away */
+  var heroH1=document.querySelector('.hero-h1');
   var io=new IntersectionObserver(function(entries){
     entries.forEach(function(e){
       if(e.isIntersecting){showDrone();}
       else{hideDrone();}
     });
-  },{threshold:0,rootMargin:'0px 0px -32% 0px'});
-  io.observe(heroActs||hero);
+  },{threshold:0,rootMargin:'0px 0px -40% 0px'});
+  io.observe(heroH1||hero);
 })();
 </script>
 <script>
