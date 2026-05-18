@@ -1557,6 +1557,10 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
 
 /* ── INDUSTRIES WE SUPPORT ── */
 #industries{padding:96px 0!important;}
+#industries .sec-header{text-align:center!important;padding:0 52px 56px!important;}
+#industries .sec-kicker{display:block!important;text-align:center!important;}
+#industries .sec-h{text-align:center!important;}
+#industries .sec-sub{text-align:center!important;max-width:580px!important;margin:16px auto 0!important;font-size:14px!important;color:#888!important;-webkit-text-fill-color:#888!important;line-height:1.75!important;display:block!important;}
 .ind-grid{display:grid!important;grid-template-columns:repeat(auto-fill,minmax(280px,1fr))!important;gap:2px!important;padding:0 40px!important;margin-top:48px!important;}
 .ind-card{background:#0d0d0d!important;border:1px solid #1a1a1a!important;padding:28px 24px!important;display:flex!important;flex-direction:column!important;gap:12px!important;transition:border-color 0.3s ease,background 0.3s ease!important;position:relative!important;overflow:hidden!important;}
 .ind-card::before{content:''!important;position:absolute!important;top:0!important;left:0!important;right:0!important;height:2px!important;background:linear-gradient(90deg,transparent,#D4620F,transparent)!important;opacity:0!important;transition:opacity 0.3s ease!important;}
@@ -1695,19 +1699,19 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
 .plat-feature.plat-open .plat-exp{max-height:250px!important;opacity:1!important;}
 /* ── RESPONSIVE: SERVICE CARD METRICS ── */
 /* ── COLLAPSED MODULES ── */
-.collapsed-module{border:1px solid #2a2a2a!important;margin:0 40px!important;background:#0e0e0e!important;}
-.cm-row{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:24px!important;padding:24px 28px!important;cursor:pointer!important;transition:background 0.2s!important;}
-.cm-row:hover{background:rgba(212,98,15,0.05)!important;}
+.collapsed-module{border:1px solid #1e1e1e!important;margin:0 40px 2px!important;background:#0a0a0a!important;}
+.cm-row{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:32px!important;padding:44px 44px!important;cursor:pointer!important;transition:background 0.25s!important;}
+.cm-row:hover{background:rgba(212,98,15,0.04)!important;}
 .cm-left{flex:1!important;min-width:0!important;}
-.cm-kicker{font-family:var(--mono)!important;font-size:8px!important;letter-spacing:3px!important;color:#D4620F!important;-webkit-text-fill-color:#D4620F!important;opacity:0.8!important;margin-bottom:8px!important;display:block!important;}
-.cm-title{font-family:var(--mono)!important;font-size:14px!important;letter-spacing:2px!important;color:#EAEAEA!important;-webkit-text-fill-color:#EAEAEA!important;font-weight:700!important;margin-bottom:10px!important;display:block!important;line-height:1.4!important;}
-.cm-summary{font-size:13px!important;color:#AAA!important;-webkit-text-fill-color:#AAA!important;line-height:1.6!important;display:block!important;}
-.cm-toggle{font-family:var(--mono)!important;font-size:9px!important;letter-spacing:2px!important;color:#D4620F!important;-webkit-text-fill-color:#D4620F!important;background:transparent!important;border:1px solid rgba(212,98,15,0.4)!important;padding:10px 16px!important;cursor:pointer!important;white-space:nowrap!important;flex-shrink:0!important;transition:background 0.2s,border-color 0.2s!important;}
-.cm-toggle:hover{background:rgba(212,98,15,0.08)!important;border-color:rgba(212,98,15,0.8)!important;}
-.cm-chev{display:inline-block!important;transition:transform 0.3s!important;-webkit-text-fill-color:#D4620F!important;}
+.cm-kicker{font-family:var(--mono)!important;font-size:9px!important;letter-spacing:3px!important;color:#D4620F!important;-webkit-text-fill-color:#D4620F!important;margin-bottom:16px!important;display:block!important;}
+.cm-title{font-family:var(--disp)!important;font-size:clamp(28px,3.8vw,56px)!important;letter-spacing:-0.03em!important;color:#EAEAEA!important;-webkit-text-fill-color:#EAEAEA!important;font-weight:900!important;margin:0!important;display:block!important;line-height:0.92!important;text-transform:uppercase!important;}
+.cm-summary{font-size:13px!important;color:#4a4a4a!important;-webkit-text-fill-color:#4a4a4a!important;line-height:1.6!important;display:block!important;margin-top:14px!important;}
+.cm-toggle{font-size:38px!important;font-weight:200!important;color:#D4620F!important;-webkit-text-fill-color:#D4620F!important;background:transparent!important;border:none!important;padding:0!important;cursor:pointer!important;flex-shrink:0!important;line-height:1!important;opacity:0.65!important;transition:opacity 0.2s!important;}
+.cm-toggle:hover{opacity:1!important;}
+.cm-chev{display:inline-block!important;transition:transform 0.35s cubic-bezier(0.34,1.56,0.64,1)!important;-webkit-text-fill-color:#D4620F!important;}
 .collapsed-module.cm-open .cm-chev{transform:rotate(45deg)!important;}
-.cm-body{max-height:0!important;overflow:hidden!important;transition:max-height 0.6s ease,opacity 0.4s ease!important;opacity:0!important;padding:0 28px!important;}
-.collapsed-module.cm-open .cm-body{max-height:1400px!important;opacity:1!important;padding:4px 28px 28px!important;}
+.cm-body{max-height:0!important;overflow:hidden!important;transition:max-height 0.6s ease,opacity 0.45s ease!important;opacity:0!important;padding:0 44px!important;}
+.collapsed-module.cm-open .cm-body{max-height:1400px!important;opacity:1!important;padding:4px 44px 44px!important;}
 
 /* ── COVERAGE COMPACT ── */
 .coverage-compact{padding:64px 0!important;}
@@ -1720,8 +1724,12 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
 .cov-meta{font-family:var(--mono)!important;font-size:8px!important;letter-spacing:2px!important;color:#555!important;-webkit-text-fill-color:#555!important;border-top:1px solid #222!important;padding-top:14px!important;display:block!important;}
 
 @media(max-width:600px){
-  .collapsed-module{margin:0 16px!important;}
-  .cm-row{flex-direction:column!important;align-items:flex-start!important;gap:12px!important;padding:20px!important;}
+  .collapsed-module{margin:0 16px 2px!important;}
+  .cm-row{flex-direction:column!important;align-items:flex-start!important;gap:16px!important;padding:28px 20px!important;}
+  .cm-title{font-size:clamp(26px,8vw,36px)!important;}
+  .cm-toggle{font-size:28px!important;}
+  .cm-body{padding:0 20px!important;}
+  .collapsed-module.cm-open .cm-body{padding:4px 20px 28px!important;}
   .coverage-compact .wrap{padding:0 20px!important;}
 }
 
@@ -2572,7 +2580,7 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
       <div class="cm-title">WHY ENTERPRISE SYSTEMS MATTER</div>
       <div class="cm-summary">DJI Matrice 4T · RTK GPS · FLIR BOSON+ · Dual IMU · local-only data processing. Enterprise-grade specifications available for procurement review.</div>
     </div>
-    <button class="cm-toggle" type="button">EXPAND <span class="cm-chev">+</span></button>
+    <button class="cm-toggle" onclick="event.stopPropagation();cmToggle('platform-module',this.closest('.collapsed-module'))" type="button"><span class="cm-chev">+</span></button>
   </div>
   <div class="cm-body">
     <div class="plat-grid">
@@ -2744,7 +2752,7 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
       <div class="cm-title">WHAT CLIENTS ASK</div>
       <div class="cm-summary">Deploy timeline, FAA authorization, insurance, deliverable formats, weather protocols, and coverage areas — answered before your first mission.</div>
     </div>
-    <button class="cm-toggle" type="button">SEE QUESTIONS <span class="cm-chev">+</span></button>
+    <button class="cm-toggle" onclick="event.stopPropagation();cmToggle('faq-module',this.closest('.collapsed-module'))" type="button"><span class="cm-chev">+</span></button>
   </div>
   <div class="cm-body">
     <div class="faq-grid">
@@ -3168,16 +3176,19 @@ function submitForm(){
   function placeDrone(){
     var og=document.querySelector('.hero-h1 .og');
     if(!og) return;
-    var or_=og.getBoundingClientRect();
     var hr=hero.getBoundingClientRect();
     var vw=v.offsetWidth||140;
     var vh=v.offsetHeight||vw*1.1;
-    var svc=document.querySelector('.hero-stats .hstat');
-    var anchor=svc?svc.getBoundingClientRect():or_;
+    var svc=document.querySelector('.hero-stats');
+    var anchor=svc?svc.getBoundingClientRect():og.getBoundingClientRect();
     var top=anchor.top-hr.top+anchor.height/2-vh/2-80;
-    var left=anchor.left-hr.left-vw-8;
+    var rawLeft=anchor.left-hr.left-vw-8;
+    // Clamp so at most 15% of drone is off-screen left — always mostly visible
+    var left=Math.max(rawLeft,-vw*0.15);
     v.style.top=top+'px';
     v.style.left=left+'px';
+    v.style.right='auto';
+    v.style.bottom='auto';
     if(!visible){
       v.style.transition='none';
       v.style.transform='translateY('+(vh+40)+'px)';
@@ -3208,33 +3219,22 @@ function submitForm(){
   window.addEventListener('load',function(){ placeDrone(); });
   window.addEventListener('resize',placeDrone);
 
-  /* Trigger: mobile = when WHY section heading hits mid-screen; desktop = stats row */
-  var isMobile=window.innerWidth<=600;
-  var heroTrigger=isMobile
-    ?(document.querySelector('#why .sec-h')||document.querySelector('#why')||hero)
-    :(document.querySelector('.hero-stats')||document.querySelector('.hero-h1')||hero);
-  var ioMargin=isMobile?'0px 0px -40% 0px':'0px 0px -10% 0px';
+  /* Trigger: hero stats in viewport → show drone; out of view → hide */
+  var heroTrigger=document.querySelector('.hero-stats')||document.querySelector('.hero-h1')||hero;
   var io=new IntersectionObserver(function(entries){
     entries.forEach(function(e){
       if(e.isIntersecting){showDrone();}
       else{hideDrone();}
     });
-  },{threshold:0,rootMargin:ioMargin});
+  },{threshold:0,rootMargin:'0px 0px -10% 0px'});
   io.observe(heroTrigger);
   // expose for iOS Safari fallback
   window._droneShow = showDrone;
   window._droneHide = hideDrone;
-  
-  // Desktop: if stats are already in viewport on load, show drone immediately
-  if (window.innerWidth > 600) {
-    var heroStats = document.querySelector('.hero-stats');
-    if (heroStats) {
-      var r = heroStats.getBoundingClientRect();
-      if (r.top < window.innerHeight && r.bottom > 0) {
-        setTimeout(showDrone, 500);
-      }
-    }
-  }
+
+  // If hero stats already in viewport on load, show immediately
+  var _r=heroTrigger.getBoundingClientRect();
+  if(_r.top<window.innerHeight&&_r.bottom>0){setTimeout(showDrone,400);}
 })();
 </script>
 <script>
