@@ -706,8 +706,8 @@ details.faq-item summary::marker{display:none!important;}
 /* CARD TEXT */
 .scard-title,.why-title{font-size:20px!important;color:#EAEAEA!important;margin-bottom:12px!important;}
 .scard-desc,.why-body{font-size:17px!important;color:#888!important;line-height:1.85!important;}
-.faq-q{font-size:18px!important;color:#EAEAEA!important;}
-.faq-a{font-size:17px!important;color:#888!important;line-height:1.85!important;}
+.faq-q{font-size:18px!important;color:#EAEAEA!important;-webkit-text-fill-color:#EAEAEA!important;}
+.faq-a{font-size:17px!important;color:#888!important;-webkit-text-fill-color:#888!important;line-height:1.85!important;}
 
 /* TIMELINE */
 .tl-svg-box{width:min(85%,360px)!important;height:min(85%,360px)!important;
@@ -1220,9 +1220,10 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
 /* ── GLOBAL: OFF-WHITE TEXT ── */
 .sec-intro,.about-body,.why-body,.faq-a,.pstep-desc,.scard-desc,.cta-band-p,.panel-sub{
   color:#E8E4DC!important;
+  -webkit-text-fill-color:#E8E4DC!important;
 }
 .scard-title,.why-title,.tl-title{color:#F5F2EC!important;}
-.faq-q{color:#F5F2EC!important;}
+.faq-q{color:#F5F2EC!important;-webkit-text-fill-color:#F5F2EC!important;}
 .hero-sub{color:#D8D4CC!important;}
 
 /* ── GLOBAL: SECTION BREATHING ROOM ── */
@@ -1620,10 +1621,10 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
 .plat-grid{display:grid!important;grid-template-columns:repeat(3,1fr)!important;gap:2px!important;padding:0 40px!important;margin-top:48px!important;}
 .plat-feature{background:#0d0d0d!important;border:1px solid #1a1a1a!important;padding:28px 24px!important;transition:border-color 0.3s!important;}
 .plat-feature:hover{border-color:#2a1a08!important;}
-.plat-kicker{font-family:var(--mono)!important;font-size:8px!important;letter-spacing:3px!important;color:#D4620F!important;margin-bottom:10px!important;opacity:0.7!important;}
-.plat-title{font-family:var(--mono)!important;font-size:12px!important;color:#E8E4DC!important;letter-spacing:1px!important;margin-bottom:12px!important;line-height:1.5!important;}
-.plat-body{font-size:12px!important;color:#666!important;line-height:1.7!important;margin-bottom:16px!important;}
-.plat-spec{font-family:var(--mono)!important;font-size:8px!important;color:#D4620F!important;letter-spacing:1px!important;opacity:0.5!important;border-top:1px solid #1a1a1a!important;padding-top:12px!important;}
+.plat-kicker{font-family:var(--mono)!important;font-size:8px!important;letter-spacing:3px!important;color:#D4620F!important;-webkit-text-fill-color:#D4620F!important;margin-bottom:10px!important;opacity:0.7!important;}
+.plat-title{font-family:var(--mono)!important;font-size:12px!important;color:#E8E4DC!important;-webkit-text-fill-color:#E8E4DC!important;letter-spacing:1px!important;margin-bottom:12px!important;line-height:1.5!important;}
+.plat-body{font-size:12px!important;color:#666!important;-webkit-text-fill-color:#666!important;line-height:1.7!important;margin-bottom:16px!important;}
+.plat-spec{font-family:var(--mono)!important;font-size:8px!important;color:#D4620F!important;-webkit-text-fill-color:#D4620F!important;letter-spacing:1px!important;opacity:0.5!important;border-top:1px solid #1a1a1a!important;padding-top:12px!important;}
 
 /* ── RESPONSIVE: INDUSTRIES ── */
 @media(max-width:900px){
@@ -2571,7 +2572,7 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
       <div class="cm-title">WHY ENTERPRISE SYSTEMS MATTER</div>
       <div class="cm-summary">DJI Matrice 4T · RTK GPS · FLIR BOSON+ · Dual IMU · local-only data processing. Enterprise-grade specifications available for procurement review.</div>
     </div>
-    <button class="cm-toggle" onclick="cmToggle('platform-module',this.closest('.cm-row'))" type="button">EXPAND <span class="cm-chev">+</span></button>
+    <button class="cm-toggle" type="button">EXPAND <span class="cm-chev">+</span></button>
   </div>
   <div class="cm-body">
     <div class="plat-grid">
@@ -2743,7 +2744,7 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
       <div class="cm-title">WHAT CLIENTS ASK</div>
       <div class="cm-summary">Deploy timeline, FAA authorization, insurance, deliverable formats, weather protocols, and coverage areas — answered before your first mission.</div>
     </div>
-    <button class="cm-toggle" onclick="cmToggle('faq-module',this.closest('.cm-row'))" type="button">SEE QUESTIONS <span class="cm-chev">+</span></button>
+    <button class="cm-toggle" type="button">SEE QUESTIONS <span class="cm-chev">+</span></button>
   </div>
   <div class="cm-body">
     <div class="faq-grid">
@@ -3165,46 +3166,21 @@ function submitForm(){
   if(!v||!hero) return;
   var visible=false;
   function placeDrone(){
-    var hr=hero.getBoundingClientRect();
-    var dvh=v.offsetHeight||v.offsetWidth*1.1||160;
-
-    if(window.innerWidth<=600){
-      /* Mobile: centered horizontally, sits just below the CTA buttons */
-      var acts=document.querySelector('.hero-acts');
-      var anchor=acts?acts.getBoundingClientRect():hr;
-      var mw=Math.min(220,window.innerWidth*0.62);
-      var top=anchor.bottom-hr.top+window.pageYOffset+16;
-      var left=(window.innerWidth-mw)/2;
-      v.style.top=top+'px';
-      v.style.left=left+'px';
-      v.style.right='auto';
-      v.style.bottom='auto';
-      v.style.width=mw+'px';
-      if(!visible){
-        v.style.transition='none';
-        v.style.transform='translateY('+(dvh+40)+'px)';
-        v.style.opacity='0';
-        v.offsetHeight;
-      }
-      return;
-    }
-
-    /* Desktop/tablet: next to the 5 SVC stat */
     var og=document.querySelector('.hero-h1 .og');
     if(!og) return;
     var or_=og.getBoundingClientRect();
+    var hr=hero.getBoundingClientRect();
     var vw=v.offsetWidth||140;
+    var vh=v.offsetHeight||vw*1.1;
     var svc=document.querySelector('.hero-stats .hstat');
-    var anchor2=svc?svc.getBoundingClientRect():or_;
-    var dtop=anchor2.top-hr.top+anchor2.height/2-dvh/2-80;
-    var dleft=anchor2.left-hr.left-vw-8;
-    v.style.top=dtop+'px';
-    v.style.left=dleft+'px';
-    v.style.right='auto';
-    v.style.bottom='auto';
+    var anchor=svc?svc.getBoundingClientRect():or_;
+    var top=anchor.top-hr.top+anchor.height/2-vh/2-80;
+    var left=anchor.left-hr.left-vw-8;
+    v.style.top=top+'px';
+    v.style.left=left+'px';
     if(!visible){
       v.style.transition='none';
-      v.style.transform='translateY('+(dvh+40)+'px)';
+      v.style.transform='translateY('+(vh+40)+'px)';
       v.style.opacity='0';
       v.offsetHeight;
     }
