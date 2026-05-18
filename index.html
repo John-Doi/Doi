@@ -2397,15 +2397,15 @@ function submitForm(){
   window.addEventListener('load',function(){ placeDrone(); });
   window.addEventListener('resize',placeDrone);
 
-  /* show drone when DRONE text scrolls to mid-screen; hide when scrolled away */
-  var heroH1=document.querySelector('.hero-h1');
+  /* show drone when stats row scrolls into view (screenshot scroll point); hide on scroll away */
+  var heroTrigger=document.querySelector('.hero-stats')||document.querySelector('.hero-h1')||hero;
   var io=new IntersectionObserver(function(entries){
     entries.forEach(function(e){
       if(e.isIntersecting){showDrone();}
       else{hideDrone();}
     });
-  },{threshold:0,rootMargin:'0px 0px -40% 0px'});
-  io.observe(heroH1||hero);
+  },{threshold:0,rootMargin:'0px 0px -10% 0px'});
+  io.observe(heroTrigger);
 })();
 </script>
 <script>
