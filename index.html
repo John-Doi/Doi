@@ -1706,8 +1706,8 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
 .cm-kicker{font-family:var(--mono)!important;font-size:9px!important;letter-spacing:3px!important;color:#D4620F!important;-webkit-text-fill-color:#D4620F!important;margin-bottom:16px!important;display:block!important;}
 .cm-title{font-family:var(--disp)!important;font-size:clamp(28px,3.8vw,56px)!important;letter-spacing:-0.03em!important;color:#EAEAEA!important;-webkit-text-fill-color:#EAEAEA!important;font-weight:900!important;margin:0!important;display:block!important;line-height:0.92!important;text-transform:uppercase!important;}
 .cm-summary{font-size:13px!important;color:#4a4a4a!important;-webkit-text-fill-color:#4a4a4a!important;line-height:1.6!important;display:block!important;margin-top:14px!important;}
-.cm-toggle{font-size:38px!important;font-weight:200!important;color:#D4620F!important;-webkit-text-fill-color:#D4620F!important;background:transparent!important;border:none!important;padding:0!important;cursor:pointer!important;flex-shrink:0!important;line-height:1!important;opacity:0.65!important;transition:opacity 0.2s!important;}
-.cm-toggle:hover{opacity:1!important;}
+.cm-toggle{font-size:38px!important;font-weight:200!important;color:#D4620F!important;-webkit-text-fill-color:#D4620F!important;background:transparent!important;border:none!important;padding:0!important;flex-shrink:0!important;line-height:1!important;opacity:0.65!important;pointer-events:none!important;}
+.collapsed-module.cm-open .cm-toggle{opacity:1!important;}
 .cm-chev{display:inline-block!important;transition:transform 0.35s cubic-bezier(0.34,1.56,0.64,1)!important;-webkit-text-fill-color:#D4620F!important;}
 .collapsed-module.cm-open .cm-chev{transform:rotate(45deg)!important;}
 .cm-body{max-height:0!important;overflow:hidden!important;transition:max-height 0.6s ease,opacity 0.45s ease!important;opacity:0!important;padding:0 44px!important;}
@@ -2580,7 +2580,7 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
       <div class="cm-title">WHY ENTERPRISE SYSTEMS MATTER</div>
       <div class="cm-summary">DJI Matrice 4T · RTK GPS · FLIR BOSON+ · Dual IMU · local-only data processing. Enterprise-grade specifications available for procurement review.</div>
     </div>
-    <button class="cm-toggle" onclick="event.stopPropagation();cmToggle('platform-module',this.closest('.collapsed-module'))" type="button"><span class="cm-chev">+</span></button>
+    <button class="cm-toggle" type="button" tabindex="-1" aria-hidden="true"><span class="cm-chev">+</span></button>
   </div>
   <div class="cm-body">
     <div class="plat-grid">
@@ -2752,7 +2752,7 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
       <div class="cm-title">WHAT CLIENTS ASK</div>
       <div class="cm-summary">Deploy timeline, FAA authorization, insurance, deliverable formats, weather protocols, and coverage areas — answered before your first mission.</div>
     </div>
-    <button class="cm-toggle" onclick="event.stopPropagation();cmToggle('faq-module',this.closest('.collapsed-module'))" type="button"><span class="cm-chev">+</span></button>
+    <button class="cm-toggle" type="button" tabindex="-1" aria-hidden="true"><span class="cm-chev">+</span></button>
   </div>
   <div class="cm-body">
     <div class="faq-grid">
