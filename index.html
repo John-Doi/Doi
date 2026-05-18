@@ -1223,7 +1223,29 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
 }
 .scard-title,.why-title,.tl-title{color:#F5F2EC!important;}
 .faq-q{color:#F5F2EC!important;}
-.hero-sub{color:#E0DDD5!important;}
+.hero-sub{color:#D8D4CC!important;}
+
+/* ── GLOBAL: SECTION BREATHING ROOM ── */
+#why,#services,#proof,#faq,#contact{padding-top:96px!important;padding-bottom:96px!important;}
+#why .sec-head,#services .sec-head{padding-bottom:48px!important;}
+
+/* ── GLOBAL: TEXT HIERARCHY ── */
+.hero-sub{font-size:clamp(14px,1.8vw,18px)!important;line-height:1.75!important;max-width:640px!important;}
+.sec-intro{font-size:clamp(14px,1.6vw,16px)!important;line-height:1.8!important;max-width:680px!important;}
+.scard-desc,.faq-a,.pstep-desc{font-size:clamp(13px,1.5vw,15px)!important;line-height:1.8!important;}
+.scard-who{font-size:10px!important;opacity:0.6!important;letter-spacing:1.5px!important;}
+
+/* ── GLOBAL: WHY-DETAIL subline ── */
+.why-detail{
+  display:block!important;
+  margin-top:10px!important;
+  font-size:11px!important;
+  letter-spacing:1.5px!important;
+  text-transform:uppercase!important;
+  color:#7a7268!important;
+  -webkit-text-fill-color:#7a7268!important;
+  line-height:1.7!important;
+}
 .tl-desc{color:#D0CDC5!important;}
 .foot-ci{color:#C8C4BC!important;}
 .hstat-l{color:#9A9690!important;}
@@ -1373,6 +1395,17 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
   /* Footer */
   footer{padding:28px 16px!important;}
   .foot-contact{flex-direction:column!important;gap:16px!important;}
+
+  /* ── MOBILE: readability ── */
+  .hero-sub{font-size:16px!important;line-height:1.8!important;padding:0 20px!important;max-width:100%!important;}
+  .sec-intro{font-size:15px!important;line-height:1.85!important;padding:0 4px!important;}
+  .scard-desc,.faq-a,.pstep-desc{font-size:15px!important;line-height:1.85!important;}
+  .why-body{font-size:15px!important;line-height:1.85!important;}
+  .why-detail{font-size:10px!important;}
+  .faq-q{font-size:13px!important;letter-spacing:1px!important;}
+  #why,#services,#proof,#faq,#contact{padding-top:64px!important;padding-bottom:64px!important;}
+  .scard,.why-card{padding:24px 20px!important;}
+  .btn-pri,.btn-ghost{min-height:48px!important;display:flex!important;align-items:center!important;justify-content:center!important;}
 }
 
 /* ── SMALL PHONE (≤390px) ── */
@@ -1563,7 +1596,7 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
     ADVANCED AERIAL<br>INTELLIGENCE
   </h1>
   <p class="hero-sub">
-    <strong>Aerial photography, thermal inspection, precision mapping, surveillance, and AI data processing</strong> — professional results, fast turnaround, and California-based operators who know the terrain.
+    Commercial drone intelligence across California — thermal inspection, precision mapping, aerial photography, 3D reconstruction, and FAA-certified surveillance operations for industrial, construction, facilities, and government clients.
   </p>
   <div class="hero-stats">
     <div class="hstat"><div class="hstat-n"><span class="val">5</span><span class="unit">SVC</span></div><div class="hstat-l">Service<br>Types</div></div>
@@ -1648,32 +1681,32 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
   <div class="why-intro">
     <div class="tag">[ WHY DØi LABS ]</div>
     <div class="sec-h">WHAT MAKES US <span class="gh">DIFFERENT</span></div>
-    <div class="sec-intro">DØi Labs delivers professional aerial intelligence services built around precision, reliability, and operational excellence. Our certified pilots operate commercial-grade systems engineered for high-quality data capture, actionable insights, and dependable mission execution across commercial, industrial, and specialized operations.</div>
+    <div class="sec-intro">Enterprise hardware, certified operations, and structured deliverables — built for industrial, construction, facilities, and government clients who need results they can act on.</div>
   </div>
   <div class="why-grid">
     <div class="why-card">
   <div class="why-title">Commercial-Grade Equipment</div>
-      <div class="why-body">DØi Labs deploys the DJI Matrice 4T — a quad-sensor enterprise UAS with a 48MP mechanical-shutter wide camera, 15× optical zoom, and a FLIR 640×512 radiometric thermal array. This is the same airframe class used by utility operators, government agencies, and industrial inspection firms. Every mission runs on certified, field-proven hardware purpose-built for commercial data collection.</div>
+      <div class="why-body">We fly the DJI Matrice 4T — the enterprise airframe deployed by utilities, government agencies, and industrial inspection firms.<span class="why-detail">48MP mechanical shutter · 15× optical zoom · FLIR 640×512 radiometric thermal · dual redundancy</span></div>
     </div>
     <div class="why-card">
   <div class="why-title">FAA Certified & Insured</div>
-      <div class="why-body">All DØi operators hold active FAA Part 107 Remote Pilot Certificates with current medical and knowledge standards. Pre-mission workflow includes LAANC authorization, NOTAM review, and site risk assessment for every deployment. We carry commercial hull and liability insurance across all operations — ensuring your project is legally compliant and operationally protected from day one.</div>
+      <div class="why-body">Every operator holds an active FAA Part 107 certificate. Every flight includes LAANC authorization, NOTAM review, and site risk assessment.<span class="why-detail">Commercial liability insurance on every operation — certificates available on request.</span></div>
     </div>
     <div class="why-card">
   <div class="why-title">24–48 Hour Turnaround</div>
-      <div class="why-body">Mission-critical timelines require dependable processing. Standard deliverables — orthomosaics, thermal reports, edited video, and inspection logs — are released within 24 to 48 hours of flight completion. Complex AI analysis and survey-grade mapping are scoped with a defined SLA at booking. No ambiguity, no queue delays — just structured output on a predictable schedule.</div>
+      <div class="why-body">Standard deliverables — orthomosaics, thermal reports, edited video, inspection logs — released within 24–48 hours of flight completion.<span class="why-detail">Complex surveys and AI reports scoped with a defined SLA at booking. Schedule confirmed before launch.</span></div>
     </div>
     <div class="why-card">
   <div class="why-title">Data You Can Actually Use</div>
-      <div class="why-body">Every deliverable is structured for direct downstream integration — georeferenced GeoTIFF orthomosaics, LAS/LAZ point clouds, 10-bit 4K H.265 footage, calibrated radiometric thermal data, and 3D models in OBJ, GLTF, or FBX. Whether your workflow runs on ArcGIS, AutoCAD, Pix4D, or Agisoft, your data arrives properly formatted, labeled, and ready for immediate use.</div>
+      <div class="why-body">Every file is formatted for your existing workflow — georeferenced, labeled, and ready to import.<span class="why-detail">GeoTIFF · LAS/LAZ · 4K H.265 · OBJ/GLTF/FBX · compatible with ArcGIS, AutoCAD, Pix4D, Agisoft</span></div>
     </div>
     <div class="why-card">
   <div class="why-title">One Vendor, Six Capabilities</div>
-      <div class="why-body">Coordinating multiple specialty subcontractors adds procurement overhead, scheduling risk, and inconsistent QC across deliverables. DØi Labs consolidates aerial photography, precision mapping, thermal inspection, surveillance overwatch, AI data processing, and 3D reconstruction under a single contract, single point of contact, and unified operational standard — reducing project complexity and execution risk.</div>
+      <div class="why-body">Aerial photography, thermal inspection, mapping, surveillance, AI processing, and 3D reconstruction — single contract, single point of contact.<span class="why-detail">Eliminates the overhead and scheduling risk of managing multiple specialty subcontractors.</span></div>
     </div>
     <div class="why-card">
   <div class="why-title">California-Based Operations</div>
-      <div class="why-body">DØi Labs maintains active operational coverage across California — including Class B/C/D airspace corridors around LAX, SFO, SAN, and SJC, coastal restricted zones, agricultural corridors, and urban industrial sites. Our pilots have direct experience with LAANC workflows, Title 14 CFR Part 107 waiver requirements, and California-specific terrain and regulatory environments from the Bay Area to the Southern border.</div>
+      <div class="why-body">Active coverage across California — Class B/C/D corridors, coastal zones, agricultural districts, and urban industrial sites.<span class="why-detail">LAANC-experienced across LAX, SFO, SAN, SJC, and Central Valley. Bay Area to Southern border.</span></div>
     </div>
   </div>
 </section>
@@ -1785,8 +1818,8 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
   <div class="scard-code"><span class="sb-slash">//</span><span class="sb-code">SVC-06</span></div>
   </div>
   <div class="scard-title">3D Modeling & Reconstruction</div>
-  <div class="scard-desc">We convert drone-captured imagery into usable 3D models, site reconstructions, and visual reference assets for planning, inspections, documentation, and client reporting. This gives clients a clearer understanding of structures, terrain, access points, and site conditions without relying only on flat photos.</div>
-  <div class="scard-who">WHO NEEDS THIS: Architects, developers, facility managers, insurance adjusters, engineers, and anyone who needs to understand a site in three dimensions.</div>
+  <div class="scard-desc">Photogrammetry-based 3D models and site reconstructions in OBJ, GLTF, or FBX — centimeter-level accuracy for planning, documentation, insurance review, and client reporting.</div>
+  <div class="scard-who">WHO NEEDS THIS: Architects, developers, facility managers, insurance adjusters, engineers.</div>
   <div class="scard-specs"><div class="sspec"><span class="sk">OUTPUT</span><span class="sv">PHOTOGRAMMETRIC 3D MODEL</span></div><div class="sspec"><span class="sk">FORMAT</span><span class="sv">OBJ / FBX / GLTF / PDF</span></div><div class="sspec"><span class="sk">USE CASE</span><span class="sv">PLANNING / INSPECTION / REPORTING</span></div><div class="sspec"><span class="sk">TURNAROUND</span><span class="sv">3–5 BUSINESS DAYS</span></div></div>
 </div></div>
 </section>
