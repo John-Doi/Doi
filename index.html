@@ -1251,6 +1251,9 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
 /* ── GLOBAL: suppress CSS // prefix (// now baked into HTML) ── */
 .hero-h1 .og::before{content:none!important;}
 
+/* ── GLOBAL: DRONE/RECON/DIVISION same size+spacing as ADVANCED AERIAL/INTELLIGENCE ── */
+.hero-h1 .og{font-size:1em!important;line-height:0.92!important;}
+
 /* ── GLOBAL: ghost spacer aligns RECON's R under DRONE's D ── */
 .og-ghost{visibility:hidden;}
 
@@ -1289,6 +1292,10 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
   .hero-h1{font-size:clamp(36px,11vw,48px)!important;letter-spacing:-0.5px!important;text-align:center!important;width:100%!important;}
   .hero-h1 .og{display:block!important;text-align:center!important;}
   .hero-h1 .dim{display:block!important;text-align:center!important;}
+  /* hide <br> after block-level spans — they double the line gap */
+  .hero-h1 .og+br,.hero-h1 .dim+br{display:none!important;}
+  /* hide // prefix + ghost so D/R center to ADVANCED AERIAL/INTELLIGENCE */
+  .og-prefix,.og-ghost{display:none!important;}
   .hero-sub{font-size:16px!important;margin-top:20px!important;padding:0 16px!important;text-align:center!important;}
   .hero-stats{width:100%!important;margin-bottom:20px!important;}
   .hero-acts{gap:10px!important;}
@@ -1516,7 +1523,7 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
   <div class="hero-recon-badge">DØi LABS &nbsp;·&nbsp; RECON DIVISION &nbsp;·&nbsp; EST. 2024</div>
 
   <h1 class="hero-h1">
-    <span class="og">// DRONE</span><br>
+    <span class="og"><span class="og-prefix">// </span>DRONE</span><br>
     <span class="og"><span class="og-ghost">// </span>RECON</span><br>
     <span class="dim">DIVISION</span><br>
     ADVANCED AERIAL<br>INTELLIGENCE
@@ -2376,10 +2383,7 @@ function submitForm(){
   }
 
   placeDrone();
-  window.addEventListener('load',function(){
-    placeDrone();
-    setTimeout(function(){ showDrone(); }, 700);
-  });
+  window.addEventListener('load',function(){ placeDrone(); });
   window.addEventListener('resize',placeDrone);
 
   /* show drone when GET A QUOTE reaches mid-screen; restart on scroll back */
@@ -2391,6 +2395,30 @@ function submitForm(){
     });
   },{threshold:0,rootMargin:'0px 0px -32% 0px'});
   io.observe(heroActs||hero);
+})();
+</script>
+<script>
+/* all videos + drone: play/show on view, iOS Safari first-interaction fallback */
+(function(){
+  var vids=document.querySelectorAll('.nav-logo-vid,.hero-logo-cin');
+  var droneActs=document.querySelector('.hero-acts')||document.getElementById('hero');
+  function tryPlay(){ vids.forEach(function(v){ v.play().catch(function(){}); }); }
+  function tryDrone(){
+    if(!droneActs) return;
+    var r=droneActs.getBoundingClientRect();
+    if(r.top < window.innerHeight*0.85){
+      if(typeof showDrone==='function') showDrone();
+    }
+  }
+  tryPlay();
+  ['touchstart','pointerdown','scroll'].forEach(function(evt){
+    document.addEventListener(evt,function(){tryPlay();tryDrone();},{once:true,passive:true});
+  });
+  vids.forEach(function(vid){
+    new IntersectionObserver(function(entries){
+      if(entries[0].isIntersecting) vid.play().catch(function(){});
+    },{threshold:0.1}).observe(vid);
+  });
 })();
 </script>
 </body>
