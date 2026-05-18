@@ -1693,6 +1693,37 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
 .plat-exp{max-height:0!important;overflow:hidden!important;transition:max-height 0.45s ease,opacity 0.35s ease!important;opacity:0!important;}
 .plat-feature.plat-open .plat-exp{max-height:250px!important;opacity:1!important;}
 /* ── RESPONSIVE: SERVICE CARD METRICS ── */
+/* ── COLLAPSED MODULES ── */
+.collapsed-module{border:1px solid #1a1a1a!important;margin:0 40px!important;background:#0d0d0d!important;}
+.cm-row{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:24px!important;padding:24px 28px!important;cursor:pointer!important;transition:background 0.2s!important;}
+.cm-row:hover{background:rgba(212,98,15,0.04)!important;}
+.cm-left{flex:1!important;min-width:0!important;}
+.cm-kicker{font-family:var(--mono)!important;font-size:8px!important;letter-spacing:3px!important;color:#D4620F!important;opacity:0.6!important;margin-bottom:6px!important;}
+.cm-title{font-family:var(--mono)!important;font-size:13px!important;letter-spacing:2px!important;color:#E8E4DC!important;font-weight:700!important;margin-bottom:8px!important;}
+.cm-summary{font-size:12px!important;color:#666!important;line-height:1.6!important;}
+.cm-toggle{font-family:var(--mono)!important;font-size:9px!important;letter-spacing:2px!important;color:#D4620F!important;background:transparent!important;border:1px solid rgba(212,98,15,0.3)!important;padding:8px 14px!important;cursor:pointer!important;white-space:nowrap!important;flex-shrink:0!important;transition:background 0.2s!important;}
+.cm-toggle:hover{background:rgba(212,98,15,0.08)!important;}
+.cm-chev{display:inline-block!important;transition:transform 0.3s!important;}
+.collapsed-module.cm-open .cm-chev{transform:rotate(45deg)!important;}
+.cm-body{max-height:0!important;overflow:hidden!important;transition:max-height 0.6s ease,opacity 0.4s ease!important;opacity:0!important;padding:0 28px!important;}
+.collapsed-module.cm-open .cm-body{max-height:1200px!important;opacity:1!important;padding:4px 28px 28px!important;}
+
+/* ── COVERAGE COMPACT ── */
+.coverage-compact{padding:64px 0!important;}
+.cov-kicker{font-family:var(--mono)!important;font-size:8px!important;letter-spacing:3px!important;color:#D4620F!important;opacity:0.7!important;margin-bottom:10px!important;}
+.cov-title{font-family:var(--mono)!important;font-size:clamp(18px,2vw,24px)!important;letter-spacing:3px!important;color:#E8E4DC!important;font-weight:700!important;margin:0 0 14px!important;}
+.cov-text{font-size:15px!important;color:#888!important;line-height:1.7!important;max-width:640px!important;margin:0 0 20px!important;}
+.cov-tags{display:flex!important;flex-wrap:wrap!important;align-items:center!important;gap:6px 0!important;margin-bottom:16px!important;}
+.cov-tags span{font-family:var(--mono)!important;font-size:10px!important;letter-spacing:2px!important;color:#CCC!important;}
+.cov-sep{color:#D4620F!important;opacity:0.4!important;margin:0 8px!important;}
+.cov-meta{font-family:var(--mono)!important;font-size:8px!important;letter-spacing:2px!important;color:#444!important;border-top:1px solid #1a1a1a!important;padding-top:14px!important;}
+
+@media(max-width:600px){
+  .collapsed-module{margin:0 16px!important;}
+  .cm-row{flex-direction:column!important;align-items:flex-start!important;gap:12px!important;padding:20px!important;}
+  .coverage-compact .wrap{padding:0 20px!important;}
+}
+
 @media(max-width:600px){
   .sexp-cols{grid-template-columns:1fr!important;}
   .scard-metrics{grid-template-columns:repeat(2,1fr)!important;}
@@ -1885,7 +1916,7 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
   </p>
   <p class="hero-urgency">Actionable aerial intelligence for properties, infrastructure, and operations that can't afford uncertainty.</p>
   <div class="hero-stats">
-    <div class="hstat"><div class="hstat-n"><span class="val">5</span><span class="unit">SVC</span></div><div class="hstat-l">Service<br>Types</div></div>
+    <div class="hstat"><div class="hstat-n"><span class="val">6</span><span class="unit">SVC</span></div><div class="hstat-l">Service<br>Types</div></div>
     <div class="hstat"><div class="hstat-n"><span class="val">4K</span><span class="unit">+RTK</span></div><div class="hstat-l">Imaging<br>Capability</div></div>
     <div class="hstat"><div class="hstat-n"><span class="val">±2°</span><span class="unit">C</span></div><div class="hstat-l">Thermal<br>Precision</div></div>
     <div class="hstat"><div class="hstat-n"><span class="val">24</span><span class="unit">H</span></div><div class="hstat-l">Average<br>Delivery</div></div>
@@ -2516,235 +2547,34 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
 </section>
 
 <!-- CALIFORNIA COVERAGE MAP -->
-<section id="coverage">
-  <div class="sec-header">
-    <div class="sec-kicker">// OPERATIONAL THEATER</div>
-    <h2 class="sec-h">CALIFORNIA COVERAGE</h2>
-    <p class="sec-sub">Primary operations across the state of California. Rapid deployment to Los Angeles Basin, Bay Area, San Diego, Central Valley, and Inland Empire. Extended range available with advance notice.</p>
-  </div>
-  <div class="cov-wrap">
-    <div class="cov-map-container">
-      <svg class="cov-map" viewBox="0 0 320 480" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <!-- Grid overlay -->
-        <defs>
-          <pattern id="mapGrid" width="20" height="20" patternUnits="userSpaceOnUse">
-            <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#1a1a1a" stroke-width="0.5"/>
-          </pattern>
-          <clipPath id="caClip">
-            <path d="M 200 10 L 220 20 L 240 18 L 255 30 L 260 50 L 270 70 L 275 100 L 278 130 L 275 160 L 272 190 L 270 220 L 268 250 L 262 280 L 255 305 L 245 325 L 230 342 L 210 355 L 195 368 L 175 378 L 155 388 L 135 395 L 115 400 L 95 402 L 75 398 L 60 390 L 50 375 L 45 355 L 48 335 L 55 315 L 60 295 L 58 270 L 55 245 L 52 220 L 55 195 L 60 170 L 58 145 L 55 120 L 60 95 L 70 75 L 85 58 L 100 45 L 118 32 L 140 20 L 165 12 L 185 8 Z"/>
-          </clipPath>
-        </defs>
-        <!-- Background grid -->
-        <rect width="320" height="480" fill="url(#mapGrid)"/>
-        <!-- California state fill -->
-        <path d="M 200 10 L 220 20 L 240 18 L 255 30 L 260 50 L 270 70 L 275 100 L 278 130 L 275 160 L 272 190 L 270 220 L 268 250 L 262 280 L 255 305 L 245 325 L 230 342 L 210 355 L 195 368 L 175 378 L 155 388 L 135 395 L 115 400 L 95 402 L 75 398 L 60 390 L 50 375 L 45 355 L 48 335 L 55 315 L 60 295 L 58 270 L 55 245 L 52 220 L 55 195 L 60 170 L 58 145 L 55 120 L 60 95 L 70 75 L 85 58 L 100 45 L 118 32 L 140 20 L 165 12 L 185 8 Z" fill="#0f0f0f" stroke="#D4620F" stroke-width="1.5"/>
-        <!-- Scan line animation -->
-        <line class="cov-scanline" x1="40" y1="50" x2="290" y2="50" stroke="#D4620F" stroke-width="0.8" stroke-opacity="0.4"/>
-        <!-- City markers -->
-        <!-- LA -->
-        <circle cx="145" cy="340" r="5" fill="#D4620F" opacity="0.9"/>
-        <circle cx="145" cy="340" r="12" fill="none" stroke="#D4620F" stroke-width="1" stroke-dasharray="3 2" opacity="0.5">
-          <animateTransform attributeName="transform" type="scale" values="1;1.5;1" dur="3s" repeatCount="indefinite" additive="sum" begin="0s"/>
-        </circle>
-        <circle cx="145" cy="340" r="20" fill="none" stroke="#D4620F" stroke-width="0.5" opacity="0.25">
-          <animateTransform attributeName="transform" type="scale" values="1;1.8;1" dur="3s" repeatCount="indefinite" additive="sum" begin="0.3s"/>
-        </circle>
-        <text x="158" y="337" fill="#D4620F" font-family="monospace" font-size="9" letter-spacing="1">LOS ANGELES</text>
-        <text x="158" y="348" fill="#888" font-family="monospace" font-size="7">PRIMARY HQ</text>
-        <!-- SF -->
-        <circle cx="90" cy="155" r="4" fill="#D4620F" opacity="0.7"/>
-        <circle cx="90" cy="155" r="10" fill="none" stroke="#D4620F" stroke-width="1" stroke-dasharray="3 2" opacity="0.4">
-          <animateTransform attributeName="transform" type="scale" values="1;1.4;1" dur="3.5s" repeatCount="indefinite" additive="sum" begin="1s"/>
-        </circle>
-        <text x="102" y="152" fill="#D4620F" font-family="monospace" font-size="9" letter-spacing="1">SAN FRANCISCO</text>
-        <text x="102" y="163" fill="#888" font-family="monospace" font-size="7">BAY AREA OPS</text>
-        <!-- SD -->
-        <circle cx="175" cy="400" r="4" fill="#D4620F" opacity="0.7"/>
-        <circle cx="175" cy="400" r="10" fill="none" stroke="#D4620F" stroke-width="1" stroke-dasharray="3 2" opacity="0.4">
-          <animateTransform attributeName="transform" type="scale" values="1;1.4;1" dur="4s" repeatCount="indefinite" additive="sum" begin="0.5s"/>
-        </circle>
-        <text x="140" y="414" fill="#D4620F" font-family="monospace" font-size="9" letter-spacing="1">SAN DIEGO</text>
-        <!-- Central Valley -->
-        <circle cx="158" cy="245" r="3" fill="#D4620F" opacity="0.5"/>
-        <text x="168" y="248" fill="#666" font-family="monospace" font-size="8">CENTRAL VALLEY</text>
-        <!-- Inland Empire -->
-        <circle cx="175" cy="358" r="3" fill="#D4620F" opacity="0.5"/>
-        <text x="165" y="372" fill="#666" font-family="monospace" font-size="7">INLAND EMPIRE</text>
-        <!-- Range radius from LA -->
-        <circle cx="145" cy="340" r="60" fill="none" stroke="#D4620F" stroke-width="0.5" stroke-dasharray="4 4" opacity="0.2"/>
-        <!-- Tactical crosshair corners -->
-        <line x1="40" y1="10" x2="55" y2="10" stroke="#D4620F" stroke-width="1" opacity="0.4"/>
-        <line x1="40" y1="10" x2="40" y2="25" stroke="#D4620F" stroke-width="1" opacity="0.4"/>
-        <line x1="280" y1="10" x2="265" y2="10" stroke="#D4620F" stroke-width="1" opacity="0.4"/>
-        <line x1="280" y1="10" x2="280" y2="25" stroke="#D4620F" stroke-width="1" opacity="0.4"/>
-        <line x1="40" y1="460" x2="55" y2="460" stroke="#D4620F" stroke-width="1" opacity="0.4"/>
-        <line x1="40" y1="460" x2="40" y2="445" stroke="#D4620F" stroke-width="1" opacity="0.4"/>
-        <line x1="280" y1="460" x2="265" y2="460" stroke="#D4620F" stroke-width="1" opacity="0.4"/>
-        <line x1="280" y1="460" x2="280" y2="445" stroke="#D4620F" stroke-width="1" opacity="0.4"/>
-        <!-- Map label -->
-        <text x="40" y="472" fill="#333" font-family="monospace" font-size="7" letter-spacing="1">DØi LABS · OPERATIONAL THEATER · CA</text>
-      </svg>
-      <div class="cov-scan-overlay"></div>
+<div class="coverage-compact">
+  <div class="wrap">
+    <div class="cov-kicker">[ COVERAGE ]</div>
+    <h3 class="cov-title">CALIFORNIA OPERATIONS</h3>
+    <p class="cov-text">Rapid deployment across Los Angeles, Orange County, Inland Empire, San Diego, Central Valley, and Bay Area regions. Extended deployments available for multi-day engagements statewide.</p>
+    <div class="cov-tags">
+      <span>LOS ANGELES</span><span class="cov-sep">·</span>
+      <span>ORANGE COUNTY</span><span class="cov-sep">·</span>
+      <span>INLAND EMPIRE</span><span class="cov-sep">·</span>
+      <span>SAN DIEGO</span><span class="cov-sep">·</span>
+      <span>CENTRAL VALLEY</span><span class="cov-sep">·</span>
+      <span>BAY AREA</span>
     </div>
-    <div class="cov-data">
-      <div class="cov-stat-row">
-        <div class="cov-stat">
-          <div class="cov-stat-val">STATEWIDE</div>
-          <div class="cov-stat-lbl">COVERAGE ZONE</div>
-        </div>
-        <div class="cov-stat">
-          <div class="cov-stat-val">&lt; 48H</div>
-          <div class="cov-stat-lbl">DEPLOY TIME</div>
-        </div>
-      </div>
-      <div class="cov-zones">
-        <div class="cov-zone active">
-          <div class="cov-zone-dot"></div>
-          <div>
-            <div class="cov-zone-name">LOS ANGELES BASIN</div>
-            <div class="cov-zone-desc">LA, OC, Ventura, South Bay — primary operations hub, same-day availability</div>
-          </div>
-        </div>
-        <div class="cov-zone active">
-          <div class="cov-zone-dot"></div>
-          <div>
-            <div class="cov-zone-name">INLAND EMPIRE</div>
-            <div class="cov-zone-desc">Riverside, San Bernardino, Ontario — 90-min radius from LA base</div>
-          </div>
-        </div>
-        <div class="cov-zone">
-          <div class="cov-zone-dot"></div>
-          <div>
-            <div class="cov-zone-name">SAN DIEGO COUNTY</div>
-            <div class="cov-zone-desc">Metro, North County, East County — next-day scheduling standard</div>
-          </div>
-        </div>
-        <div class="cov-zone">
-          <div class="cov-zone-dot"></div>
-          <div>
-            <div class="cov-zone-name">CENTRAL VALLEY</div>
-            <div class="cov-zone-desc">Fresno, Bakersfield, Stockton — agricultural and infrastructure focus</div>
-          </div>
-        </div>
-        <div class="cov-zone">
-          <div class="cov-zone-dot"></div>
-          <div>
-            <div class="cov-zone-name">BAY AREA</div>
-            <div class="cov-zone-desc">SF, Oakland, San Jose, Peninsula — advance notice required</div>
-          </div>
-        </div>
-      </div>
-      <div class="cov-note">// Extended deployments outside California available for multi-day engagements. Contact for scope and logistics.</div>
-    </div>
+    <div class="cov-meta">FAA-authorized operations · &lt; 48H standard deploy · COI provided on request</div>
   </div>
-</section>
+</div>
 
-<!-- OPERATIONAL TIMELINE -->
-<section id="ops-timeline">
-  <div class="sec-header">
-    <div class="sec-kicker">// MISSION EXECUTION</div>
-    <h2 class="sec-h">FROM SCOPE TO DELIVERY</h2>
-    <p class="sec-sub">A structured four-phase execution model. Every engagement follows this protocol — no improvisation, no ambiguity.</p>
+<div class="collapsed-module" id="platform-module">
+  <div class="cm-row" onclick="document.getElementById('platform-module').classList.toggle('cm-open')" role="button">
+    <div class="cm-left">
+      <div class="cm-kicker">// TECHNOLOGY STACK</div>
+      <div class="cm-title">WHY ENTERPRISE SYSTEMS MATTER</div>
+      <div class="cm-summary">DJI Matrice 4T · RTK GPS · FLIR BOSON+ · Dual IMU · local-only data processing. Enterprise-grade specifications available for procurement review.</div>
+    </div>
+    <button class="cm-toggle" tabindex="-1">EXPAND <span class="cm-chev">+</span></button>
   </div>
-  <div class="otl-strip">
-    <div class="otl-line"></div>
-    <div class="otl-step" onclick="toggleOtl(this)">
-      <div class="otl-node"></div>
-      <div class="otl-day">DAY 0</div>
-      <div class="otl-phase">MISSION SCOPE <span class="otl-chev">↓</span></div>
-      
-      <div class="otl-exp"><div class="otl-body">Site briefing, airspace LAANC authorization, flight plan filed, equipment manifest confirmed, client access coordination.</div>
-        <ul class="otl-items">
-        <li>LAANC / Part 107 filing</li>
-        <li>Site access + safety brief</li>
-        <li>Deliverable format confirmed</li>
-      </ul></div>
-    </div>
-    <div class="otl-step">
-      <div class="otl-node"></div>
-      <div class="otl-day">DAY 1</div>
-      <div class="otl-phase">DEPLOYMENT</div>
-      <div class="otl-body">On-site drone operations. All sensor passes flown per mission plan. Raw data logged and backed up in-field before departure.</div>
-      <ul class="otl-items">
-        <li>Full sensor suite deployed</li>
-        <li>Ground control points set</li>
-        <li>In-field data verification</li>
-      </ul>
-    </div>
-    <div class="otl-step">
-      <div class="otl-node"></div>
-      <div class="otl-day">DAY 1–2</div>
-      <div class="otl-phase">PROCESSING</div>
-      <div class="otl-body">Photogrammetry, thermal calibration, orthorectification, AI anomaly tagging, and deliverable packaging to client spec.</div>
-      <ul class="otl-items">
-        <li>Pix4D / Metashape processing</li>
-        <li>Thermal radiometric calibration</li>
-        <li>AI anomaly detection pass</li>
-      </ul>
-    </div>
-    <div class="otl-step">
-      <div class="otl-node"></div>
-      <div class="otl-day">DAY 2–3</div>
-      <div class="otl-phase">DELIVERY</div>
-      <div class="otl-body">Secure client portal delivery. All outputs in agreed formats. Report briefing call included for complex engagements.</div>
-      <ul class="otl-items">
-        <li>Secure download portal</li>
-        <li>Full format package</li>
-        <li>Debrief call available</li>
-      </ul>
-    </div>
-  </div>
-</section>
-
-<!-- OPERATIONAL PARAMETERS -->
-<section id="ops-params">
-  <div class="sec-header">
-    <div class="sec-kicker">// MISSION CONSTRAINTS</div>
-    <h2 class="sec-h">OPERATIONAL PARAMETERS</h2>
-    <p class="sec-sub">Transparency about what governs deployment. Every engagement is planned within these parameters — no surprises, no liability exposure for the client.</p>
-  </div>
-  <div class="params-grid">
-    <div class="param-card" onclick="this.classList.toggle('param-open')" role="button">
-      <div class="param-label">FAA AIRSPACE</div>
-      <div class="param-val">CLASS B / C / D / E / G <span class="param-chev">+</span></div>
-      <div class="param-exp"><div class="param-desc">All restricted airspace requires LAANC authorization or manual waiver. We handle all filings. No client liability.</div></div>
-    </div>
-    <div class="param-card" onclick="this.classList.toggle('param-open')" role="button">
-      <div class="param-label">WEATHER WINDOW</div>
-      <div class="param-val">WIND &lt; 25 MPH · VIS &gt; 3SM <span class="param-chev">+</span></div>
-      <div class="param-exp"><div class="param-desc">Operations require sustained wind below 25 mph and visual flight conditions. Thermal ops require night or pre-dawn windows.</div></div>
-    </div>
-    <div class="param-card" onclick="this.classList.toggle('param-open')" role="button">
-      <div class="param-label">THERMAL TIMING</div>
-      <div class="param-val">DAWN · DUSK · NIGHT OPS <span class="param-chev">+</span></div>
-      <div class="param-exp"><div class="param-desc">Maximum thermal contrast occurs 1–2 hours post-sunset or pre-sunrise. Part 107 night waiver held for nighttime operations.</div></div>
-    </div>
-    <div class="param-card" onclick="this.classList.toggle('param-open')" role="button">
-      <div class="param-label">LAANC FILING</div>
-      <div class="param-val">24–48 HOUR LEAD TIME <span class="param-chev">+</span></div>
-      <div class="param-exp"><div class="param-desc">FAA LAANC authorization typically auto-approves within minutes for eligible airspace. Manual waivers require 24–48 hours advance.</div></div>
-    </div>
-    <div class="param-card" onclick="this.classList.toggle('param-open')" role="button">
-      <div class="param-label">SITE ACCESS</div>
-      <div class="param-val">CLIENT COORDINATED <span class="param-chev">+</span></div>
-      <div class="param-exp"><div class="param-desc">Client responsible for property access permissions. We advise on takeoff/landing zone requirements and safety perimeters.</div></div>
-    </div>
-    <div class="param-card" onclick="this.classList.toggle('param-open')" role="button">
-      <div class="param-label">INSURANCE</div>
-      <div class="param-val">$2M LIABILITY COI <span class="param-chev">+</span></div>
-      <div class="param-exp"><div class="param-desc">Certificate of Insurance provided for every commercial engagement. Additional insured endorsements available upon request.</div></div>
-    </div>
-  </div>
-</section>
-
-<!-- ENTERPRISE PLATFORM -->
-<section id="platform">
-  <div class="sec-header">
-    <div class="sec-kicker">// TECHNOLOGY STACK</div>
-    <h2 class="sec-h">WHY ENTERPRISE SYSTEMS MATTER</h2>
-    <p class="sec-sub">The difference between hobby-grade and enterprise aerial data isn't the pilot — it's the sensor stack, software pipeline, and data standards. Here's what enterprise-class actually means.</p>
-  </div>
-  <div class="plat-grid">
+  <div class="cm-body">
+    <div class="plat-grid">
     <div class="plat-feature" onclick="this.classList.toggle('plat-open')" role="button">
       <div class="plat-kicker">SENSOR FUSION</div>
       <div class="plat-title-row"><div class="plat-title">Simultaneous Thermal + RGB Capture</div><span class="plat-chev">+</span></div>
@@ -2788,7 +2618,8 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
       <div class="plat-spec">LOCAL PROCESSING · CLIENT-CONTROLLED STORAGE · NO CLOUD</div></div>
     </div>
   </div>
-</section>
+  </div>
+</div>
 
 <!-- PROCESS: SCROLL TIMELINE -->
 <div id="process" class="tl-zone">
@@ -2905,53 +2736,17 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
   </details>
 </section>
 
-<!-- FAQ -->
-<section id="faq">
-  <div class="tac-corner tac-tl" aria-hidden="true"></div>
-  <div class="tac-corner tac-tr" aria-hidden="true"></div>
-  <div class="tac-corner tac-bl" aria-hidden="true"></div>
-  <div class="tac-corner tac-br" aria-hidden="true"></div>
-  <div class="tac-diamond" aria-hidden="true"></div>
-  <div class="tac-hex-left" aria-hidden="true">
-    <svg viewBox="0 0 90 302" width="90" height="302" xmlns="http://www.w3.org/2000/svg">
-      <polygon points="24,0 44.8,12 44.8,36 24,48 3.2,36 3.2,12" fill="rgba(20,16,12,0.5)" stroke="rgba(100,85,65,0.28)" stroke-width="1"/>
-      <polygon points="24,36 44.8,48 44.8,72 24,84 3.2,72 3.2,48" fill="rgba(20,16,12,0.5)" stroke="rgba(100,85,65,0.28)" stroke-width="1"/>
-      <polygon points="24,72 44.8,84 44.8,108 24,120 3.2,108 3.2,84" fill="rgba(20,16,12,0.5)" stroke="rgba(100,85,65,0.28)" stroke-width="1"/>
-      <polygon points="24,108 44.8,120 44.8,144 24,156 3.2,144 3.2,120" fill="rgba(20,16,12,0.5)" stroke="rgba(100,85,65,0.28)" stroke-width="1"/>
-      <polygon points="24,144 44.8,156 44.8,180 24,192 3.2,180 3.2,156" fill="rgba(20,16,12,0.5)" stroke="rgba(100,85,65,0.28)" stroke-width="1"/>
-      <polygon points="24,180 44.8,192 44.8,216 24,228 3.2,216 3.2,192" fill="rgba(20,16,12,0.5)" stroke="rgba(100,85,65,0.28)" stroke-width="1"/>
-      <polygon points="65.5,18 86.3,30 86.3,54 65.5,66 44.7,54 44.7,30" fill="rgba(20,16,12,0.5)" stroke="rgba(100,85,65,0.22)" stroke-width="1"/>
-      <polygon points="65.5,54 86.3,66 86.3,90 65.5,102 44.7,90 44.7,66" fill="rgba(20,16,12,0.5)" stroke="rgba(100,85,65,0.22)" stroke-width="1"/>
-      <polygon points="65.5,90 86.3,102 86.3,126 65.5,138 44.7,126 44.7,102" fill="rgba(20,16,12,0.5)" stroke="rgba(100,85,65,0.22)" stroke-width="1"/>
-      <polygon points="65.5,126 86.3,138 86.3,162 65.5,174 44.7,162 44.7,138" fill="rgba(20,16,12,0.5)" stroke="rgba(100,85,65,0.22)" stroke-width="1"/>
-      <polygon points="65.5,162 86.3,174 86.3,198 65.5,210 44.7,198 44.7,174" fill="rgba(20,16,12,0.5)" stroke="rgba(100,85,65,0.22)" stroke-width="1"/>
-    </svg>
+<div class="collapsed-module" id="faq-module">
+  <div class="cm-row" onclick="document.getElementById('faq-module').classList.toggle('cm-open')" role="button">
+    <div class="cm-left">
+      <div class="cm-kicker">// COMMON QUESTIONS</div>
+      <div class="cm-title">WHAT CLIENTS ASK</div>
+      <div class="cm-summary">Deploy timeline, FAA authorization, insurance, deliverable formats, weather protocols, and coverage areas — answered before your first mission.</div>
+    </div>
+    <button class="cm-toggle" tabindex="-1">SEE QUESTIONS <span class="cm-chev">+</span></button>
   </div>
-  <div class="tac-hex-right" aria-hidden="true">
-    <svg viewBox="0 0 107 145" width="107" height="145" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <filter id="hex-glow-faq" x="-40%" y="-40%" width="180%" height="180%">
-          <feGaussianBlur stdDeviation="2.5" result="blur"/>
-          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-        </filter>
-      </defs>
-      <polygon points="20,0 37.3,10 37.3,30 20,40 2.7,30 2.7,10" fill="rgba(255,107,0,0.04)" stroke="rgba(255,107,0,0.18)" stroke-width="1" opacity="0.5"/>
-      <polygon points="20,30 37.3,40 37.3,60 20,70 2.7,60 2.7,40" fill="rgba(255,107,0,0.06)" stroke="rgba(255,107,0,0.28)" stroke-width="1" opacity="0.65"/>
-      <polygon points="20,60 37.3,70 37.3,90 20,100 2.7,90 2.7,70" fill="rgba(255,107,0,0.08)" stroke="rgba(255,107,0,0.35)" stroke-width="1" opacity="0.8"/>
-      <polygon points="54.6,15 71.9,25 71.9,45 54.6,55 37.3,45 37.3,25" fill="rgba(255,107,0,0.05)" stroke="rgba(255,107,0,0.25)" stroke-width="1" opacity="0.55"/>
-      <polygon points="54.6,45 71.9,55 71.9,75 54.6,85 37.3,75 37.3,55" fill="rgba(255,107,0,0.09)" stroke="rgba(255,107,0,0.4)" stroke-width="1" opacity="0.78" filter="url(#hex-glow-faq)"/>
-      <polygon points="54.6,75 71.9,85 71.9,105 54.6,115 37.3,105 37.3,85" fill="rgba(255,107,0,0.12)" stroke="rgba(255,107,0,0.55)" stroke-width="1.5" opacity="0.95" filter="url(#hex-glow-faq)"/>
-      <polygon points="89.2,0 106.5,10 106.5,30 89.2,40 71.9,30 71.9,10" fill="rgba(255,107,0,0.07)" stroke="rgba(255,107,0,0.32)" stroke-width="1" opacity="0.6"/>
-      <polygon points="89.2,30 106.5,40 106.5,60 89.2,70 71.9,60 71.9,40" fill="rgba(255,107,0,0.12)" stroke="rgba(255,107,0,0.5)" stroke-width="1.2" opacity="0.85" filter="url(#hex-glow-faq)"/>
-      <polygon points="89.2,60 106.5,70 106.5,90 89.2,100 71.9,90 71.9,70" fill="rgba(255,107,0,0.18)" stroke="rgba(255,107,0,0.75)" stroke-width="1.5" opacity="1" filter="url(#hex-glow-faq)"/>
-    </svg>
-  </div>
-  <div class="wrap">
-    <div class="tag">Common Questions</div>
-    <div class="sec-h">WHAT CLIENTS <span class="gh">ASK US</span></div>
-    <div class="sec-intro">Real questions from business owners before they book their first mission.</div>
-  </div>
-  <div class="faq-grid">
+  <div class="cm-body">
+    <div class="faq-grid">
     <details class="faq-item">
       <summary class="faq-q">How quickly can you deploy?</summary>
       <div class="faq-a">Most standard missions can be scheduled within 3–5 business days of booking. Urgent deployments can often be arranged within 24–48 hours depending on location and airspace requirements. Contact us to discuss your timeline.</div>
@@ -2977,7 +2772,8 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
       <div class="faq-a">DØi Labs operates throughout California. We coordinate airspace authorization across all California regions — including LAX Class B, SFO, SAN, controlled airspace in the Central Valley, and coastal corridors. Multi-site projects across the state are welcome.</div>
     </details>
   </div>
-</section>
+  </div>
+</div>
 
 <!-- TRUST STRIP -->
 <div class="trust-strip" role="list" aria-label="Certifications and operational standards">
@@ -3449,6 +3245,9 @@ function submitForm(){
     });
   },{threshold:0,rootMargin:ioMargin});
   io.observe(heroTrigger);
+  // expose for iOS Safari fallback
+  window._droneShow = showDrone;
+  window._droneHide = hideDrone;
 })();
 </script>
 <script>
@@ -3461,7 +3260,7 @@ function submitForm(){
     if(!droneActs) return;
     var r=droneActs.getBoundingClientRect();
     if(r.top < window.innerHeight*0.85){
-      if(typeof showDrone==='function') showDrone();
+      if(typeof window._droneShow==='function') window._droneShow();
     }
   }
   tryPlay();
