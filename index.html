@@ -1642,6 +1642,61 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
   .cov-wrap{padding:0 16px!important;}
   #industries,#coverage,#ops-timeline,#ops-params,#platform{padding:64px 0!important;}
 }
+
+/* ── PROGRESSIVE DISCLOSURE: SERVICE CARDS ── */
+.scard-summary{font-size:13px!important;color:#888!important;line-height:1.6!important;margin:10px 0 14px!important;}
+.scard-metrics{display:grid!important;grid-template-columns:repeat(2,1fr)!important;gap:2px!important;margin-bottom:14px!important;}
+.smet{background:#111!important;border:1px solid #1a1a1a!important;padding:8px 10px!important;display:flex!important;flex-direction:column!important;gap:2px!important;}
+.smk{font-family:var(--mono)!important;font-size:7px!important;letter-spacing:2px!important;color:#555!important;}
+.smv{font-family:var(--mono)!important;font-size:10px!important;color:#CCC!important;letter-spacing:1px!important;}
+.scard-toggle{font-family:var(--mono)!important;font-size:9px!important;letter-spacing:2.5px!important;color:#D4620F!important;background:transparent!important;border:1px solid rgba(212,98,15,0.35)!important;padding:9px 14px!important;cursor:pointer!important;width:100%!important;text-align:left!important;display:flex!important;justify-content:space-between!important;align-items:center!important;transition:background 0.2s,border-color 0.2s!important;}
+.scard-toggle:hover{background:rgba(212,98,15,0.06)!important;border-color:rgba(212,98,15,0.7)!important;}
+.stgl{font-size:14px!important;transition:transform 0.3s ease!important;display:inline-block!important;}
+.scard.svc-open .stgl{transform:rotate(45deg)!important;}
+.scard-exp{max-height:0!important;overflow:hidden!important;transition:max-height 0.5s ease,opacity 0.4s ease!important;opacity:0!important;}
+.scard.svc-open .scard-exp{max-height:600px!important;opacity:1!important;}
+.sexp-cols{display:grid!important;grid-template-columns:repeat(3,1fr)!important;gap:16px!important;padding:16px 0!important;border-top:1px solid #1a1a1a!important;margin-top:12px!important;}
+.sexp-label{font-family:var(--mono)!important;font-size:8px!important;letter-spacing:2.5px!important;color:#D4620F!important;margin-bottom:8px!important;opacity:0.7!important;}
+.sexp-col ul{list-style:none!important;padding:0!important;margin:0!important;display:flex!important;flex-direction:column!important;gap:5px!important;}
+.sexp-col ul li{font-size:11px!important;color:#666!important;padding-left:10px!important;position:relative!important;}
+.sexp-col ul li::before{content:"›"!important;position:absolute!important;left:0!important;color:#D4620F!important;opacity:0.6!important;}
+.sexp-spec{font-family:var(--mono)!important;font-size:8px!important;color:#444!important;letter-spacing:1px!important;border-top:1px solid #1a1a1a!important;padding-top:10px!important;margin-top:4px!important;}
+.sexp-cta{font-family:var(--mono)!important;font-size:9px!important;letter-spacing:2px!important;color:#D4620F!important;text-decoration:none!important;display:inline-flex!important;align-items:center!important;gap:6px!important;margin-top:10px!important;opacity:0.8!important;transition:opacity 0.2s!important;}
+.sexp-cta:hover{opacity:1!important;}
+/* ── PROGRESSIVE DISCLOSURE: INDUSTRY CARDS ── */
+.ind-head{display:flex!important;flex-direction:column!important;gap:8px!important;}
+.ind-toggle{font-family:var(--mono)!important;font-size:9px!important;letter-spacing:2px!important;color:#D4620F!important;background:transparent!important;border:1px solid rgba(212,98,15,0.2)!important;padding:7px 12px!important;cursor:pointer!important;text-align:left!important;display:flex!important;justify-content:space-between!important;align-items:center!important;transition:background 0.2s,border-color 0.2s!important;margin-top:4px!important;}
+.ind-toggle:hover{background:rgba(212,98,15,0.05)!important;border-color:rgba(212,98,15,0.5)!important;}
+.itgl{font-size:13px!important;transition:transform 0.3s ease!important;display:inline-block!important;}
+.ind-card.ind-open .itgl{transform:rotate(45deg)!important;}
+.ind-exp{max-height:0!important;overflow:hidden!important;transition:max-height 0.45s ease,opacity 0.35s ease!important;opacity:0!important;margin-top:0!important;}
+.ind-card.ind-open .ind-exp{max-height:300px!important;opacity:1!important;margin-top:10px!important;}
+/* ── PROGRESSIVE DISCLOSURE: TIMELINE STEPS ── */
+.otl-step{cursor:pointer!important;}
+.otl-step:hover .otl-phase{color:#D4620F!important;}
+.otl-chev{font-size:10px!important;margin-left:6px!important;transition:transform 0.3s ease!important;display:inline-block!important;opacity:0.5!important;}
+.otl-step.otl-open .otl-chev{transform:rotate(180deg)!important;opacity:1!important;}
+.otl-exp{max-height:0!important;overflow:hidden!important;transition:max-height 0.4s ease,opacity 0.3s ease!important;opacity:0!important;}
+.otl-step.otl-open .otl-exp{max-height:250px!important;opacity:1!important;}
+/* ── PROGRESSIVE DISCLOSURE: PARAMS ── */
+.param-card{cursor:pointer!important;user-select:none!important;}
+.param-card:hover{border-color:rgba(212,98,15,0.3)!important;}
+.param-chev{font-size:14px!important;float:right!important;color:#D4620F!important;opacity:0.5!important;transition:transform 0.3s,opacity 0.3s!important;}
+.param-card.param-open .param-chev{transform:rotate(45deg)!important;opacity:1!important;}
+.param-exp{max-height:0!important;overflow:hidden!important;transition:max-height 0.4s ease,opacity 0.3s ease!important;opacity:0!important;}
+.param-card.param-open .param-exp{max-height:120px!important;opacity:1!important;}
+/* ── PROGRESSIVE DISCLOSURE: PLATFORM ACCORDION ── */
+.plat-feature{cursor:pointer!important;user-select:none!important;}
+.plat-title-row{display:flex!important;justify-content:space-between!important;align-items:flex-start!important;gap:8px!important;}
+.plat-chev{font-size:16px!important;color:#D4620F!important;opacity:0.5!important;flex-shrink:0!important;transition:transform 0.3s,opacity 0.3s!important;margin-top:2px!important;}
+.plat-feature.plat-open .plat-chev{transform:rotate(45deg)!important;opacity:1!important;}
+.plat-exp{max-height:0!important;overflow:hidden!important;transition:max-height 0.45s ease,opacity 0.35s ease!important;opacity:0!important;}
+.plat-feature.plat-open .plat-exp{max-height:250px!important;opacity:1!important;}
+/* ── RESPONSIVE: SERVICE CARD METRICS ── */
+@media(max-width:600px){
+  .sexp-cols{grid-template-columns:1fr!important;}
+  .scard-metrics{grid-template-columns:repeat(2,1fr)!important;}
+}
 </style>
 
 </head>
@@ -1998,60 +2053,168 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
     <div class="sec-h">WHAT WE <span class="gh">DELIVER</span></div>
     <div class="sec-intro">Every service includes pre-mission planning, FAA coordination, professional field execution, and a structured deliverable package. No guesswork. No surprises.</div>
   </div>
-  <div class="svc-grid"><div class="scard">
+  <div class="svc-grid"><div class="scard" id="svc-rcn">
   <div class="scard-top">
     <svg class="svc-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="44" fill="#0d0d0d" stroke="white" stroke-width="2.5"/><path d="M 79,18 A 44,44 0 0 1 94,50" fill="none" stroke="#FF6B00" stroke-width="2.5" stroke-linecap="round"/><line x1="50" y1="6" x2="50" y2="16" stroke="#FF6B00" stroke-width="2.5" stroke-linecap="round"/><line x1="50" y1="84" x2="50" y2="94" stroke="#FF6B00" stroke-width="2.5" stroke-linecap="round"/><line x1="6" y1="50" x2="16" y2="50" stroke="#FF6B00" stroke-width="2.5" stroke-linecap="round"/><line x1="84" y1="50" x2="94" y2="50" stroke="#FF6B00" stroke-width="2.5" stroke-linecap="round"/><rect x="37" y="44" width="26" height="14" rx="3" fill="white"/><line x1="37" y1="49" x2="24" y2="42" stroke="white" stroke-width="2.5" stroke-linecap="round"/><line x1="63" y1="49" x2="76" y2="42" stroke="white" stroke-width="2.5" stroke-linecap="round"/><line x1="37" y1="53" x2="24" y2="60" stroke="white" stroke-width="2.5" stroke-linecap="round"/><line x1="63" y1="53" x2="76" y2="60" stroke="white" stroke-width="2.5" stroke-linecap="round"/><ellipse cx="24" cy="40" rx="9" ry="2.5" fill="none" stroke="white" stroke-width="1.8"/><ellipse cx="76" cy="40" rx="9" ry="2.5" fill="none" stroke="white" stroke-width="1.8"/><ellipse cx="24" cy="61" rx="9" ry="2.5" fill="none" stroke="white" stroke-width="1.8"/><ellipse cx="76" cy="61" rx="9" ry="2.5" fill="none" stroke="white" stroke-width="1.8"/><rect x="45" y="58" width="10" height="8" rx="2" fill="white"/><polyline points="20,80 36,62 50,71 64,58 80,80" fill="none" stroke="white" stroke-width="2" stroke-linejoin="round"/></svg>
     <div class="svc-badge"><span class="sb-slash">//</span><span class="sb-code">RCN</span></div>
   </div>
   <div class="scard-title">Aerial Surveillance & Overwatch</div>
-  <div class="scard-desc">Need eyes on a property, job site, or asset before you commit? We deploy within 24–48 hours and deliver real-time aerial intelligence with 15× optical zoom, encrypted live feed, and thermal capability. Know exactly what you're walking into.</div>
-  <div class="scard-who">WHO NEEDS THIS: Property managers, security firms, insurance adjusters, construction supervisors, government agencies.</div>
-  <div class="scard-specs"><div class="sspec"><span class="sk">PLATFORM</span><span class="sv">DJI MATRICE 4T</span></div><div class="sspec"><span class="sk">ZOOM</span><span class="sv">15× OPTICAL</span></div><div class="sspec"><span class="sk">ENDURANCE</span><span class="sv">42 MIN / SORTIE</span></div><div class="sspec"><span class="sk">DATA</span><span class="sv">ENCRYPTED LIVE FEED</span></div></div>
-</div><div class="scard">
+  <div class="scard-summary">15× optical zoom, encrypted live feed, and FLIR thermal overlay — aerial situational awareness deployed within 24–48 hours.</div>
+  <div class="scard-metrics"><div class="smet"><span class="smk">ZOOM</span><span class="smv">15× OPTICAL</span></div><div class="smet"><span class="smk">ENDURANCE</span><span class="smv">42 MIN</span></div><div class="smet"><span class="smk">DEPLOY</span><span class="smv">24–48H</span></div><div class="smet"><span class="smk">FEED</span><span class="smv">ENCRYPTED</span></div></div>
+  <button class="scard-toggle" onclick="toggleSvc('svc-rcn',this)">VIEW CAPABILITIES <span class="stgl">+</span></button>
+  <div class="scard-exp">
+    <div class="sexp-cols">
+      <div class="sexp-col">
+        <div class="sexp-label">WORKFLOWS</div>
+        <ul><li>Perimeter overwatch flight passes</li><li>Live feed to ground command</li><li>Thermal + RGB simultaneous capture</li><li>Multi-sortie incident documentation</li></ul>
+      </div>
+      <div class="sexp-col">
+        <div class="sexp-label">DELIVERABLES</div>
+        <ul><li>Encrypted live feed URL</li><li>Timestamped image/video archive</li><li>Thermal + RGB annotated stills</li><li>Incident documentation report</li></ul>
+      </div>
+      <div class="sexp-col">
+        <div class="sexp-label">INDUSTRIES</div>
+        <ul><li>Security & property management</li><li>Insurance claims adjustment</li><li>Construction supervision</li><li>Government & municipal agencies</li></ul>
+      </div>
+    </div>
+    <div class="sexp-spec">PLATFORM: DJI MATRICE 4T · 15× OPTICAL · FLIR 640×512 · PART 107 NIGHT WAIVER</div>
+    <a href="#contact" class="sexp-cta">REQUEST MISSION SCOPE <span>→</span></a>
+  </div>
+</div><div class="scard" id="svc-vis">
   <div class="scard-top">
     <svg class="svc-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="44" fill="#0d0d0d" stroke="white" stroke-width="2.5"/><path d="M 79,18 A 44,44 0 0 1 94,50" fill="none" stroke="#FF6B00" stroke-width="2.5" stroke-linecap="round"/><line x1="50" y1="6" x2="50" y2="16" stroke="#FF6B00" stroke-width="2.5" stroke-linecap="round"/><line x1="50" y1="84" x2="50" y2="94" stroke="#FF6B00" stroke-width="2.5" stroke-linecap="round"/><line x1="6" y1="50" x2="16" y2="50" stroke="#FF6B00" stroke-width="2.5" stroke-linecap="round"/><line x1="84" y1="50" x2="94" y2="50" stroke="#FF6B00" stroke-width="2.5" stroke-linecap="round"/><polyline points="24,67 50,43 76,67" fill="none" stroke="white" stroke-width="8" stroke-linejoin="round" stroke-linecap="round"/><polyline points="24,50 50,26 76,50" fill="none" stroke="#FF6B00" stroke-width="8" stroke-linejoin="round" stroke-linecap="round"/></svg>
     <div class="svc-badge"><span class="sb-slash">//</span><span class="sb-code">VIS</span></div>
   </div>
   <div class="scard-title">Aerial Photography & Video</div>
-  <div class="scard-desc">Professional 4K/60fps aerial visuals with 48MP mechanical-shutter stills. No rolling shutter distortion. Ideal for real estate listings, construction progress, marketing, and media production that needs to stand out.</div>
-  <div class="scard-who">WHO NEEDS THIS: Real estate agents, developers, marketing agencies, event companies, architects.</div>
-  <div class="scard-specs"><div class="sspec"><span class="sk">SENSOR</span><span class="sv">4/3 CMOS — 48MP</span></div><div class="sspec"><span class="sk">VIDEO</span><span class="sv">4K 60FPS / 10-BIT</span></div><div class="sspec"><span class="sk">SHUTTER</span><span class="sv">MECHANICAL — ZERO DISTORTION</span></div><div class="sspec"><span class="sk">DELIVERY</span><span class="sv">48–72H EDITED PACKAGE</span></div></div>
-</div><div class="scard">
+  <div class="scard-summary">48MP mechanical-shutter stills and 4K/60fps video — zero rolling shutter distortion, edited package in 48–72 hours.</div>
+  <div class="scard-metrics"><div class="smet"><span class="smk">SENSOR</span><span class="smv">48MP / 4/3"</span></div><div class="smet"><span class="smk">VIDEO</span><span class="smv">4K 60FPS</span></div><div class="smet"><span class="smk">SHUTTER</span><span class="smv">MECHANICAL</span></div><div class="smet"><span class="smk">DELIVERY</span><span class="smv">48–72H</span></div></div>
+  <button class="scard-toggle" onclick="toggleSvc('svc-vis',this)">VIEW CAPABILITIES <span class="stgl">+</span></button>
+  <div class="scard-exp">
+    <div class="sexp-cols">
+      <div class="sexp-col">
+        <div class="sexp-label">WORKFLOWS</div>
+        <ul><li>Automated grid photo missions</li><li>Manual cinematic capture passes</li><li>Golden hour and low-light timing</li><li>Multi-angle property coverage</li></ul>
+      </div>
+      <div class="sexp-col">
+        <div class="sexp-label">DELIVERABLES</div>
+        <ul><li>Edited video (4K color graded)</li><li>48MP RAW + JPEG image set</li><li>Aerial highlight reel</li><li>Listing-ready photo package</li></ul>
+      </div>
+      <div class="sexp-col">
+        <div class="sexp-label">INDUSTRIES</div>
+        <ul><li>Real estate & development</li><li>Marketing & media production</li><li>Construction progress</li><li>Architecture & urban planning</li></ul>
+      </div>
+    </div>
+    <div class="sexp-spec">SENSOR: 4/3 CMOS 48MP · MECH SHUTTER · 4K/60 10-BIT · 3-AXIS STABILIZATION</div>
+    <a href="#contact" class="sexp-cta">REQUEST MISSION SCOPE <span>→</span></a>
+  </div>
+</div><div class="scard" id="svc-geo">
   <div class="scard-top">
     <svg class="svc-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="44" fill="#0d0d0d" stroke="white" stroke-width="2.5"/><path d="M 79,18 A 44,44 0 0 1 94,50" fill="none" stroke="#FF6B00" stroke-width="2.5" stroke-linecap="round"/><path d="M50,18 C35,18 22,30 22,46 C22,57 28,65 38,69 L38,76 L50,80" fill="none" stroke="white" stroke-width="2.2" stroke-linejoin="round"/><path d="M50,18 C65,18 78,30 78,46 C78,57 72,65 62,69 L62,76 L50,80" fill="none" stroke="white" stroke-width="2.2" stroke-linejoin="round"/><line x1="50" y1="18" x2="50" y2="80" stroke="white" stroke-width="2"/><circle cx="32" cy="37" r="3" fill="#FF6B00"/><circle cx="28" cy="51" r="3" fill="#FF6B00"/><circle cx="36" cy="63" r="3" fill="#FF6B00"/><line x1="32" y1="37" x2="50" y2="37" stroke="white" stroke-width="1.5"/><line x1="28" y1="51" x2="50" y2="51" stroke="white" stroke-width="1.5"/><line x1="36" y1="63" x2="50" y2="63" stroke="white" stroke-width="1.5"/><circle cx="68" cy="34" r="2.5" fill="white" opacity="0.55"/><circle cx="72" cy="50" r="2.5" fill="white" opacity="0.55"/><circle cx="65" cy="62" r="2.5" fill="white" opacity="0.55"/></svg>
     <div class="svc-badge"><span class="sb-slash">//</span><span class="sb-code">GEO</span></div>
   </div>
-  <div class="scard-title">Mapping, Survey & 3D Modeling</div>
-  <div class="scard-desc">Centimeter-accurate aerial mapping using RTK GPS — survey-grade precision without the survey-grade cost or timeline. Orthomosaics, elevation models, volumetrics, and 3D point clouds delivered in BIM, GIS, and CAD formats.</div>
-  <div class="scard-who">WHO NEEDS THIS: Engineers, land developers, surveyors, construction firms, municipalities.</div>
-  <div class="scard-specs"><div class="sspec"><span class="sk">ACCURACY</span><span class="sv">2CM HORIZONTAL / RTK</span></div><div class="sspec"><span class="sk">OUTPUT</span><span class="sv">ORTHO / DEM / POINT CLOUD</span></div><div class="sspec"><span class="sk">FORMAT</span><span class="sv">BIM / GIS / CAD READY</span></div><div class="sspec"><span class="sk">TURNAROUND</span><span class="sv">3–5 BUSINESS DAYS</span></div></div>
-</div><div class="scard">
+  <div class="scard-title">Precision Mapping & Survey</div>
+  <div class="scard-summary">RTK GPS centimeter accuracy — orthomosaics, elevation models, and volumetrics delivered in GIS, BIM, and CAD formats.</div>
+  <div class="scard-metrics"><div class="smet"><span class="smk">ACCURACY</span><span class="smv">2CM / RTK</span></div><div class="smet"><span class="smk">OUTPUT</span><span class="smv">ORTHO + DEM</span></div><div class="smet"><span class="smk">FORMAT</span><span class="smv">GIS/BIM/CAD</span></div><div class="smet"><span class="smk">TURN</span><span class="smv">3–5 DAYS</span></div></div>
+  <button class="scard-toggle" onclick="toggleSvc('svc-geo',this)">VIEW CAPABILITIES <span class="stgl">+</span></button>
+  <div class="scard-exp">
+    <div class="sexp-cols">
+      <div class="sexp-col">
+        <div class="sexp-label">WORKFLOWS</div>
+        <ul><li>Grid/crosshatch flight plan execution</li><li>GCP placement and RTK/PPK data collection</li><li>Pix4D / Metashape photogrammetry processing</li><li>Volumetric stockpile and change analysis</li></ul>
+      </div>
+      <div class="sexp-col">
+        <div class="sexp-label">DELIVERABLES</div>
+        <ul><li>Orthomosaic (GeoTIFF / ECW)</li><li>DTM / DSM elevation models</li><li>3D point cloud (LAS / LAZ)</li><li>CAD-ready site plan + KML</li></ul>
+      </div>
+      <div class="sexp-col">
+        <div class="sexp-label">INDUSTRIES</div>
+        <ul><li>Engineering & land development</li><li>Construction firms</li><li>Surveyors & municipalities</li><li>Mining and aggregate operations</li></ul>
+      </div>
+    </div>
+    <div class="sexp-spec">RTK GPS · 1–3CM HORIZONTAL · GSD 0.5CM/PX · PIX4D / METASHAPE · EPSG GEOREF</div>
+    <a href="#contact" class="sexp-cta">REQUEST MISSION SCOPE <span>→</span></a>
+  </div>
+</div><div class="scard" id="svc-thrm">
   <div class="scard-top">
     <svg class="svc-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="44" fill="#0d0d0d" stroke="white" stroke-width="2.5"/><path d="M 79,18 A 44,44 0 0 1 94,50" fill="none" stroke="#FF6B00" stroke-width="2.5" stroke-linecap="round"/><path d="M50,20 L70,29 L70,51 C70,63 60,72 50,77 C40,72 30,63 30,51 L30,29 Z" fill="none" stroke="white" stroke-width="2.2" stroke-linejoin="round"/><rect x="41" y="46" width="18" height="15" rx="3" fill="white"/><path d="M44,46 L44,40 C44,35 56,35 56,40 L56,46" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round"/><circle cx="50" cy="52" r="2.8" fill="#111"/><rect x="48.8" y="54" width="2.5" height="3.5" rx="1" fill="#111"/><line x1="30" y1="50" x2="18" y2="50" stroke="white" stroke-width="2" stroke-linecap="round"/><circle cx="16" cy="50" r="2.5" fill="white"/><line x1="70" y1="50" x2="82" y2="50" stroke="white" stroke-width="2" stroke-linecap="round"/><circle cx="84" cy="50" r="2.5" fill="white"/></svg>
     <div class="svc-badge"><span class="sb-slash">//</span><span class="sb-code">THRM</span></div>
   </div>
   <div class="scard-title">Thermal Inspection</div>
-  <div class="scard-desc">FLIR radiometric imaging finds what you can't see — energy loss, roof moisture, electrical hot spots, HVAC failures, and structural anomalies. Catch a $500 problem before it becomes a $50,000 emergency.</div>
-  <div class="scard-who">WHO NEEDS THIS: Facility managers, roofers, solar operators, electricians, insurance companies.</div>
-  <div class="scard-specs"><div class="sspec"><span class="sk">SENSOR</span><span class="sv">FLIR 640×512 RADIOMETRIC</span></div><div class="sspec"><span class="sk">PRECISION</span><span class="sv">±2°C CALIBRATED</span></div><div class="sspec"><span class="sk">COMPLIANCE</span><span class="sv">IEC 62446 READY</span></div><div class="sspec"><span class="sk">DELIVERY</span><span class="sv">24–48H THERMAL REPORT</span></div></div>
-</div><div class="scard">
+  <div class="scard-summary">FLIR 640×512 radiometric imaging at ±2°C — detects energy loss, moisture, electrical faults, and HVAC anomalies invisibly.</div>
+  <div class="scard-metrics"><div class="smet"><span class="smk">SENSOR</span><span class="smv">FLIR 640×512</span></div><div class="smet"><span class="smk">ACCURACY</span><span class="smv">±2°C</span></div><div class="smet"><span class="smk">COMPLIANCE</span><span class="smv">IEC 62446</span></div><div class="smet"><span class="smk">DELIVERY</span><span class="smv">24–48H</span></div></div>
+  <button class="scard-toggle" onclick="toggleSvc('svc-thrm',this)">VIEW CAPABILITIES <span class="stgl">+</span></button>
+  <div class="scard-exp">
+    <div class="sexp-cols">
+      <div class="sexp-col">
+        <div class="sexp-label">WORKFLOWS</div>
+        <ul><li>Pre-dawn thermal capture (max contrast)</li><li>Radiometric calibration per IEC 62446</li><li>Automated anomaly tagging and classification</li><li>Before/after thermal comparison</li></ul>
+      </div>
+      <div class="sexp-col">
+        <div class="sexp-label">DELIVERABLES</div>
+        <ul><li>Thermal anomaly report (PDF)</li><li>Annotated radiometric imagery</li><li>Temperature CSV data export</li><li>Compliance-ready inspection document</li></ul>
+      </div>
+      <div class="sexp-col">
+        <div class="sexp-label">INDUSTRIES</div>
+        <ul><li>Facility & property management</li><li>Solar farm operations</li><li>Electrical and HVAC contractors</li><li>Insurance underwriting</li></ul>
+      </div>
+    </div>
+    <div class="sexp-spec">FLIR BOSON+ · 640×512 RADIOMETRIC · ±2°C · IEC 62446 · NIGHT OPS CERTIFIED</div>
+    <a href="#contact" class="sexp-cta">REQUEST MISSION SCOPE <span>→</span></a>
+  </div>
+</div><div class="scard" id="svc-xlab">
   <div class="scard-top">
     <svg class="svc-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="44" fill="#0d0d0d" stroke="white" stroke-width="2.5"/><path d="M 79,18 A 44,44 0 0 1 94,50" fill="none" stroke="#FF6B00" stroke-width="2.5" stroke-linecap="round"/><line x1="28" y1="28" x2="72" y2="72" stroke="white" stroke-width="13" stroke-linecap="round"/><line x1="72" y1="28" x2="28" y2="72" stroke="#FF6B00" stroke-width="13" stroke-linecap="round"/><path d="M72,20 L74,26 L80,24 L75,29 L78,35 L72,31 L66,35 L69,29 L64,24 L70,26 Z" fill="white"/></svg>
     <div class="svc-badge"><span class="sb-slash">//</span><span class="sb-code">XLAB</span></div>
   </div>
   <div class="scard-title">AI Data Processing & Analysis</div>
-  <div class="scard-desc">Raw drone data means nothing without analysis. We run automated defect detection, change analysis between missions, and anomaly classification — delivering structured intelligence reports your team can act on immediately.</div>
-  <div class="scard-who">WHO NEEDS THIS: Operations managers, asset owners, inspectors, analysts, project managers.</div>
-  <div class="scard-specs"><div class="sspec"><span class="sk">ENGINE</span><span class="sv">AUTOMATED AI DETECTION</span></div><div class="sspec"><span class="sk">CAPABILITY</span><span class="sv">MULTI-SORTIE COMPARISON</span></div><div class="sspec"><span class="sk">OUTPUT</span><span class="sv">STRUCTURED INTEL REPORT</span></div><div class="sspec"><span class="sk">TURNAROUND</span><span class="sv">24–48H POST-MISSION</span></div></div>
-</div><div class="scard">
+  <div class="scard-summary">Automated defect detection, multi-mission change analysis, and anomaly classification — structured intelligence your team acts on.</div>
+  <div class="scard-metrics"><div class="smet"><span class="smk">ENGINE</span><span class="smv">AI DETECTION</span></div><div class="smet"><span class="smk">ANALYSIS</span><span class="smv">MULTI-MISSION</span></div><div class="smet"><span class="smk">OUTPUT</span><span class="smv">INTEL REPORT</span></div><div class="smet"><span class="smk">TURN</span><span class="smv">24–48H</span></div></div>
+  <button class="scard-toggle" onclick="toggleSvc('svc-xlab',this)">VIEW CAPABILITIES <span class="stgl">+</span></button>
+  <div class="scard-exp">
+    <div class="sexp-cols">
+      <div class="sexp-col">
+        <div class="sexp-label">WORKFLOWS</div>
+        <ul><li>Multi-sortie dataset comparison</li><li>Automated defect and anomaly detection</li><li>Change map generation between missions</li><li>Structured report compilation and review</li></ul>
+      </div>
+      <div class="sexp-col">
+        <div class="sexp-label">DELIVERABLES</div>
+        <ul><li>Annotated defect map (PDF / GeoJSON)</li><li>AI-tagged imagery set</li><li>Change analysis comparison report</li><li>Priority action item summary</li></ul>
+      </div>
+      <div class="sexp-col">
+        <div class="sexp-label">INDUSTRIES</div>
+        <ul><li>Operations & asset management</li><li>Inspection and compliance</li><li>Infrastructure monitoring</li><li>Facility portfolio management</li></ul>
+      </div>
+    </div>
+    <div class="sexp-spec">AI DETECTION ENGINE · MULTI-SORTIE COMPARISON · STRUCTURED INTEL OUTPUT · 24H SLA</div>
+    <a href="#contact" class="sexp-cta">REQUEST MISSION SCOPE <span>→</span></a>
+  </div>
+</div><div class="scard" id="svc-3dm">
   <div class="scard-top">
-  <svg class="svc-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#D06818" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-  <div class="scard-code"><span class="sb-slash">//</span><span class="sb-code">3DM</span></div>
+    <svg class="svc-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#D06818" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+    <div class="svc-badge"><span class="sb-slash">//</span><span class="sb-code">3DM</span></div>
   </div>
   <div class="scard-title">3D Modeling & Reconstruction</div>
-  <div class="scard-desc">Photogrammetry-based 3D models and site reconstructions in OBJ, GLTF, or FBX — centimeter-level accuracy for planning, documentation, insurance review, and client reporting.</div>
-  <div class="scard-who">WHO NEEDS THIS: Architects, developers, facility managers, insurance adjusters, engineers.</div>
-  <div class="scard-specs"><div class="sspec"><span class="sk">OUTPUT</span><span class="sv">PHOTOGRAMMETRIC 3D MODEL</span></div><div class="sspec"><span class="sk">FORMAT</span><span class="sv">OBJ / FBX / GLTF / PDF</span></div><div class="sspec"><span class="sk">USE CASE</span><span class="sv">PLANNING / INSPECTION / REPORTING</span></div><div class="sspec"><span class="sk">TURNAROUND</span><span class="sv">3–5 BUSINESS DAYS</span></div></div>
+  <div class="scard-summary">Photogrammetric 3D models at centimeter accuracy — OBJ, FBX, GLTF output for planning, documentation, and insurance review.</div>
+  <div class="scard-metrics"><div class="smet"><span class="smk">OUTPUT</span><span class="smv">3D MODEL</span></div><div class="smet"><span class="smk">FORMAT</span><span class="smv">OBJ/FBX/GLTF</span></div><div class="smet"><span class="smk">ACCURACY</span><span class="smv">CENTIMETER</span></div><div class="smet"><span class="smk">TURN</span><span class="smv">3–5 DAYS</span></div></div>
+  <button class="scard-toggle" onclick="toggleSvc('svc-3dm',this)">VIEW CAPABILITIES <span class="stgl">+</span></button>
+  <div class="scard-exp">
+    <div class="sexp-cols">
+      <div class="sexp-col">
+        <div class="sexp-label">WORKFLOWS</div>
+        <ul><li>Nadir + oblique photogrammetry flights</li><li>Pix4D / Metashape model reconstruction</li><li>Texture mapping and QA review</li><li>Model export to client-specified format</li></ul>
+      </div>
+      <div class="sexp-col">
+        <div class="sexp-label">DELIVERABLES</div>
+        <ul><li>Textured 3D model (OBJ / FBX / GLTF)</li><li>3D PDF for non-technical stakeholders</li><li>Dense point cloud (LAS)</li><li>Embedded metadata and scale report</li></ul>
+      </div>
+      <div class="sexp-col">
+        <div class="sexp-label">INDUSTRIES</div>
+        <ul><li>Architecture & urban design</li><li>Insurance claims & loss assessment</li><li>Facility documentation</li><li>Real estate & development</li></ul>
+      </div>
+    </div>
+    <div class="sexp-spec">PHOTOGRAMMETRY · PIX4D / METASHAPE · OBJ / FBX / GLTF / LAS · CENTIMETER ACCURACY</div>
+    <a href="#contact" class="sexp-cta">REQUEST MISSION SCOPE <span>→</span></a>
+  </div>
 </div></div>
 </section>
 
@@ -2063,32 +2226,28 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
     <p class="sec-sub">DØi Labs deploys across seven commercial verticals. Each engagement is scoped to the specific data requirements, access constraints, and deliverable formats of the sector.</p>
   </div>
   <div class="ind-grid">
-
-    <div class="ind-card">
-      <div class="ind-icon">
-        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<div class="ind-card" id="ind-const">
+      <div class="ind-head">
+        <div class="ind-icon"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect x="8" y="28" width="8" height="14" stroke="#D4620F" stroke-width="1.5"/>
           <rect x="20" y="20" width="8" height="22" stroke="#D4620F" stroke-width="1.5"/>
           <rect x="32" y="12" width="8" height="30" stroke="#D4620F" stroke-width="1.5"/>
           <line x1="4" y1="42" x2="44" y2="42" stroke="#D4620F" stroke-width="1.5"/>
           <line x1="6" y1="10" x2="14" y2="4" stroke="#D4620F" stroke-width="1" stroke-dasharray="2 2"/>
           <circle cx="14" cy="4" r="2" fill="#D4620F"/>
-        </svg>
+        </svg></div>
+        <div class="ind-sector">CONSTRUCTION</div>
+        <div class="ind-desc">Progress documentation, volumetric analysis, site safety audits, and earthwork change detection.</div>
+        <button class="ind-toggle" onclick="toggleInd('ind-const',this)">EXPLORE USE CASES <span class="itgl">+</span></button>
       </div>
-      <div class="ind-sector">CONSTRUCTION</div>
-      <div class="ind-desc">Progress documentation, volumetric stockpile analysis, site safety audits, and earthwork change detection across active job sites.</div>
-      <ul class="ind-uses">
-        <li>Progress photo sets (weekly/milestone)</li>
-        <li>Cut/fill volumetric reports</li>
-        <li>3D site model for stakeholder review</li>
-        <li>Thermal anomaly detection in structures</li>
-      </ul>
-      <div class="ind-tag">// ACTIVE DEPLOYMENT SECTOR</div>
+      <div class="ind-exp">
+        <ul class="ind-uses"><li>Weekly/milestone progress photo sets</li><li>Cut/fill volumetric stockpile reports</li><li>3D site model for stakeholder review</li><li>Thermal anomaly detection in structures</li></ul>
+        <div class="ind-tag">// ACTIVE DEPLOYMENT</div>
+      </div>
     </div>
-
-    <div class="ind-card">
-      <div class="ind-icon">
-        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<div class="ind-card" id="ind-fac">
+      <div class="ind-head">
+        <div class="ind-icon"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect x="6" y="10" width="36" height="32" stroke="#D4620F" stroke-width="1.5"/>
           <line x1="6" y1="20" x2="42" y2="20" stroke="#D4620F" stroke-width="1" stroke-dasharray="3 2"/>
           <line x1="6" y1="30" x2="42" y2="30" stroke="#D4620F" stroke-width="1" stroke-dasharray="3 2"/>
@@ -2097,22 +2256,19 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
           <rect x="21" y="35" width="6" height="7" stroke="#D4620F" stroke-width="1.5"/>
           <line x1="22" y1="10" x2="26" y2="4" stroke="#D4620F" stroke-width="1"/>
           <line x1="26" y1="4" x2="30" y2="10" stroke="#D4620F" stroke-width="1"/>
-        </svg>
+        </svg></div>
+        <div class="ind-sector">FACILITIES &amp; PROPERTY</div>
+        <div class="ind-desc">Roof assessments, façade inspections, and thermal envelope analysis for commercial real estate portfolios.</div>
+        <button class="ind-toggle" onclick="toggleInd('ind-fac',this)">EXPLORE USE CASES <span class="itgl">+</span></button>
       </div>
-      <div class="ind-sector">FACILITIES &amp; PROPERTY</div>
-      <div class="ind-desc">Roof condition assessments, façade inspections, and thermal envelope analysis for commercial real estate, portfolio managers, and building owners.</div>
-      <ul class="ind-uses">
-        <li>Roof membrane and drainage surveys</li>
-        <li>Thermal energy loss mapping</li>
-        <li>Façade crack/water intrusion documentation</li>
-        <li>Pre/post-storm damage reports</li>
-      </ul>
-      <div class="ind-tag">// HIGH-DEMAND VERTICAL</div>
+      <div class="ind-exp">
+        <ul class="ind-uses"><li>Roof membrane and drainage surveys</li><li>Thermal energy loss mapping</li><li>Façade crack/water intrusion documentation</li><li>Pre/post-storm damage reports</li></ul>
+        <div class="ind-tag">// HIGH-DEMAND VERTICAL</div>
+      </div>
     </div>
-
-    <div class="ind-card">
-      <div class="ind-icon">
-        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<div class="ind-card" id="ind-util">
+      <div class="ind-head">
+        <div class="ind-icon"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
           <line x1="24" y1="4" x2="24" y2="44" stroke="#D4620F" stroke-width="1.5"/>
           <line x1="24" y1="14" x2="10" y2="28" stroke="#D4620F" stroke-width="1.5"/>
           <line x1="24" y1="14" x2="38" y2="28" stroke="#D4620F" stroke-width="1.5"/>
@@ -2122,22 +2278,19 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
           <circle cx="24" cy="44" r="3" stroke="#D4620F" stroke-width="1.5"/>
           <line x1="10" y1="28" x2="24" y2="44" stroke="#D4620F" stroke-width="1" stroke-dasharray="2 2"/>
           <line x1="38" y1="28" x2="24" y2="44" stroke="#D4620F" stroke-width="1" stroke-dasharray="2 2"/>
-        </svg>
+        </svg></div>
+        <div class="ind-sector">UTILITIES &amp; INFRASTRUCTURE</div>
+        <div class="ind-desc">Powerline inspection, pipeline ROW surveys, solar farm performance, and transmission corridor mapping.</div>
+        <button class="ind-toggle" onclick="toggleInd('ind-util',this)">EXPLORE USE CASES <span class="itgl">+</span></button>
       </div>
-      <div class="ind-sector">UTILITIES &amp; INFRASTRUCTURE</div>
-      <div class="ind-desc">Powerline and substation inspections, pipeline ROW surveys, solar farm performance analysis, and transmission corridor mapping.</div>
-      <ul class="ind-uses">
-        <li>Transmission line thermal inspection</li>
-        <li>Solar panel efficiency mapping</li>
-        <li>Pipeline right-of-way surveys</li>
-        <li>Substation and pad-mount documentation</li>
-      </ul>
-      <div class="ind-tag">// THERMAL PRIORITY SECTOR</div>
+      <div class="ind-exp">
+        <ul class="ind-uses"><li>Transmission line thermal inspection</li><li>Solar panel efficiency and hotspot mapping</li><li>Pipeline right-of-way surveys</li><li>Substation and pad-mount documentation</li></ul>
+        <div class="ind-tag">// THERMAL PRIORITY</div>
+      </div>
     </div>
-
-    <div class="ind-card">
-      <div class="ind-icon">
-        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<div class="ind-card" id="ind-ins">
+      <div class="ind-head">
+        <div class="ind-icon"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect x="8" y="16" width="32" height="22" rx="1" stroke="#D4620F" stroke-width="1.5"/>
           <line x1="8" y1="24" x2="40" y2="24" stroke="#D4620F" stroke-width="1" stroke-dasharray="3 2"/>
           <line x1="24" y1="16" x2="24" y2="38" stroke="#D4620F" stroke-width="1" stroke-dasharray="3 2"/>
@@ -2145,44 +2298,38 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
           <rect x="18" y="8" width="12" height="8" stroke="#D4620F" stroke-width="1.5"/>
           <line x1="21" y1="8" x2="21" y2="4" stroke="#D4620F" stroke-width="1"/>
           <line x1="27" y1="8" x2="27" y2="4" stroke="#D4620F" stroke-width="1"/>
-        </svg>
+        </svg></div>
+        <div class="ind-sector">INSURANCE &amp; CLAIMS</div>
+        <div class="ind-desc">Post-event damage documentation, roof assessments, and before/after aerial comparisons for adjusters.</div>
+        <button class="ind-toggle" onclick="toggleInd('ind-ins',this)">EXPLORE USE CASES <span class="itgl">+</span></button>
       </div>
-      <div class="ind-sector">INSURANCE &amp; CLAIMS</div>
-      <div class="ind-desc">Post-event damage documentation, roof assessments, and before/after aerial comparisons for claims adjusters and underwriters.</div>
-      <ul class="ind-uses">
-        <li>Storm, fire, and flood damage surveys</li>
-        <li>Roof condition reports with orthomap</li>
-        <li>Timestamped pre/post event imagery</li>
-        <li>Measurable damage area quantification</li>
-      </ul>
-      <div class="ind-tag">// RAPID RESPONSE CAPABLE</div>
+      <div class="ind-exp">
+        <ul class="ind-uses"><li>Storm, fire, and flood damage surveys</li><li>Roof condition reports with orthomosaic</li><li>Timestamped pre/post event imagery</li><li>Measurable damage area quantification</li></ul>
+        <div class="ind-tag">// RAPID RESPONSE</div>
+      </div>
     </div>
-
-    <div class="ind-card">
-      <div class="ind-icon">
-        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<div class="ind-card" id="ind-re">
+      <div class="ind-head">
+        <div class="ind-icon"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M24 6 L38 16 L38 32 L24 42 L10 32 L10 16 Z" stroke="#D4620F" stroke-width="1.5" fill="none"/>
           <path d="M24 12 L33 18 L33 30 L24 36 L15 30 L15 18 Z" stroke="#D4620F" stroke-width="1" stroke-dasharray="2 2" fill="none"/>
           <circle cx="24" cy="24" r="3" stroke="#D4620F" stroke-width="1.5"/>
           <line x1="24" y1="6" x2="24" y2="12" stroke="#D4620F" stroke-width="1"/>
           <line x1="38" y1="16" x2="33" y2="18" stroke="#D4620F" stroke-width="1"/>
           <line x1="38" y1="32" x2="33" y2="30" stroke="#D4620F" stroke-width="1"/>
-        </svg>
+        </svg></div>
+        <div class="ind-sector">REAL ESTATE &amp; DEVELOPMENT</div>
+        <div class="ind-desc">Aerial photography, site context imaging, 3D visualization, and land boundary documentation for listings.</div>
+        <button class="ind-toggle" onclick="toggleInd('ind-re',this)">EXPLORE USE CASES <span class="itgl">+</span></button>
       </div>
-      <div class="ind-sector">REAL ESTATE &amp; DEVELOPMENT</div>
-      <div class="ind-desc">Property aerial photography, site context imaging, 3D visualization models, and land boundary documentation for listings and development packages.</div>
-      <ul class="ind-uses">
-        <li>Listing photography and video</li>
-        <li>Site context and neighborhood aerials</li>
-        <li>3D visualization for pre-sale marketing</li>
-        <li>Land parcel boundary documentation</li>
-      </ul>
-      <div class="ind-tag">// LISTING & DEVELOPMENT</div>
+      <div class="ind-exp">
+        <ul class="ind-uses"><li>Listing photography and cinematic video</li><li>Site context and neighborhood aerials</li><li>3D visualization for pre-sale marketing</li><li>Land parcel boundary documentation</li></ul>
+        <div class="ind-tag">// LISTING & DEV</div>
+      </div>
     </div>
-
-    <div class="ind-card">
-      <div class="ind-icon">
-        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<div class="ind-card" id="ind-sec">
+      <div class="ind-head">
+        <div class="ind-icon"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
           <circle cx="24" cy="24" r="16" stroke="#D4620F" stroke-width="1.5"/>
           <circle cx="24" cy="24" r="10" stroke="#D4620F" stroke-width="1" stroke-dasharray="3 2"/>
           <circle cx="24" cy="24" r="4" stroke="#D4620F" stroke-width="1.5"/>
@@ -2190,41 +2337,35 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
           <line x1="24" y1="34" x2="24" y2="40" stroke="#D4620F" stroke-width="1.5"/>
           <line x1="8" y1="24" x2="14" y2="24" stroke="#D4620F" stroke-width="1.5"/>
           <line x1="34" y1="24" x2="40" y2="24" stroke="#D4620F" stroke-width="1.5"/>
-        </svg>
+        </svg></div>
+        <div class="ind-sector">SECURITY &amp; OVERWATCH</div>
+        <div class="ind-desc">Perimeter monitoring, event overwatch, and critical infrastructure surveillance with real-time feed.</div>
+        <button class="ind-toggle" onclick="toggleInd('ind-sec',this)">EXPLORE USE CASES <span class="itgl">+</span></button>
       </div>
-      <div class="ind-sector">SECURITY &amp; OVERWATCH</div>
-      <div class="ind-desc">Perimeter monitoring, crowd aerial observation, event security overwatch, and critical infrastructure surveillance with real-time feed capability.</div>
-      <ul class="ind-uses">
-        <li>Event and venue perimeter overwatch</li>
-        <li>Construction site theft deterrence</li>
-        <li>Critical facility perimeter documentation</li>
-        <li>Real-time live feed to ground command</li>
-      </ul>
-      <div class="ind-tag">// CLASSIFIED TIER AVAILABLE</div>
+      <div class="ind-exp">
+        <ul class="ind-uses"><li>Event and venue perimeter overwatch</li><li>Construction site theft deterrence coverage</li><li>Critical facility perimeter documentation</li><li>Real-time live feed to ground command</li></ul>
+        <div class="ind-tag">// CLASSIFIED TIER</div>
+      </div>
     </div>
-
-    <div class="ind-card">
-      <div class="ind-icon">
-        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<div class="ind-card" id="ind-gov">
+      <div class="ind-head">
+        <div class="ind-icon"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect x="10" y="20" width="28" height="22" stroke="#D4620F" stroke-width="1.5"/>
           <polyline points="6,20 24,6 42,20" stroke="#D4620F" stroke-width="1.5" fill="none"/>
           <rect x="18" y="32" width="12" height="10" stroke="#D4620F" stroke-width="1.5"/>
           <line x1="24" y1="20" x2="24" y2="32" stroke="#D4620F" stroke-width="1" stroke-dasharray="2 2"/>
           <rect x="14" y="24" width="6" height="6" stroke="#D4620F" stroke-width="1"/>
           <rect x="28" y="24" width="6" height="6" stroke="#D4620F" stroke-width="1"/>
-        </svg>
+        </svg></div>
+        <div class="ind-sector">MUNICIPAL &amp; GOVERNMENT</div>
+        <div class="ind-desc">Public infrastructure assessment, urban planning data, and emergency management aerial coordination.</div>
+        <button class="ind-toggle" onclick="toggleInd('ind-gov',this)">EXPLORE USE CASES <span class="itgl">+</span></button>
       </div>
-      <div class="ind-sector">MUNICIPAL &amp; GOVERNMENT</div>
-      <div class="ind-desc">Public infrastructure assessment, urban planning aerial data, emergency management support, and compliance documentation for city and county agencies.</div>
-      <ul class="ind-uses">
-        <li>Public infrastructure condition surveys</li>
-        <li>Urban planning and zoning aerials</li>
-        <li>Emergency incident aerial coordination</li>
-        <li>GIS-ready orthomosaic deliverables</li>
-      </ul>
-      <div class="ind-tag">// GOVERNMENT COMPLIANT</div>
+      <div class="ind-exp">
+        <ul class="ind-uses"><li>Public infrastructure condition surveys</li><li>Urban planning and zoning aerial data</li><li>Emergency incident aerial coordination</li><li>GIS-ready orthomosaic deliverables</li></ul>
+        <div class="ind-tag">// GOV COMPLIANT</div>
+      </div>
     </div>
-
   </div>
 </section>
 
@@ -2507,16 +2648,17 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
   </div>
   <div class="otl-strip">
     <div class="otl-line"></div>
-    <div class="otl-step">
+    <div class="otl-step" onclick="toggleOtl(this)">
       <div class="otl-node"></div>
       <div class="otl-day">DAY 0</div>
-      <div class="otl-phase">MISSION SCOPE</div>
-      <div class="otl-body">Site briefing, airspace LAANC authorization, flight plan filed, equipment manifest confirmed, client access coordination.</div>
-      <ul class="otl-items">
+      <div class="otl-phase">MISSION SCOPE <span class="otl-chev">↓</span></div>
+      
+      <div class="otl-exp"><div class="otl-body">Site briefing, airspace LAANC authorization, flight plan filed, equipment manifest confirmed, client access coordination.</div>
+        <ul class="otl-items">
         <li>LAANC / Part 107 filing</li>
         <li>Site access + safety brief</li>
         <li>Deliverable format confirmed</li>
-      </ul>
+      </ul></div>
     </div>
     <div class="otl-step">
       <div class="otl-node"></div>
@@ -2562,35 +2704,35 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
     <p class="sec-sub">Transparency about what governs deployment. Every engagement is planned within these parameters — no surprises, no liability exposure for the client.</p>
   </div>
   <div class="params-grid">
-    <div class="param-card">
+    <div class="param-card" onclick="this.classList.toggle('param-open')" role="button">
       <div class="param-label">FAA AIRSPACE</div>
-      <div class="param-val">CLASS B / C / D / E / G</div>
-      <div class="param-desc">All restricted airspace requires LAANC authorization or manual waiver. We handle all filings. No client liability.</div>
+      <div class="param-val">CLASS B / C / D / E / G <span class="param-chev">+</span></div>
+      <div class="param-exp"><div class="param-desc">All restricted airspace requires LAANC authorization or manual waiver. We handle all filings. No client liability.</div></div>
     </div>
-    <div class="param-card">
+    <div class="param-card" onclick="this.classList.toggle('param-open')" role="button">
       <div class="param-label">WEATHER WINDOW</div>
-      <div class="param-val">WIND &lt; 25 MPH · VIS &gt; 3SM</div>
-      <div class="param-desc">Operations require sustained wind below 25 mph and visual flight conditions. Thermal ops require night or pre-dawn windows.</div>
+      <div class="param-val">WIND &lt; 25 MPH · VIS &gt; 3SM <span class="param-chev">+</span></div>
+      <div class="param-exp"><div class="param-desc">Operations require sustained wind below 25 mph and visual flight conditions. Thermal ops require night or pre-dawn windows.</div></div>
     </div>
-    <div class="param-card">
+    <div class="param-card" onclick="this.classList.toggle('param-open')" role="button">
       <div class="param-label">THERMAL TIMING</div>
-      <div class="param-val">DAWN · DUSK · NIGHT OPS</div>
-      <div class="param-desc">Maximum thermal contrast occurs 1–2 hours post-sunset or pre-sunrise. Part 107 night waiver held for nighttime operations.</div>
+      <div class="param-val">DAWN · DUSK · NIGHT OPS <span class="param-chev">+</span></div>
+      <div class="param-exp"><div class="param-desc">Maximum thermal contrast occurs 1–2 hours post-sunset or pre-sunrise. Part 107 night waiver held for nighttime operations.</div></div>
     </div>
-    <div class="param-card">
+    <div class="param-card" onclick="this.classList.toggle('param-open')" role="button">
       <div class="param-label">LAANC FILING</div>
-      <div class="param-val">24–48 HOUR LEAD TIME</div>
-      <div class="param-desc">FAA LAANC authorization typically auto-approves within minutes for eligible airspace. Manual waivers require 24–48 hours advance.</div>
+      <div class="param-val">24–48 HOUR LEAD TIME <span class="param-chev">+</span></div>
+      <div class="param-exp"><div class="param-desc">FAA LAANC authorization typically auto-approves within minutes for eligible airspace. Manual waivers require 24–48 hours advance.</div></div>
     </div>
-    <div class="param-card">
+    <div class="param-card" onclick="this.classList.toggle('param-open')" role="button">
       <div class="param-label">SITE ACCESS</div>
-      <div class="param-val">CLIENT COORDINATED</div>
-      <div class="param-desc">Client responsible for property access permissions. We advise on takeoff/landing zone requirements and safety perimeters.</div>
+      <div class="param-val">CLIENT COORDINATED <span class="param-chev">+</span></div>
+      <div class="param-exp"><div class="param-desc">Client responsible for property access permissions. We advise on takeoff/landing zone requirements and safety perimeters.</div></div>
     </div>
-    <div class="param-card">
+    <div class="param-card" onclick="this.classList.toggle('param-open')" role="button">
       <div class="param-label">INSURANCE</div>
-      <div class="param-val">$2M LIABILITY COI</div>
-      <div class="param-desc">Certificate of Insurance provided for every commercial engagement. Additional insured endorsements available upon request.</div>
+      <div class="param-val">$2M LIABILITY COI <span class="param-chev">+</span></div>
+      <div class="param-exp"><div class="param-desc">Certificate of Insurance provided for every commercial engagement. Additional insured endorsements available upon request.</div></div>
     </div>
   </div>
 </section>
@@ -2603,41 +2745,47 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
     <p class="sec-sub">The difference between hobby-grade and enterprise aerial data isn't the pilot — it's the sensor stack, software pipeline, and data standards. Here's what enterprise-class actually means.</p>
   </div>
   <div class="plat-grid">
-    <div class="plat-feature">
+    <div class="plat-feature" onclick="this.classList.toggle('plat-open')" role="button">
       <div class="plat-kicker">SENSOR FUSION</div>
-      <div class="plat-title">Simultaneous Thermal + RGB Capture</div>
-      <div class="plat-body">The DJI Matrice 4T captures 48MP visible and 640×512 radiometric thermal in a single pass. Consumer drones require two separate flights — doubling time, doubling cost, misaligning datasets.</div>
-      <div class="plat-spec">FLIR BOSON+ · 640×512 RADIOMETRIC · ±2°C ACCURACY</div>
+      <div class="plat-title-row"><div class="plat-title">Simultaneous Thermal + RGB Capture</div><span class="plat-chev">+</span></div>
+      
+      <div class="plat-exp"><div class="plat-body">The DJI Matrice 4T captures 48MP visible and 640×512 radiometric thermal in a single pass. Consumer drones require two separate flights — doubling time, doubling cost, misaligning datasets.</div>
+      <div class="plat-spec">FLIR BOSON+ · 640×512 RADIOMETRIC · ±2°C ACCURACY</div></div>
     </div>
-    <div class="plat-feature">
+    <div class="plat-feature" onclick="this.classList.toggle('plat-open')" role="button">
       <div class="plat-kicker">POSITIONAL ACCURACY</div>
-      <div class="plat-title">RTK GPS — Centimeter-Level Precision</div>
-      <div class="plat-body">Real-Time Kinematic positioning locks data points to 1–3 cm horizontal accuracy. Consumer GPS is 2–5 meters. That difference is the line between a usable orthomap and a decorative image.</div>
-      <div class="plat-spec">RTK BASE STATION · 1–3CM H · GSD DOWN TO 0.5CM/PX</div>
+      <div class="plat-title-row"><div class="plat-title">RTK GPS — Centimeter-Level Precision</div><span class="plat-chev">+</span></div>
+      
+      <div class="plat-exp"><div class="plat-body">Real-Time Kinematic positioning locks data points to 1–3 cm horizontal accuracy. Consumer GPS is 2–5 meters. That difference is the line between a usable orthomap and a decorative image.</div>
+      <div class="plat-spec">RTK BASE STATION · 1–3CM H · GSD DOWN TO 0.5CM/PX</div></div>
     </div>
-    <div class="plat-feature">
+    <div class="plat-feature" onclick="this.classList.toggle('plat-open')" role="button">
       <div class="plat-kicker">DATA PIPELINE</div>
-      <div class="plat-title">Calibrated, Georeferenced Deliverables</div>
-      <div class="plat-body">Every output runs through Pix4D or Metashape photogrammetry software with GCP tie-points. Outputs are georeferenced, calibrated, and ready for GIS, CAD, or engineering software ingestion.</div>
-      <div class="plat-spec">PIX4D · METASHAPE · GCP TIE-POINTS · EPSG GEOREF</div>
+      <div class="plat-title-row"><div class="plat-title">Calibrated, Georeferenced Deliverables</div><span class="plat-chev">+</span></div>
+      
+      <div class="plat-exp"><div class="plat-body">Every output runs through Pix4D or Metashape photogrammetry software with GCP tie-points. Outputs are georeferenced, calibrated, and ready for GIS, CAD, or engineering software ingestion.</div>
+      <div class="plat-spec">PIX4D · METASHAPE · GCP TIE-POINTS · EPSG GEOREF</div></div>
     </div>
-    <div class="plat-feature">
+    <div class="plat-feature" onclick="this.classList.toggle('plat-open')" role="button">
       <div class="plat-kicker">ZOOM OPTICS</div>
-      <div class="plat-title">15× Optical Zoom — Safe Standoff Distance</div>
-      <div class="plat-body">15× optical zoom means the aircraft can hold a legally safe distance from structures, people, and equipment while capturing detail equivalent to a close proximity pass on a consumer drone.</div>
-      <div class="plat-spec">15× OPTICAL ZOOM · 160MM EFL · NO DIGITAL UPSCALE</div>
+      <div class="plat-title-row"><div class="plat-title">15× Optical Zoom — Safe Standoff Distance</div><span class="plat-chev">+</span></div>
+      
+      <div class="plat-exp"><div class="plat-body">15× optical zoom means the aircraft can hold a legally safe distance from structures, people, and equipment while capturing detail equivalent to a close proximity pass on a consumer drone.</div>
+      <div class="plat-spec">15× OPTICAL ZOOM · 160MM EFL · NO DIGITAL UPSCALE</div></div>
     </div>
-    <div class="plat-feature">
+    <div class="plat-feature" onclick="this.classList.toggle('plat-open')" role="button">
       <div class="plat-kicker">REDUNDANCY</div>
-      <div class="plat-title">Dual IMU · Dual Compass · Obstacle Avoidance</div>
-      <div class="plat-body">Enterprise airframes carry redundant navigation systems that continue operating if one fails mid-flight. Single-sensor consumer drones can return-to-home with corrupted data or land in the wrong position.</div>
-      <div class="plat-spec">DUAL IMU · DUAL COMPASS · OMNI-DIRECTIONAL AVOIDANCE</div>
+      <div class="plat-title-row"><div class="plat-title">Dual IMU · Dual Compass · Obstacle Avoidance</div><span class="plat-chev">+</span></div>
+      
+      <div class="plat-exp"><div class="plat-body">Enterprise airframes carry redundant navigation systems that continue operating if one fails mid-flight. Single-sensor consumer drones can return-to-home with corrupted data or land in the wrong position.</div>
+      <div class="plat-spec">DUAL IMU · DUAL COMPASS · OMNI-DIRECTIONAL AVOIDANCE</div></div>
     </div>
-    <div class="plat-feature">
+    <div class="plat-feature" onclick="this.classList.toggle('plat-open')" role="button">
       <div class="plat-kicker">DATA SECURITY</div>
-      <div class="plat-title">Local-Only Processing — No Cloud Upload</div>
-      <div class="plat-body">Raw sensor data never leaves client-designated storage. Processing is performed on local workstations. No DJI cloud, no third-party upload, no data residency concerns for sensitive facilities.</div>
-      <div class="plat-spec">LOCAL PROCESSING · CLIENT-CONTROLLED STORAGE · NO CLOUD</div>
+      <div class="plat-title-row"><div class="plat-title">Local-Only Processing — No Cloud Upload</div><span class="plat-chev">+</span></div>
+      
+      <div class="plat-exp"><div class="plat-body">Raw sensor data never leaves client-designated storage. Processing is performed on local workstations. No DJI cloud, no third-party upload, no data residency concerns for sensitive facilities.</div>
+      <div class="plat-spec">LOCAL PROCESSING · CLIENT-CONTROLLED STORAGE · NO CLOUD</div></div>
     </div>
   </div>
 </section>
@@ -3326,6 +3474,40 @@ function submitForm(){
     },{threshold:0.1}).observe(vid);
   });
 })();
+</script>
+<script>
+/* Progressive disclosure toggle functions */
+function toggleSvc(id, btn) {
+  var card = document.getElementById(id);
+  if (!card) return;
+  var isOpen = card.classList.toggle('svc-open');
+  btn.querySelector('.stgl').textContent = isOpen ? '×' : '+';
+  if (isOpen) {
+    // Close other open cards to keep one open at a time
+    document.querySelectorAll('.scard.svc-open').forEach(function(c) {
+      if (c.id !== id) {
+        c.classList.remove('svc-open');
+        var b = c.querySelector('.stgl');
+        if (b) b.textContent = '+';
+      }
+    });
+    // Scroll card into view if needed
+    setTimeout(function() { card.scrollIntoView({behavior:'smooth',block:'nearest'}); }, 100);
+  }
+}
+
+function toggleInd(id, btn) {
+  var card = document.getElementById(id);
+  if (!card) return;
+  var isOpen = card.classList.toggle('ind-open');
+  btn.querySelector('.itgl').textContent = isOpen ? '×' : '+';
+}
+
+function toggleOtl(step) {
+  step.classList.toggle('otl-open');
+  var chev = step.querySelector('.otl-chev');
+  if (chev) chev.textContent = step.classList.contains('otl-open') ? '↑' : '↓';
+}
 </script>
 </body>
 </html>
