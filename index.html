@@ -1235,6 +1235,138 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
 .scard-desc,.faq-a,.pstep-desc{font-size:clamp(13px,1.5vw,15px)!important;line-height:1.8!important;}
 .scard-who{font-size:10px!important;opacity:0.6!important;letter-spacing:1.5px!important;}
 
+/* ── GLOBAL: HERO URGENCY LINE ── */
+.hero-urgency{
+  font-size:clamp(12px,1.3vw,15px)!important;
+  color:#7a7570!important;
+  line-height:1.7!important;
+  max-width:560px!important;
+  margin:10px auto 0!important;
+  font-style:italic!important;
+  letter-spacing:0.2px!important;
+}
+
+/* ── GLOBAL: PIPELINE STATUS LABELS ── */
+.tl-status{
+  font-size:9px!important;
+  letter-spacing:2.5px!important;
+  color:#D06818!important;
+  font-weight:700!important;
+  margin-bottom:5px!important;
+  display:block!important;
+}
+.tl-mob-status{
+  font-size:8px!important;
+  letter-spacing:2.5px!important;
+  color:#D06818!important;
+  font-weight:700!important;
+  display:block!important;
+  margin-bottom:3px!important;
+}
+
+/* ── GLOBAL: PROOF CARDS ── */
+.proof-cards{
+  display:grid!important;
+  grid-template-columns:repeat(4,1fr)!important;
+  gap:2px!important;
+  margin-top:0!important;
+}
+.proof-card{
+  background:rgba(9,8,7,0.97)!important;
+  border:1px solid rgba(255,107,0,0.1)!important;
+  transition:border-color 0.3s!important;
+  overflow:hidden!important;
+}
+.proof-card:hover{border-color:rgba(255,107,0,0.35)!important;}
+.proof-ph{
+  width:100%!important;
+  aspect-ratio:16/9!important;
+  position:relative!important;
+  overflow:hidden!important;
+  border-bottom:1px solid rgba(255,107,0,0.08)!important;
+  background:#060810!important;
+}
+.proof-ph svg{display:block!important;width:100%!important;height:100%!important;}
+.proof-ph-label{
+  position:absolute!important;
+  bottom:8px!important;left:10px!important;
+  font-size:7px!important;
+  letter-spacing:1.5px!important;
+  color:rgba(255,107,0,0.45)!important;
+  font-family:monospace!important;
+}
+.proof-card-body{padding:20px 18px 24px!important;}
+.proof-type{
+  font-size:9px!important;
+  letter-spacing:2px!important;
+  color:#D06818!important;
+  margin-bottom:10px!important;
+  display:block!important;
+}
+.proof-receives{
+  font-size:13px!important;
+  color:#D8D4CC!important;
+  line-height:1.7!important;
+  margin-bottom:10px!important;
+}
+.proof-usecase{
+  font-size:11px!important;
+  color:#5a5650!important;
+  line-height:1.6!important;
+  letter-spacing:0.2px!important;
+}
+
+/* ── GLOBAL: MID CTA BAND ── */
+.cta-mid-band{
+  text-align:center!important;
+  padding:56px 52px!important;
+  border-top:1px solid rgba(255,107,0,0.08)!important;
+  border-bottom:1px solid rgba(255,107,0,0.08)!important;
+  background:rgba(5,4,3,0.97)!important;
+}
+.cta-mid-label{
+  font-size:10px!important;
+  letter-spacing:3px!important;
+  color:#5a5650!important;
+  margin-bottom:20px!important;
+  display:block!important;
+}
+
+/* ── GLOBAL: TRUST STRIP ── */
+.trust-strip{
+  display:flex!important;
+  flex-wrap:wrap!important;
+  justify-content:center!important;
+  gap:8px 12px!important;
+  padding:28px 52px!important;
+  background:rgba(5,4,3,0.98)!important;
+  border-top:1px solid rgba(255,107,0,0.07)!important;
+  border-bottom:1px solid rgba(255,107,0,0.07)!important;
+}
+.trust-badge{
+  font-size:9px!important;
+  letter-spacing:2px!important;
+  color:#7a7670!important;
+  border:1px solid rgba(255,107,0,0.15)!important;
+  padding:5px 12px!important;
+  font-family:monospace!important;
+  white-space:nowrap!important;
+  transition:border-color 0.2s,color 0.2s!important;
+}
+.trust-badge:hover{
+  border-color:rgba(255,107,0,0.4)!important;
+  color:#C06015!important;
+}
+
+/* ── GLOBAL: SECTION DIVIDERS ── */
+.sec-divider{
+  width:100%!important;
+  height:1px!important;
+  background:linear-gradient(to right,transparent,rgba(255,107,0,0.18),transparent)!important;
+  border:none!important;
+  margin:0!important;
+}
+
 /* ── GLOBAL: WHY-DETAIL subline ── */
 .why-detail{
   display:block!important;
@@ -1331,6 +1463,10 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
   .why-grid,.faq-grid{padding:0 24px!important;}
   /* Drone: scale down on tablet */
   .hero-drone-vid{width:clamp(220px,28vw,360px)!important;}
+  /* proof cards: 2-col on tablet */
+  .proof-cards{grid-template-columns:1fr 1fr!important;}
+  .cta-mid-band{padding:48px 32px!important;}
+  .trust-strip{padding:24px 32px!important;}
 }
 
 /* ── MOBILE (iPhone: ≤600px) ── */
@@ -1398,6 +1534,7 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
 
   /* ── MOBILE: readability ── */
   .hero-sub{font-size:16px!important;line-height:1.8!important;padding:0 20px!important;max-width:100%!important;}
+  .hero-urgency{font-size:13px!important;padding:0 20px!important;max-width:100%!important;}
   .sec-intro{font-size:15px!important;line-height:1.85!important;padding:0 4px!important;}
   .scard-desc,.faq-a,.pstep-desc{font-size:15px!important;line-height:1.85!important;}
   .why-body{font-size:15px!important;line-height:1.85!important;}
@@ -1406,6 +1543,13 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
   #why,#services,#proof,#faq,#contact{padding-top:64px!important;padding-bottom:64px!important;}
   .scard,.why-card{padding:24px 20px!important;}
   .btn-pri,.btn-ghost{min-height:48px!important;display:flex!important;align-items:center!important;justify-content:center!important;}
+  /* proof cards: 1-col on mobile */
+  .proof-cards{grid-template-columns:1fr!important;}
+  .cta-mid-band{padding:40px 20px!important;}
+  .trust-strip{padding:20px 16px!important;gap:6px 8px!important;}
+  .trust-badge{font-size:8px!important;padding:4px 10px!important;}
+  .proof-receives{font-size:14px!important;line-height:1.8!important;}
+  .proof-usecase{font-size:12px!important;}
 }
 
 /* ── SMALL PHONE (≤390px) ── */
@@ -1598,6 +1742,7 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
   <p class="hero-sub">
     Commercial drone intelligence across California — thermal inspection, precision mapping, aerial photography, 3D reconstruction, and FAA-certified surveillance operations for industrial, construction, facilities, and government clients.
   </p>
+  <p class="hero-urgency">Actionable aerial intelligence for properties, infrastructure, and operations that can't afford uncertainty.</p>
   <div class="hero-stats">
     <div class="hstat"><div class="hstat-n"><span class="val">5</span><span class="unit">SVC</span></div><div class="hstat-l">Service<br>Types</div></div>
     <div class="hstat"><div class="hstat-n"><span class="val">4K</span><span class="unit">+RTK</span></div><div class="hstat-l">Imaging<br>Capability</div></div>
@@ -1825,17 +1970,149 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
 </section>
 
 <!-- PROOF -->
+<!-- MID CTA -->
+<div class="cta-mid-band">
+  <p class="cta-mid-label">READY TO SCOPE YOUR PROJECT?</p>
+  <a href="#contact" class="btn-pri" style="display:inline-flex;align-items:center;gap:8px;">REQUEST MISSION SCOPE</a>
+</div>
+
+<!-- PROOF OF WORK -->
 <section id="proof">
   <div class="tac-corner tac-tl" aria-hidden="true"></div>
   <div class="tac-corner tac-tr" aria-hidden="true"></div>
-  <div class="tac-corner tac-bl" aria-hidden="true"></div>
-  <div class="tac-corner tac-br" aria-hidden="true"></div>
-  <div class="proof-inner">
-    <div class="proof-item"><div class="proof-n">4K<span>+RTK</span></div><div class="proof-l">Imaging<br>Resolution</div></div>
-    <div class="proof-item"><div class="proof-n">2<span>CM</span></div><div class="proof-l">Survey<br>Accuracy</div></div>
-    <div class="proof-item"><div class="proof-n">±2°<span>C</span></div><div class="proof-l">Thermal<br>Precision</div></div>
-    <div class="proof-item"><div class="proof-n">107<span>P</span></div><div class="proof-l">FAA Part 107<br>Certified</div></div>
-  </div>
+  <div class="wrap">
+    <div class="sec-head" style="text-align:center;padding-bottom:48px;">
+      <div class="tag">[ FIELD OUTPUT ]</div>
+      <div class="sec-h">PROOF OF <span class="gh">WORK</span></div>
+      <div class="sec-intro">Sample deliverable types clients receive after a Recon mission. Placeholder visuals — real project imagery available on request.</div>
+    </div>
+    <div class="proof-cards">
+
+      <div class="proof-card">
+        <div class="proof-ph proof-ph-thermal">
+          <svg viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" width="100%" height="100%">
+            <defs><radialGradient id="therm1" cx="38%" cy="45%" r="35%"><stop offset="0%" stop-color="#FF4500"/><stop offset="40%" stop-color="#FF8C00" stop-opacity="0.7"/><stop offset="100%" stop-color="#0a0a12" stop-opacity="0.9"/></radialGradient><radialGradient id="therm2" cx="72%" cy="60%" r="28%"><stop offset="0%" stop-color="#FFD700"/><stop offset="50%" stop-color="#FF6B00" stop-opacity="0.5"/><stop offset="100%" stop-color="#0a0a12" stop-opacity="0.8"/></radialGradient></defs>
+            <rect width="320" height="180" fill="#060810"/>
+            <rect width="320" height="180" fill="url(#therm1)" opacity="0.85"/>
+            <rect width="320" height="180" fill="url(#therm2)" opacity="0.6"/>
+            <line x1="0" y1="60" x2="320" y2="60" stroke="rgba(255,107,0,0.15)" stroke-width="1"/>
+            <line x1="0" y1="120" x2="320" y2="120" stroke="rgba(255,107,0,0.15)" stroke-width="1"/>
+            <line x1="107" y1="0" x2="107" y2="180" stroke="rgba(255,107,0,0.15)" stroke-width="1"/>
+            <line x1="214" y1="0" x2="214" y2="180" stroke="rgba(255,107,0,0.15)" stroke-width="1"/>
+            <rect x="8" y="8" width="60" height="14" fill="none" stroke="rgba(255,107,0,0.5)" stroke-width="1"/>
+            <text x="14" y="19" font-family="monospace" font-size="7" fill="rgba(255,107,0,0.8)">THERMAL // RCN</text>
+            <text x="246" y="172" font-family="monospace" font-size="7" fill="rgba(255,107,0,0.5)">±2°C CALIBRATED</text>
+          </svg>
+          <div class="proof-ph-label">THERMAL SCAN // PLACEHOLDER</div>
+        </div>
+        <div class="proof-card-body">
+          <div class="proof-type">THERMAL INSPECTION REPORT</div>
+          <div class="proof-receives">Calibrated radiometric PDF report with annotated anomaly map, temperature delta table, and priority issue index.</div>
+          <div class="proof-usecase">USE CASE: Roof moisture, solar panel faults, HVAC failures, electrical hot spots, structural heat loss.</div>
+        </div>
+      </div>
+
+      <div class="proof-card">
+        <div class="proof-ph proof-ph-ortho">
+          <svg viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" width="100%" height="100%">
+            <rect width="320" height="180" fill="#0a0e0a"/>
+            <rect x="0" y="0" width="320" height="180" fill="rgba(20,40,20,0.6)"/>
+            <line x1="0" y1="30" x2="320" y2="30" stroke="rgba(80,160,80,0.2)" stroke-width="0.8"/>
+            <line x1="0" y1="60" x2="320" y2="60" stroke="rgba(80,160,80,0.2)" stroke-width="0.8"/>
+            <line x1="0" y1="90" x2="320" y2="90" stroke="rgba(80,160,80,0.2)" stroke-width="0.8"/>
+            <line x1="0" y1="120" x2="320" y2="120" stroke="rgba(80,160,80,0.2)" stroke-width="0.8"/>
+            <line x1="0" y1="150" x2="320" y2="150" stroke="rgba(80,160,80,0.2)" stroke-width="0.8"/>
+            <line x1="40" y1="0" x2="40" y2="180" stroke="rgba(80,160,80,0.2)" stroke-width="0.8"/>
+            <line x1="80" y1="0" x2="80" y2="180" stroke="rgba(80,160,80,0.2)" stroke-width="0.8"/>
+            <line x1="120" y1="0" x2="120" y2="180" stroke="rgba(80,160,80,0.2)" stroke-width="0.8"/>
+            <line x1="160" y1="0" x2="160" y2="180" stroke="rgba(80,160,80,0.2)" stroke-width="0.8"/>
+            <line x1="200" y1="0" x2="200" y2="180" stroke="rgba(80,160,80,0.2)" stroke-width="0.8"/>
+            <line x1="240" y1="0" x2="240" y2="180" stroke="rgba(80,160,80,0.2)" stroke-width="0.8"/>
+            <line x1="280" y1="0" x2="280" y2="180" stroke="rgba(80,160,80,0.2)" stroke-width="0.8"/>
+            <rect x="60" y="40" width="120" height="80" fill="rgba(60,120,60,0.3)" stroke="rgba(255,107,0,0.4)" stroke-width="1" stroke-dasharray="4,3"/>
+            <line x1="120" y1="40" x2="120" y2="120" stroke="rgba(255,107,0,0.25)" stroke-width="0.8"/>
+            <line x1="60" y1="80" x2="180" y2="80" stroke="rgba(255,107,0,0.25)" stroke-width="0.8"/>
+            <circle cx="120" cy="80" r="4" fill="none" stroke="rgba(255,107,0,0.7)" stroke-width="1.5"/>
+            <line x1="124" y1="76" x2="136" y2="64" stroke="rgba(255,107,0,0.5)" stroke-width="1"/>
+            <rect x="136" y="56" width="52" height="12" fill="rgba(0,0,0,0.7)" stroke="rgba(255,107,0,0.3)" stroke-width="0.8"/>
+            <text x="140" y="65" font-family="monospace" font-size="6" fill="rgba(255,107,0,0.8)">GCP // RTK REF</text>
+            <text x="8" y="172" font-family="monospace" font-size="7" fill="rgba(80,160,80,0.6)">ORTHO // 2CM ACCURACY</text>
+            <rect x="8" y="8" width="72" height="14" fill="none" stroke="rgba(255,107,0,0.4)" stroke-width="1"/>
+            <text x="13" y="19" font-family="monospace" font-size="7" fill="rgba(255,107,0,0.7)">SITE MAP // RCN</text>
+          </svg>
+          <div class="proof-ph-label">ORTHOMOSAIC // PLACEHOLDER</div>
+        </div>
+        <div class="proof-card-body">
+          <div class="proof-type">ORTHOMOSAIC / SITE MAP</div>
+          <div class="proof-receives">Georeferenced GeoTIFF orthomosaic, DEM elevation model, and optional LAS/LAZ point cloud — 2cm RTK accuracy.</div>
+          <div class="proof-usecase">USE CASE: Construction progress, volumetric analysis, land development, infrastructure inspection.</div>
+        </div>
+      </div>
+
+      <div class="proof-card">
+        <div class="proof-ph proof-ph-3d">
+          <svg viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" width="100%" height="100%">
+            <rect width="320" height="180" fill="#080810"/>
+            <polygon points="160,30 240,75 240,135 160,150 80,135 80,75" fill="none" stroke="rgba(255,107,0,0.5)" stroke-width="1.5"/>
+            <polygon points="160,30 240,75 160,90 80,75" fill="rgba(255,107,0,0.05)" stroke="rgba(255,107,0,0.3)" stroke-width="1"/>
+            <polygon points="80,75 160,90 160,150 80,135" fill="rgba(255,255,255,0.04)" stroke="rgba(200,200,200,0.2)" stroke-width="1"/>
+            <polygon points="240,75 160,90 160,150 240,135" fill="rgba(255,107,0,0.03)" stroke="rgba(255,107,0,0.15)" stroke-width="1"/>
+            <line x1="160" y1="30" x2="160" y2="90" stroke="rgba(255,107,0,0.3)" stroke-width="1" stroke-dasharray="3,2"/>
+            <circle cx="160" cy="30" r="3" fill="rgba(255,107,0,0.8)"/>
+            <circle cx="240" cy="75" r="2.5" fill="rgba(255,255,255,0.5)"/>
+            <circle cx="80" cy="75" r="2.5" fill="rgba(255,255,255,0.5)"/>
+            <circle cx="240" cy="135" r="2.5" fill="rgba(255,255,255,0.3)"/>
+            <circle cx="80" cy="135" r="2.5" fill="rgba(255,255,255,0.3)"/>
+            <circle cx="160" cy="150" r="2.5" fill="rgba(255,255,255,0.3)"/>
+            <circle cx="115" cy="58" r="1.5" fill="rgba(255,107,0,0.5)"/>
+            <circle cx="200" cy="55" r="1.5" fill="rgba(255,107,0,0.5)"/>
+            <circle cx="103" cy="107" r="1.5" fill="rgba(255,107,0,0.3)"/>
+            <circle cx="218" cy="110" r="1.5" fill="rgba(255,107,0,0.3)"/>
+            <circle cx="160" cy="118" r="1.5" fill="rgba(255,107,0,0.4)"/>
+            <text x="8" y="172" font-family="monospace" font-size="7" fill="rgba(255,107,0,0.5)">3D MODEL // PHOTOGRAMMETRY</text>
+            <rect x="8" y="8" width="64" height="14" fill="none" stroke="rgba(255,107,0,0.4)" stroke-width="1"/>
+            <text x="13" y="19" font-family="monospace" font-size="7" fill="rgba(255,107,0,0.7)">3D RECON // RCN</text>
+          </svg>
+          <div class="proof-ph-label">3D RECONSTRUCTION // PLACEHOLDER</div>
+        </div>
+        <div class="proof-card-body">
+          <div class="proof-type">3D RECONSTRUCTION MODEL</div>
+          <div class="proof-receives">Photogrammetric 3D model in OBJ, GLTF, or FBX — centimeter-level accuracy with annotated inspection overlays.</div>
+          <div class="proof-usecase">USE CASE: Structural planning, insurance documentation, facility audits, site visualization.</div>
+        </div>
+      </div>
+
+      <div class="proof-card">
+        <div class="proof-ph proof-ph-photo">
+          <svg viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" width="100%" height="100%">
+            <defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0d1520"/><stop offset="100%" stop-color="#1a2535"/></linearGradient></defs>
+            <rect width="320" height="180" fill="url(#sky)"/>
+            <polygon points="0,180 60,100 100,130 150,70 200,110 260,80 320,115 320,180" fill="rgba(20,30,20,0.7)"/>
+            <polygon points="0,180 60,100 100,130 150,70 200,110 260,80 320,115 320,180" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+            <rect x="0" y="0" width="320" height="180" fill="none" stroke="rgba(255,107,0,0.3)" stroke-width="2"/>
+            <rect x="20" y="20" width="40" height="40" fill="none" stroke="rgba(255,107,0,0.25)" stroke-width="1" stroke-dasharray="3,3"/>
+            <rect x="260" y="20" width="40" height="40" fill="none" stroke="rgba(255,107,0,0.25)" stroke-width="1" stroke-dasharray="3,3"/>
+            <rect x="20" y="120" width="40" height="40" fill="none" stroke="rgba(255,107,0,0.25)" stroke-width="1" stroke-dasharray="3,3"/>
+            <rect x="260" y="120" width="40" height="40" fill="none" stroke="rgba(255,107,0,0.25)" stroke-width="1" stroke-dasharray="3,3"/>
+            <line x1="160" y1="0" x2="160" y2="180" stroke="rgba(255,107,0,0.1)" stroke-width="0.8"/>
+            <line x1="0" y1="90" x2="320" y2="90" stroke="rgba(255,107,0,0.1)" stroke-width="0.8"/>
+            <circle cx="160" cy="90" r="20" fill="none" stroke="rgba(255,107,0,0.2)" stroke-width="1"/>
+            <circle cx="160" cy="90" r="3" fill="rgba(255,107,0,0.4)"/>
+            <text x="8" y="172" font-family="monospace" font-size="7" fill="rgba(255,255,255,0.4)">AERIAL // 4K 60FPS · 48MP</text>
+            <rect x="8" y="8" width="72" height="14" fill="none" stroke="rgba(255,107,0,0.4)" stroke-width="1"/>
+            <text x="13" y="19" font-family="monospace" font-size="7" fill="rgba(255,107,0,0.7)">AERIAL OPS // RCN</text>
+          </svg>
+          <div class="proof-ph-label">AERIAL PHOTO // PLACEHOLDER</div>
+        </div>
+        <div class="proof-card-body">
+          <div class="proof-type">AERIAL PHOTO / VIDEO PACKAGE</div>
+          <div class="proof-receives">Edited 4K video and 48MP stills — color graded, stabilized, and formatted for immediate use or client presentation.</div>
+          <div class="proof-usecase">USE CASE: Real estate listings, construction documentation, marketing, insurance claims, progress reporting.</div>
+        </div>
+      </div>
+
+    </div><!-- /.proof-cards -->
+  </div><!-- /.wrap -->
 </section>
 
 <!-- PROCESS: SCROLL TIMELINE -->
@@ -1905,13 +2182,13 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
         <div class="tl-h">MISSION <span>PIPELINE</span></div>
       </div>
       <div class="tl-items" id="tlItems">
-        <div class="tl-item tl-on" onclick="tlStep(0)"><div class="tl-num">01</div><div class="tl-info"><div class="tl-title">Mission Intake</div><div class="tl-desc">Client consultation and site assessment. We gather objectives, airspace considerations, and deliverable requirements to build the correct deployment plan.</div></div></div>
-        <div class="tl-item" onclick="tlStep(1)"><div class="tl-num">02</div><div class="tl-info"><div class="tl-title">Operational Planning</div><div class="tl-desc">Pre-flight planning, FAA airspace verification, risk analysis, weather evaluation, and mission route configuration. Every mission structured for safety and precision.</div></div></div>
-        <div class="tl-item" onclick="tlStep(2)"><div class="tl-num">03</div><div class="tl-info"><div class="tl-title">Field Deployment</div><div class="tl-desc">Matrice 4T deployed on-site for high-resolution imaging, thermal analysis, and mapping. Operations conducted under controlled protocols and live environmental monitoring.</div></div></div>
-        <div class="tl-item" onclick="tlStep(3)"><div class="tl-num">04</div><div class="tl-info"><div class="tl-title">Data Acquisition</div><div class="tl-desc">Capturing aerial intelligence — visual imagery, thermal signatures, orthomosaic mapping, and anomaly detection — across the full mission scope.</div></div></div>
-        <div class="tl-item" onclick="tlStep(4)"><div class="tl-num">05</div><div class="tl-info"><div class="tl-title">Processing &amp; Analysis</div><div class="tl-desc">Post-mission workflows for organization, enhancement, AI analysis, and quality control. Outputs include thermal reports, 3D maps, and actionable intelligence summaries.</div></div></div>
-        <div class="tl-item" onclick="tlStep(5)"><div class="tl-num">06</div><div class="tl-info"><div class="tl-title">Client Delivery</div><div class="tl-desc">Final deliverables securely packaged and delivered — optimized for operational use, stakeholder review, insurance support, or long-term asset tracking.</div></div></div>
-        <div class="tl-item" onclick="tlStep(6)"><div class="tl-num">07</div><div class="tl-info"><div class="tl-title">Archive &amp; Support</div><div class="tl-desc">Mission data archived for future comparison and repeat inspections. Ongoing scheduling and long-term monitoring programs available for repeat clients.</div></div></div>
+        <div class="tl-item tl-on" onclick="tlStep(0)"><div class="tl-num">01</div><div class="tl-info"><div class="tl-status">INTAKE</div><div class="tl-title">Mission Intake</div><div class="tl-desc">Client consultation and site assessment. We gather objectives, airspace requirements, and deliverable specs to build the correct deployment plan.</div></div></div>
+        <div class="tl-item" onclick="tlStep(1)"><div class="tl-num">02</div><div class="tl-info"><div class="tl-status">PLAN</div><div class="tl-title">Operational Planning</div><div class="tl-desc">FAA airspace authorization, NOTAM review, risk analysis, weather evaluation, and flight route configuration — structured for safety and data quality.</div></div></div>
+        <div class="tl-item" onclick="tlStep(2)"><div class="tl-num">03</div><div class="tl-info"><div class="tl-status">DEPLOY</div><div class="tl-title">Field Deployment</div><div class="tl-desc">Matrice 4T on-site for high-resolution imaging, thermal analysis, and mapping — under live environmental monitoring and controlled flight protocols.</div></div></div>
+        <div class="tl-item" onclick="tlStep(3)"><div class="tl-num">04</div><div class="tl-info"><div class="tl-status">CAPTURE</div><div class="tl-title">Data Acquisition</div><div class="tl-desc">Visual imagery, thermal signatures, orthomosaic mapping, and anomaly detection across the full mission scope — captured to spec, every sortie.</div></div></div>
+        <div class="tl-item" onclick="tlStep(4)"><div class="tl-num">05</div><div class="tl-info"><div class="tl-status">PROCESS</div><div class="tl-title">Processing &amp; Analysis</div><div class="tl-desc">Post-flight AI processing, quality control, and output formatting. Thermal reports, 3D reconstructions, and intelligence summaries built to your workflow.</div></div></div>
+        <div class="tl-item" onclick="tlStep(5)"><div class="tl-num">06</div><div class="tl-info"><div class="tl-status">DELIVER</div><div class="tl-title">Client Delivery</div><div class="tl-desc">Secure file delivery within agreed SLA — optimized for your workflow, stakeholder review, insurance documentation, or long-term asset tracking.</div></div></div>
+        <div class="tl-item" onclick="tlStep(6)"><div class="tl-num">07</div><div class="tl-info"><div class="tl-status">ARCHIVE</div><div class="tl-title">Archive &amp; Support</div><div class="tl-desc">Mission data archived for change detection and repeat inspections. Ongoing monitoring programs and scheduled re-flights available for contracted clients.</div></div></div>
       </div>
     </div>
   </div>
@@ -1943,13 +2220,13 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
     <div class="sec-h">MISSION <span class="gh">PIPELINE</span></div>
   </div>
   <div style="margin-top:32px;">
-    <div class="tl-mob-step"><div class="tl-mob-num">01 // MISSION INTAKE</div><div class="tl-mob-title">Mission Intake</div><div class="tl-mob-desc">Client consultation and site assessment. We gather objectives, airspace considerations, and deliverable requirements to build the correct deployment plan.</div></div>
-    <div class="tl-mob-step"><div class="tl-mob-num">02 // OPERATIONAL PLANNING</div><div class="tl-mob-title">Operational Planning</div><div class="tl-mob-desc">Pre-flight planning, FAA airspace verification, risk analysis, weather evaluation, and mission route configuration. Every mission structured for safety and precision.</div></div>
-    <div class="tl-mob-step"><div class="tl-mob-num">03 // FIELD DEPLOYMENT</div><div class="tl-mob-title">Field Deployment</div><div class="tl-mob-desc">Matrice 4T deployed on-site for high-resolution imaging, thermal analysis, and mapping. Operations conducted under controlled protocols and live environmental monitoring.</div></div>
-    <div class="tl-mob-step"><div class="tl-mob-num">04 // DATA ACQUISITION</div><div class="tl-mob-title">Data Acquisition</div><div class="tl-mob-desc">Capturing aerial intelligence — visual imagery, thermal signatures, orthomosaic mapping, and anomaly detection across the full mission scope.</div></div>
-    <div class="tl-mob-step"><div class="tl-mob-num">05 // PROCESSING &amp; ANALYSIS</div><div class="tl-mob-title">Processing &amp; Analysis</div><div class="tl-mob-desc">Post-mission workflows for AI analysis and quality control. Outputs include thermal reports, 3D maps, and actionable intelligence summaries.</div></div>
-    <div class="tl-mob-step"><div class="tl-mob-num">06 // CLIENT DELIVERY</div><div class="tl-mob-title">Client Delivery</div><div class="tl-mob-desc">Final deliverables securely packaged — optimized for operational use, stakeholder review, insurance support, or long-term asset tracking.</div></div>
-    <div class="tl-mob-step"><div class="tl-mob-num">07 // ARCHIVE &amp; SUPPORT</div><div class="tl-mob-title">Archive &amp; Support</div><div class="tl-mob-desc">Mission data archived for future comparison. Ongoing scheduling and long-term monitoring programs available for repeat clients.</div></div>
+    <div class="tl-mob-step"><div class="tl-mob-status">INTAKE</div><div class="tl-mob-num">01</div><div class="tl-mob-title">Mission Intake</div><div class="tl-mob-desc">Client consultation and site assessment. Objectives, airspace requirements, and deliverable specs — gathered before anything flies.</div></div>
+    <div class="tl-mob-step"><div class="tl-mob-status">PLAN</div><div class="tl-mob-num">02</div><div class="tl-mob-title">Operational Planning</div><div class="tl-mob-desc">FAA authorization, NOTAM review, risk analysis, and flight routing — structured for safety and precision data capture.</div></div>
+    <div class="tl-mob-step"><div class="tl-mob-status">DEPLOY</div><div class="tl-mob-num">03</div><div class="tl-mob-title">Field Deployment</div><div class="tl-mob-desc">Matrice 4T on-site under live environmental monitoring. Controlled protocols, every sortie.</div></div>
+    <div class="tl-mob-step"><div class="tl-mob-status">CAPTURE</div><div class="tl-mob-num">04</div><div class="tl-mob-title">Data Acquisition</div><div class="tl-mob-desc">Visual, thermal, and mapping data captured to spec across the full mission scope.</div></div>
+    <div class="tl-mob-step"><div class="tl-mob-status">PROCESS</div><div class="tl-mob-num">05</div><div class="tl-mob-title">Processing &amp; Analysis</div><div class="tl-mob-desc">AI processing, QC, and output formatting — thermal reports, 3D models, intelligence summaries.</div></div>
+    <div class="tl-mob-step"><div class="tl-mob-status">DELIVER</div><div class="tl-mob-num">06</div><div class="tl-mob-title">Client Delivery</div><div class="tl-mob-desc">Secure file delivery within SLA — ready for your workflow, stakeholders, or insurance documentation.</div></div>
+    <div class="tl-mob-step"><div class="tl-mob-status">ARCHIVE</div><div class="tl-mob-num">07</div><div class="tl-mob-title">Archive &amp; Support</div><div class="tl-mob-desc">Data archived for change detection and repeat inspections. Monitoring programs available for contracted clients.</div></div>
   </details>
 </section>
 
@@ -2027,8 +2304,15 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
   </div>
 </section>
 
-<!-- CTA -->
-
+<!-- TRUST STRIP -->
+<div class="trust-strip" role="list" aria-label="Certifications and operational standards">
+  <span class="trust-badge" role="listitem">FAA PART 107</span>
+  <span class="trust-badge" role="listitem">COMMERCIAL INSURANCE</span>
+  <span class="trust-badge" role="listitem">CALIFORNIA OPERATIONS</span>
+  <span class="trust-badge" role="listitem">STRUCTURED DELIVERABLES</span>
+  <span class="trust-badge" role="listitem">SECURE FILE DELIVERY</span>
+  <span class="trust-badge" role="listitem">VETERAN-OWNED</span>
+</div>
 
 <!-- CONTACT -->
 <section id="contact">
@@ -2069,8 +2353,8 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
   </div>
   <div class="intake-wrap">
     <div style="margin-bottom:36px;text-align:center;">
-      <div class="tag" style="display:inline-flex;">Request a Quote</div>
-      <div class="sec-h">TELL US ABOUT <span class="gh">YOUR PROJECT</span></div>
+      <div class="tag" style="display:inline-flex;">Start Recon Request</div>
+      <div class="sec-h">SCOPE YOUR <span class="gh">MISSION</span></div>
       <div class="sec-intro" style="font-size:17px;max-width:520px;margin:12px auto 0;">Fill out the form below. We review every submission and respond within one business day with a scope, timeline, and quote.</div>
     </div>
     <div class="intake-stepper">
