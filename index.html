@@ -1710,8 +1710,9 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
 .collapsed-module.cm-open .cm-toggle{opacity:1!important;}
 .cm-chev{display:inline-block!important;transition:transform 0.35s cubic-bezier(0.34,1.56,0.64,1)!important;-webkit-text-fill-color:#D4620F!important;}
 .collapsed-module.cm-open .cm-chev{transform:rotate(45deg)!important;}
-.cm-body{max-height:0!important;overflow:hidden!important;transition:max-height 0.6s ease,opacity 0.45s ease!important;opacity:0!important;padding:0 44px!important;}
-.collapsed-module.cm-open .cm-body{max-height:1400px!important;opacity:1!important;padding:4px 44px 44px!important;}
+.cm-body{display:none!important;}
+.collapsed-module.cm-open .cm-body{display:block!important;padding:4px 44px 44px!important;animation:cmFadeIn 0.35s ease both!important;}
+@keyframes cmFadeIn{from{opacity:0;transform:translateY(-6px);}to{opacity:1;transform:translateY(0);}}
 
 /* ── COVERAGE COMPACT ── */
 .coverage-compact{padding:64px 0!important;}
@@ -1728,7 +1729,6 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
   .cm-row{flex-direction:column!important;align-items:flex-start!important;gap:16px!important;padding:28px 20px!important;}
   .cm-title{font-size:clamp(26px,8vw,36px)!important;}
   .cm-toggle{font-size:28px!important;}
-  .cm-body{padding:0 20px!important;}
   .collapsed-module.cm-open .cm-body{padding:4px 20px 28px!important;}
   .coverage-compact .wrap{padding:0 20px!important;}
 }
@@ -2574,7 +2574,7 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
 </div>
 
 <div class="collapsed-module" id="platform-module">
-  <div class="cm-row" onclick="cmToggle('platform-module',this)" role="button">
+  <div class="cm-row" role="button">
     <div class="cm-left">
       <div class="cm-kicker">// TECHNOLOGY STACK</div>
       <div class="cm-title">WHY ENTERPRISE SYSTEMS MATTER</div>
@@ -2742,11 +2742,11 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
     <div class="tl-mob-step"><div class="tl-mob-status">PROCESS</div><div class="tl-mob-num">05</div><div class="tl-mob-title">Processing &amp; Analysis</div><div class="tl-mob-desc">AI processing, QC, and output formatting — thermal reports, 3D models, intelligence summaries.</div></div>
     <div class="tl-mob-step"><div class="tl-mob-status">DELIVER</div><div class="tl-mob-num">06</div><div class="tl-mob-title">Client Delivery</div><div class="tl-mob-desc">Secure file delivery within SLA — ready for your workflow, stakeholders, or insurance documentation.</div></div>
     <div class="tl-mob-step"><div class="tl-mob-status">ARCHIVE</div><div class="tl-mob-num">07</div><div class="tl-mob-title">Archive &amp; Support</div><div class="tl-mob-desc">Data archived for change detection and repeat inspections. Monitoring programs available for contracted clients.</div></div>
-  </details>
+  </div>
 </section>
 
 <div class="collapsed-module" id="faq-module">
-  <div class="cm-row" onclick="cmToggle('faq-module',this)" role="button">
+  <div class="cm-row" role="button">
     <div class="cm-left">
       <div class="cm-kicker">// COMMON QUESTIONS</div>
       <div class="cm-title">WHAT CLIENTS ASK</div>
@@ -2939,7 +2939,7 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
       <p class="success-sub">We've received your project details and will respond within one business day with a scope, timeline, and quote. Check your inbox — we'll reach out directly.</p>
       <div class="success-code" id="successCode">REF: DØi-——</div>
     </div>
-  </details>
+  </div>
 </section>
 
 <footer>
@@ -3262,13 +3262,32 @@ function submitForm(){
 })();
 </script>
 <script>
-/* Progressive disclosure toggle functions */
+/* Collapsed module toggles — uses addEventListener, no inline onclick */
+(function(){
+  function initCM() {
+    document.querySelectorAll('.collapsed-module').forEach(function(mod) {
+      var row = mod.querySelector('.cm-row');
+      if (!row) return;
+      row.addEventListener('click', function() {
+        var isOpen = mod.classList.toggle('cm-open');
+        var chev = mod.querySelector('.cm-chev');
+        if (chev) chev.textContent = isOpen ? '−' : '+';
+      });
+    });
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initCM);
+  } else {
+    initCM();
+  }
+})();
+
 function cmToggle(id, row) {
   var mod = document.getElementById(id);
   if (!mod) return;
   var isOpen = mod.classList.toggle('cm-open');
   var chev = row ? row.querySelector('.cm-chev') : mod.querySelector('.cm-chev');
-  if (chev) chev.textContent = isOpen ? '×' : '+';
+  if (chev) chev.textContent = isOpen ? '−' : '+';
 }
 
 function toggleSvc(id, btn) {
