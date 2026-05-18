@@ -1245,6 +1245,27 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
   color:transparent!important;
 }
 
+/* ── GLOBAL: WHY CARDS — title only, body fades in on hover ── */
+.why-body{
+  opacity:0!important;
+  max-height:0!important;
+  overflow:hidden!important;
+  margin-top:0!important;
+  transition:opacity 0.4s ease,max-height 0.5s ease,margin-top 0.3s ease!important;
+}
+.why-card:hover .why-body{
+  opacity:1!important;
+  max-height:320px!important;
+  margin-top:12px!important;
+}
+.why-card{
+  min-height:72px!important;
+  display:flex!important;
+  flex-direction:column!important;
+  justify-content:center!important;
+  cursor:default!important;
+}
+
 /* ── GLOBAL: WHO NEEDS THIS — white, readable ── */
 .scard-who{color:#F0EDE8!important;font-size:11px!important;}
 
@@ -1307,6 +1328,8 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
   .hero-h1 .og+br,.hero-h1 .dim+br{display:none!important;}
   /* logo wrap: smaller on mobile, no need for full 100vh */
   .hero-logo-wrap{min-height:60vh!important;padding-top:64px!important;}
+  /* why cards: always show body on touch (no hover) */
+  .why-body{opacity:1!important;max-height:none!important;margin-top:10px!important;}
   .hero-sub{font-size:16px!important;margin-top:20px!important;padding:0 16px!important;text-align:center!important;}
   .hero-stats{width:100%!important;margin-bottom:20px!important;}
   .hero-acts{gap:10px!important;}
