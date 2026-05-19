@@ -1324,7 +1324,7 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
 /* ── GLOBAL: MID CTA BAND ── */
 .cta-mid-band{
   text-align:center!important;
-  padding:56px 52px!important;
+  padding:24px 52px!important;
   border-top:1px solid rgba(255,107,0,0.08)!important;
   border-bottom:1px solid rgba(255,107,0,0.08)!important;
   background:rgba(5,4,3,0.97)!important;
@@ -1560,7 +1560,7 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
 }
 
 /* ── INDUSTRIES WE SUPPORT ── */
-#industries{padding:96px 0!important;}
+#industries{padding:96px 0 40px!important;}
 #industries .sec-header{text-align:center!important;padding:0 52px 56px!important;}
 #industries .sec-kicker{display:block!important;text-align:center!important;}
 #industries .sec-h{text-align:center!important;}
@@ -1737,7 +1737,7 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
 @keyframes cmFadeIn{from{opacity:0;transform:translateY(-6px);}to{opacity:1;transform:translateY(0);}}
 
 /* ── COVERAGE COMPACT ── */
-.coverage-compact{padding:64px 0!important;}
+.coverage-compact{padding:28px 0!important;}
 .cov-kicker{font-family:var(--mono)!important;font-size:9px!important;letter-spacing:3px!important;color:#D4620F!important;-webkit-text-fill-color:#D4620F!important;margin-bottom:12px!important;display:block!important;}
 .cov-title{font-family:var(--mono)!important;font-size:clamp(20px,2.5vw,28px)!important;letter-spacing:3px!important;color:#EAEAEA!important;-webkit-text-fill-color:#EAEAEA!important;font-weight:700!important;margin:0 0 16px!important;display:block!important;line-height:1.2!important;}
 .cov-text{font-size:14px!important;color:#AAAAAA!important;-webkit-text-fill-color:#AAAAAA!important;line-height:1.7!important;max-width:640px!important;margin:0 0 20px!important;display:block!important;}
@@ -3250,7 +3250,7 @@ function submitForm(){
       if(e.isIntersecting){showDrone();}
       else{hideDrone();}
     });
-  },{threshold:0,rootMargin:'0px 0px -40% 0px'});
+  },{threshold:0,rootMargin:'0px 0px -75% 0px'});
   io.observe(heroTrigger);
   // expose for iOS Safari fallback
   window._droneShow = showDrone;
