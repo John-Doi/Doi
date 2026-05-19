@@ -21,7 +21,7 @@
   --body:"Rajdhani",sans-serif;
 }
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
-html{scroll-behavior:smooth;}
+html{scroll-behavior:smooth;overflow-x:hidden;}
 body{
   color:var(--t1);font-family:var(--body);overflow-x:hidden;cursor:crosshair;
   background-color:var(--black);
@@ -3257,7 +3257,6 @@ function submitForm(){
       else{hideDrone();}
     }
     window.addEventListener('scroll',checkDroneScroll,{passive:true});
-    checkDroneScroll();
   } else {
     /* Desktop: IntersectionObserver */
     var io=new IntersectionObserver(function(entries){
