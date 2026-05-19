@@ -1561,7 +1561,8 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
 #industries .sec-kicker{display:block!important;text-align:center!important;}
 #industries .sec-h{text-align:center!important;}
 #industries .sec-sub{text-align:center!important;max-width:580px!important;margin:16px auto 0!important;font-size:14px!important;color:#888!important;-webkit-text-fill-color:#888!important;line-height:1.75!important;display:block!important;}
-.ind-grid{display:grid!important;grid-template-columns:repeat(auto-fill,minmax(280px,1fr))!important;gap:2px!important;padding:0 40px!important;margin-top:48px!important;}
+.ind-grid{display:flex!important;flex-wrap:wrap!important;justify-content:center!important;gap:2px!important;padding:0 40px!important;margin-top:48px!important;}
+.ind-card{flex:0 0 calc(25% - 1.5px)!important;}
 .ind-card{background:#0d0d0d!important;border:1px solid #1a1a1a!important;padding:32px 24px!important;display:flex!important;flex-direction:column!important;gap:12px!important;align-items:center!important;text-align:center!important;transition:border-color 0.3s ease,background 0.3s ease!important;position:relative!important;overflow:hidden!important;}
 .ind-card::before{content:''!important;position:absolute!important;top:0!important;left:0!important;right:0!important;height:2px!important;background:linear-gradient(90deg,transparent,#D4620F,transparent)!important;opacity:0!important;transition:opacity 0.3s ease!important;}
 .ind-card:hover{border-color:#D4620F!important;background:#0f0d0b!important;}
@@ -1632,7 +1633,8 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
 
 /* ── RESPONSIVE: INDUSTRIES ── */
 @media(max-width:900px){
-  .ind-grid{grid-template-columns:repeat(2,1fr)!important;padding:0 24px!important;}
+  .ind-grid{padding:0 24px!important;}
+  .ind-card{flex:0 0 calc(50% - 1px)!important;}
   .cov-wrap{grid-template-columns:1fr!important;padding:0 24px!important;}
   .params-grid{grid-template-columns:repeat(2,1fr)!important;padding:0 24px!important;}
   .plat-grid{grid-template-columns:repeat(2,1fr)!important;padding:0 24px!important;}
@@ -1640,7 +1642,8 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
   .otl-line{display:none!important;}
 }
 @media(max-width:600px){
-  .ind-grid{grid-template-columns:1fr!important;padding:0 16px!important;}
+  .ind-grid{padding:0 16px!important;}
+  .ind-card{flex:0 0 100%!important;}
   .params-grid{grid-template-columns:1fr!important;padding:0 16px!important;}
   .plat-grid{grid-template-columns:1fr!important;padding:0 16px!important;}
   .otl-strip{grid-template-columns:1fr!important;padding:0 16px!important;}
@@ -3176,17 +3179,26 @@ function submitForm(){
   if(!v||!hero) return;
   var visible=false;
   function placeDrone(){
-    var og=document.querySelector('.hero-h1 .og');
-    if(!og) return;
+    var h1=document.querySelector('.hero-h1');
+    if(!h1) return;
     var hr=hero.getBoundingClientRect();
-    var vw=v.offsetWidth||140;
-    var vh=v.offsetHeight||vw*1.1;
-    var svc=document.querySelector('.hero-stats');
-    var anchor=svc?svc.getBoundingClientRect():og.getBoundingClientRect();
-    var top=anchor.top-hr.top+anchor.height/2-vh/2-80;
-    var rawLeft=anchor.left-hr.left-vw-8;
-    // Clamp so at most 15% of drone is off-screen left — always mostly visible
-    var left=Math.max(rawLeft,-vw*0.15);
+    var vw=v.offsetWidth||340;
+    var vh=v.offsetHeight||vw*0.85;
+    var h1r=h1.getBoundingClientRect();
+    var isMobile=window.innerWidth<=600;
+    var top,left;
+    if(isMobile){
+      // Mobile: centered under h1, at DIVISION line level
+      top=h1r.top-hr.top+h1r.height*0.38;
+      left=(hr.width-vw)/2;
+    } else {
+      // Desktop/tablet: beside left of h1 at the DIVISION line (~40% down h1)
+      // DRONE RECON DIVISION = first 3 of 5 lines = ~3/5 of h1 height
+      top=h1r.top-hr.top+h1r.height*0.40;
+      // Drone right edge just touches the left edge of the h1 text block
+      var rawLeft=h1r.left-hr.left-vw+20;
+      left=Math.max(rawLeft,-vw*0.12);
+    }
     v.style.top=top+'px';
     v.style.left=left+'px';
     v.style.right='auto';
