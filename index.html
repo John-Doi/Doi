@@ -704,7 +704,7 @@ details.faq-item summary::-webkit-details-marker,
 details.faq-item summary::marker{display:none!important;}
 
 /* CARD TEXT */
-.scard-title,.why-title{font-size:20px!important;color:#EAEAEA!important;margin-bottom:12px!important;}
+.scard-title,.why-title{font-size:20px!important;color:#FFFFFF!important;margin-bottom:12px!important;}
 .scard-desc,.why-body{font-size:17px!important;color:#888!important;line-height:1.85!important;}
 .faq-q{font-family:var(--disp)!important;font-size:clamp(15px,2vw,22px)!important;font-weight:700!important;letter-spacing:-0.01em!important;color:#FFFFFF!important;-webkit-text-fill-color:#FFFFFF!important;text-transform:uppercase!important;}
 .faq-a{font-size:15px!important;color:#FFFFFF!important;-webkit-text-fill-color:#FFFFFF!important;line-height:1.85!important;}
@@ -1222,7 +1222,7 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
   color:#E8E4DC!important;
   -webkit-text-fill-color:#E8E4DC!important;
 }
-.scard-title,.why-title,.tl-title{color:#F5F2EC!important;}
+.scard-title,.why-title,.tl-title{color:#FFFFFF!important;-webkit-text-fill-color:#FFFFFF!important;}
 .faq-q{color:#FFFFFF!important;-webkit-text-fill-color:#FFFFFF!important;}
 .hero-sub{color:#D8D4CC!important;}
 
@@ -1488,7 +1488,7 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
   .sbar{display:none!important;}
 
   /* Hero — full center alignment */
-  #hero{padding-top:72px!important;padding-left:16px!important;padding-right:16px!important;align-items:center!important;text-align:center!important;}
+  #hero{padding-top:72px!important;padding-left:16px!important;padding-right:16px!important;padding-bottom:0!important;align-items:center!important;text-align:center!important;}
   .hero-recon-badge{text-align:center!important;justify-content:center!important;}
   .hero-cert{text-align:center!important;margin-left:auto!important;margin-right:auto!important;font-size:10px!important;letter-spacing:2px!important;padding:7px 14px!important;}
   .hero-h1{font-size:clamp(22px,9vw,35px)!important;letter-spacing:-0.5px!important;text-align:center!important;width:100%!important;}
@@ -1548,7 +1548,8 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
   .why-body{font-size:15px!important;line-height:1.85!important;}
   .why-detail{font-size:10px!important;}
   .faq-q{font-size:13px!important;letter-spacing:1px!important;}
-  #why,#services,#proof,#faq,#contact{padding-top:36px!important;padding-bottom:36px!important;}
+  #why{padding-top:0!important;padding-bottom:36px!important;}
+  #services,#proof,#faq,#contact{padding-top:36px!important;padding-bottom:36px!important;}
   .scard,.why-card{padding:24px 20px!important;}
   .btn-pri,.btn-ghost{min-height:48px!important;display:flex!important;align-items:center!important;justify-content:center!important;}
   /* proof cards: 1-col on mobile */
@@ -3120,24 +3121,16 @@ function submitForm(){
   window._droneShow = showDrone;
   window._droneHide = hideDrone;
 
-  if(window.innerWidth<=600){
-    /* Mobile: scroll-based trigger */
-    function checkDroneScroll(){
-      var r=heroTrigger.getBoundingClientRect();
-      if(r.top<window.innerHeight&&r.bottom>0){showDrone();}
+  /* IntersectionObserver for all devices — fires when DRONE RECON enters bottom of viewport */
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){showDrone();}
       else{hideDrone();}
-    }
-    window.addEventListener('scroll',checkDroneScroll,{passive:true});
-  } else {
-    /* Desktop: IntersectionObserver */
-    var io=new IntersectionObserver(function(entries){
-      entries.forEach(function(e){
-        if(e.isIntersecting){showDrone();}
-        else{hideDrone();}
-      });
-    },{threshold:0.15,rootMargin:'0px 0px 0px 0px'});
-    io.observe(heroTrigger);
-    // Show on load only if h1 is already in viewport
+    });
+  },{threshold:0.15,rootMargin:'0px 0px 0px 0px'});
+  io.observe(heroTrigger);
+  /* Desktop only: also show if h1 already visible on page load (hash nav etc.) */
+  if(window.innerWidth>600){
     var _r=heroTrigger.getBoundingClientRect();
     if(_r.top<window.innerHeight*0.6&&_r.bottom>0){setTimeout(showDrone,400);}
   }
