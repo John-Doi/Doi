@@ -13,7 +13,7 @@
   --og-grad-h:linear-gradient(90deg,#FF8C00 0%,#FF6B00 50%,#CC4400 100%);
   --oglow:rgba(255,107,0,0.2);--odim:rgba(255,107,0,0.06);
   --bo:rgba(255,107,0,0.2);
-  --t1:#F0F0F0;--t2:#B0B0B0;--t3:#585858;
+  --t1:#FFFFFF;--t2:#B0B0B0;--t3:#585858;
   --bd:#1C1C1C;
   --stencil:"Teko",sans-serif;
   --mono:"Share Tech Mono",monospace;
@@ -380,19 +380,19 @@ body{font-size:17px;font-weight:500;}
 .sec-intro,.about-body,.why-body,.faq-a,.pstep-desc,.scard-desc,.cta-band-p,.panel-sub{
   font-size:17px;font-weight:600;color:#CCCCCC;line-height:1.82;
 }
-.scard-title{font-size:18px;font-weight:700;color:#F0F0F0;}
+.scard-title{font-size:18px;font-weight:700;color:#FFFFFF;}
 .pstep-label{font-size:22px;}
-.faq-q{font-size:17px;font-weight:700;color:#F0F0F0;}
+.faq-q{font-size:17px;font-weight:700;color:#FFFFFF;}
 .hero-sub{font-size:19px;font-weight:600;color:#CCCCCC;line-height:1.78;}
-.hero-sub strong{color:#F0F0F0;font-weight:700;}
+.hero-sub strong{color:#FFFFFF;font-weight:700;}
 .hstat-l{font-size:10px;color:#888;letter-spacing:2px;}
 .htrust{font-size:10px;font-weight:600;color:#999;}
 .astat-l{font-size:16px;font-weight:600;color:#CCCCCC;}
-.astat-l strong{font-size:17px;color:#F0F0F0;}
+.astat-l strong{font-size:17px;color:#FFFFFF;}
 .proof-l{font-size:10px;font-weight:600;letter-spacing:2px;color:#777;}
 .lcheck-txt{font-size:16px;font-weight:600;color:#CCCCCC;}
 .dcheck-lbl{font-size:16px;font-weight:600;color:#CCCCCC;}
-.finp,.fsel,.ftxt{font-size:16px;color:#F0F0F0;}
+.finp,.fsel,.ftxt{font-size:16px;color:#FFFFFF;}
 .panel-title{font-size:19px;}
 .why-title{font-size:16px;letter-spacing:1px;}
 
@@ -1432,7 +1432,7 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
 .hero-h1 .og::before{content:none!important;}
 
 /* ── GLOBAL: DRONE RECON line — slight size boost, one line ── */
-.hero-h1 .og{font-size:1.1em!important;line-height:0.92!important;white-space:nowrap!important;}
+.hero-h1 .og{font-size:1.1em!important;line-height:0.92!important;}
 
 /* ── GLOBAL: hide // prefix + ghost — center D/R cleanly on all screens ── */
 .og-prefix{display:none!important;}
@@ -1474,6 +1474,13 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
   .trust-strip{padding:24px 32px!important;}
 }
 
+/* ── MOBILE-TABLET (≤768px): fix DRONE RECON overflow + hero centering ── */
+@media(max-width:768px){
+  .hero-h1 .og{white-space:normal!important;word-break:break-word!important;}
+  #hero{padding-left:14px!important;padding-right:14px!important;align-items:center!important;text-align:center!important;}
+  .hero-h1{font-size:clamp(28px,8vw,52px)!important;text-align:center!important;width:100%!important;}
+}
+
 /* ── MOBILE (iPhone: ≤600px) ── */
 @media(max-width:600px){
   /* Nav */
@@ -1484,7 +1491,7 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
   #hero{padding-top:72px!important;padding-left:16px!important;padding-right:16px!important;align-items:center!important;text-align:center!important;}
   .hero-recon-badge{text-align:center!important;justify-content:center!important;}
   .hero-cert{text-align:center!important;margin-left:auto!important;margin-right:auto!important;font-size:10px!important;letter-spacing:2px!important;padding:7px 14px!important;}
-  .hero-h1{font-size:clamp(36px,11vw,48px)!important;letter-spacing:-0.5px!important;text-align:center!important;width:100%!important;}
+  .hero-h1{font-size:clamp(22px,9vw,35px)!important;letter-spacing:-0.5px!important;text-align:center!important;width:100%!important;}
   .hero-h1 .og{display:block!important;text-align:center!important;font-size:1em!important;white-space:normal!important;}
   .hero-h1 .dim{display:block!important;text-align:center!important;}
   /* hide <br> after block-level spans — they double the line gap */
@@ -1541,7 +1548,7 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
   .why-body{font-size:15px!important;line-height:1.85!important;}
   .why-detail{font-size:10px!important;}
   .faq-q{font-size:13px!important;letter-spacing:1px!important;}
-  #why,#services,#proof,#faq,#contact{padding-top:64px!important;padding-bottom:64px!important;}
+  #why,#services,#proof,#faq,#contact{padding-top:36px!important;padding-bottom:36px!important;}
   .scard,.why-card{padding:24px 20px!important;}
   .btn-pri,.btn-ghost{min-height:48px!important;display:flex!important;align-items:center!important;justify-content:center!important;}
   /* proof cards: 1-col on mobile */
@@ -1646,13 +1653,14 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
   .otl-line{display:none!important;}
 }
 @media(max-width:600px){
-  .ind-grid{padding:0 16px!important;}
+  .ind-grid{padding:0 16px!important;margin-top:20px!important;}
   .ind-card{flex:0 0 100%!important;}
   .params-grid{grid-template-columns:1fr!important;padding:0 16px!important;}
   .plat-grid{grid-template-columns:1fr!important;padding:0 16px!important;}
   .otl-strip{grid-template-columns:1fr!important;padding:0 16px!important;}
   .cov-wrap{padding:0 16px!important;}
-  #industries,#coverage,#ops-timeline,#ops-params,#platform{padding:64px 0!important;}
+  #industries,#coverage,#ops-timeline,#ops-params,#platform{padding:28px 0!important;}
+  #industries .sec-header{padding:0 16px 24px!important;}
 }
 
 /* ── PROGRESSIVE DISCLOSURE: SERVICE CARDS ── */
