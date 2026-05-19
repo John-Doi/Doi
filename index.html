@@ -1324,7 +1324,7 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
 /* ── GLOBAL: MID CTA BAND ── */
 .cta-mid-band{
   text-align:center!important;
-  padding:12px 52px!important;
+  padding:4px 52px!important;
   border-top:1px solid rgba(255,107,0,0.08)!important;
   border-bottom:1px solid rgba(255,107,0,0.08)!important;
   background:rgba(5,4,3,0.97)!important;
@@ -1485,7 +1485,7 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
   .hero-recon-badge{text-align:center!important;justify-content:center!important;}
   .hero-cert{text-align:center!important;margin-left:auto!important;margin-right:auto!important;font-size:10px!important;letter-spacing:2px!important;padding:7px 14px!important;}
   .hero-h1{font-size:clamp(36px,11vw,48px)!important;letter-spacing:-0.5px!important;text-align:center!important;width:100%!important;}
-  .hero-h1 .og{display:block!important;text-align:center!important;font-size:1em!important;}
+  .hero-h1 .og{display:block!important;text-align:center!important;font-size:1em!important;white-space:normal!important;}
   .hero-h1 .dim{display:block!important;text-align:center!important;}
   /* hide <br> after block-level spans — they double the line gap */
   .hero-h1 .og+br,.hero-h1 .dim+br{display:none!important;}
@@ -1560,7 +1560,7 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
 }
 
 /* ── INDUSTRIES WE SUPPORT ── */
-#industries{padding:96px 0 20px!important;}
+#industries{padding:96px 0 4px!important;}
 #industries .sec-header{text-align:center!important;padding:0 52px 56px!important;}
 #industries .sec-kicker{display:block!important;text-align:center!important;}
 #industries .sec-h{text-align:center!important;}
@@ -1737,7 +1737,7 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
 @keyframes cmFadeIn{from{opacity:0;transform:translateY(-6px);}to{opacity:1;transform:translateY(0);}}
 
 /* ── COVERAGE COMPACT ── */
-.coverage-compact{padding:14px 0!important;}
+.coverage-compact{padding:4px 0!important;}
 .cov-kicker{font-family:var(--mono)!important;font-size:9px!important;letter-spacing:3px!important;color:#D4620F!important;-webkit-text-fill-color:#D4620F!important;margin-bottom:12px!important;display:block!important;}
 .cov-title{font-family:var(--mono)!important;font-size:clamp(20px,2.5vw,28px)!important;letter-spacing:3px!important;color:#EAEAEA!important;-webkit-text-fill-color:#EAEAEA!important;font-weight:700!important;margin:0 0 16px!important;display:block!important;line-height:1.2!important;}
 .cov-text{font-size:14px!important;color:#AAAAAA!important;-webkit-text-fill-color:#AAAAAA!important;line-height:1.7!important;max-width:640px!important;margin:0 0 20px!important;display:block!important;}
@@ -3243,22 +3243,34 @@ function submitForm(){
   window.addEventListener('load',function(){ placeDrone(); });
   window.addEventListener('resize',placeDrone);
 
-  /* Trigger: h1 reaches middle of viewport → show drone */
+  /* Trigger: h1 in viewport → show drone */
   var heroTrigger=document.querySelector('.hero-h1')||hero;
-  var io=new IntersectionObserver(function(entries){
-    entries.forEach(function(e){
-      if(e.isIntersecting){showDrone();}
-      else{hideDrone();}
-    });
-  },{threshold:0.15,rootMargin:'0px 0px 0px 0px'});
-  io.observe(heroTrigger);
   // expose for iOS Safari fallback
   window._droneShow = showDrone;
   window._droneHide = hideDrone;
 
-  // Show on load only if h1 is already in viewport (e.g. no logo section)
-  var _r=heroTrigger.getBoundingClientRect();
-  if(_r.top<window.innerHeight*0.6&&_r.bottom>0){setTimeout(showDrone,400);}
+  if(window.innerWidth<=600){
+    /* Mobile: scroll-based trigger */
+    function checkDroneScroll(){
+      var r=heroTrigger.getBoundingClientRect();
+      if(r.top<window.innerHeight&&r.bottom>0){showDrone();}
+      else{hideDrone();}
+    }
+    window.addEventListener('scroll',checkDroneScroll,{passive:true});
+    checkDroneScroll();
+  } else {
+    /* Desktop: IntersectionObserver */
+    var io=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){showDrone();}
+        else{hideDrone();}
+      });
+    },{threshold:0.15,rootMargin:'0px 0px 0px 0px'});
+    io.observe(heroTrigger);
+    // Show on load only if h1 is already in viewport
+    var _r=heroTrigger.getBoundingClientRect();
+    if(_r.top<window.innerHeight*0.6&&_r.bottom>0){setTimeout(showDrone,400);}
+  }
 })();
 </script>
 <script>
