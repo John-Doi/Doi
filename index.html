@@ -104,7 +104,8 @@ section{position:relative;z-index:2;}
 .tag{font-family:var(--mono);font-size:10px;letter-spacing:5px;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:12px;background:var(--og-grad-h);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 .tag::before{content:"";width:18px;height:1px;background:var(--og-grad-h);flex-shrink:0;}
 .sec-h{font-family:var(--disp);font-weight:900;font-size:clamp(26px,2.8vw,44px);text-transform:uppercase;letter-spacing:0.5px;line-height:1.05;color:var(--t1);margin-bottom:12px;}
-.sec-h .gh{color:transparent;-webkit-text-stroke:1px rgba(255,255,255,0.18);}
+.sec-h .gh{color:#FFFFFF!important;-webkit-text-fill-color:#FFFFFF!important;-webkit-text-stroke:none!important;}
+.sec-h{color:#FFFFFF!important;-webkit-text-fill-color:#FFFFFF!important;}
 .sec-intro{font-family:var(--body);font-size:19px;color:var(--t2);line-height:1.85;margin-top:12px;font-weight:500;max-width:740px;}
 .btn-pri{font-family:var(--mono);font-size:12px;letter-spacing:3px;text-transform:uppercase;color:#000;background:var(--og-grad);border:none;padding:16px 36px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:12px;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,0 100%);transition:all .3s;font-weight:700;}
 .btn-pri:hover{background:linear-gradient(135deg,#FFAA00,#FF7A1A,#DD5500);box-shadow:0 0 32px var(--oglow);transform:translateY(-2px);}
@@ -1475,10 +1476,13 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
 }
 
 /* ── MOBILE-TABLET (≤768px): fix DRONE RECON overflow + hero centering ── */
+.m-br{display:none;}
 @media(max-width:768px){
   .hero-h1 .og{white-space:normal!important;word-break:break-word!important;}
-  #hero{padding-left:14px!important;padding-right:14px!important;align-items:center!important;text-align:center!important;}
-  .hero-h1{font-size:clamp(28px,8vw,52px)!important;text-align:center!important;width:100%!important;}
+  #hero{padding-left:14px!important;padding-right:14px!important;padding-bottom:8px!important;align-items:center!important;text-align:center!important;}
+  .hero-h1{font-size:6vw!important;text-align:center!important;width:100%!important;}
+  #why{padding-top:0!important;}
+  .m-br{display:inline!important;}
 }
 
 /* ── MOBILE (iPhone: ≤600px) ── */
@@ -1491,7 +1495,7 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
   #hero{padding-top:72px!important;padding-left:16px!important;padding-right:16px!important;padding-bottom:0!important;align-items:center!important;text-align:center!important;}
   .hero-recon-badge{text-align:center!important;justify-content:center!important;}
   .hero-cert{text-align:center!important;margin-left:auto!important;margin-right:auto!important;font-size:10px!important;letter-spacing:2px!important;padding:7px 14px!important;}
-  .hero-h1{font-size:clamp(22px,9vw,35px)!important;letter-spacing:-0.5px!important;text-align:center!important;width:100%!important;}
+  .hero-h1{font-size:6vw!important;letter-spacing:-0.5px!important;text-align:center!important;width:100%!important;}
   .hero-h1 .og{display:block!important;text-align:center!important;font-size:1em!important;white-space:normal!important;}
   .hero-h1 .dim{display:block!important;text-align:center!important;}
   /* hide <br> after block-level spans — they double the line gap */
@@ -1563,7 +1567,7 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
 
 /* ── SMALL PHONE (≤390px) ── */
 @media(max-width:390px){
-  .hero-h1{font-size:clamp(30px,12vw,38px)!important;}
+  .hero-h1{font-size:6vw!important;}
   .hero-stats{grid-template-columns:1fr 1fr!important;}
 }
 
@@ -1948,7 +1952,7 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
   <h1 class="hero-h1">
     <span class="og">DRONE RECON</span><br>
     <span class="dim">DIVISION</span><br>
-    ADVANCED AERIAL<br>INTELLIGENCE
+    ADVANCED<br class="m-br"> AERIAL<br>INTELLIGENCE
   </h1>
   <p class="hero-urgency">Actionable aerial intelligence for properties, infrastructure, and operations that can't afford uncertainty.</p>
   <div class="hero-stats">
