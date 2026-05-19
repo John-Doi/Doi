@@ -1481,7 +1481,7 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
   .sbar{display:none!important;}
 
   /* Hero — full center alignment */
-  #hero{padding-top:72px!important;align-items:center!important;text-align:center!important;}
+  #hero{padding-top:72px!important;padding-left:16px!important;padding-right:16px!important;align-items:center!important;text-align:center!important;}
   .hero-recon-badge{text-align:center!important;justify-content:center!important;}
   .hero-cert{text-align:center!important;margin-left:auto!important;margin-right:auto!important;font-size:10px!important;letter-spacing:2px!important;padding:7px 14px!important;}
   .hero-h1{font-size:clamp(36px,11vw,48px)!important;letter-spacing:-0.5px!important;text-align:center!important;width:100%!important;}
@@ -1535,7 +1535,7 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
 
   /* ── MOBILE: readability ── */
   .hero-sub{font-size:16px!important;line-height:1.8!important;padding:0 20px!important;max-width:100%!important;}
-  .hero-urgency{font-size:13px!important;padding:0 20px!important;max-width:100%!important;}
+  .hero-urgency{font-size:clamp(14px,4vw,20px)!important;padding:0 16px!important;max-width:100%!important;margin-top:36px!important;}
   .sec-intro{font-size:15px!important;line-height:1.85!important;padding:0 4px!important;}
   .scard-desc,.faq-a,.pstep-desc{font-size:15px!important;line-height:1.85!important;}
   .why-body{font-size:15px!important;line-height:1.85!important;}
@@ -2434,144 +2434,6 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
   <a href="#contact" class="btn-pri" style="display:inline-flex;align-items:center;gap:8px;">REQUEST MISSION SCOPE</a>
 </div>
 
-<!-- PROOF OF WORK REMOVED -->
-<section id="proof" style="display:none!important">
-  <div class="tac-corner tac-tl" aria-hidden="true"></div>
-  <div class="tac-corner tac-tr" aria-hidden="true"></div>
-  <div class="wrap">
-    <div class="sec-head" style="text-align:center;padding-bottom:48px;">
-      <div class="tag">[ FIELD OUTPUT ]</div>
-      <div class="sec-h">PROOF OF <span class="gh">WORK</span></div>
-      <div class="sec-intro">Sample deliverable types clients receive after a Recon mission. Placeholder visuals — real project imagery available on request.</div>
-    </div>
-    <div class="proof-cards">
-
-      <div class="proof-card">
-        <div class="proof-ph proof-ph-thermal">
-          <svg viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" width="100%" height="100%">
-            <defs><radialGradient id="therm1" cx="38%" cy="45%" r="35%"><stop offset="0%" stop-color="#FF4500"/><stop offset="40%" stop-color="#FF8C00" stop-opacity="0.7"/><stop offset="100%" stop-color="#0a0a12" stop-opacity="0.9"/></radialGradient><radialGradient id="therm2" cx="72%" cy="60%" r="28%"><stop offset="0%" stop-color="#FFD700"/><stop offset="50%" stop-color="#FF6B00" stop-opacity="0.5"/><stop offset="100%" stop-color="#0a0a12" stop-opacity="0.8"/></radialGradient></defs>
-            <rect width="320" height="180" fill="#060810"/>
-            <rect width="320" height="180" fill="url(#therm1)" opacity="0.85"/>
-            <rect width="320" height="180" fill="url(#therm2)" opacity="0.6"/>
-            <line x1="0" y1="60" x2="320" y2="60" stroke="rgba(255,107,0,0.15)" stroke-width="1"/>
-            <line x1="0" y1="120" x2="320" y2="120" stroke="rgba(255,107,0,0.15)" stroke-width="1"/>
-            <line x1="107" y1="0" x2="107" y2="180" stroke="rgba(255,107,0,0.15)" stroke-width="1"/>
-            <line x1="214" y1="0" x2="214" y2="180" stroke="rgba(255,107,0,0.15)" stroke-width="1"/>
-            <rect x="8" y="8" width="60" height="14" fill="none" stroke="rgba(255,107,0,0.5)" stroke-width="1"/>
-            <text x="14" y="19" font-family="monospace" font-size="7" fill="rgba(255,107,0,0.8)">THERMAL // RCN</text>
-            <text x="246" y="172" font-family="monospace" font-size="7" fill="rgba(255,107,0,0.5)">±2°C CALIBRATED</text>
-          </svg>
-          <div class="proof-ph-label">THERMAL SCAN // PLACEHOLDER</div>
-        </div>
-        <div class="proof-card-body">
-          <div class="proof-type">THERMAL INSPECTION REPORT</div>
-          <div class="proof-receives">Calibrated radiometric PDF report with annotated anomaly map, temperature delta table, and priority issue index.</div>
-          <div class="proof-usecase">USE CASE: Roof moisture, solar panel faults, HVAC failures, electrical hot spots, structural heat loss.</div>
-        </div>
-      </div>
-
-      <div class="proof-card">
-        <div class="proof-ph proof-ph-ortho">
-          <svg viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" width="100%" height="100%">
-            <rect width="320" height="180" fill="#0a0e0a"/>
-            <rect x="0" y="0" width="320" height="180" fill="rgba(20,40,20,0.6)"/>
-            <line x1="0" y1="30" x2="320" y2="30" stroke="rgba(80,160,80,0.2)" stroke-width="0.8"/>
-            <line x1="0" y1="60" x2="320" y2="60" stroke="rgba(80,160,80,0.2)" stroke-width="0.8"/>
-            <line x1="0" y1="90" x2="320" y2="90" stroke="rgba(80,160,80,0.2)" stroke-width="0.8"/>
-            <line x1="0" y1="120" x2="320" y2="120" stroke="rgba(80,160,80,0.2)" stroke-width="0.8"/>
-            <line x1="0" y1="150" x2="320" y2="150" stroke="rgba(80,160,80,0.2)" stroke-width="0.8"/>
-            <line x1="40" y1="0" x2="40" y2="180" stroke="rgba(80,160,80,0.2)" stroke-width="0.8"/>
-            <line x1="80" y1="0" x2="80" y2="180" stroke="rgba(80,160,80,0.2)" stroke-width="0.8"/>
-            <line x1="120" y1="0" x2="120" y2="180" stroke="rgba(80,160,80,0.2)" stroke-width="0.8"/>
-            <line x1="160" y1="0" x2="160" y2="180" stroke="rgba(80,160,80,0.2)" stroke-width="0.8"/>
-            <line x1="200" y1="0" x2="200" y2="180" stroke="rgba(80,160,80,0.2)" stroke-width="0.8"/>
-            <line x1="240" y1="0" x2="240" y2="180" stroke="rgba(80,160,80,0.2)" stroke-width="0.8"/>
-            <line x1="280" y1="0" x2="280" y2="180" stroke="rgba(80,160,80,0.2)" stroke-width="0.8"/>
-            <rect x="60" y="40" width="120" height="80" fill="rgba(60,120,60,0.3)" stroke="rgba(255,107,0,0.4)" stroke-width="1" stroke-dasharray="4,3"/>
-            <line x1="120" y1="40" x2="120" y2="120" stroke="rgba(255,107,0,0.25)" stroke-width="0.8"/>
-            <line x1="60" y1="80" x2="180" y2="80" stroke="rgba(255,107,0,0.25)" stroke-width="0.8"/>
-            <circle cx="120" cy="80" r="4" fill="none" stroke="rgba(255,107,0,0.7)" stroke-width="1.5"/>
-            <line x1="124" y1="76" x2="136" y2="64" stroke="rgba(255,107,0,0.5)" stroke-width="1"/>
-            <rect x="136" y="56" width="52" height="12" fill="rgba(0,0,0,0.7)" stroke="rgba(255,107,0,0.3)" stroke-width="0.8"/>
-            <text x="140" y="65" font-family="monospace" font-size="6" fill="rgba(255,107,0,0.8)">GCP // RTK REF</text>
-            <text x="8" y="172" font-family="monospace" font-size="7" fill="rgba(80,160,80,0.6)">ORTHO // 2CM ACCURACY</text>
-            <rect x="8" y="8" width="72" height="14" fill="none" stroke="rgba(255,107,0,0.4)" stroke-width="1"/>
-            <text x="13" y="19" font-family="monospace" font-size="7" fill="rgba(255,107,0,0.7)">SITE MAP // RCN</text>
-          </svg>
-          <div class="proof-ph-label">ORTHOMOSAIC // PLACEHOLDER</div>
-        </div>
-        <div class="proof-card-body">
-          <div class="proof-type">ORTHOMOSAIC / SITE MAP</div>
-          <div class="proof-receives">Georeferenced GeoTIFF orthomosaic, DEM elevation model, and optional LAS/LAZ point cloud — 2cm RTK accuracy.</div>
-          <div class="proof-usecase">USE CASE: Construction progress, volumetric analysis, land development, infrastructure inspection.</div>
-        </div>
-      </div>
-
-      <div class="proof-card">
-        <div class="proof-ph proof-ph-3d">
-          <svg viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" width="100%" height="100%">
-            <rect width="320" height="180" fill="#080810"/>
-            <polygon points="160,30 240,75 240,135 160,150 80,135 80,75" fill="none" stroke="rgba(255,107,0,0.5)" stroke-width="1.5"/>
-            <polygon points="160,30 240,75 160,90 80,75" fill="rgba(255,107,0,0.05)" stroke="rgba(255,107,0,0.3)" stroke-width="1"/>
-            <polygon points="80,75 160,90 160,150 80,135" fill="rgba(255,255,255,0.04)" stroke="rgba(200,200,200,0.2)" stroke-width="1"/>
-            <polygon points="240,75 160,90 160,150 240,135" fill="rgba(255,107,0,0.03)" stroke="rgba(255,107,0,0.15)" stroke-width="1"/>
-            <line x1="160" y1="30" x2="160" y2="90" stroke="rgba(255,107,0,0.3)" stroke-width="1" stroke-dasharray="3,2"/>
-            <circle cx="160" cy="30" r="3" fill="rgba(255,107,0,0.8)"/>
-            <circle cx="240" cy="75" r="2.5" fill="rgba(255,255,255,0.5)"/>
-            <circle cx="80" cy="75" r="2.5" fill="rgba(255,255,255,0.5)"/>
-            <circle cx="240" cy="135" r="2.5" fill="rgba(255,255,255,0.3)"/>
-            <circle cx="80" cy="135" r="2.5" fill="rgba(255,255,255,0.3)"/>
-            <circle cx="160" cy="150" r="2.5" fill="rgba(255,255,255,0.3)"/>
-            <circle cx="115" cy="58" r="1.5" fill="rgba(255,107,0,0.5)"/>
-            <circle cx="200" cy="55" r="1.5" fill="rgba(255,107,0,0.5)"/>
-            <circle cx="103" cy="107" r="1.5" fill="rgba(255,107,0,0.3)"/>
-            <circle cx="218" cy="110" r="1.5" fill="rgba(255,107,0,0.3)"/>
-            <circle cx="160" cy="118" r="1.5" fill="rgba(255,107,0,0.4)"/>
-            <text x="8" y="172" font-family="monospace" font-size="7" fill="rgba(255,107,0,0.5)">3D MODEL // PHOTOGRAMMETRY</text>
-            <rect x="8" y="8" width="64" height="14" fill="none" stroke="rgba(255,107,0,0.4)" stroke-width="1"/>
-            <text x="13" y="19" font-family="monospace" font-size="7" fill="rgba(255,107,0,0.7)">3D RECON // RCN</text>
-          </svg>
-          <div class="proof-ph-label">3D RECONSTRUCTION // PLACEHOLDER</div>
-        </div>
-        <div class="proof-card-body">
-          <div class="proof-type">3D RECONSTRUCTION MODEL</div>
-          <div class="proof-receives">Photogrammetric 3D model in OBJ, GLTF, or FBX — centimeter-level accuracy with annotated inspection overlays.</div>
-          <div class="proof-usecase">USE CASE: Structural planning, insurance documentation, facility audits, site visualization.</div>
-        </div>
-      </div>
-
-      <div class="proof-card">
-        <div class="proof-ph proof-ph-photo">
-          <svg viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" width="100%" height="100%">
-            <defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0d1520"/><stop offset="100%" stop-color="#1a2535"/></linearGradient></defs>
-            <rect width="320" height="180" fill="url(#sky)"/>
-            <polygon points="0,180 60,100 100,130 150,70 200,110 260,80 320,115 320,180" fill="rgba(20,30,20,0.7)"/>
-            <polygon points="0,180 60,100 100,130 150,70 200,110 260,80 320,115 320,180" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
-            <rect x="0" y="0" width="320" height="180" fill="none" stroke="rgba(255,107,0,0.3)" stroke-width="2"/>
-            <rect x="20" y="20" width="40" height="40" fill="none" stroke="rgba(255,107,0,0.25)" stroke-width="1" stroke-dasharray="3,3"/>
-            <rect x="260" y="20" width="40" height="40" fill="none" stroke="rgba(255,107,0,0.25)" stroke-width="1" stroke-dasharray="3,3"/>
-            <rect x="20" y="120" width="40" height="40" fill="none" stroke="rgba(255,107,0,0.25)" stroke-width="1" stroke-dasharray="3,3"/>
-            <rect x="260" y="120" width="40" height="40" fill="none" stroke="rgba(255,107,0,0.25)" stroke-width="1" stroke-dasharray="3,3"/>
-            <line x1="160" y1="0" x2="160" y2="180" stroke="rgba(255,107,0,0.1)" stroke-width="0.8"/>
-            <line x1="0" y1="90" x2="320" y2="90" stroke="rgba(255,107,0,0.1)" stroke-width="0.8"/>
-            <circle cx="160" cy="90" r="20" fill="none" stroke="rgba(255,107,0,0.2)" stroke-width="1"/>
-            <circle cx="160" cy="90" r="3" fill="rgba(255,107,0,0.4)"/>
-            <text x="8" y="172" font-family="monospace" font-size="7" fill="rgba(255,255,255,0.4)">AERIAL // 4K 60FPS · 48MP</text>
-            <rect x="8" y="8" width="72" height="14" fill="none" stroke="rgba(255,107,0,0.4)" stroke-width="1"/>
-            <text x="13" y="19" font-family="monospace" font-size="7" fill="rgba(255,107,0,0.7)">AERIAL OPS // RCN</text>
-          </svg>
-          <div class="proof-ph-label">AERIAL PHOTO // PLACEHOLDER</div>
-        </div>
-        <div class="proof-card-body">
-          <div class="proof-type">AERIAL PHOTO / VIDEO PACKAGE</div>
-          <div class="proof-receives">Edited 4K video and 48MP stills — color graded, stabilized, and formatted for immediate use or client presentation.</div>
-          <div class="proof-usecase">USE CASE: Real estate listings, construction documentation, marketing, insurance claims, progress reporting.</div>
-        </div>
-      </div>
-
-    </div><!-- /.proof-cards -->
-  </div><!-- /.wrap -->
-</section>
 
 <!-- CALIFORNIA COVERAGE MAP -->
 <div class="coverage-compact">
@@ -3200,13 +3062,12 @@ function submitForm(){
     var anchor=og.getBoundingClientRect();
     var top,left;
     if(window.innerWidth<=600){
-      // Mobile: centered horizontally, hovers above DRONE RECON
-      top=anchor.top-hr.top-vh*0.7;
+      // Mobile: centered horizontally, drone bottom lands just above DRONE RECON
+      top=anchor.top-hr.top-vh+vh*0.12;
       left=(hr.width-vw)/2;
     } else {
-      // Desktop: centered horizontally on DRONE RECON text, top of drone at top of text
+      // Desktop: centered horizontally on DRONE RECON text
       left=anchor.left-hr.left+anchor.width/2-vw/2;
-      // Drone center sits at the top edge of DRONE RECON — rises from below on animate
       top=anchor.top-hr.top-vh*0.65;
     }
     v.style.top=top+'px';
@@ -3215,7 +3076,9 @@ function submitForm(){
     v.style.bottom='auto';
     if(!visible){
       v.style.transition='none';
-      v.style.transform='translateY('+(vh+40)+'px)';
+      // Mobile: land from above; desktop: rise from below
+      var startY=window.innerWidth<=600?-(vh+60):(vh+40);
+      v.style.transform='translateY('+startY+'px)';
       v.style.opacity='0';
       v.offsetHeight;
     }
