@@ -1245,11 +1245,15 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
   -webkit-text-fill-color:#D4620F!important;
   line-height:1.25!important;
   max-width:860px!important;
+  width:100%!important;
   margin:22px auto 0!important;
   font-style:normal!important;
   letter-spacing:-0.01em!important;
   font-weight:700!important;
   text-transform:uppercase!important;
+  white-space:normal!important;
+  overflow-wrap:break-word!important;
+  word-break:break-word!important;
 }
 
 /* ── GLOBAL: PIPELINE STATUS LABELS ── */
@@ -1478,9 +1482,9 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
 /* ── MOBILE-TABLET (≤768px): fix DRONE RECON overflow + hero centering ── */
 .m-br{display:none;}
 @media(max-width:768px){
-  .hero-h1 .og{white-space:normal!important;word-break:break-word!important;}
+  .hero-h1 .og{white-space:normal!important;word-break:break-word!important;font-size:1em!important;}
   #hero{padding-left:14px!important;padding-right:14px!important;padding-bottom:8px!important;align-items:center!important;text-align:center!important;}
-  .hero-h1{font-size:6vw!important;text-align:center!important;width:100%!important;}
+  .hero-h1{font-size:6vw!important;text-align:center!important;width:100%!important;overflow-wrap:break-word!important;word-break:break-word!important;max-width:100%!important;}
   #why{padding-top:0!important;}
   .m-br{display:inline!important;}
 }
@@ -1733,6 +1737,7 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
 
 /* ── COLLAPSED MODULES ── */
 .collapsed-module{border:1px solid #2a2a2a!important;margin:0 40px 2px!important;background:#0e0e0e!important;position:relative!important;z-index:2!important;}
+#platform-module{margin-top:48px!important;}
 .cm-row{display:flex!important;flex-direction:column!important;align-items:center!important;text-align:center!important;padding:52px 44px!important;cursor:pointer!important;transition:background 0.25s!important;}
 .cm-row:hover{background:rgba(212,98,15,0.04)!important;}
 .cm-left{width:100%!important;text-align:center!important;}
@@ -1978,6 +1983,64 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
 </section>
 
 </div>
+
+<div class="collapsed-module" id="platform-module">
+  <div class="cm-row" role="button">
+    <div class="cm-left">
+      <div class="cm-kicker">// TECHNOLOGY STACK</div>
+      <div class="cm-title">WHY <span class="cm-gh">ENTERPRISE</span> SYSTEMS MATTER</div>
+      <div class="cm-summary">DJI Matrice 4T · RTK GPS · FLIR BOSON+ · Dual IMU · local-only data processing. Enterprise-grade specifications available for procurement review.</div>
+    </div>
+    <button class="cm-toggle" type="button" tabindex="-1" aria-hidden="true"><span class="cm-expand-txt">EXPAND</span>&ensp;<span class="cm-chev">▾</span></button>
+  </div>
+  <div class="cm-body">
+    <div class="plat-grid">
+    <div class="plat-feature" onclick="this.classList.toggle('plat-open')" role="button">
+      <div class="plat-kicker">SENSOR FUSION</div>
+      <div class="plat-title-row"><div class="plat-title">Simultaneous Thermal + RGB Capture</div><span class="plat-chev">+</span></div>
+      
+      <div class="plat-exp"><div class="plat-body">The DJI Matrice 4T captures 48MP visible and 640×512 radiometric thermal in a single pass. Consumer drones require two separate flights — doubling time, doubling cost, misaligning datasets.</div>
+      <div class="plat-spec">FLIR BOSON+ · 640×512 RADIOMETRIC · ±2°C ACCURACY</div></div>
+    </div>
+    <div class="plat-feature" onclick="this.classList.toggle('plat-open')" role="button">
+      <div class="plat-kicker">POSITIONAL ACCURACY</div>
+      <div class="plat-title-row"><div class="plat-title">RTK GPS — Centimeter-Level Precision</div><span class="plat-chev">+</span></div>
+      
+      <div class="plat-exp"><div class="plat-body">Real-Time Kinematic positioning locks data points to 1–3 cm horizontal accuracy. Consumer GPS is 2–5 meters. That difference is the line between a usable orthomap and a decorative image.</div>
+      <div class="plat-spec">RTK BASE STATION · 1–3CM H · GSD DOWN TO 0.5CM/PX</div></div>
+    </div>
+    <div class="plat-feature" onclick="this.classList.toggle('plat-open')" role="button">
+      <div class="plat-kicker">DATA PIPELINE</div>
+      <div class="plat-title-row"><div class="plat-title">Calibrated, Georeferenced Deliverables</div><span class="plat-chev">+</span></div>
+      
+      <div class="plat-exp"><div class="plat-body">Every output runs through Pix4D or Metashape photogrammetry software with GCP tie-points. Outputs are georeferenced, calibrated, and ready for GIS, CAD, or engineering software ingestion.</div>
+      <div class="plat-spec">PIX4D · METASHAPE · GCP TIE-POINTS · EPSG GEOREF</div></div>
+    </div>
+    <div class="plat-feature" onclick="this.classList.toggle('plat-open')" role="button">
+      <div class="plat-kicker">ZOOM OPTICS</div>
+      <div class="plat-title-row"><div class="plat-title">15× Optical Zoom — Safe Standoff Distance</div><span class="plat-chev">+</span></div>
+      
+      <div class="plat-exp"><div class="plat-body">15× optical zoom means the aircraft can hold a legally safe distance from structures, people, and equipment while capturing detail equivalent to a close proximity pass on a consumer drone.</div>
+      <div class="plat-spec">15× OPTICAL ZOOM · 160MM EFL · NO DIGITAL UPSCALE</div></div>
+    </div>
+    <div class="plat-feature" onclick="this.classList.toggle('plat-open')" role="button">
+      <div class="plat-kicker">REDUNDANCY</div>
+      <div class="plat-title-row"><div class="plat-title">Dual IMU · Dual Compass · Obstacle Avoidance</div><span class="plat-chev">+</span></div>
+      
+      <div class="plat-exp"><div class="plat-body">Enterprise airframes carry redundant navigation systems that continue operating if one fails mid-flight. Single-sensor consumer drones can return-to-home with corrupted data or land in the wrong position.</div>
+      <div class="plat-spec">DUAL IMU · DUAL COMPASS · OMNI-DIRECTIONAL AVOIDANCE</div></div>
+    </div>
+    <div class="plat-feature" onclick="this.classList.toggle('plat-open')" role="button">
+      <div class="plat-kicker">DATA SECURITY</div>
+      <div class="plat-title-row"><div class="plat-title">Local-Only Processing — No Cloud Upload</div><span class="plat-chev">+</span></div>
+      
+      <div class="plat-exp"><div class="plat-body">Raw sensor data never leaves client-designated storage. Processing is performed on local workstations. No DJI cloud, no third-party upload, no data residency concerns for sensitive facilities.</div>
+      <div class="plat-spec">LOCAL PROCESSING · CLIENT-CONTROLLED STORAGE · NO CLOUD</div></div>
+    </div>
+  </div>
+  </div>
+</div>
+
 
 <!-- WHY DØI -->
 <section id="why">
@@ -2466,62 +2529,6 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
   </div>
 </div>
 
-<div class="collapsed-module" id="platform-module">
-  <div class="cm-row" role="button">
-    <div class="cm-left">
-      <div class="cm-kicker">// TECHNOLOGY STACK</div>
-      <div class="cm-title">WHY <span class="cm-gh">ENTERPRISE</span> SYSTEMS MATTER</div>
-      <div class="cm-summary">DJI Matrice 4T · RTK GPS · FLIR BOSON+ · Dual IMU · local-only data processing. Enterprise-grade specifications available for procurement review.</div>
-    </div>
-    <button class="cm-toggle" type="button" tabindex="-1" aria-hidden="true"><span class="cm-expand-txt">EXPAND</span>&ensp;<span class="cm-chev">▾</span></button>
-  </div>
-  <div class="cm-body">
-    <div class="plat-grid">
-    <div class="plat-feature" onclick="this.classList.toggle('plat-open')" role="button">
-      <div class="plat-kicker">SENSOR FUSION</div>
-      <div class="plat-title-row"><div class="plat-title">Simultaneous Thermal + RGB Capture</div><span class="plat-chev">+</span></div>
-      
-      <div class="plat-exp"><div class="plat-body">The DJI Matrice 4T captures 48MP visible and 640×512 radiometric thermal in a single pass. Consumer drones require two separate flights — doubling time, doubling cost, misaligning datasets.</div>
-      <div class="plat-spec">FLIR BOSON+ · 640×512 RADIOMETRIC · ±2°C ACCURACY</div></div>
-    </div>
-    <div class="plat-feature" onclick="this.classList.toggle('plat-open')" role="button">
-      <div class="plat-kicker">POSITIONAL ACCURACY</div>
-      <div class="plat-title-row"><div class="plat-title">RTK GPS — Centimeter-Level Precision</div><span class="plat-chev">+</span></div>
-      
-      <div class="plat-exp"><div class="plat-body">Real-Time Kinematic positioning locks data points to 1–3 cm horizontal accuracy. Consumer GPS is 2–5 meters. That difference is the line between a usable orthomap and a decorative image.</div>
-      <div class="plat-spec">RTK BASE STATION · 1–3CM H · GSD DOWN TO 0.5CM/PX</div></div>
-    </div>
-    <div class="plat-feature" onclick="this.classList.toggle('plat-open')" role="button">
-      <div class="plat-kicker">DATA PIPELINE</div>
-      <div class="plat-title-row"><div class="plat-title">Calibrated, Georeferenced Deliverables</div><span class="plat-chev">+</span></div>
-      
-      <div class="plat-exp"><div class="plat-body">Every output runs through Pix4D or Metashape photogrammetry software with GCP tie-points. Outputs are georeferenced, calibrated, and ready for GIS, CAD, or engineering software ingestion.</div>
-      <div class="plat-spec">PIX4D · METASHAPE · GCP TIE-POINTS · EPSG GEOREF</div></div>
-    </div>
-    <div class="plat-feature" onclick="this.classList.toggle('plat-open')" role="button">
-      <div class="plat-kicker">ZOOM OPTICS</div>
-      <div class="plat-title-row"><div class="plat-title">15× Optical Zoom — Safe Standoff Distance</div><span class="plat-chev">+</span></div>
-      
-      <div class="plat-exp"><div class="plat-body">15× optical zoom means the aircraft can hold a legally safe distance from structures, people, and equipment while capturing detail equivalent to a close proximity pass on a consumer drone.</div>
-      <div class="plat-spec">15× OPTICAL ZOOM · 160MM EFL · NO DIGITAL UPSCALE</div></div>
-    </div>
-    <div class="plat-feature" onclick="this.classList.toggle('plat-open')" role="button">
-      <div class="plat-kicker">REDUNDANCY</div>
-      <div class="plat-title-row"><div class="plat-title">Dual IMU · Dual Compass · Obstacle Avoidance</div><span class="plat-chev">+</span></div>
-      
-      <div class="plat-exp"><div class="plat-body">Enterprise airframes carry redundant navigation systems that continue operating if one fails mid-flight. Single-sensor consumer drones can return-to-home with corrupted data or land in the wrong position.</div>
-      <div class="plat-spec">DUAL IMU · DUAL COMPASS · OMNI-DIRECTIONAL AVOIDANCE</div></div>
-    </div>
-    <div class="plat-feature" onclick="this.classList.toggle('plat-open')" role="button">
-      <div class="plat-kicker">DATA SECURITY</div>
-      <div class="plat-title-row"><div class="plat-title">Local-Only Processing — No Cloud Upload</div><span class="plat-chev">+</span></div>
-      
-      <div class="plat-exp"><div class="plat-body">Raw sensor data never leaves client-designated storage. Processing is performed on local workstations. No DJI cloud, no third-party upload, no data residency concerns for sensitive facilities.</div>
-      <div class="plat-spec">LOCAL PROCESSING · CLIENT-CONTROLLED STORAGE · NO CLOUD</div></div>
-    </div>
-  </div>
-  </div>
-</div>
 
 <!-- PROCESS: SCROLL TIMELINE -->
 <div id="process" class="tl-zone">
