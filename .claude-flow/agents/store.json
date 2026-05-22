@@ -1,0 +1,19 @@
+{
+  "agents": {
+    "mobile-auditor": {
+      "agentId": "mobile-auditor",
+      "agentType": "reviewer",
+      "status": "idle",
+      "health": 1,
+      "taskCount": 0,
+      "config": {
+        "model": "sonnet"
+      },
+      "createdAt": "2026-05-22T17:07:03.358Z",
+      "domain": "css-review",
+      "model": "sonnet",
+      "modelRoutedBy": "explicit"
+    }
+  },
+  "version": "3.0.0"
+}
