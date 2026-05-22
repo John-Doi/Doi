@@ -2675,7 +2675,7 @@ async function submitMissionInquiry(){
 <!-- Motion scroll animations -->
 <script type="importmap">{"imports":{"motion":"https://cdn.jsdelivr.net/npm/motion@12/+esm"}}</script>
 <script type="module">
-import { animate, inView, stagger } from 'motion';
+import { animate, inView, stagger, hover } from 'motion';
 var ease = [0.22, 1, 0.36, 1];
 
 // Services cards — staggered rise
@@ -2731,6 +2731,48 @@ var ease = [0.22, 1, 0.36, 1];
   inView('#faq', function(){ if(fired) return; fired=true;
     animate(items, {opacity:[0,1], y:[12,0]}, {delay:stagger(0.06), duration:0.4, ease:ease});
   }, {amount:0.1});
+})();
+
+// ── HOVER INTERACTIONS ──────────────────────────────────────
+
+// Service cards — cursor-tracking orange spotlight (CSS can't track cursor position)
+document.querySelectorAll('#services .scard').forEach(function(card){
+  var glow=document.createElement('div');
+  glow.style.cssText='position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity 0.28s;z-index:0;';
+  card.appendChild(glow);
+  card.addEventListener('mouseenter',function(){ glow.style.opacity='1'; });
+  card.addEventListener('mouseleave',function(){ glow.style.opacity='0'; });
+  card.addEventListener('mousemove',function(e){
+    var r=card.getBoundingClientRect();
+    var x=((e.clientX-r.left)/r.width*100).toFixed(1);
+    var y=((e.clientY-r.top)/r.height*100).toFixed(1);
+    glow.style.background='radial-gradient(circle at '+x+'% '+y+'%,rgba(255,107,0,0.11) 0%,transparent 62%)';
+  });
+});
+
+// Proof stats — spring lift on hover
+(function(){
+  var items=document.querySelectorAll('#proof .proof-item');
+  if(!items.length) return;
+  hover(items,function(el){
+    animate(el,{y:-7,scale:1.05},{type:'spring',stiffness:450,damping:24});
+    return function(){ animate(el,{y:0,scale:1},{type:'spring',stiffness:340,damping:22}); };
+  });
+})();
+
+// Coverage zones — spring slide right + dot pulse
+(function(){
+  document.querySelectorAll('#coverage .cov-zone').forEach(function(zone){
+    var dot=zone.querySelector('.cov-zone-dot');
+    hover(zone,function(){
+      animate(zone,{x:8},{type:'spring',stiffness:520,damping:30});
+      if(dot) animate(dot,{scale:1.65},{type:'spring',stiffness:420,damping:18});
+      return function(){
+        animate(zone,{x:0},{type:'spring',stiffness:360,damping:24});
+        if(dot) animate(dot,{scale:1},{type:'spring',stiffness:360,damping:24});
+      };
+    });
+  });
 })();
 </script>
 </body>
