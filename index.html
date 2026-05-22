@@ -2671,5 +2671,67 @@ async function submitMissionInquiry(){
   });
 })();
 </script>
+
+<!-- Motion scroll animations -->
+<script type="importmap">{"imports":{"motion":"https://cdn.jsdelivr.net/npm/motion@12/+esm"}}</script>
+<script type="module">
+import { animate, inView, stagger } from 'motion';
+var ease = [0.22, 1, 0.36, 1];
+
+// Services cards — staggered rise
+(function(){
+  var cards = Array.from(document.querySelectorAll('#services .scard'));
+  if(!cards.length) return;
+  cards.forEach(function(c){ c.style.opacity='0'; c.style.transform='translateY(24px)'; });
+  var fired=false;
+  inView('#services', function(){ if(fired) return; fired=true;
+    animate(cards, {opacity:[0,1], y:[24,0]}, {delay:stagger(0.09), duration:0.55, ease:ease});
+  }, {amount:0.1});
+})();
+
+// Why cards — staggered rise
+(function(){
+  var cards = Array.from(document.querySelectorAll('#why .why-card'));
+  if(!cards.length) return;
+  cards.forEach(function(c){ c.style.opacity='0'; c.style.transform='translateY(20px)'; });
+  var fired=false;
+  inView('#why', function(){ if(fired) return; fired=true;
+    animate(cards, {opacity:[0,1], y:[20,0]}, {delay:stagger(0.07), duration:0.5, ease:ease});
+  }, {amount:0.1});
+})();
+
+// Proof stats — scale + fade
+(function(){
+  var items = Array.from(document.querySelectorAll('#proof .proof-item'));
+  if(!items.length) return;
+  items.forEach(function(c){ c.style.opacity='0'; c.style.transform='scale(0.88)'; });
+  var fired=false;
+  inView('#proof', function(){ if(fired) return; fired=true;
+    animate(items, {opacity:[0,1], scale:[0.88,1]}, {delay:stagger(0.1), duration:0.45, ease:ease});
+  }, {amount:0.3});
+})();
+
+// Coverage zones — slide from left
+(function(){
+  var zones = Array.from(document.querySelectorAll('#coverage .cov-zone'));
+  if(!zones.length) return;
+  zones.forEach(function(c){ c.style.opacity='0'; c.style.transform='translateX(-14px)'; });
+  var fired=false;
+  inView('#coverage .cov-info', function(){ if(fired) return; fired=true;
+    animate(zones, {opacity:[0,1], x:[-14,0]}, {delay:stagger(0.07), duration:0.4, ease:ease});
+  }, {amount:0.2});
+})();
+
+// FAQ items — staggered fade + rise
+(function(){
+  var items = Array.from(document.querySelectorAll('.faq-item'));
+  if(!items.length) return;
+  items.forEach(function(c){ c.style.opacity='0'; c.style.transform='translateY(12px)'; });
+  var fired=false;
+  inView('#faq', function(){ if(fired) return; fired=true;
+    animate(items, {opacity:[0,1], y:[12,0]}, {delay:stagger(0.06), duration:0.4, ease:ease});
+  }, {amount:0.1});
+})();
+</script>
 </body>
 </html>
