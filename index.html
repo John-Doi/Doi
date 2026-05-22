@@ -1224,7 +1224,7 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
 
 <style id="hero-black-bg">
 #hero{background-color:#09090b!important;background-image:none!important;}
-.hero-drone-vid{clip-path:inset(0 0 22% 0)!important;}
+.hero-drone-vid{clip-path:inset(0 0 0 0)!important;}
 </style>
 
 <style id="responsive-fix">
@@ -1360,7 +1360,7 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
     left:auto!important;
     bottom:10px!important;
     top:auto!important;
-    clip-path:inset(0 0 18% 0)!important;
+    clip-path:inset(0 0 0 0)!important;
   }
 
   /* Grids: single column */
@@ -2597,18 +2597,16 @@ async function submitMissionInquiry(){
     if(!og) return;
     var or_=og.getBoundingClientRect();
     var hr=hero.getBoundingClientRect();
-    var vw=v.offsetWidth||140;
-    var vh=v.offsetHeight||vw*1.1;
-    /* position drone right next to the 5 SVC stat */
-    var svc=document.querySelector('.hero-stats .hstat');
-    var anchor=svc?svc.getBoundingClientRect():or_;
-    var top=anchor.top-hr.top+anchor.height/2-vh/2-80;
-    var left=anchor.left-hr.left-vw-8;
-    v.style.top=top+'px';
+    var vw_d=v.offsetWidth||200;
+    var vh_d=v.offsetHeight||vw_d*1.1;
+    /* center drone horizontally over DRONE text; bottom of drone lands on the text */
+    var left=or_.left-hr.left+or_.width/2-vw_d/2;
+    var top=or_.top-hr.top-vh_d*0.82;
     v.style.left=left+'px';
+    v.style.top=top+'px';
     if(!visible){
       v.style.transition='none';
-      v.style.transform='translateY('+(vh+40)+'px)';
+      v.style.transform='translateY(-'+(vh_d+80)+'px)';
       v.style.opacity='0';
       v.offsetHeight;
     }
