@@ -1341,6 +1341,8 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
   .hero-urgency{font-size:12px!important;margin-top:14px!important;}
   #hero{overflow:visible!important;}
   .tl-mob{display:block!important;}
+  /* hide desktop interactive timeline — mobile uses .tl-mob instead */
+  #process{display:none!important;}
   /* logo wrap: smaller on mobile, no need for full 100vh */
   .hero-logo-wrap{min-height:60vh!important;padding-top:64px!important;}
   /* why cards: always show body on touch (no hover) */
@@ -1384,6 +1386,11 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
 
   /* Contact form */
   .panel{padding:20px 14px!important;}
+  /* step nav: hide text label, progress bar already shows position */
+  .step-nav .step-info{display:none!important;}
+  .step-nav{justify-content:space-between!important;}
+  /* step 1 nav only has NEXT — push it right */
+  #sp1 .step-nav{justify-content:flex-end!important;}
 
   /* Footer */
   footer{padding:28px 16px!important;}
