@@ -1402,6 +1402,37 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
   .hero-h1{font-size:clamp(30px,12vw,38px)!important;}
   .hero-stats{grid-template-columns:1fr 1fr!important;}
 }
+
+/* ── COVERAGE MAP ── */
+#coverage{padding:88px 0;border-top:1px solid var(--bd);}
+.cov-inner{display:grid;grid-template-columns:1fr 1fr;max-width:1200px;margin:0 auto;align-items:center;}
+.cov-map-wrap{display:flex;align-items:center;justify-content:center;padding:0 48px;}
+.cov-map-wrap svg{width:100%;max-width:420px;height:auto;}
+.cov-info{padding:0 60px 0 32px;}
+.cov-tag{font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--og2);text-transform:uppercase;margin-bottom:12px;}
+.cov-h{font-family:var(--disp);font-size:clamp(22px,2.8vw,40px);font-weight:900;letter-spacing:-.01em;line-height:1.1;margin-bottom:14px;}
+.cov-h span{color:var(--og2);}
+.cov-intro{font-family:var(--body);font-size:15px;color:var(--t2);line-height:1.75;margin-bottom:28px;font-weight:500;}
+.cov-zones{display:flex;flex-direction:column;}
+.cov-zone{display:flex;align-items:flex-start;gap:14px;padding:11px 0;border-bottom:1px solid var(--bd);}
+.cov-zone:first-child{border-top:1px solid var(--bd);}
+.cov-zone-dot{width:7px;height:7px;border-radius:50%;background:var(--og2);box-shadow:0 0 7px rgba(255,107,0,0.55);flex-shrink:0;margin-top:5px;}
+.cov-zone-name{font-family:var(--mono);font-size:10px;letter-spacing:2px;color:var(--t1);text-transform:uppercase;margin-bottom:2px;}
+.cov-zone-cities{font-family:var(--body);font-size:13px;color:var(--t3);font-weight:500;}
+.cov-badge{display:inline-flex;align-items:center;gap:8px;margin-top:24px;font-family:var(--mono);font-size:9px;letter-spacing:3px;color:var(--og2);text-transform:uppercase;border:1px solid rgba(255,107,0,0.25);padding:8px 14px;}
+.cov-badge-dot{width:6px;height:6px;border-radius:50%;background:var(--og2);animation:pulse 2s ease-in-out infinite;}
+@media(max-width:900px){
+  .cov-inner{grid-template-columns:1fr;}
+  .cov-map-wrap{padding:40px 60px 24px;}
+  .cov-map-wrap svg{max-width:320px;}
+  .cov-info{padding:0 40px 48px;}
+}
+@media(max-width:600px){
+  .cov-map-wrap{padding:32px 24px 16px!important;}
+  .cov-map-wrap svg{max-width:280px!important;}
+  .cov-info{padding:0 16px 32px!important;}
+  .cov-h{font-size:clamp(22px,8vw,32px)!important;}
+}
 </style>
 
 </head>
@@ -1489,6 +1520,7 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
   <ul class="nav-links">
     <li><a href="#why">Why DØi</a></li>
     <li><a href="#services">Services</a></li>
+    <li><a href="#coverage">Coverage</a></li>
     <li><a href="#process">Process</a></li>
     <li><a href="#faq">FAQ</a></li>
     <li><a href="#contact" class="nav-cta">[ REQUEST ]</a></li>
@@ -1826,6 +1858,90 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
   <div class="scard-who">WHO NEEDS THIS: Architects, developers, facility managers, insurance adjusters, engineers, and anyone who needs to understand a site in three dimensions.</div>
   <div class="scard-specs"><div class="sspec"><span class="sk">OUTPUT</span><span class="sv">PHOTOGRAMMETRIC 3D MODEL</span></div><div class="sspec"><span class="sk">FORMAT</span><span class="sv">OBJ / FBX / GLTF / PDF</span></div><div class="sspec"><span class="sk">USE CASE</span><span class="sv">PLANNING / INSPECTION / REPORTING</span></div><div class="sspec"><span class="sk">TURNAROUND</span><span class="sv">3–5 BUSINESS DAYS</span></div></div>
 </div></div>
+</section>
+
+<!-- COVERAGE MAP -->
+<section id="coverage">
+  <div class="tac-corner tac-tl" aria-hidden="true"></div>
+  <div class="tac-corner tac-tr" aria-hidden="true"></div>
+  <div class="tac-corner tac-bl" aria-hidden="true"></div>
+  <div class="tac-corner tac-br" aria-hidden="true"></div>
+  <div class="cov-inner">
+    <div class="cov-map-wrap">
+      <svg viewBox="0 0 460 460" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="California operations coverage map">
+        <defs>
+          <filter id="caNG" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="4" result="b"/>
+            <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+          <filter id="caOG" x="-8%" y="-8%" width="116%" height="116%">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="2.5" result="b"/>
+            <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+        <rect width="460" height="460" fill="#06080f"/>
+        <line x1="0" y1="92" x2="460" y2="92" stroke="#0c0e18" stroke-width="1"/>
+        <line x1="0" y1="184" x2="460" y2="184" stroke="#0c0e18" stroke-width="1"/>
+        <line x1="0" y1="276" x2="460" y2="276" stroke="#0c0e18" stroke-width="1"/>
+        <line x1="0" y1="368" x2="460" y2="368" stroke="#0c0e18" stroke-width="1"/>
+        <line x1="92" y1="0" x2="92" y2="460" stroke="#0c0e18" stroke-width="1"/>
+        <line x1="184" y1="0" x2="184" y2="460" stroke="#0c0e18" stroke-width="1"/>
+        <line x1="276" y1="0" x2="276" y2="460" stroke="#0c0e18" stroke-width="1"/>
+        <line x1="368" y1="0" x2="368" y2="460" stroke="#0c0e18" stroke-width="1"/>
+        <path d="M 52,38 L 208,29 L 226,116 L 300,203 L 393,268 L 407,333 L 407,354 L 411,420 L 315,439 L 311,432 L 267,381 L 252,376 L 190,363 L 176,320 L 137,252 L 132,236 L 115,205 L 97,192 L 67,134 L 45,91 L 54,73 L 52,38 Z" fill="#0b0d1e" stroke="#1c1e38" stroke-width="1.5"/>
+        <path d="M 52,38 L 208,29 L 226,116 L 300,203 L 393,268 L 407,333 L 407,354 L 411,420 L 315,439 L 311,432 L 267,381 L 252,376 L 190,363 L 176,320 L 137,252 L 132,236 L 115,205 L 97,192 L 67,134 L 45,91 L 54,73 L 52,38 Z" fill="none" stroke="rgba(255,107,0,0.30)" stroke-width="1.5" filter="url(#caOG)"/>
+        <line x1="134" y1="116" x2="118" y2="205" stroke="rgba(255,107,0,0.18)" stroke-width="0.9" stroke-dasharray="4 4"/>
+        <line x1="118" y1="205" x2="215" y2="259" stroke="rgba(255,107,0,0.18)" stroke-width="0.9" stroke-dasharray="4 4"/>
+        <line x1="134" y1="116" x2="215" y2="259" stroke="rgba(255,107,0,0.12)" stroke-width="0.9" stroke-dasharray="4 4"/>
+        <line x1="215" y1="259" x2="272" y2="381" stroke="rgba(255,107,0,0.20)" stroke-width="0.9" stroke-dasharray="4 4"/>
+        <line x1="272" y1="381" x2="308" y2="372" stroke="rgba(255,107,0,0.24)" stroke-width="0.9" stroke-dasharray="4 4"/>
+        <line x1="272" y1="381" x2="313" y2="432" stroke="rgba(255,107,0,0.18)" stroke-width="0.9" stroke-dasharray="4 4"/>
+        <line x1="308" y1="372" x2="313" y2="432" stroke="rgba(255,107,0,0.16)" stroke-width="0.9" stroke-dasharray="4 4"/>
+        <circle cx="134" cy="116" r="5" fill="none" stroke="#FF6B00" stroke-width="0.8"><animate attributeName="r" values="5;16;5" dur="3s" begin="0s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.5;0;0.5" dur="3s" begin="0s" repeatCount="indefinite"/></circle>
+        <circle cx="134" cy="116" r="5" fill="#FF6B00" filter="url(#caNG)" opacity="0.8"/>
+        <circle cx="134" cy="116" r="2.5" fill="#ffc080"/>
+        <text x="142" y="113" font-family="monospace" font-size="9" fill="#FF8844" letter-spacing="0.8">NORTHERN CA</text>
+        <circle cx="118" cy="205" r="5" fill="none" stroke="#FF6B00" stroke-width="0.8"><animate attributeName="r" values="5;16;5" dur="3s" begin="0.5s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.5;0;0.5" dur="3s" begin="0.5s" repeatCount="indefinite"/></circle>
+        <circle cx="118" cy="205" r="5" fill="#FF6B00" filter="url(#caNG)" opacity="0.8"/>
+        <circle cx="118" cy="205" r="2.5" fill="#ffc080"/>
+        <text x="126" y="202" font-family="monospace" font-size="9" fill="#FF8844" letter-spacing="0.8">BAY AREA</text>
+        <circle cx="215" cy="259" r="5" fill="none" stroke="#FF6B00" stroke-width="0.8"><animate attributeName="r" values="5;16;5" dur="3s" begin="1s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.5;0;0.5" dur="3s" begin="1s" repeatCount="indefinite"/></circle>
+        <circle cx="215" cy="259" r="5" fill="#FF6B00" filter="url(#caNG)" opacity="0.8"/>
+        <circle cx="215" cy="259" r="2.5" fill="#ffc080"/>
+        <text x="222" y="272" font-family="monospace" font-size="9" fill="#FF8844" letter-spacing="0.8">CENTRAL VALLEY</text>
+        <circle cx="272" cy="381" r="5" fill="none" stroke="#FF6B00" stroke-width="0.8"><animate attributeName="r" values="5;16;5" dur="3s" begin="1.5s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.5;0;0.5" dur="3s" begin="1.5s" repeatCount="indefinite"/></circle>
+        <circle cx="272" cy="381" r="5" fill="#FF6B00" filter="url(#caNG)" opacity="0.8"/>
+        <circle cx="272" cy="381" r="2.5" fill="#ffc080"/>
+        <text x="264" y="375" font-family="monospace" font-size="9" fill="#FF8844" letter-spacing="0.8" text-anchor="end">LOS ANGELES</text>
+        <circle cx="308" cy="372" r="5" fill="none" stroke="#FF6B00" stroke-width="0.8"><animate attributeName="r" values="5;16;5" dur="3s" begin="2s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.5;0;0.5" dur="3s" begin="2s" repeatCount="indefinite"/></circle>
+        <circle cx="308" cy="372" r="5" fill="#FF6B00" filter="url(#caNG)" opacity="0.8"/>
+        <circle cx="308" cy="372" r="2.5" fill="#ffc080"/>
+        <text x="316" y="366" font-family="monospace" font-size="9" fill="#FF8844" letter-spacing="0.8">INLAND EMPIRE</text>
+        <circle cx="313" cy="432" r="5" fill="none" stroke="#FF6B00" stroke-width="0.8"><animate attributeName="r" values="5;16;5" dur="3s" begin="2.5s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.5;0;0.5" dur="3s" begin="2.5s" repeatCount="indefinite"/></circle>
+        <circle cx="313" cy="432" r="5" fill="#FF6B00" filter="url(#caNG)" opacity="0.8"/>
+        <circle cx="313" cy="432" r="2.5" fill="#ffc080"/>
+        <text x="305" y="428" font-family="monospace" font-size="9" fill="#FF8844" letter-spacing="0.8" text-anchor="end">SAN DIEGO</text>
+        <text x="10" y="14" font-family="monospace" font-size="8" fill="#3a3a58" letter-spacing="2">COVERAGE // CALIFORNIA</text>
+        <rect x="10" y="430" width="105" height="26" rx="2" fill="#0a0c1c" stroke="#1c1e38"/>
+        <text x="16" y="443" font-family="monospace" font-size="8.5" fill="#FF8844" letter-spacing="1">6 ACTIVE ZONES</text>
+        <text x="16" y="452" font-family="monospace" font-size="7" fill="#3a3a58" letter-spacing="0.5">FAA COORDINATED</text>
+      </svg>
+    </div>
+    <div class="cov-info">
+      <div class="cov-tag">// Operational Coverage</div>
+      <h2 class="cov-h">CALIFORNIA <span>AIRSPACE</span> OPS</h2>
+      <p class="cov-intro">Active statewide coverage — Class B/C/D airspace corridors, coastal zones, agricultural corridors, and urban industrial sites. LAANC-coordinated with direct FAA Part 107 operational experience from the Bay Area to the Southern border.</p>
+      <div class="cov-zones">
+        <div class="cov-zone"><div class="cov-zone-dot"></div><div><div class="cov-zone-name">Northern California</div><div class="cov-zone-cities">Sacramento · Redding · Chico · Shasta County</div></div></div>
+        <div class="cov-zone"><div class="cov-zone-dot"></div><div><div class="cov-zone-name">Bay Area</div><div class="cov-zone-cities">San Francisco · Oakland · San Jose · Santa Cruz</div></div></div>
+        <div class="cov-zone"><div class="cov-zone-dot"></div><div><div class="cov-zone-name">Central Valley</div><div class="cov-zone-cities">Fresno · Bakersfield · Modesto · Stockton</div></div></div>
+        <div class="cov-zone"><div class="cov-zone-dot"></div><div><div class="cov-zone-name">Los Angeles</div><div class="cov-zone-cities">LA Metro · Santa Monica · Long Beach · Burbank · Ventura County</div></div></div>
+        <div class="cov-zone"><div class="cov-zone-dot"></div><div><div class="cov-zone-name">Inland Empire</div><div class="cov-zone-cities">Riverside · San Bernardino · Ontario · Palm Springs</div></div></div>
+        <div class="cov-zone"><div class="cov-zone-dot"></div><div><div class="cov-zone-name">San Diego</div><div class="cov-zone-cities">San Diego Metro · Chula Vista · Oceanside · El Cajon</div></div></div>
+      </div>
+      <div class="cov-badge"><span class="cov-badge-dot"></span>FAA PART 107 · LAANC AUTHORIZED · STATEWIDE OPS</div>
+    </div>
+  </div>
 </section>
 
 <!-- PROOF -->
