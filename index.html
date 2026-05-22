@@ -2369,6 +2369,7 @@ function goStep(n){
   requestAnimationFrame(function(){var el=document.getElementById('sp'+n);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});});
 }
 function getVal(id){var el=document.getElementById(id);return el?el.value.trim():'';}
+function escHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 function validateStep(step){
   var errors=[];
   if(step===1){
@@ -2394,7 +2395,7 @@ function nextStep(n){
 function toggleCheck(el){el.classList.toggle('checked');}
 function toggleLegal(el){el.classList.toggle('checked');}
 function handleFiles(files){Array.from(files).forEach(f=>{if(!uploadedFiles.find(x=>x.name===f.name))uploadedFiles.push(f);});renderFiles();}
-function renderFiles(){document.getElementById('fileList').innerHTML=uploadedFiles.map((f,i)=>`<div class="file-item"><span class="file-nm">${f.name}</span><span class="file-sz">${(f.size/1024).toFixed(1)}KB</span><span class="file-rm" onclick="removeFile(${i})">✕</span></div>`).join('');}
+function renderFiles(){document.getElementById('fileList').innerHTML=uploadedFiles.map((f,i)=>`<div class="file-item"><span class="file-nm">${escHtml(f.name)}</span><span class="file-sz">${(f.size/1024).toFixed(1)}KB</span><span class="file-rm" onclick="removeFile(${i})">✕</span></div>`).join('');}
 function removeFile(i){uploadedFiles.splice(i,1);renderFiles();}
 const uz=document.getElementById('uploadZone');
 uz.addEventListener('dragover',e=>{e.preventDefault();uz.classList.add('drag');});
@@ -2412,7 +2413,7 @@ function buildReview(){
     ['Deliverables',delivs],['Files',uploadedFiles.length>0?uploadedFiles.length+' attached':'None']
   ];
   const rv=document.getElementById('reviewRows');
-  if(rv)rv.innerHTML=rows.map(r=>'<tr><td class="rv-lbl">'+r[0]+'</td><td class="rv-val">'+r[1]+'</td></tr>').join('');
+  if(rv)rv.innerHTML=rows.map(r=>'<tr><td class="rv-lbl">'+escHtml(r[0])+'</td><td class="rv-val">'+escHtml(r[1])+'</td></tr>').join('');
   /* keep original delivs var for any downstream use */
 }
 async function submitMissionInquiry(){
