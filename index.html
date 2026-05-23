@@ -1283,8 +1283,13 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
 /* ── GLOBAL: suppress CSS // prefix (// now baked into HTML) ── */
 .hero-h1 .og::before{content:none!important;}
 
-/* ── GLOBAL: DRONE/RECON 30% larger than base h1 ── */
+/* ── GLOBAL: DRONE/RECON 30% larger than base h1 (except hero-drd which self-sizes) ── */
 .hero-h1 .og{font-size:1.3em!important;line-height:0.92!important;}
+
+/* ── GLOBAL: DRONE RECON DIVISION one-line block ── */
+.hero-drd{display:block;white-space:nowrap;font-size:clamp(20px,3.5vw,52px);line-height:0.9;margin-bottom:2px;}
+.hero-drd .og{font-size:inherit!important;line-height:inherit!important;}
+.hero-drd .dim{font-size:inherit!important;}
 
 /* ── GLOBAL: hide // prefix + ghost — center D/R cleanly on all screens ── */
 .og-prefix{display:none!important;}
@@ -1337,6 +1342,7 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
   .hero-h1 .dim{display:block!important;text-align:center!important;}
   /* hide <br> after block-level spans */
   .hero-h1 .og+br,.hero-h1 .dim+br{display:none!important;}
+  .hero-drd{white-space:normal!important;}
   .hero-recon-badge{display:none!important;}
   .hero-urgency{font-size:12px!important;margin-top:14px!important;}
   #hero{overflow:visible!important;}
@@ -1611,9 +1617,7 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
   <div class="hero-recon-badge">DØi LABS &nbsp;·&nbsp; RECON DIVISION &nbsp;·&nbsp; EST. 2025</div>
 
   <h1 class="hero-h1">
-    <span class="og"><span class="og-prefix">// </span>DRONE</span><br>
-    <span class="og"><span class="og-ghost">// </span>RECON</span><br>
-    <span class="dim">DIVISION</span><br>
+    <span class="hero-drd"><span class="og">DRONE RECON</span> <span class="dim">DIVISION</span></span>
     ADVANCED AERIAL<br>INTELLIGENCE
   </h1>
   <p class="hero-urgency">Actionable aerial intelligence for properties, infrastructure, and operations that can't afford uncertainty.</p>
