@@ -1291,8 +1291,8 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
 .hero-drd .og{font-size:inherit!important;line-height:inherit!important;}
 .hero-drd .dim{font-size:inherit!important;color:#fff!important;-webkit-text-stroke:1.5px #FF6B00!important;}
 /* ── GLOBAL: DRD grain overlay ── */
-@keyframes drdGrain{0%{transform:translate(0,0);}12%{transform:translate(-7px,5px);}25%{transform:translate(6px,-7px);}37%{transform:translate(-5px,8px);}50%{transform:translate(8px,-4px);}62%{transform:translate(-6px,7px);}75%{transform:translate(5px,-8px);}87%{transform:translate(-8px,4px);}100%{transform:translate(0,0);}}
-.hero-drd::after{content:'';position:absolute;inset:-28px -14px;background-image:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.38' numOctaves='4' stitchTiles='stitch'/></filter><rect width='240' height='160' filter='url(%23n)'/></svg>");background-size:180px 120px;opacity:0.26;mix-blend-mode:screen;animation:drdGrain 0.22s steps(1) infinite;pointer-events:none;z-index:2;}
+/* ── GLOBAL: DRONE RECON subtle text glow ── */
+.hero-drd .og{text-shadow:0 0 38px rgba(255,107,0,0.45),0 0 80px rgba(255,107,0,0.2);}
 /* ── GLOBAL: ADVANCED AERIAL INTELLIGENCE — supporting tagline, smaller than DRD ── */
 .hero-aai{display:block;font-size:clamp(22px,3vw,44px)!important;line-height:0.92;}
 /* ── GLOBAL: hero-stats entrance owned by Motion ── */
@@ -1300,8 +1300,12 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
 /* ── GLOBAL: scroll progress bar ── */
 #scrollProg{position:fixed;top:0;left:0;height:3px;width:0%;background:var(--og-grad-h);z-index:9999;pointer-events:none;transform-origin:left;}
 /* ── GLOBAL: 4K+RTK dramatic orange glow ── */
-@keyframes statGlow{0%,100%{box-shadow:0 0 28px rgba(255,107,0,0.4),0 0 56px rgba(255,107,0,0.18),inset 0 0 20px rgba(255,107,0,0.06);}50%{box-shadow:0 0 60px rgba(255,107,0,0.75),0 0 110px rgba(255,107,0,0.35),inset 0 0 36px rgba(255,107,0,0.12);}}
-.hero-stats .hstat:nth-child(2){animation:statGlow 2.2s ease-in-out infinite;border-color:rgba(255,107,0,0.55)!important;background:rgba(255,107,0,0.07)!important;}
+@keyframes statGlow{0%,100%{box-shadow:0 0 18px rgba(255,107,0,0.28),0 0 40px rgba(255,107,0,0.1),inset 0 0 14px rgba(255,107,0,0.04);}50%{box-shadow:0 0 38px rgba(255,107,0,0.55),0 0 70px rgba(255,107,0,0.22),inset 0 0 24px rgba(255,107,0,0.08);}}
+.hero-stats .hstat{animation:statGlow 2.4s ease-in-out infinite;border-color:rgba(255,107,0,0.3)!important;background:rgba(255,107,0,0.04)!important;}
+.hero-stats .hstat:nth-child(1){animation-delay:0s;}
+.hero-stats .hstat:nth-child(2){animation-delay:0.6s;}
+.hero-stats .hstat:nth-child(3){animation-delay:1.2s;}
+.hero-stats .hstat:nth-child(4){animation-delay:1.8s;}
 /* ── GLOBAL: FAQ key answer headline ── */
 .faq-key{display:block;font-family:var(--mono);font-size:11px;letter-spacing:2.5px;color:#FF6B00;text-transform:uppercase;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid rgba(255,107,0,0.2);}
 .faq-a{border-left:2px solid rgba(255,107,0,0.3)!important;margin-left:0!important;}
@@ -1640,10 +1644,10 @@ details.faq-item[open] .faq-a{border-left-color:rgba(255,107,0,0.6)!important;}
   </h1>
   <p class="hero-urgency">Actionable aerial intelligence for properties, infrastructure, and operations that can't afford uncertainty.</p>
   <div class="hero-stats">
-    <div class="hstat"><div class="hstat-n"><span class="val">5</span><span class="unit">SVC</span></div><div class="hstat-l">Service<br>Types</div></div>
-    <div class="hstat"><div class="hstat-n"><span class="val">4K</span><span class="unit">+RTK</span></div><div class="hstat-l">Imaging<br>Capability</div></div>
+    <div class="hstat"><div class="hstat-n"><span class="val">4K</span><span class="unit">+RTK</span></div><div class="hstat-l">Imaging<br>Resolution</div></div>
+    <div class="hstat"><div class="hstat-n"><span class="val">2</span><span class="unit">CM</span></div><div class="hstat-l">Survey<br>Accuracy</div></div>
     <div class="hstat"><div class="hstat-n"><span class="val">±2°</span><span class="unit">C</span></div><div class="hstat-l">Thermal<br>Precision</div></div>
-    <div class="hstat"><div class="hstat-n"><span class="val">24</span><span class="unit">H</span></div><div class="hstat-l">Average<br>Delivery</div></div>
+    <div class="hstat"><div class="hstat-n"><span class="val">107</span><span class="unit">P</span></div><div class="hstat-l">Part 107<br>Certified</div></div>
   </div>
   <div class="hero-cert">
     FAA PART 107
