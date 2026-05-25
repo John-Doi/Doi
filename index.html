@@ -2442,6 +2442,7 @@ async function submitMissionInquiry(){
       var stepper=document.querySelector('.contact-stepper');if(stepper)stepper.style.display='none';
       var sp=document.getElementById('successPanel');if(sp)sp.classList.add('show');
       var sc=document.getElementById('successCode');if(sc)sc.textContent='REF: DØi-'+Date.now().toString(36).toUpperCase().slice(-6);
+      if(typeof window._fireSuccessConfetti==='function') window._fireSuccessConfetti();
     }
     else{alert('Mission inquiry failed. Please contact DØi Recon directly.');}
   }catch(err){alert('Mission inquiry failed. Please contact DØi Recon directly.');}
@@ -2975,6 +2976,99 @@ document.querySelectorAll('#services .scard').forEach(function(card){
     requestAnimationFrame(loop);
   }
   requestAnimationFrame(loop);
+})();
+</script>
+<!-- ── ENHANCEMENT LIBRARIES ── -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/splitting@1.0.6/dist/splitting.css"/>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/bundled/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/splitting@1.0.6/dist/splitting.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vanta@0.5.24/dist/vanta.net.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+<script>
+/* ── 1. LENIS SMOOTH SCROLL ── */
+(function(){
+  if(typeof Lenis==='undefined') return;
+  var lenis=new Lenis({duration:1.2,easing:function(t){return Math.min(1,1.001-Math.pow(2,-10*t));}});
+  (function raf(t){lenis.raf(t);requestAnimationFrame(raf);})(performance.now());
+  window._lenis=lenis;
+})();
+
+/* ── 2. GSAP ScrollTrigger: hero exit + parallax ── */
+(function(){
+  if(typeof gsap==='undefined'||typeof ScrollTrigger==='undefined') return;
+  gsap.registerPlugin(ScrollTrigger);
+  var hero=document.getElementById('hero');
+  if(!hero) return;
+  /* dark gradient overlay that fades in as hero scrolls away */
+  var overlay=document.createElement('div');
+  overlay.style.cssText='position:absolute;inset:0;z-index:7;pointer-events:none;background:linear-gradient(to bottom,rgba(0,0,0,0) 20%,rgba(0,0,0,0.92));opacity:0;';
+  hero.appendChild(overlay);
+  gsap.to(overlay,{opacity:1,ease:'none',scrollTrigger:{trigger:'#hero',start:'35% top',end:'bottom top',scrub:1}});
+  /* h1 slow upward drift on scroll */
+  gsap.to('#hero .hero-h1',{y:-55,ease:'none',scrollTrigger:{trigger:'#hero',start:'top top',end:'bottom top',scrub:true}});
+  /* stats drift slightly slower than h1 */
+  gsap.to('#hero .hero-stats',{y:-22,ease:'none',scrollTrigger:{trigger:'#hero',start:'top top',end:'bottom top',scrub:true}});
+})();
+
+/* ── 3. SPLITTING.JS: per-word entrance on section intro text ── */
+(function(){
+  if(typeof Splitting==='undefined') return;
+  document.querySelectorAll('.sec-intro').forEach(function(el){
+    var res=Splitting({target:el,by:'words'});
+    if(!res[0]||!res[0].words) return;
+    res[0].words.forEach(function(w,i){
+      w.style.cssText='display:inline-block;opacity:0;transform:translateY(9px);'
+        +'transition:opacity 0.4s '+(i*0.03).toFixed(3)+'s ease,transform 0.4s '+(i*0.03).toFixed(3)+'s ease;';
+    });
+    new IntersectionObserver(function(ents,ob){
+      if(!ents[0].isIntersecting) return;
+      ob.disconnect();
+      res[0].words.forEach(function(w){w.style.opacity='1';w.style.transform='translateY(0)';});
+    },{threshold:0.15}).observe(el);
+  });
+})();
+
+/* ── 4. VANTA NET: animated orange-grid background in hero ── */
+(function(){
+  if(typeof VANTA==='undefined'||typeof THREE==='undefined') return;
+  var hero=document.getElementById('hero');
+  if(!hero) return;
+  var bg=document.createElement('div');
+  bg.style.cssText='position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;';
+  hero.insertBefore(bg,hero.firstChild);
+  VANTA.NET({
+    el:bg,THREE:THREE,
+    color:0xFF6B00,backgroundColor:0x090909,backgroundAlpha:0,
+    points:5.0,maxDistance:18.0,spacing:26.0,
+    showDots:true,mouseControls:false,touchControls:false,gyroControls:false
+  });
+})();
+
+/* ── 5. CANVAS CONFETTI: fires on form success ── */
+window._fireSuccessConfetti=function(){
+  if(typeof confetti==='undefined') return;
+  confetti({particleCount:70,angle:60,spread:52,origin:{x:0.2},colors:['#FF6B00','#fff','#FF8C40']});
+  setTimeout(function(){
+    confetti({particleCount:70,angle:120,spread:52,origin:{x:0.8},colors:['#FF6B00','#fff','#FF8C40']});
+  },160);
+};
+
+/* ── 6. CURSOR RING: trailing ring around existing #cdot ── */
+(function(){
+  var ring=document.createElement('div');
+  ring.style.cssText='position:fixed;width:24px;height:24px;border:1px solid rgba(255,107,0,0.5);'
+    +'border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);'
+    +'opacity:0;transition:opacity 0.3s,width 0.15s,height 0.15s,border-color 0.15s;';
+  document.body.appendChild(ring);
+  var mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;ring.style.opacity='1';});
+  document.addEventListener('mouseleave',function(){ring.style.opacity='0';});
+  document.addEventListener('mousedown',function(){ring.style.width='12px';ring.style.height='12px';ring.style.borderColor='rgba(255,107,0,0.85)';});
+  document.addEventListener('mouseup',function(){ring.style.width='24px';ring.style.height='24px';ring.style.borderColor='rgba(255,107,0,0.5)';});
+  (function animRing(){rx+=(mx-rx)*0.11;ry+=(my-ry)*0.11;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing);})();
 })();
 </script>
 </body>
