@@ -1287,9 +1287,12 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
 .hero-h1 .og{font-size:1.3em!important;line-height:0.92!important;}
 
 /* ── GLOBAL: DRONE RECON DIVISION one-line block ── */
-.hero-drd{display:block;white-space:nowrap;font-size:clamp(34px,6.5vw,96px);line-height:0.9;margin-bottom:6px;}
+.hero-drd{display:block;white-space:nowrap;font-size:clamp(34px,6.5vw,96px);line-height:0.9;margin-bottom:6px;position:relative;}
 .hero-drd .og{font-size:inherit!important;line-height:inherit!important;}
 .hero-drd .dim{font-size:inherit!important;color:#fff!important;-webkit-text-stroke:1.5px #FF6B00!important;}
+/* ── GLOBAL: DRD grain overlay ── */
+@keyframes drdGrain{0%{transform:translate(0,0);}16%{transform:translate(-5px,4px);}33%{transform:translate(4px,-5px);}50%{transform:translate(-4px,5px);}66%{transform:translate(5px,-3px);}83%{transform:translate(-3px,5px);}100%{transform:translate(0,0);}}
+.hero-drd::after{content:'';position:absolute;inset:-24px -12px;background-image:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/></filter><rect width='240' height='160' filter='url(%23n)'/></svg>");background-size:200px 140px;opacity:0.09;mix-blend-mode:overlay;animation:drdGrain 0.42s steps(1) infinite;pointer-events:none;z-index:2;}
 /* ── GLOBAL: ADVANCED AERIAL INTELLIGENCE — supporting tagline, smaller than DRD ── */
 .hero-aai{display:block;font-size:clamp(22px,3vw,44px)!important;line-height:0.92;}
 /* ── GLOBAL: hero-stats entrance owned by Motion ── */
@@ -2841,6 +2844,73 @@ document.querySelectorAll('#services .scard').forEach(function(card){
   }
   window.addEventListener('scroll',update,{passive:true});
   update();
+})();
+
+// Section header clip-path typewriter reveal
+(function(){
+  var headers=document.querySelectorAll('.sec-h');
+  if(!headers.length) return;
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(!e.isIntersecting) return;
+      io.unobserve(e.target);
+      var el=e.target;
+      el.style.clipPath='inset(0 100% 0 0)';
+      el.style.transition='clip-path 0.95s cubic-bezier(0.22,1,0.36,1)';
+      requestAnimationFrame(function(){requestAnimationFrame(function(){el.style.clipPath='inset(0 0% 0 0)';});});
+    });
+  },{threshold:0.25});
+  headers.forEach(function(h){ io.observe(h); });
+})();
+
+// DRD stagger: DRONE RECON slides from left, DIVISION from below
+(function(){
+  var og=document.querySelector('.hero-drd .og');
+  var dim=document.querySelector('.hero-drd .dim');
+  if(!og||!dim) return;
+  og.style.opacity='0'; og.style.transform='translateX(-32px)';
+  dim.style.opacity='0'; dim.style.transform='translateY(22px)';
+  setTimeout(function(){
+    animate(og,{opacity:[0,1],x:[-32,0]},{type:'spring',stiffness:200,damping:18,delay:0.05});
+    animate(dim,{opacity:[0,1],y:[22,0]},{type:'spring',stiffness:200,damping:18,delay:0.22});
+  },300);
+})();
+</script>
+
+<script>
+/* Drone parallax: side-to-side oscillation + scroll-linked vertical drift + brightness weave */
+(function(){
+  var v=document.getElementById('heroReconVid');
+  if(!v) return;
+  var t0=Date.now();
+  var active=false;
+  var lastScrollY=0;
+
+  /* MutationObserver watches when drone becomes fully visible */
+  var mo=new MutationObserver(function(){
+    var op=parseFloat(v.style.opacity)||0;
+    active=(op>0.85);
+  });
+  mo.observe(v,{attributes:true,attributeFilter:['style']});
+
+  window.addEventListener('scroll',function(){ lastScrollY=window.scrollY; },{passive:true});
+
+  function loop(){
+    if(active){
+      var t=(Date.now()-t0)/1000;
+      var scrollInfluence=lastScrollY/600;
+      /* layered oscillation for organic feel */
+      var sway=Math.sin(t*0.38+scrollInfluence)*34+Math.cos(t*0.22)*16;
+      var bob=Math.cos(t*0.52)*9+Math.sin(t*0.31)*5;
+      /* brightness weave: dim when at rightmost lean (simulates going behind content) */
+      var phase=Math.sin(t*0.38+scrollInfluence);
+      var brightness=phase>0.62?0.28:1;
+      v.style.transform='translateX('+sway+'px) translateY('+bob+'px)';
+      v.style.filter='brightness('+brightness+')';
+    }
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
 })();
 </script>
 </body>
