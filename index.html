@@ -1294,6 +1294,8 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
 .hero-aai{display:block;font-size:clamp(22px,3vw,44px)!important;line-height:0.92;}
 /* ── GLOBAL: hero-stats entrance owned by Motion ── */
 .hero-stats{animation:none!important;}
+/* ── GLOBAL: scroll progress bar ── */
+#scrollProg{position:fixed;top:0;left:0;height:3px;width:0%;background:var(--og-grad-h);z-index:9999;pointer-events:none;transform-origin:left;}
 
 /* ── GLOBAL: hide // prefix + ghost — center D/R cleanly on all screens ── */
 .og-prefix{display:none!important;}
@@ -1448,6 +1450,7 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
 
 </head>
 <body>
+<div id="scrollProg" aria-hidden="true"></div>
 <div class="grain-overlay" aria-hidden="true"></div>
 <div class="hex-corner-bg" aria-hidden="true"></div>
 <div class="mountain-bg" id="mountainBg" aria-hidden="true">
@@ -2774,6 +2777,70 @@ document.querySelectorAll('#services .scard').forEach(function(card){
       animate(el,{scale:1,y:0,boxShadow:'0 0 0px rgba(255,107,0,0)'},{type:'spring',stiffness:380,damping:22});
     };
   });
+})();
+
+// Stat number counters — count up when stats enter view
+(function(){
+  var vals=document.querySelectorAll('.hero-stats .val');
+  if(!vals.length) return;
+  var fired=false;
+  function parseVal(txt){
+    // returns {prefix, num, suffix}
+    var m=txt.match(/^([^\d]*)(\d+(?:\.\d+)?)([^\d]*)$/);
+    if(!m) return null;
+    return{prefix:m[1],num:parseFloat(m[2]),suffix:m[3]};
+  }
+  function countUp(el,parsed,duration){
+    var start=null;
+    function step(ts){
+      if(!start) start=ts;
+      var p=Math.min((ts-start)/duration,1);
+      var ease=1-Math.pow(1-p,4);
+      var cur=Math.round(parsed.num*ease);
+      el.textContent=parsed.prefix+cur+parsed.suffix;
+      if(p<1) requestAnimationFrame(step);
+      else el.textContent=parsed.prefix+parsed.num+parsed.suffix;
+    }
+    requestAnimationFrame(step);
+  }
+  inView('.hero-stats',function(){
+    if(fired) return; fired=true;
+    vals.forEach(function(el,i){
+      var parsed=parseVal(el.textContent.trim());
+      if(!parsed) return;
+      setTimeout(function(){ countUp(el,parsed,900); },i*110);
+    });
+  });
+})();
+
+// 3D tilt on service cards
+(function(){
+  document.querySelectorAll('#services .scard').forEach(function(card){
+    card.style.transition='transform 0.08s linear,border-color .3s,box-shadow .3s';
+    card.addEventListener('mousemove',function(e){
+      var r=card.getBoundingClientRect();
+      var x=(e.clientX-r.left)/r.width-0.5;
+      var y=(e.clientY-r.top)/r.height-0.5;
+      card.style.transform='perspective(700px) rotateY('+x*14+'deg) rotateX('+(-y*10)+'deg) translateY(-3px)';
+    });
+    card.addEventListener('mouseleave',function(){
+      card.style.transition='transform 0.45s cubic-bezier(0.22,1,0.36,1),border-color .3s,box-shadow .3s';
+      card.style.transform='perspective(700px) rotateY(0deg) rotateX(0deg) translateY(0px)';
+    });
+  });
+})();
+
+// Scroll progress bar
+(function(){
+  var bar=document.getElementById('scrollProg');
+  if(!bar) return;
+  function update(){
+    var max=document.documentElement.scrollHeight-window.innerHeight;
+    if(max<=0) return;
+    bar.style.width=(window.scrollY/max*100)+'%';
+  }
+  window.addEventListener('scroll',update,{passive:true});
+  update();
 })();
 </script>
 </body>
