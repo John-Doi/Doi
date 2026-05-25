@@ -155,7 +155,7 @@ section{position:relative;z-index:2;}
   display:inline-block;
   background:rgba(255,107,0,0.04);
 }
-.hero-h1{font-family:var(--disp);font-weight:900;font-size:clamp(28px,3.5vw,52px);line-height:0.88;letter-spacing:-2px;text-transform:uppercase;color:var(--t1);margin-bottom:16px;animation:fadeUp 1s .18s ease both;}
+.hero-h1{font-family:var(--disp);font-weight:900;font-size:clamp(32px,4.5vw,66px);line-height:0.88;letter-spacing:-2px;text-transform:uppercase;color:var(--t1);margin-bottom:16px;animation:fadeUp 1s .18s ease both;}
 .hero-h1 .dim{color:transparent;-webkit-text-stroke:1px rgba(255,255,255,0.18);}
 .hero-h1 .og{background:var(--og-grad-h);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 .hero-sub{font-family:var(--body);font-size:20px;line-height:1.78;color:var(--t2);max-width:600px;margin:0 auto 14px;animation:fadeUp 1s .24s ease both;font-weight:500;}
@@ -2572,15 +2572,15 @@ async function submitMissionInquiry(){
   if(!v||!hero) return;
   var visible=false;
   function placeDrone(){
-    var og=document.querySelector('.hero-h1 .og');
-    if(!og) return;
-    var or_=og.getBoundingClientRect();
+    var drd=document.querySelector('.hero-drd');
+    if(!drd) return;
+    var dr=drd.getBoundingClientRect();
     var hr=hero.getBoundingClientRect();
     var vw_d=v.offsetWidth||200;
     var vh_d=v.offsetHeight||vw_d*1.1;
-    /* center drone horizontally over DRONE text; bottom of drone lands on the text */
-    var left=or_.left-hr.left+or_.width/2-vw_d/2;
-    var top=or_.top-hr.top-vh_d*0.82;
+    /* center horizontally in hero; bottom of drone sits just above DRONE RECON DIVISION */
+    var left=hr.width/2-vw_d/2;
+    var top=dr.top-hr.top-vh_d*0.82;
     v.style.left=left+'px';
     v.style.top=top+'px';
     if(!visible){
