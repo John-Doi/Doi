@@ -3287,8 +3287,8 @@ document.querySelectorAll('#services .scard').forEach(function(card){
   var mob=window.innerWidth<600;
   var BX=mob?126:272, BY=mob?80:178; // scan zone half-extents from logo center
 
-  function mkSVG(sz,og){
-    var s=og?'#FF6B00':'#1c1208',f=og?'#FF4400':'#080604';
+  function mkSVG(sz){
+    var s='#B8B8B8',f='#888888';
     return '<svg viewBox="0 0 38 38" width="'+sz+'" height="'+sz+'" fill="none" xmlns="http://www.w3.org/2000/svg">'
       +'<line x1="19" y1="19" x2="5" y2="5" stroke="'+s+'" stroke-width="1.5" stroke-linecap="round"/>'
       +'<line x1="19" y1="19" x2="33" y2="5" stroke="'+s+'" stroke-width="1.5" stroke-linecap="round"/>'
@@ -3305,8 +3305,8 @@ document.querySelectorAll('#services .scard').forEach(function(card){
   var N=mob?14:30, drones=[], R=Math.random;
   for(var i=0;i<N;i++){
     var tp=i<N*.38?'scan':i<N*.72?'wander':'patrol';
-    var og=R()<0.28, sz=mob?(8+~~(R()*4)):(10+~~(R()*5));
-    var d={el:null,tp:tp,og:og,sz:sz,
+    var sz=mob?(8+~~(R()*4)):(10+~~(R()*5));
+    var d={el:null,tp:tp,sz:sz,
            x:(R()-.5)*2*BX, y:(R()-.5)*2*BY,
            vx:0, vy:0, facing:R()*360,
            gP:1400+R()*3600, gPh:R()*Math.PI*2, gF:0.87+R()*.1};
@@ -3325,7 +3325,7 @@ document.querySelectorAll('#services .scard').forEach(function(card){
       d.cxv=(R()-.5)*.009; d.cyv=(R()-.5)*.008;
     }
     var el=document.createElement('div');
-    el.className='ds-body'; el.innerHTML=mkSVG(sz,og);
+    el.className='ds-body'; el.innerHTML=mkSVG(sz);
     C.appendChild(el); d.el=el; drones.push(d);
   }
 
