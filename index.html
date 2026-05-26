@@ -2442,7 +2442,6 @@ async function submitMissionInquiry(){
       var stepper=document.querySelector('.contact-stepper');if(stepper)stepper.style.display='none';
       var sp=document.getElementById('successPanel');if(sp)sp.classList.add('show');
       var sc=document.getElementById('successCode');if(sc)sc.textContent='REF: DØi-'+Date.now().toString(36).toUpperCase().slice(-6);
-      if(typeof window._fireSuccessConfetti==='function') window._fireSuccessConfetti();
     }
     else{alert('Mission inquiry failed. Please contact DØi Recon directly.');}
   }catch(err){alert('Mission inquiry failed. Please contact DØi Recon directly.');}
@@ -2984,9 +2983,6 @@ document.querySelectorAll('#services .scard').forEach(function(card){
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/splitting@1.0.6/dist/splitting.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/vanta@0.5.24/dist/vanta.net.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
 <script>
 /* ── 1. LENIS SMOOTH SCROLL ── */
 (function(){
@@ -3031,32 +3027,7 @@ document.querySelectorAll('#services .scard').forEach(function(card){
   });
 })();
 
-/* ── 4. VANTA NET: animated orange-grid background in hero ── */
-(function(){
-  if(typeof VANTA==='undefined'||typeof THREE==='undefined') return;
-  var hero=document.getElementById('hero');
-  if(!hero) return;
-  var bg=document.createElement('div');
-  bg.style.cssText='position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;';
-  hero.insertBefore(bg,hero.firstChild);
-  VANTA.NET({
-    el:bg,THREE:THREE,
-    color:0xFF6B00,backgroundColor:0x090909,backgroundAlpha:0,
-    points:5.0,maxDistance:18.0,spacing:26.0,
-    showDots:true,mouseControls:false,touchControls:false,gyroControls:false
-  });
-})();
-
-/* ── 5. CANVAS CONFETTI: fires on form success ── */
-window._fireSuccessConfetti=function(){
-  if(typeof confetti==='undefined') return;
-  confetti({particleCount:70,angle:60,spread:52,origin:{x:0.2},colors:['#FF6B00','#fff','#FF8C40']});
-  setTimeout(function(){
-    confetti({particleCount:70,angle:120,spread:52,origin:{x:0.8},colors:['#FF6B00','#fff','#FF8C40']});
-  },160);
-};
-
-/* ── 6. CURSOR RING: trailing ring around existing #cdot ── */
+/* ── 4. CURSOR RING: trailing ring around existing #cdot ── */
 (function(){
   var ring=document.createElement('div');
   ring.style.cssText='position:fixed;width:24px;height:24px;border:1px solid rgba(255,107,0,0.5);'
