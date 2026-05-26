@@ -2961,24 +2961,38 @@ document.querySelectorAll('#services .scard').forEach(function(card){
   var dim=document.querySelector('.hero-drd .dim');
   if(!og||!dim) return;
   var origOg=og.textContent;
-  og.style.opacity='0'; og.style.transform='translateX(-40px)';
-  dim.style.opacity='0'; dim.style.transform='translateY(28px)';
+
+  function playEntrance(){
+    animate(og,{opacity:[0,1],x:[-40,0]},{type:'spring',stiffness:180,damping:16,delay:0.08});
+    animate(dim,{opacity:[0,1],y:[28,0]},{type:'spring',stiffness:180,damping:16,delay:0.28});
+  }
+  function resetToHidden(){
+    og.style.opacity='0'; og.style.transform='translateX(-40px)';
+    dim.style.opacity='0'; dim.style.transform='translateY(28px)';
+  }
+
+  resetToHidden();
+  var hasAnimated=false;
+
   var io=new IntersectionObserver(function(entries){
     if(entries[0].isIntersecting){
-      animate(og,{opacity:[0,1],x:[-40,0]},{type:'spring',stiffness:180,damping:16,delay:0.08});
-      animate(dim,{opacity:[0,1],y:[28,0]},{type:'spring',stiffness:180,damping:16,delay:0.28});
-    } else {
-      og.style.opacity='0'; og.style.transform='translateX(-40px)';
-      dim.style.opacity='0'; dim.style.transform='translateY(28px)';
+      hasAnimated=true;
+      playEntrance();
+    } else if(hasAnimated){
+      // only reset AFTER the entrance has played at least once
+      resetToHidden();
     }
-  },{threshold:0.3});
+  },{threshold:0.01});
   io.observe(og.closest('.hero-h1')||og);
+
+  // Fallback: guarantee visibility even if observer misfires
+  setTimeout(function(){if(!hasAnimated){hasAnimated=true;playEntrance();}},900);
 
   // Continuous idle glitch: scrambles DRONE RECON randomly every 2–6s
   var CHARS='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789·//·';
   var glitching=false;
   function doGlitch(){
-    if(glitching||parseFloat(og.style.opacity||0)<0.5) return;
+    if(glitching||parseFloat(og.style.opacity||1)<0.5) return;
     glitching=true;
     var frames=0,total=13;
     var id=setInterval(function(){
