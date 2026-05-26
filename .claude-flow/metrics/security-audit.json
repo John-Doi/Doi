@@ -1,0 +1,15 @@
+{
+  "timestamp": "2026-05-22T16:40:41.110Z",
+  "mode": "headless",
+  "workerType": "audit",
+  "model": "haiku",
+  "durationMs": 58351,
+  "executionId": "audit_1779467982759_vyetp5",
+  "success": true,
+  "findings": {
+    "parseError": true,
+    "rawOutput": "The change in `.claude-flow/daemon-state.json` is a runtime daemon state file—it's generated locally and changes frequently. It shouldn't be committed to version control. \n\nI recommend one of these approaches:\n\n1. **Discard the change** (recommended): The daemon state file is local operational state and shouldn't be tracked.\n   ```bash\n   git restore .claude-flow/daemon-state.json\n   ```\n\n2. **Add to `.gitignore`**: Create a `.gitignore` file to prevent this and similar local files from being tracked:\n   ```bash\n   echo \".claude-flow/\" >> .gitignore\n   git add .gitignore\n   git commit -m \"docs: ignore local daemon and flow state\"\n   ```\n\nWhich would you prefer? The first option is fastest if you don't need this file tracked. The second is better if you want to prevent future commits of runtime state files.\n"
+  },
+  "rawOutputPreview": "The change in `.claude-flow/daemon-state.json` is a runtime daemon state file—it's generated locally and changes frequently. It shouldn't be committed to version control. \n\nI recommend one of these approaches:\n\n1. **Discard the change** (recommended): The daemon state file is local operational state and shouldn't be tracked.\n   ```bash\n   git restore .claude-flow/daemon-state.json\n   ```\n\n2. **Add to `.gitignore`**: Create a `.gitignore` file to prevent this and similar local files from being tracked:\n   ```bash\n   echo \".claude-flow/\" >> .gitignore\n   git add .gitignore\n   git commit -m \"docs: ignore local daemon and flow state\"\n   ```\n\nWhich would you prefer? The first option is fastest if you don't need this file tracked. The second is better if you want to prevent future commits of runtime state files.\n",
+  "rawOutputLength": 818
+}
