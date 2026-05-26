@@ -1,4 +1,83 @@
-# Ruflo — Claude Code Configuration
+# DØi Labs — Claude Code Configuration
+
+## Project Overview
+
+**DØi Labs** is a California-based enterprise drone services company (FAA Part 107 certified). This repo is their marketing/lead-generation website deployed on Vercel.
+
+### Tech Stack
+
+- **Frontend**: Single-file vanilla HTML/CSS/JS — all styles and scripts are inlined directly in the HTML file, no build step
+- **Backend**: One Vercel serverless function (`api/mission-intake.js`, ES module)
+- **Dependencies**: `motion` v12 (available if needed for animation); no framework, no bundler
+- **Deployment**: Vercel — `vercel.json` sets no-cache headers on `index.html`
+
+### File Map
+
+| File | Purpose |
+|------|---------|
+| `index.html` | Primary site (~9MB inline — all CSS/JS in one file) |
+| `doilabs-v2.html` | Alternate/archive version of the site |
+| `thank-you.html` | Post-form-submission success page |
+| `api/mission-intake.js` | Serverless POST handler for the contact form |
+| `vercel.json` | Cache-control headers for Vercel |
+| `package.json` | Only dependency: `motion` |
+| `*.png / *.webp / *.jpeg` | Drone/site imagery referenced directly from HTML |
+| `*.mp4 / *.mov` | Hero background video |
+
+### API: `POST /api/mission-intake`
+
+Forwards contact-form submissions to a Power Automate webhook.
+
+**Required env var**: `POWER_AUTOMATE_WEBHOOK_URL`
+
+**Required body fields**: `clientName`, `clientEmail`, `clientPhone`, `missionType`
+
+Validation: email regex, 2000-char max per field. Returns `{ success: true }` on success.
+
+### Design System (index.html CSS vars)
+
+```css
+--bg: #080808        /* page background */
+--og: #f08c00        /* orange accent */
+--tiger: #ff6b1a     /* hover orange */
+--t1: #f0f0f0        /* primary text */
+--t2: #a8a8a8        /* secondary text */
+--mono: 'Share Tech Mono'
+--disp: 'Orbitron'
+--body: 'Rajdhani'
+```
+
+Dark tactical aesthetic. Crosshair cursor. `clip-path` polygon buttons. Scroll-driven animations (drone fly-in, sticky pipeline, IntersectionObserver reveals).
+
+### Key Sections in `index.html`
+
+1. **Hero** (sticky scroll zone, 300vh) — drone scroll animation via `requestAnimationFrame`
+2. **Proof Band** — 4 stats (500+ missions, 48HR turnaround, 2CM accuracy, 100% FAA)
+3. **Pipeline** (sticky scroll zone, 800vh) — 7-step mission process with image/text sync
+4. **Why DØi** — 6 capability cards with IntersectionObserver reveal
+5. **Services** — 6 service cards
+6. **Trust** — compliance/certification grid
+7. **Contact Form** — multi-panel form, POSTs to `/api/mission-intake`
+8. **Footer**
+
+Mobile breakpoint: `900px`. Sticky pipeline replaced by `.mob-pipeline` on small screens.
+
+### Development Conventions
+
+- **No build step** — edit HTML files directly; changes are live on save
+- **Styles live in `<style>` tags** inside each HTML file — do not create external CSS files
+- **Scripts live in `<script>` tags** at the bottom of each HTML file — do not create external JS files
+- **Images referenced by filename** from root — keep all media assets at root level
+- **Never touch `node_modules/`** — `motion` is a dep but not currently imported in the HTML
+- **API changes** require updating `api/mission-intake.js` and the `fetch('/api/mission-intake', ...)` call in `index.html` (~line 2484) together
+- **Env var** `POWER_AUTOMATE_WEBHOOK_URL` must be set in Vercel project settings for the form to work
+
+### Testing
+
+There is no test suite. Verify changes by:
+1. Opening the HTML file in a browser (or `npx serve .`)
+2. Checking mobile layout at 900px breakpoint
+3. Testing the contact form POST against a local or staging webhook URL
 
 ## Rules
 
