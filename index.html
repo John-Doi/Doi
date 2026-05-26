@@ -3280,21 +3280,15 @@ document.querySelectorAll('#services .scard').forEach(function(card){
   (function animRing(){rx+=(mx-rx)*0.11;ry+=(my-ry)*0.11;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing);})();
 })();
 
-/* ── 13. DRONE SWARM v3: tilted ellipse ring, JS-driven, lightning-bug glow ── */
+/* ── 13. DRONE SWARM v4: random scanning pattern over logo ── */
 (function(){
   var C=document.getElementById('dsContainer');
   if(!C) return;
   var mob=window.innerWidth<600;
-  // Ellipse axes — major axis at 47° matching logo orange slash
-  var A=mob?138:310, B=mob?40:88;
-  var TILT=47*Math.PI/180;
-  var cosT=Math.cos(TILT), sinT=Math.sin(TILT);
-  function epos(a){ var ca=Math.cos(a),sa=Math.sin(a); return [A*ca*cosT-B*sa*sinT, A*ca*sinT+B*sa*cosT]; }
-  function etan(a,sign){ var sa=Math.sin(a),ca=Math.cos(a);
-    var dx=(-A*sa*cosT-B*ca*sinT)*sign, dy=(-A*sa*sinT+B*ca*cosT)*sign;
-    return Math.atan2(dy,dx)*180/Math.PI+45; }
+  var BX=mob?126:272, BY=mob?80:178; // scan zone half-extents from logo center
+
   function mkSVG(sz,og){
-    var s=og?'#FF6B00':'#1c1208', f=og?'#FF4400':'#080604';
+    var s=og?'#FF6B00':'#1c1208',f=og?'#FF4400':'#080604';
     return '<svg viewBox="0 0 38 38" width="'+sz+'" height="'+sz+'" fill="none" xmlns="http://www.w3.org/2000/svg">'
       +'<line x1="19" y1="19" x2="5" y2="5" stroke="'+s+'" stroke-width="1.5" stroke-linecap="round"/>'
       +'<line x1="19" y1="19" x2="33" y2="5" stroke="'+s+'" stroke-width="1.5" stroke-linecap="round"/>'
@@ -3307,43 +3301,111 @@ document.querySelectorAll('#services .scard').forEach(function(card){
       +'<g class="rotor" style="transform-origin:33px 33px"><circle cx="33" cy="33" r="3.5" stroke="'+s+'" stroke-width="1.1"/></g>'
       +'</svg>';
   }
-  var N=mob?28:52, drones=[];
+
+  var N=mob?14:30, drones=[], R=Math.random;
   for(var i=0;i<N;i++){
-    var og=Math.random()<0.28; // 28% orange body, 72% black (firefly mode)
-    var sz=mob?(9+Math.floor(Math.random()*4)):(10+Math.floor(Math.random()*6));
-    var sign=Math.random()<0.72?1:-1; // 72% CW
-    var spd=(0.00038+Math.random()*0.00028)*sign;
-    var angle=(i/N)*Math.PI*2+(Math.random()-0.5)*0.4;
-    // Lightning-bug params: independent period + phase + flash threshold
-    var gPeriod=1400+Math.random()*3600;
-    var gPhase=Math.random()*Math.PI*2;
-    var gFlash=0.88+Math.random()*0.1; // sin value above which it "flashes"
+    var tp=i<N*.38?'scan':i<N*.72?'wander':'patrol';
+    var og=R()<0.28, sz=mob?(8+~~(R()*4)):(10+~~(R()*5));
+    var d={el:null,tp:tp,og:og,sz:sz,
+           x:(R()-.5)*2*BX, y:(R()-.5)*2*BY,
+           vx:0, vy:0, facing:R()*360,
+           gP:1400+R()*3600, gPh:R()*Math.PI*2, gF:0.87+R()*.1};
+    if(tp==='scan'){
+      d.axis=~~(R()*3); // 0=H, 1=V, 2=diagonal
+      d.spd=(0.055+R()*.075)*(R()<.5?1:-1);
+      d.drf=(0.007+R()*.011)*(R()<.5?1:-1);
+    } else if(tp==='wander'){
+      d.tx=(R()-.5)*2*BX; d.ty=(R()-.5)*2*BY;
+      d.spd=0.038+R()*.052;
+      d.wait=R()*800;
+    } else {
+      d.cx=(R()-.5)*1.3*BX; d.cy=(R()-.5)*1.3*BY;
+      d.orR=18+R()*40; d.orA=R()*Math.PI*2;
+      d.orSpd=(0.0012+R()*.002)*(R()<.5?1:-1);
+      d.cxv=(R()-.5)*.009; d.cyv=(R()-.5)*.008;
+    }
     var el=document.createElement('div');
-    el.className='ds-body';
-    el.innerHTML=mkSVG(sz,og);
-    C.appendChild(el);
-    drones.push({el:el,angle:angle,spd:spd,sign:sign,sz:sz,og:og,
-                 gPeriod:gPeriod,gPhase:gPhase,gFlash:gFlash});
+    el.className='ds-body'; el.innerHTML=mkSVG(sz,og);
+    C.appendChild(el); d.el=el; drones.push(d);
   }
+
   var last=0;
   function frame(now){
     var dt=Math.min(now-last,80); last=now;
     for(var i=0;i<drones.length;i++){
       var d=drones[i];
-      d.angle+=d.spd*dt;
-      var p=epos(d.angle), x=p[0], y=p[1];
-      var rot=etan(d.angle,d.sign);
-      // Glow pulse
-      var gt=((now%d.gPeriod)/d.gPeriod)*Math.PI*2;
-      var gv=0.5+0.5*Math.sin(gt+d.gPhase); // 0..1
-      var flash=gv>d.gFlash;
-      var px=flash?(3+gv*24):(2+gv*12);
-      var ga=flash?(0.9+gv*0.1):(0.25+gv*0.65);
-      var op=flash?1:(0.08+gv*0.88);
+
+      if(d.tp==='scan'){
+        if(d.axis===0){       // horizontal sweep, slow vertical drift
+          d.x+=d.spd*dt; d.y+=d.drf*dt;
+          if(d.x>BX){d.x=BX; d.spd=-Math.abs(d.spd);}
+          if(d.x<-BX){d.x=-BX; d.spd=Math.abs(d.spd);}
+          if(d.y>BY){d.y=BY; d.drf=-Math.abs(d.drf);}
+          if(d.y<-BY){d.y=-BY; d.drf=Math.abs(d.drf);}
+          d.vx=d.spd; d.vy=d.drf*.15;
+        } else if(d.axis===1){ // vertical sweep, slow horizontal drift
+          d.y+=d.spd*dt; d.x+=d.drf*dt;
+          if(d.y>BY){d.y=BY; d.spd=-Math.abs(d.spd);}
+          if(d.y<-BY){d.y=-BY; d.spd=Math.abs(d.spd);}
+          if(d.x>BX){d.x=BX; d.drf=-Math.abs(d.drf);}
+          if(d.x<-BX){d.x=-BX; d.drf=Math.abs(d.drf);}
+          d.vx=d.drf*.15; d.vy=d.spd;
+        } else {               // diagonal sweep
+          d.x+=d.spd*dt*.72; d.y+=d.drf*dt*.72;
+          if(Math.abs(d.x)>BX) d.spd*=-1;
+          if(Math.abs(d.y)>BY) d.drf*=-1;
+          d.x=Math.max(-BX,Math.min(BX,d.x));
+          d.y=Math.max(-BY,Math.min(BY,d.y));
+          d.vx=d.spd; d.vy=d.drf;
+        }
+
+      } else if(d.tp==='wander'){
+        if(d.wait>0){
+          d.wait-=dt;
+        } else {
+          var dx=d.tx-d.x, dy=d.ty-d.y;
+          var dist=Math.sqrt(dx*dx+dy*dy)||1;
+          if(dist<11){
+            d.tx=(R()-.5)*2*BX; d.ty=(R()-.5)*2*BY;
+            d.wait=400+R()*1400;
+          } else {
+            var step=Math.min(d.spd*dt,dist);
+            d.x+=dx/dist*step; d.y+=dy/dist*step;
+            d.vx=dx/dist; d.vy=dy/dist;
+          }
+        }
+        d.x=Math.max(-BX,Math.min(BX,d.x));
+        d.y=Math.max(-BY,Math.min(BY,d.y));
+
+      } else { // patrol: tight orbit around a drifting center
+        d.cx+=d.cxv*dt; d.cy+=d.cyv*dt;
+        if(Math.abs(d.cx)>BX*.72){d.cxv*=-1; d.cx=Math.max(-BX*.72,Math.min(BX*.72,d.cx));}
+        if(Math.abs(d.cy)>BY*.72){d.cyv*=-1; d.cy=Math.max(-BY*.72,Math.min(BY*.72,d.cy));}
+        d.orA+=d.orSpd*dt;
+        var nx=d.cx+Math.cos(d.orA)*d.orR, ny=d.cy+Math.sin(d.orA)*d.orR;
+        d.vx=nx-d.x; d.vy=ny-d.y;
+        d.x=nx; d.y=ny;
+      }
+
+      // Heading — face direction of velocity
+      var spd2=Math.sqrt(d.vx*d.vx+d.vy*d.vy);
+      if(spd2>0.001){
+        var tf=Math.atan2(d.vy,d.vx)*180/Math.PI+45;
+        var df=tf-d.facing; while(df>180)df-=360; while(df<-180)df+=360;
+        d.facing+=df*.1;
+      }
+
+      // Lightning-bug glow
+      var gt=((now%d.gP)/d.gP)*Math.PI*2;
+      var gv=.5+.5*Math.sin(gt+d.gPh);
+      var flash=gv>d.gF;
+      var px=flash?(3+gv*22):(2+gv*9);
+      var ga=flash?(.88+gv*.12):(.18+gv*.65);
+      var op=flash?1:(.06+gv*.9);
       var fStr='drop-shadow(0 0 '+px.toFixed(1)+'px rgba(255,107,0,'+ga.toFixed(2)+'))';
-      if(flash) fStr+=' brightness('+(1.6+gv*1.2)+')';
-      var tx=x-d.sz*0.5, ty=y-d.sz*0.5;
-      d.el.style.transform='translate('+tx.toFixed(1)+'px,'+ty.toFixed(1)+'px) rotate('+rot.toFixed(1)+'deg)';
+      if(flash) fStr+=' brightness('+(1.4+gv*1.4)+')';
+
+      d.el.style.transform='translate('+(d.x-d.sz*.5).toFixed(1)+'px,'+(d.y-d.sz*.5).toFixed(1)+'px) rotate('+d.facing.toFixed(1)+'deg)';
       d.el.style.opacity=op.toFixed(2);
       d.el.style.filter=fStr;
     }
