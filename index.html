@@ -1088,6 +1088,8 @@ body::before {
 details.faq-item       { background: rgba(8,8,10,0.55) !important; border-bottom: 1px solid rgba(255,255,255,0.035) !important; border-top: none !important; }
 details.faq-item:hover { background: rgba(12,12,14,0.65) !important; }
 details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
+.faq-q:hover { color: #FF6B00 !important; text-shadow: 0 0 18px rgba(255,107,0,0.55), 0 0 40px rgba(255,107,0,0.2) !important; transition: color .25s, text-shadow .25s !important; }
+details.faq-item[open] .faq-q { color: #FF6B00 !important; text-shadow: 0 0 22px rgba(255,107,0,0.65), 0 0 50px rgba(255,107,0,0.25) !important; }
 
 /* ─── 8. HERO transparent ─── */
 #hero { background: transparent !important; background-image: none !important; }
@@ -2357,7 +2359,23 @@ body,*{cursor:none!important;}
 
 <script>
 const cdot=document.getElementById('cdot');
-document.addEventListener('mousemove',e=>{cdot.style.left=e.clientX+'px';cdot.style.top=e.clientY+'px';});
+(function(){
+  var cx=window.innerWidth/2,cy=window.innerHeight/2,tx=cx,ty=cy,angle=0,tAngle=0,lx=cx,ly=cy;
+  document.addEventListener('mousemove',function(e){
+    var dx=e.clientX-lx,dy=e.clientY-ly;
+    if(dx*dx+dy*dy>4){tAngle=Math.atan2(dy,dx)*180/Math.PI+45;}
+    lx=e.clientX;ly=e.clientY;tx=e.clientX;ty=e.clientY;
+  });
+  (function loop(){
+    cx+=(tx-cx)*0.13;cy+=(ty-cy)*0.13;
+    var da=tAngle-angle;
+    while(da>180)da-=360;while(da<-180)da+=360;
+    angle+=da*0.09;
+    cdot.style.left=cx+'px';cdot.style.top=cy+'px';
+    cdot.style.transform='translate(-50%,-50%) rotate('+angle+'deg)';
+    requestAnimationFrame(loop);
+  })();
+})();
 function tick(){
   const el=document.getElementById('clk');
   if(!el)return;
@@ -2719,15 +2737,34 @@ var ease = [0.22, 1, 0.36, 1];
   }, {amount:0.1});
 })();
 
-// Why cards — staggered rise
+// Why cards — per-card GSAP ScrollTrigger dramatic entrance
 (function(){
   var cards = Array.from(document.querySelectorAll('#why .why-card'));
   if(!cards.length) return;
-  cards.forEach(function(c){ c.style.opacity='0'; c.style.transform='translateY(20px)'; });
-  var fired=false;
-  inView('#why', function(){ if(fired) return; fired=true;
-    animate(cards, {opacity:[0,1], y:[20,0]}, {delay:stagger(0.07), duration:0.5, ease:ease});
-  }, {amount:0.1});
+  if(typeof gsap==='undefined'||typeof ScrollTrigger==='undefined'){
+    // fallback to Motion if GSAP not ready
+    cards.forEach(function(c){ c.style.opacity='0'; c.style.transform='translateY(20px)'; });
+    var fired=false;
+    inView('#why',function(){ if(fired) return; fired=true;
+      animate(cards,{opacity:[0,1],y:[20,0]},{delay:stagger(0.07),duration:0.5,ease:ease});
+    },{amount:0.1});
+    return;
+  }
+  cards.forEach(function(card, i){
+    var isEven = i%2===0;
+    gsap.set(card,{opacity:0, y:60, x:isEven?-28:28, rotateY:isEven?-10:10, scale:0.92});
+    ScrollTrigger.create({
+      trigger: card,
+      start: 'top 88%',
+      once: true,
+      onEnter: function(){
+        gsap.to(card,{opacity:1, y:0, x:0, rotateY:0, scale:1,
+          duration:0.75, ease:'power3.out',
+          delay: (i%3)*0.08
+        });
+      }
+    });
+  });
 })();
 
 // Proof stats — scale + fade
@@ -2899,7 +2936,7 @@ document.querySelectorAll('#services .scard').forEach(function(card){
       io.unobserve(e.target);
       var el=e.target;
       el.style.clipPath='inset(0 100% 0 0)';
-      el.style.transition='clip-path 1.9s cubic-bezier(0.16,1,0.3,1)';
+      el.style.transition='clip-path 3.2s cubic-bezier(0.16,1,0.3,1)';
       requestAnimationFrame(function(){requestAnimationFrame(function(){el.style.clipPath='inset(0 0% 0 0)';});});
     });
   },{threshold:0.2});
@@ -3062,7 +3099,7 @@ document.querySelectorAll('#services .scard').forEach(function(card){
   if(!el) return;
   new Typed(el,{
     strings:['SYSTEMS ONLINE','TARGET ACQUIRED','MISSION ACTIVE','DEPLOYING ASSETS','AIRSPACE CLEAR','INTEL CONFIRMED','STANDBY FOR BRIEFING'],
-    typeSpeed:55,backSpeed:28,backDelay:2200,startDelay:1000,
+    typeSpeed:90,backSpeed:38,backDelay:2800,startDelay:1000,
     loop:true,showCursor:true,cursorChar:'_'
   });
 })();
