@@ -2932,37 +2932,67 @@ document.querySelectorAll('#services .scard').forEach(function(card){
   update();
 })();
 
-// Section header clip-path typewriter reveal (slow, dramatic)
+// Section header clip-path reveal — re-animates on every scroll entry
 (function(){
   var headers=document.querySelectorAll('.sec-h');
   if(!headers.length) return;
   var io=new IntersectionObserver(function(entries){
     entries.forEach(function(e){
-      if(!e.isIntersecting) return;
-      io.unobserve(e.target);
       var el=e.target;
-      el.style.clipPath='inset(0 100% 0 0)';
-      el.style.transition='clip-path 3.2s cubic-bezier(0.16,1,0.3,1)';
-      requestAnimationFrame(function(){requestAnimationFrame(function(){el.style.clipPath='inset(0 0% 0 0)';});});
+      if(e.isIntersecting){
+        el.style.transition='none';
+        el.style.clipPath='inset(0 100% 0 0)';
+        requestAnimationFrame(function(){requestAnimationFrame(function(){
+          el.style.transition='clip-path 3.2s cubic-bezier(0.16,1,0.3,1)';
+          el.style.clipPath='inset(0 0% 0 0)';
+        });});
+      } else {
+        el.style.transition='none';
+        el.style.clipPath='inset(0 100% 0 0)';
+      }
     });
   },{threshold:0.2});
   headers.forEach(function(h){ io.observe(h); });
 })();
 
-// DRD stagger: triggered on scroll-into-view, DRONE RECON from left, DIVISION from below
+// DRD stagger: re-animates on each scroll entry + continuous idle glitch on DRONE RECON
 (function(){
   var og=document.querySelector('.hero-drd .og');
   var dim=document.querySelector('.hero-drd .dim');
   if(!og||!dim) return;
+  var origOg=og.textContent;
   og.style.opacity='0'; og.style.transform='translateX(-40px)';
   dim.style.opacity='0'; dim.style.transform='translateY(28px)';
   var io=new IntersectionObserver(function(entries){
-    if(!entries[0].isIntersecting) return;
-    io.disconnect();
-    animate(og,{opacity:[0,1],x:[-40,0]},{type:'spring',stiffness:180,damping:16,delay:0.08});
-    animate(dim,{opacity:[0,1],y:[28,0]},{type:'spring',stiffness:180,damping:16,delay:0.28});
+    if(entries[0].isIntersecting){
+      animate(og,{opacity:[0,1],x:[-40,0]},{type:'spring',stiffness:180,damping:16,delay:0.08});
+      animate(dim,{opacity:[0,1],y:[28,0]},{type:'spring',stiffness:180,damping:16,delay:0.28});
+    } else {
+      og.style.opacity='0'; og.style.transform='translateX(-40px)';
+      dim.style.opacity='0'; dim.style.transform='translateY(28px)';
+    }
   },{threshold:0.3});
   io.observe(og.closest('.hero-h1')||og);
+
+  // Continuous idle glitch: scrambles DRONE RECON randomly every 2–6s
+  var CHARS='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789·//·';
+  var glitching=false;
+  function doGlitch(){
+    if(glitching||parseFloat(og.style.opacity||0)<0.5) return;
+    glitching=true;
+    var frames=0,total=13;
+    var id=setInterval(function(){
+      frames++;
+      var prog=frames/total;
+      og.textContent=origOg.split('').map(function(ch,i){
+        if(ch===' ') return ch;
+        if(prog>(i/origOg.length)+0.1) return ch;
+        return CHARS[Math.floor(Math.random()*CHARS.length)];
+      }).join('');
+      if(frames>=total){clearInterval(id);og.textContent=origOg;glitching=false;}
+    },44);
+  }
+  (function loop(){setTimeout(function(){doGlitch();loop();},1800+Math.random()*3800);})();
 })();
 </script>
 
@@ -3299,12 +3329,14 @@ var _touch=window.matchMedia('(hover:none),(pointer:coarse)').matches;
   if(_rmq) return;
   var CHARS='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789·/\\';
   function scrambleEl(el){
+    if(el._scrambling) return; // prevent overlapping runs
+    el._scrambling=true;
     /* only scramble direct text nodes so child spans (.gh, .what-anim) survive */
     var nodes=[];
     el.childNodes.forEach(function(n){
       if(n.nodeType===3&&n.textContent.trim()) nodes.push({node:n,orig:n.textContent});
     });
-    if(!nodes.length) return;
+    if(!nodes.length){el._scrambling=false;return;}
     var frames=0,total=26,id=setInterval(function(){
       frames++;
       var progress=frames/total;
@@ -3315,14 +3347,13 @@ var _touch=window.matchMedia('(hover:none),(pointer:coarse)').matches;
           return CHARS[Math.floor(Math.random()*CHARS.length)];
         }).join('');
       });
-      if(frames>=total){clearInterval(id);nodes.forEach(function(item){item.node.textContent=item.orig;});}
+      if(frames>=total){clearInterval(id);nodes.forEach(function(item){item.node.textContent=item.orig;});el._scrambling=false;}
     },36);
   }
+  /* re-fires on every scroll entry — no unobserve */
   var io=new IntersectionObserver(function(entries){
     entries.forEach(function(e){
-      if(!e.isIntersecting) return;
-      io.unobserve(e.target);
-      scrambleEl(e.target);
+      if(e.isIntersecting) scrambleEl(e.target);
     });
   },{threshold:0.4});
   document.querySelectorAll('.sec-h,.sec-tag').forEach(function(el){io.observe(el);});
@@ -3353,14 +3384,19 @@ var _touch=window.matchMedia('(hover:none),(pointer:coarse)').matches;
       +'<span style="font-family:\'Share Tech Mono\',monospace;font-size:8px;color:rgba(255,107,0,0.42);letter-spacing:0.17em;text-transform:uppercase;white-space:nowrap">CLASSIFIED · '+ref+'</span>'
       +'<div style="flex:1;height:1px;background:repeating-linear-gradient(90deg,rgba(255,107,0,0.28) 0 4px,transparent 4px 8px)"></div>';
     card.appendChild(bar);
-    new IntersectionObserver(function(entries,ob){
-      if(!entries[0].isIntersecting) return;
-      ob.disconnect();
-      setTimeout(function(){
-        bar.style.transition='transform 0.62s cubic-bezier(0.77,0,0.18,1) '+t.delay+'ms,opacity 0.42s '+t.delay+'ms';
-        bar.style.transform='translateY(110%)';
-        bar.style.opacity='0';
-      },200);
+    new IntersectionObserver(function(entries){
+      if(entries[0].isIntersecting){
+        setTimeout(function(){
+          bar.style.transition='transform 0.62s cubic-bezier(0.77,0,0.18,1) '+t.delay+'ms,opacity 0.42s '+t.delay+'ms';
+          bar.style.transform='translateY(110%)';
+          bar.style.opacity='0';
+        },200);
+      } else {
+        /* snap reset so it re-animates next scroll-in */
+        bar.style.transition='none';
+        bar.style.transform='translateY(0)';
+        bar.style.opacity='1';
+      }
     },{threshold:0.55}).observe(card);
   });
 })();
