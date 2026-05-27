@@ -103,8 +103,9 @@ section{position:relative;z-index:2;}
 .wrap{max-width:1100px;margin:0 auto;padding:0 52px;}
 .tag{font-family:var(--mono);font-size:10px;letter-spacing:5px;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:12px;background:var(--og-grad-h);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 .tag::before{content:"";width:18px;height:1px;background:var(--og-grad-h);flex-shrink:0;}
-.sec-h{font-family:var(--disp);font-weight:900;font-size:clamp(26px,2.8vw,44px);text-transform:uppercase;letter-spacing:0.5px;line-height:1.05;color:var(--t1);margin-bottom:12px;}
+.sec-h{font-family:var(--disp);font-weight:900;font-size:clamp(26px,2.8vw,44px);text-transform:uppercase;letter-spacing:0.5px;line-height:1.05;color:var(--t1);margin-bottom:12px;clip-path:inset(0 100% 0 0);}
 .sec-h .gh{color:transparent;-webkit-text-stroke:1px rgba(255,255,255,0.18);}
+.sec-h.ch-in{clip-path:inset(0 0% 0 0);transition:clip-path 3.2s cubic-bezier(0.16,1,0.3,1);}
 .sec-intro{font-family:var(--body);font-size:19px;color:var(--t2);line-height:1.85;margin-top:12px;font-weight:500;max-width:740px;}
 .btn-pri{font-family:var(--mono);font-size:12px;letter-spacing:3px;text-transform:uppercase;color:#000;background:var(--og-grad);border:none;padding:16px 36px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:12px;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,0 100%);transition:all .3s;font-weight:700;}
 .btn-pri:hover{background:linear-gradient(135deg,#FFAA00,#FF7A1A,#DD5500);box-shadow:0 0 32px var(--oglow);transform:translateY(-2px);}
@@ -1124,27 +1125,27 @@ details.faq-item[open] .faq-q { color: #FF6B00 !important; text-shadow: 0 0 22px
   width: min(720px, 90vw) !important;
   height: auto !important;
   mix-blend-mode: screen !important;
-  filter: brightness(0.90) contrast(1.05);
+  filter: brightness(1.65) contrast(1.1) saturate(1.2);
   /* deep edge fade: fully opaque center, transparent well before the pixel border */
   -webkit-mask-image: radial-gradient(
-    ellipse 62% 66% at 50% 50%,
+    ellipse 78% 82% at 50% 50%,
     black 0%,
-    black 38%,
-    rgba(0,0,0,0.92) 50%,
-    rgba(0,0,0,0.60) 62%,
-    rgba(0,0,0,0.20) 73%,
-    rgba(0,0,0,0.03) 83%,
-    transparent 90%
+    black 52%,
+    rgba(0,0,0,0.90) 64%,
+    rgba(0,0,0,0.52) 74%,
+    rgba(0,0,0,0.16) 83%,
+    rgba(0,0,0,0.02) 90%,
+    transparent 96%
   ) !important;
   mask-image: radial-gradient(
-    ellipse 62% 66% at 50% 50%,
+    ellipse 78% 82% at 50% 50%,
     black 0%,
-    black 38%,
-    rgba(0,0,0,0.92) 50%,
-    rgba(0,0,0,0.60) 62%,
-    rgba(0,0,0,0.20) 73%,
-    rgba(0,0,0,0.03) 83%,
-    transparent 90%
+    black 52%,
+    rgba(0,0,0,0.90) 64%,
+    rgba(0,0,0,0.52) 74%,
+    rgba(0,0,0,0.16) 83%,
+    rgba(0,0,0,0.02) 90%,
+    transparent 96%
   ) !important;
 }
 
@@ -1197,24 +1198,24 @@ details.faq-item[open] .faq-q { color: #FF6B00 !important; text-shadow: 0 0 22px
 /* ─── 13. MOBILE ─── */
 @media (max-width: 768px) {
   .hero-logo-cin {
-    filter: brightness(0.90) contrast(1.05);
+    filter: brightness(1.65) contrast(1.1) saturate(1.2);
     -webkit-mask-image: radial-gradient(
-      ellipse 60% 64% at 50% 50%,
-      black 0%, black 36%,
-      rgba(0,0,0,0.90) 48%,
-      rgba(0,0,0,0.55) 60%,
-      rgba(0,0,0,0.15) 71%,
-      rgba(0,0,0,0.02) 80%,
-      transparent 88%
+      ellipse 76% 80% at 50% 50%,
+      black 0%, black 50%,
+      rgba(0,0,0,0.88) 62%,
+      rgba(0,0,0,0.48) 72%,
+      rgba(0,0,0,0.14) 81%,
+      rgba(0,0,0,0.02) 88%,
+      transparent 94%
     ) !important;
     mask-image: radial-gradient(
-      ellipse 60% 64% at 50% 50%,
-      black 0%, black 36%,
-      rgba(0,0,0,0.90) 48%,
-      rgba(0,0,0,0.55) 60%,
-      rgba(0,0,0,0.15) 71%,
-      rgba(0,0,0,0.02) 80%,
-      transparent 88%
+      ellipse 76% 80% at 50% 50%,
+      black 0%, black 50%,
+      rgba(0,0,0,0.88) 62%,
+      rgba(0,0,0,0.48) 72%,
+      rgba(0,0,0,0.14) 81%,
+      rgba(0,0,0,0.02) 88%,
+      transparent 94%
     ) !important;
   }
 
@@ -2399,9 +2400,8 @@ setInterval(tick,1000);tick();
   window.addEventListener('scroll',function(){
     if(!t){requestAnimationFrame(function(){
       const p=Math.min(window.scrollY/(window.innerHeight*0.55),1);
-      logo.style.opacity=(0.88*(1-p*0.95)).toFixed(3);
-      /* Start dark (0.58) so screen-blend shows nothing in black areas; fade out on scroll */
-      logo.style.filter=`brightness(${Math.max(0.04,(0.90-p*0.86)).toFixed(2)}) contrast(1.05) saturate(${Math.max(0,(1.0-p*1.0)).toFixed(2)})`;
+      logo.style.opacity=(0.92*(1-p*0.95)).toFixed(3);
+      logo.style.filter=`brightness(${Math.max(0.04,(1.65-p*1.61)).toFixed(2)}) contrast(1.1) saturate(${Math.max(0,(1.2-p*1.2)).toFixed(2)})`;
       logo.style.animationPlayState=p>0.25?'paused':'running';
       t=false;
     });t=true;}
@@ -2932,23 +2932,16 @@ document.querySelectorAll('#services .scard').forEach(function(card){
   update();
 })();
 
-// Section header clip-path reveal — re-animates on every scroll entry
+// Section header clip-path reveal — CSS class toggle, re-animates on every scroll entry
 (function(){
   var headers=document.querySelectorAll('.sec-h');
   if(!headers.length) return;
   var io=new IntersectionObserver(function(entries){
     entries.forEach(function(e){
-      var el=e.target;
       if(e.isIntersecting){
-        el.style.transition='none';
-        el.style.clipPath='inset(0 100% 0 0)';
-        requestAnimationFrame(function(){requestAnimationFrame(function(){
-          el.style.transition='clip-path 3.2s cubic-bezier(0.16,1,0.3,1)';
-          el.style.clipPath='inset(0 0% 0 0)';
-        });});
+        e.target.classList.add('ch-in');
       } else {
-        el.style.transition='none';
-        el.style.clipPath='inset(0 100% 0 0)';
+        e.target.classList.remove('ch-in');
       }
     });
   },{threshold:0.2});
