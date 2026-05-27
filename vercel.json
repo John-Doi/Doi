@@ -1,11 +1,16 @@
 {
   "outputDirectory": ".",
-  "routes": [
-    { "handle": "filesystem" }
-  ],
+  "functions": {
+    "api/email-bg.js": {
+      "includeFiles": "email-assets/recon-bg.jpg"
+    },
+    "api/email-logo.js": {
+      "includeFiles": "email-assets/doi-logo.png"
+    }
+  },
   "headers": [
     {
-      "source": "/email-assets/(.*)",
+      "source": "/api/email-(.*)",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=86400, stale-while-revalidate=604800" },
         { "key": "Access-Control-Allow-Origin", "value": "*" }
