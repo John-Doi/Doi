@@ -1,5 +1,8 @@
 {
   "outputDirectory": ".",
+  "routes": [
+    { "handle": "filesystem" }
+  ],
   "headers": [
     {
       "source": "/email-assets/(.*)",
