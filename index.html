@@ -805,10 +805,9 @@ details.faq-item summary::marker{display:none!important;}
 /* Corner brackets — hidden in hero */
 .hcorners { display: none !important; }
 
-/* Restore logo video — shield SVG is watermark behind it */
 video.hero-logo-cin { display: block !important; position: relative; z-index: 2; }
 
-/* Shield SVG — absolute watermark BEHIND the video */
+/* Shield SVG — floats above the drone video */
 .hero-shield-svg {
   position: absolute !important;
   top: 50% !important;
@@ -816,15 +815,10 @@ video.hero-logo-cin { display: block !important; position: relative; z-index: 2;
   transform: translate(-50%, -50%) !important;
   width: min(360px, 80vw) !important;
   height: auto !important;
-  opacity: 0.28 !important;
-  z-index: 1 !important;
+  opacity: 0.6 !important;
+  z-index: 3 !important;
   pointer-events: none !important;
   filter: none !important;
-  animation: shieldPulse 8s ease-in-out infinite !important;
-}
-@keyframes shieldPulse {
-  0%, 100% { opacity: 0.28; }
-  50% { opacity: 0.38; }
 }
 .hero-logo-wrap { position: relative !important; }
 
@@ -1190,7 +1184,7 @@ details.faq-item[open] .faq-q { color: #FF6B00 !important; text-shadow: 0 0 22px
   position: absolute !important; top: 50% !important; left: 50% !important;
   transform: translate(-50%,-50%) !important;
   width: min(360px,80vw) !important; height: auto !important;
-  opacity: 0.18 !important; z-index: 1 !important;
+  opacity: 0.6 !important; z-index: 3 !important;
   pointer-events: none !important; filter: none !important;
 }
 
@@ -1688,8 +1682,8 @@ body,*{cursor:none!important;}
       <circle cx="100" cy="120" r="4" fill="#1c1a10"/>
 
       <!-- Orange diagonal slashes — DOi signature mark -->
-      <line x1="152" y1="17" x2="178" y2="45" stroke="rgba(80,80,80,0.35)" stroke-width="4.5" stroke-linecap="round" opacity="0.6"/>
-      <line x1="22" y1="204" x2="48" y2="230" stroke="rgba(80,80,80,0.35)" stroke-width="4.5" stroke-linecap="round" opacity="0.6"/>
+      <line x1="152" y1="17" x2="178" y2="45" stroke="#FF6B00" stroke-width="4.5" stroke-linecap="round"/>
+      <line x1="22" y1="204" x2="48" y2="230" stroke="#FF6B00" stroke-width="4.5" stroke-linecap="round"/>
     </svg>
   </div>
   <div class="hero-recon-badge">DØi LABS &nbsp;·&nbsp; RECON DIVISION &nbsp;·&nbsp; EST. 2025</div>
