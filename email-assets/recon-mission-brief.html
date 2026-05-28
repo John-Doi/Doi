@@ -9,13 +9,14 @@
 <noscript><xml><o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch></o:OfficeDocumentSettings></xml></noscript>
 <![endif]-->
 <style type="text/css">
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(20px); }
     to   { opacity: 1; transform: translateY(0);    }
   }
   @keyframes ctaGlow {
-    0%,100% { box-shadow: 0 0 0px 0px rgba(200,120,32,0);   }
-    50%     { box-shadow: 0 0 22px 6px rgba(200,120,32,0.55); }
+    0%,100% { box-shadow: 0 0 0px 0px rgba(232,85,0,0);   }
+    50%     { box-shadow: 0 0 22px 6px rgba(232,85,0,0.55); }
   }
   @keyframes barPulse {
     0%,100% { opacity: 0.7; }
@@ -45,8 +46,8 @@
   <!-- ╔═ 4px AMBER TOP CAP ═╗ -->
   <tr>
     <td class="accent-bar" height="4"
-        style="height:4px;line-height:4px;font-size:0;background-color:#C87820;"
-        bgcolor="#C87820">&nbsp;</td>
+        style="height:4px;line-height:4px;font-size:0;background-color:#E85500;"
+        bgcolor="#E85500">&nbsp;</td>
   </tr>
 
   <!-- ╔═ FULL BACKGROUND — all content sits on top of image ═╗ -->
@@ -65,27 +66,23 @@
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td style="padding:16px 28px 14px;
-                     border-bottom:1px solid rgba(200,120,32,0.4);
-                     mso-border-bottom-alt:solid #3a2a10 1pt;">
+                     border-bottom:1px solid rgba(232,85,0,0.4);
+                     mso-border-bottom-alt:solid #4a1500 1pt;">
             <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
               <tr>
-                <td style="vertical-align:middle;">
-                  <p style="margin:0;padding:0;font-family:Arial,Helvetica,sans-serif;
-                            font-size:12px;font-weight:700;letter-spacing:5px;
-                            color:#C87820;text-transform:uppercase;">D&#216;I LABS</p>
-                  <p style="margin:3px 0 0;padding:0;font-family:'Courier New',Courier,monospace;
-                            font-size:11px;letter-spacing:4px;color:#aaaaaa;text-transform:uppercase;">
-                    // RECON DIVISION</p>
+                <td style="vertical-align:middle;" width="48">
+                  <img src="data:image/png;base64,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" width="38" height="38" alt="DØi"
+                       style="display:block;border:0;outline:none;text-decoration:none;width:38px;height:38px;" />
                 </td>
                 <td style="vertical-align:middle;text-align:right;">
                   <table role="presentation" cellpadding="0" cellspacing="0" border="0" align="right">
                     <tr>
-                      <td width="6" height="6" bgcolor="#C87820"
-                          style="background-color:#C87820;border-radius:3px;
+                      <td width="6" height="6" bgcolor="#E85500"
+                          style="background-color:#E85500;border-radius:3px;
                                  width:6px;height:6px;font-size:0;line-height:0;">&nbsp;</td>
                       <td style="padding-left:7px;font-family:'Courier New',Courier,monospace;
                                  font-size:11px;font-weight:700;letter-spacing:3px;
-                                 color:#C87820;text-transform:uppercase;vertical-align:middle;">ACTIVE</td>
+                                 color:#E85500;text-transform:uppercase;vertical-align:middle;">ACTIVE</td>
                     </tr>
                   </table>
                 </td>
@@ -105,7 +102,7 @@
                         text-decoration:none;height:auto;max-width:80px;" />
             <p style="margin:18px 0 0;padding:0;font-family:Arial,Helvetica,sans-serif;
                        font-size:18px;font-weight:700;letter-spacing:7px;
-                       color:#C87820;text-transform:uppercase;line-height:1;">D&#216;I LABS</p>
+                       color:#E85500;text-transform:uppercase;line-height:1;">D&#216;I LABS</p>
             <p style="margin:6px 0 0;padding:0;font-family:Arial,Helvetica,sans-serif;
                        font-size:11px;font-weight:400;letter-spacing:6px;
                        color:#aaaaaa;text-transform:uppercase;line-height:1;">// RECON DIVISION</p>
@@ -119,8 +116,8 @@
           <td style="padding:0 28px;">
             <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
               <tr>
-                <td height="1" style="height:1px;line-height:1px;font-size:0;background-color:#C87820;opacity:0.4;"
-                    bgcolor="#4a3010">&nbsp;</td>
+                <td height="1" style="height:1px;line-height:1px;font-size:0;background-color:#E85500;opacity:0.4;"
+                    bgcolor="#5a1a00">&nbsp;</td>
               </tr>
             </table>
           </td>
@@ -131,15 +128,17 @@
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td style="padding:28px 28px 36px;">
-            <p style="margin:0 0 12px;padding:0;font-family:Arial,Helvetica,sans-serif;
-                       font-size:13px;font-weight:400;letter-spacing:6px;
-                       color:#C87820;text-transform:uppercase;">&#9670;&nbsp; MISSION REVIEW</p>
+            <p style="margin:0 0 14px;padding:0;
+                       font-family:'Orbitron','Eurostile','Arial Black',Arial,sans-serif;
+                       font-size:10px;font-weight:700;letter-spacing:2.5px;
+                       color:#E85500;text-transform:uppercase;line-height:1.6;word-spacing:2px;">
+              DOCUMENT ID: D&#216;i-RCN-AUTO-003&nbsp;&nbsp;&#124;&nbsp;&nbsp;FEASIBILITY REVIEW NOTIFICATION</p>
             <h1 class="hero-title"
                 style="margin:0 0 14px;padding:0;font-family:Arial,Helvetica,sans-serif;
                        font-size:28px;font-weight:700;letter-spacing:2px;
                        color:#ffffff;text-transform:uppercase;line-height:1.2;
-                       mso-line-height-rule:exactly;border-left:3px solid #C87820;
-                       padding-left:16px;mso-border-left-alt:solid #C87820 3pt;">
+                       mso-line-height-rule:exactly;border-left:3px solid #E85500;
+                       padding-left:16px;mso-border-left-alt:solid #E85500 3pt;">
               @{triggerOutputs()?['body/ProjectName']}
             </h1>
             <p style="margin:0;padding:0;font-family:'Courier New',Courier,monospace;
@@ -160,8 +159,8 @@
 
   <!-- ╔═ 3px AMBER SEPARATOR ═╗ -->
   <tr>
-    <td height="3" style="height:3px;line-height:3px;font-size:0;background-color:#C87820;"
-        bgcolor="#C87820">&nbsp;</td>
+    <td height="3" style="height:3px;line-height:3px;font-size:0;background-color:#E85500;"
+        bgcolor="#E85500">&nbsp;</td>
   </tr>
 
   <!-- ╔═ MISSION PARAMETERS ═╗ -->
@@ -173,12 +172,12 @@
           <td style="padding:24px 28px 18px;">
             <table role="presentation" cellpadding="0" cellspacing="0" border="0">
               <tr>
-                <td width="3" bgcolor="#C87820"
-                    style="background-color:#C87820;width:3px;font-size:0;">&nbsp;</td>
+                <td width="3" bgcolor="#E85500"
+                    style="background-color:#E85500;width:3px;font-size:0;">&nbsp;</td>
                 <td style="padding-left:12px;">
                   <p style="margin:0;padding:0;font-family:Arial,Helvetica,sans-serif;
                              font-size:12px;font-weight:700;letter-spacing:6px;
-                             color:#C87820;text-transform:uppercase;">MISSION PARAMETERS</p>
+                             color:#E85500;text-transform:uppercase;">MISSION PARAMETERS</p>
                 </td>
               </tr>
             </table>
@@ -196,7 +195,7 @@
           </td>
           <td width="62%" style="padding:13px 28px 13px 16px;vertical-align:top;
                 border-bottom:1px solid #222222;mso-border-bottom-alt:solid #222222 1pt;
-                border-left:2px solid #C87820;mso-border-left-alt:solid #C87820 2pt;">
+                border-left:2px solid #E85500;mso-border-left-alt:solid #E85500 2pt;">
             <p style="margin:0;padding:0;font-family:Arial,Helvetica,sans-serif;
                        font-size:15px;font-weight:700;letter-spacing:2px;
                        color:#ffffff;text-transform:uppercase;">@{triggerOutputs()?['body/MissionType/Value']}</p>
@@ -211,7 +210,7 @@
           </td>
           <td width="62%" style="padding:13px 28px 13px 16px;vertical-align:top;
                 border-bottom:1px solid #222222;mso-border-bottom-alt:solid #222222 1pt;
-                border-left:2px solid #C87820;mso-border-left-alt:solid #C87820 2pt;">
+                border-left:2px solid #E85500;mso-border-left-alt:solid #E85500 2pt;">
             <p style="margin:0;padding:0;font-family:Arial,Helvetica,sans-serif;
                        font-size:15px;font-weight:700;letter-spacing:1px;color:#ffffff;">
               @{triggerOutputs()?['body/ClientName']}</p>
@@ -226,9 +225,9 @@
           </td>
           <td width="62%" style="padding:13px 28px 13px 16px;vertical-align:top;
                 border-bottom:1px solid #222222;mso-border-bottom-alt:solid #222222 1pt;
-                border-left:2px solid #C87820;mso-border-left-alt:solid #C87820 2pt;">
+                border-left:2px solid #E85500;mso-border-left-alt:solid #E85500 2pt;">
             <p style="margin:0;padding:0;font-family:Arial,Helvetica,sans-serif;
-                       font-size:15px;font-weight:700;letter-spacing:2px;color:#C87820;">
+                       font-size:15px;font-weight:700;letter-spacing:2px;color:#E85500;">
               @{triggerOutputs()?['body/RequestedDate']}</p>
           </td>
         </tr>
@@ -239,7 +238,7 @@
                        font-size:12px;letter-spacing:3px;color:#7a7a7a;text-transform:uppercase;">SITE ADDRESS</p>
           </td>
           <td width="62%" style="padding:13px 28px 22px 16px;vertical-align:top;
-                border-left:2px solid #C87820;mso-border-left-alt:solid #C87820 2pt;">
+                border-left:2px solid #E85500;mso-border-left-alt:solid #E85500 2pt;">
             <p style="margin:0;padding:0;font-family:Arial,Helvetica,sans-serif;
                        font-size:15px;font-weight:400;color:#c8c8c8;line-height:1.6;">
               @{triggerOutputs()?['body/SiteAddress']}</p>
@@ -255,12 +254,12 @@
     <td bgcolor="#141414" style="background-color:#141414;padding:32px 28px 36px;text-align:center;">
       <table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center">
         <tr>
-          <td class="cta-cell" bgcolor="#C87820"
-              style="background-color:#C87820;border-radius:2px;mso-border-radius:2px;">
+          <td class="cta-cell" bgcolor="#E85500"
+              style="background-color:#E85500;border-radius:2px;mso-border-radius:2px;">
             <!--[if mso]><i style="letter-spacing:48px;mso-font-width:-100%;mso-text-raise:32pt;">&nbsp;</i><![endif]-->
             <a href="https://apps.powerapps.com/play/e/default-0d40bf1b-4165-4c7d-969c-39a9979f579f/a/07417ec0-5b54-4985-874b-ba1b8007e149?tenantId=0d40bf1b-4165-4c7d-969c-39a9979f579f&MissionID=@{triggerOutputs()?['body/MissionID']}"
                target="_blank"
-               style="background-color:#C87820;border-radius:2px;color:#ffffff;
+               style="background-color:#E85500;border-radius:2px;color:#ffffff;
                       display:inline-block;font-family:Arial,Helvetica,sans-serif;
                       font-size:14px;font-weight:700;letter-spacing:5px;line-height:100%;
                       padding:16px 48px;text-decoration:none;text-transform:uppercase;
@@ -272,15 +271,15 @@
         </tr>
       </table>
       <p style="margin:12px 0 0;padding:0;font-family:'Courier New',Courier,monospace;
-                 font-size:11px;color:#484848;letter-spacing:3px;text-transform:uppercase;">
+                 font-size:13px;color:#E85500;font-weight:700;letter-spacing:4px;text-transform:uppercase;">
         POWER APPS&nbsp;&nbsp;//&nbsp;&nbsp;RECON CHECKLIST</p>
     </td>
   </tr>
 
   <!-- ╔═ 3px AMBER SEPARATOR ═╗ -->
   <tr>
-    <td height="3" style="height:3px;line-height:3px;font-size:0;background-color:#C87820;"
-        bgcolor="#C87820">&nbsp;</td>
+    <td height="3" style="height:3px;line-height:3px;font-size:0;background-color:#E85500;"
+        bgcolor="#E85500">&nbsp;</td>
   </tr>
 
   <!-- ╔═ FOOTER ═╗ -->
@@ -291,7 +290,7 @@
           <td>
             <p style="margin:0 0 10px;padding:0;font-family:Arial,Helvetica,sans-serif;
                        font-size:12px;font-weight:700;letter-spacing:5px;
-                       color:#C87820;text-transform:uppercase;">D&#216;I LABS&nbsp;&nbsp;//&nbsp;&nbsp;RECON DIVISION</p>
+                       color:#E85500;text-transform:uppercase;">D&#216;I LABS&nbsp;&nbsp;//&nbsp;&nbsp;RECON DIVISION</p>
             <p style="margin:0;padding:0;font-family:Arial,Helvetica,sans-serif;
                        font-size:12px;color:#505050;line-height:1.7;letter-spacing:0.3px;">
               This communication contains operationally sensitive information and is intended solely
@@ -310,8 +309,8 @@
   <!-- ╔═ 4px AMBER BOTTOM CAP ═╗ -->
   <tr>
     <td class="accent-bar" height="4"
-        style="height:4px;line-height:4px;font-size:0;background-color:#C87820;"
-        bgcolor="#C87820">&nbsp;</td>
+        style="height:4px;line-height:4px;font-size:0;background-color:#E85500;"
+        bgcolor="#E85500">&nbsp;</td>
   </tr>
 
 </table>
