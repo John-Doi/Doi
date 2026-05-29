@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="x-apple-disable-message-reformatting">
+<!--[if mso]>
+<noscript><xml><o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch></o:OfficeDocumentSettings></xml></noscript>
+<![endif]-->
+<style>
+  body, table, td { margin:0; padding:0; }
+  @media only screen and (max-width:600px) {
+    .wrap { width:100% !important; }
+    .h1   { font-size:26px !important; }
+  }
+</style>
+</head>
+<body style="margin:0;padding:0;background-color:#050505;" bgcolor="#050505">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#050505">
+<tr><td align="center" style="padding:20px 0;">
+
+<table class="wrap" role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" align="center"
+  style="max-width:600px;width:100%;">
+  <tr>
+    <!-- BACKGROUND: recon-bg.png via CSS (Gmail/Apple Mail), HTML attribute (iOS Mail), VML (Outlook desktop) -->
+    <td style="padding:0;
+               background-image:url('https://cdn.jsdelivr.net/gh/john-doi/doi@main/public/email-assets/recon-bg.png');
+               background-size:cover;
+               background-position:center top;
+               background-repeat:no-repeat;
+               background-color:#0a0a0a;"
+        bgcolor="#0a0a0a"
+        background="https://cdn.jsdelivr.net/gh/john-doi/doi@main/public/email-assets/recon-bg.png">
+
+      <!--[if gte mso 9]>
+      <v:rect xmlns:v="urn:schemas-microsoft-com:vml" fill="true" stroke="false" style="width:600px;">
+        <v:fill type="frame" src="https://cdn.jsdelivr.net/gh/john-doi/doi@main/public/email-assets/recon-bg.png" color="#0a0a0a"/>
+        <v:textbox inset="0,0,0,0" style="mso-fit-shape-to-text:true">
+      <![endif]-->
+
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+
+        <!-- SPACER: lets background show at top -->
+        <tr><td height="280" style="height:280px;font-size:0;line-height:0;">&nbsp;</td></tr>
+
+        <!-- MISSION TITLE -->
+        <tr>
+          <td style="padding:24px 28px 20px;">
+            <p style="margin:0 0 8px;font-family:'Courier New',monospace;font-size:10px;letter-spacing:3px;color:#FF6B00;text-transform:uppercase;">
+              FEASIBILITY REVIEW NOTIFICATION
+            </p>
+            <h1 class="h1" style="margin:0 0 8px;font-family:Arial,sans-serif;font-size:36px;font-weight:bold;color:#F0F0F0;text-transform:uppercase;line-height:1.1;mso-line-height-rule:exactly;">
+              @{triggerOutputs()?['body/ProjectName']}
+            </h1>
+            <p style="margin:0;font-family:'Courier New',monospace;font-size:11px;letter-spacing:3px;color:#a0a0a0;text-transform:uppercase;">
+              MISSION ID: @{triggerOutputs()?['body/MissionID']}
+            </p>
+          </td>
+        </tr>
+
+        <!-- FIELD: MISSION TYPE -->
+        <tr>
+          <td style="padding:10px 28px 4px;">
+            <p style="margin:0 0 2px;font-family:'Courier New',monospace;font-size:9px;letter-spacing:3px;color:#FF6B00;text-transform:uppercase;">MISSION TYPE</p>
+            <p style="margin:0;font-family:Arial,sans-serif;font-size:16px;font-weight:bold;color:#F0F0F0;text-transform:uppercase;">@{triggerOutputs()?['body/MissionType/Value']}</p>
+          </td>
+        </tr>
+
+        <!-- FIELD: CLIENT -->
+        <tr>
+          <td style="padding:10px 28px 4px;">
+            <p style="margin:0 0 2px;font-family:'Courier New',monospace;font-size:9px;letter-spacing:3px;color:#FF6B00;text-transform:uppercase;">CLIENT</p>
+            <p style="margin:0;font-family:Arial,sans-serif;font-size:16px;font-weight:600;color:#F0F0F0;">@{triggerOutputs()?['body/ClientName']}</p>
+          </td>
+        </tr>
+
+        <!-- FIELD: REQUESTED DATE -->
+        <tr>
+          <td style="padding:10px 28px 4px;">
+            <p style="margin:0 0 2px;font-family:'Courier New',monospace;font-size:9px;letter-spacing:3px;color:#FF6B00;text-transform:uppercase;">REQUESTED DATE</p>
+            <p style="margin:0;font-family:'Courier New',monospace;font-size:15px;font-weight:bold;color:#FF6B00;">@{triggerOutputs()?['body/RequestedDate']}</p>
+          </td>
+        </tr>
+
+        <!-- FIELD: SITE ADDRESS -->
+        <tr>
+          <td style="padding:10px 28px 24px;">
+            <p style="margin:0 0 2px;font-family:'Courier New',monospace;font-size:9px;letter-spacing:3px;color:#FF6B00;text-transform:uppercase;">SITE ADDRESS</p>
+            <p style="margin:0;font-family:Arial,sans-serif;font-size:14px;color:#c0c0c0;line-height:1.5;">@{triggerOutputs()?['body/SiteAddress']}</p>
+          </td>
+        </tr>
+
+        <!-- CTA BUTTON -->
+        <tr>
+          <td style="padding:8px 28px 36px;">
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td bgcolor="#FF6B00" style="background-color:#FF6B00;">
+                  <!--[if mso]><i style="letter-spacing:28px;mso-font-width:-100%;mso-text-raise:22pt;">&nbsp;</i><![endif]-->
+                  <a href="https://apps.powerapps.com/play/e/default-0d40bf1b-4165-4c7d-969c-39a9979f579f/a/07417ec0-5b54-4985-874b-ba1b8007e149?tenantId=0d40bf1b-4165-4c7d-969c-39a9979f579f&MissionID=@{triggerOutputs()?['body/MissionID']}"
+                     target="_blank"
+                     style="background-color:#FF6B00;color:#050505;display:inline-block;font-family:Arial,sans-serif;font-size:13px;font-weight:bold;letter-spacing:4px;padding:12px 36px;text-decoration:none;text-transform:uppercase;">
+                    OPEN MISSION CHECKLIST
+                  </a>
+                  <!--[if mso]><i style="letter-spacing:28px;mso-font-width:-100%;">&nbsp;</i><![endif]-->
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- FOOTER -->
+        <tr>
+          <td style="padding:16px 28px;border-top:1px solid rgba(255,107,0,0.3);">
+            <p style="margin:0;font-family:'Courier New',monospace;font-size:9px;color:#555555;letter-spacing:2px;">&copy; 2026 DØI LABS &mdash; RECON DIVISION &mdash; AUTHORIZED PERSONNEL ONLY</p>
+          </td>
+        </tr>
+
+      </table>
+
+      <!--[if gte mso 9]></v:textbox></v:rect><![endif]-->
+    </td>
+  </tr>
+</table>
+
+</td></tr>
+</table>
+</body>
+</html>
