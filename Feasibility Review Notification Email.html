@@ -10,8 +10,10 @@
 <![endif]-->
 <style>
   body, table, td { margin:0; padding:0; }
+  img { display:block; border:0; outline:none; text-decoration:none; }
   @media only screen and (max-width:600px) {
     .wrap { width:100% !important; }
+    .hero { width:100% !important; height:auto !important; }
     .h1   { font-size:26px !important; }
   }
 </style>
@@ -22,27 +24,20 @@
 
 <table class="wrap" role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" align="center"
   style="max-width:600px;width:100%;">
+
+  <!-- HEADER IMAGE -->
   <tr>
-    <!-- BACKGROUND: recon-bg.png via CSS (Gmail/Apple Mail), HTML attribute (iOS Mail), VML (Outlook desktop) -->
-    <td style="padding:0;
-               background-image:url('https://cdn.jsdelivr.net/gh/John-Doi/Doi@main/public/email-assets/recon-bg.jpg');
-               background-size:cover;
-               background-position:center top;
-               background-repeat:no-repeat;
-               background-color:#0a0a0a;"
-        bgcolor="#0a0a0a"
-        background="https://cdn.jsdelivr.net/gh/John-Doi/Doi@main/public/email-assets/recon-bg.jpg">
+    <td style="padding:0;margin:0;">
+      <img class="hero" src="https://cdn.jsdelivr.net/gh/John-Doi/Doi@main/public/email-assets/recon-bg.jpg"
+           width="600" alt="DØi Labs Recon Division"
+           style="width:600px;height:auto;display:block;border:0;" />
+    </td>
+  </tr>
 
-      <!--[if gte mso 9]>
-      <v:rect xmlns:v="urn:schemas-microsoft-com:vml" fill="true" stroke="false" style="width:600px;">
-        <v:fill type="frame" src="https://cdn.jsdelivr.net/gh/John-Doi/Doi@main/public/email-assets/recon-bg.jpg" color="#0a0a0a"/>
-        <v:textbox inset="0,0,0,0" style="mso-fit-shape-to-text:true">
-      <![endif]-->
-
+  <!-- CONTENT BLOCK -->
+  <tr>
+    <td style="background-color:#0a0a0a;padding:0;" bgcolor="#0a0a0a">
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
-
-        <!-- SPACER: lets background show at top -->
-        <tr><td height="280" style="height:280px;font-size:0;line-height:0;">&nbsp;</td></tr>
 
         <!-- MISSION TITLE -->
         <tr>
@@ -59,9 +54,18 @@
           </td>
         </tr>
 
+        <!-- DIVIDER -->
+        <tr>
+          <td style="padding:0 28px;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr><td style="border-top:1px solid rgba(255,107,0,0.3);font-size:0;line-height:0;">&nbsp;</td></tr>
+            </table>
+          </td>
+        </tr>
+
         <!-- FIELD: MISSION TYPE -->
         <tr>
-          <td style="padding:10px 28px 4px;">
+          <td style="padding:14px 28px 4px;">
             <p style="margin:0 0 2px;font-family:'Courier New',monospace;font-size:9px;letter-spacing:3px;color:#FF6B00;text-transform:uppercase;">MISSION TYPE</p>
             <p style="margin:0;font-family:Arial,sans-serif;font-size:16px;font-weight:bold;color:#F0F0F0;text-transform:uppercase;">@{triggerOutputs()?['body/MissionType/Value']}</p>
           </td>
@@ -118,10 +122,9 @@
         </tr>
 
       </table>
-
-      <!--[if gte mso 9]></v:textbox></v:rect><![endif]-->
     </td>
   </tr>
+
 </table>
 
 </td></tr>
