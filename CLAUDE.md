@@ -83,6 +83,8 @@ There is no test suite. Verify changes by:
 
 - **ALWAYS do a full inquiry before every task** — read the actual files, run `ls` to check actual directory contents, verify actual filenames. NEVER guess. NEVER rely on recall from a previous session or earlier in the conversation. Always look at the real current state of the repo before making any change or statement.
 - **MAXIMUM EFFORT ON EVERY TASK** — research exhaustively, find the exact right answer, deliver the highest-quality solution possible every single time. No shortcuts. No approximations. No "good enough." The correct answer only.
+- **ANTICIPATE NEXT STEPS** — after every task, proactively deliver what the user will need next without being asked. If HTML was changed, output it. If a file was committed, confirm the URL. Eliminate every unnecessary back-and-forth.
+- **OUTPUT DELIVERABLES IMMEDIATELY** — whenever the result of a task is a file the user needs to use (email HTML, config, etc.), output the full content in the same response. Never make the user ask for it.
 - Do what has been asked; nothing more, nothing less
 - NEVER create files unless absolutely necessary — prefer editing existing files
 - NEVER create documentation files unless explicitly requested
