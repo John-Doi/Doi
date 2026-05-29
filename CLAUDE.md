@@ -81,6 +81,7 @@ There is no test suite. Verify changes by:
 
 ## Rules
 
+- **ALWAYS do a full inquiry before every task** — read the actual files, run `ls` to check actual directory contents, verify actual filenames. NEVER guess. NEVER rely on recall from a previous session or earlier in the conversation. Always look at the real current state of the repo before making any change or statement.
 - Do what has been asked; nothing more, nothing less
 - NEVER create files unless absolutely necessary — prefer editing existing files
 - NEVER create documentation files unless explicitly requested
