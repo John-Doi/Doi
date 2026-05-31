@@ -85,10 +85,32 @@ section[id],div[id]{scroll-margin-top:72px;}
   display:flex;flex-direction:column;background:var(--bg);
 }
 .hero-video{position:absolute;inset:0;z-index:0;overflow:hidden;}
-.hero-video video{width:100%;height:100%;object-fit:cover;opacity:.72;transform:scale(.7);}
+/* HERO BG — CSS glow + animated scan line; no video zoom */
+.hero-glow-bg{position:absolute;inset:0;z-index:0;}
+.hero-glow-bg::before{
+  content:'';position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(255,107,26,.055) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,107,26,.055) 1px,transparent 1px);
+  background-size:52px 52px;
+  animation:gridGlow 3.5s ease-in-out infinite;
+}
+.hero-glow-bg::after{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 65% 55% at 50% 50%,rgba(255,107,26,.10) 0%,transparent 70%);
+  animation:heroPulse 3s ease-in-out infinite;
+}
+.hero-scanline{
+  position:absolute;left:0;right:0;height:1px;z-index:1;
+  background:linear-gradient(90deg,transparent 0%,rgba(255,107,26,.55) 20%,rgba(255,107,26,.95) 50%,rgba(255,107,26,.55) 80%,transparent 100%);
+  animation:scanDown 5s linear infinite;
+}
+@keyframes gridGlow{0%,100%{opacity:.55;}50%{opacity:1;}}
+@keyframes heroPulse{0%,100%{opacity:.5;}50%{opacity:1;}}
+@keyframes scanDown{0%{top:-1px;opacity:0;}5%{opacity:1;}95%{opacity:.8;}100%{top:100%;opacity:0;}}
 .hero-video::after{
   content:'';position:absolute;inset:0;
-  background:linear-gradient(120deg,rgba(8,8,8,.95) 0%,rgba(8,8,8,.55) 55%,rgba(8,8,8,.9) 100%);
+  background:linear-gradient(120deg,rgba(8,8,8,.88) 0%,rgba(8,8,8,.45) 55%,rgba(8,8,8,.82) 100%);
 }
 
 .hero-inner{
@@ -136,7 +158,8 @@ section[id],div[id]{scroll-margin-top:72px;}
   width:100%;max-width:620px;will-change:transform,opacity;
   filter:drop-shadow(0 30px 60px rgba(255,107,26,.2));
 }
-#heroDrone img,#heroDrone video{width:100%;height:auto;display:block;mix-blend-mode:screen;}
+#heroDrone{background:transparent;}
+#heroDrone img,#heroDrone video{width:100%;height:auto;display:block;mix-blend-mode:screen;filter:brightness(1.15) contrast(1.05);}
 .tele{
   position:absolute;font-family:var(--mono);font-size:12px;
   color:var(--og);letter-spacing:.1em;pointer-events:none;
@@ -400,7 +423,9 @@ footer{
 .qa-stat-num{font-family:var(--disp);font-size:32px;font-weight:900;color:var(--og);line-height:1;}
 .qa-stat-label{font-family:var(--mono);font-size:11px;color:var(--t3);letter-spacing:.14em;margin-top:4px;}
 .qa-content{padding:48px;background:var(--card);border-left:1px solid var(--bd);display:flex;flex-direction:column;gap:24px;}
-.qa-title{font-family:var(--disp);font-size:clamp(18px,1.8vw,28px);font-weight:900;color:var(--t1);line-height:1.15;}
+.qa-title{font-family:var(--disp);font-size:clamp(26px,2.8vw,48px);font-weight:900;color:var(--t1);line-height:1.1;}
+/* Oversized titles for Deliverables + Why sections */
+.del-section .sec-title,.why-section .sec-title{font-size:clamp(38px,5vw,80px);}
 .qa-title span{color:var(--og);}
 .qa-lead{font-size:15px;color:var(--t2);line-height:1.7;}
 .qa-checklist{list-style:none;display:flex;flex-direction:column;gap:9px;}
@@ -499,11 +524,8 @@ footer{
 <!-- HERO SCROLL ZONE -->
 <section class="hero-zone" id="hero">
   <div class="hero-pin">
-    <!-- PHASE 2 · poster = preloaded WebP handles LCP; video src injected after window.load to avoid blocking paint -->
     <div class="hero-video">
-      <video id="heroVideo" muted loop playsinline poster="IMG_4044.webp">
-        <source data-src="DOi_logomain.mp4" type="video/mp4">
-      </video>
+      <div class="hero-glow-bg"><div class="hero-scanline"></div></div>
     </div>
     <div class="hero-inner">
       <div class="hero-left">
@@ -797,6 +819,11 @@ footer{
       <div class="sec-tag">MISSION BRIEF REQUEST</div>
       <h2 class="sec-title">DEPLOY <span>DØi LABS</span></h2>
       <p class="sec-desc">Tell us your mission. We'll build the flight plan.</p>
+      <div style="display:flex;gap:24px;justify-content:center;margin-top:16px;flex-wrap:wrap;">
+        <a href="tel:3102997401" style="font-family:var(--mono);font-size:13px;color:var(--og);letter-spacing:.12em;text-decoration:none;">310.299.7401</a>
+        <span style="font-family:var(--mono);font-size:13px;color:var(--t3);">·</span>
+        <a href="mailto:DOiRECON@DOILABS.CA" style="font-family:var(--mono);font-size:13px;color:var(--og);letter-spacing:.12em;text-decoration:none;">DOiRECON@DOILABS.CA</a>
+      </div>
     </div>
     <form class="form-grid" onsubmit="handleSubmit(event)">
       <div class="form-group"><label class="form-label">FULL NAME</label><input class="form-input" type="text" placeholder="John Smith" required></div>
