@@ -8,11 +8,13 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<!-- PHASE 1 · LCP scaffold: preload hero image. TODO(asset): generate IMG_4044.avif + .webp and swap to <picture> per DØi-WEB-SPEC §4. -->
+<link rel="preload" as="image" href="IMG_4044.webp" fetchpriority="high">
 <style>
 :root {
   --bg:#080808;--surf:#0e0e0e;--card:#111;--card2:#141414;
   --bd:#1e1e1e;--bd2:#2a2a2a;
-  --og:#f08c00;--tiger:#ff6b1a;
+  --og:#ff6b1a;--tiger:#e65411;
   --t1:#f0f0f0;--t2:#a8a8a8;--t3:#555;
   --mono:'Share Tech Mono',monospace;
   --disp:'Orbitron',sans-serif;
@@ -23,9 +25,37 @@ html{scroll-behavior:smooth;}
 body{font-family:var(--body);font-size:17px;line-height:1.6;background:var(--bg);color:var(--t1);overflow-x:hidden;cursor:crosshair;}
 body::before{
   content:'';position:fixed;inset:0;
-  background-image:linear-gradient(rgba(240,140,0,.022) 1px,transparent 1px),linear-gradient(90deg,rgba(240,140,0,.022) 1px,transparent 1px);
+  background-image:linear-gradient(rgba(255,107,26,.022) 1px,transparent 1px),linear-gradient(90deg,rgba(255,107,26,.022) 1px,transparent 1px);
   background-size:52px 52px;pointer-events:none;z-index:0;
 }
+/* PHASE 1 · anchor jumps clear the 60px fixed nav */
+section[id],div[id]{scroll-margin-top:72px;}
+
+/* ── PHASE 1 · SCROLL PROGRESS BAR ── */
+.scroll-progress{
+  position:fixed;top:0;left:0;height:2px;width:0;z-index:300;
+  background:linear-gradient(90deg,var(--og),var(--tiger));
+  transition:width .08s linear;will-change:width;
+}
+
+/* ── PHASE 1 · SECTION DOT RAIL (desktop ≥1024px) ── */
+.section-rail{
+  position:fixed;right:26px;top:50%;transform:translateY(-50%);
+  z-index:180;display:flex;flex-direction:column;gap:15px;
+}
+.rail-dot{
+  position:relative;width:9px;height:9px;border-radius:50%;
+  border:1px solid var(--bd2);background:transparent;padding:0;
+  cursor:crosshair;transition:background .25s,border-color .25s,transform .25s;
+}
+.rail-dot.active{background:var(--og);border-color:var(--og);transform:scale(1.35);}
+.rail-dot::after{
+  content:attr(data-label);position:absolute;right:20px;top:50%;
+  transform:translateY(-50%);white-space:nowrap;
+  font-family:var(--mono);font-size:11px;letter-spacing:.16em;
+  color:var(--t3);opacity:0;transition:opacity .2s;pointer-events:none;
+}
+.rail-dot:hover::after,.rail-dot.active::after{opacity:1;color:var(--og);}
 
 /* ── NAV ── */
 .nav{
@@ -38,10 +68,10 @@ body::before{
 .nav-logo{font-family:var(--disp);font-size:16px;font-weight:900;color:var(--t1);text-decoration:none;letter-spacing:.06em;}
 .nav-logo em{color:var(--og);font-style:normal;}
 .nav-links{display:flex;gap:28px;list-style:none;}
-.nav-links a{font-family:var(--mono);font-size:10px;color:var(--t2);text-decoration:none;letter-spacing:.14em;text-transform:uppercase;transition:color .2s;}
+.nav-links a{font-family:var(--mono);font-size:12px;color:var(--t2);text-decoration:none;letter-spacing:.14em;text-transform:uppercase;transition:color .2s;}
 .nav-links a:hover{color:var(--og);}
 .nav-cta{
-  font-family:var(--mono);font-size:10px;letter-spacing:.12em;font-weight:700;
+  font-family:var(--mono);font-size:12px;letter-spacing:.12em;font-weight:700;
   background:var(--og);color:#000;border:none;padding:8px 22px;cursor:crosshair;
   clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);
   transition:background .2s;
@@ -68,7 +98,7 @@ body::before{
 }
 .hero-left{display:flex;flex-direction:column;gap:22px;}
 .hero-eyebrow{
-  font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--og);
+  font-family:var(--mono);font-size:13px;letter-spacing:.2em;color:var(--og);
   text-transform:uppercase;display:flex;align-items:center;gap:12px;
 }
 .hero-eyebrow::before{content:'';display:block;width:24px;height:1px;background:var(--og);}
@@ -79,20 +109,20 @@ body::before{
 .hero-h1 .og{color:var(--og);display:block;}
 .hero-sub{font-size:clamp(15px,1.4vw,19px);color:var(--t2);line-height:1.55;max-width:440px;}
 .hero-platform{
-  font-family:var(--mono);font-size:11px;color:var(--t3);letter-spacing:.08em;
+  font-family:var(--mono);font-size:12px;color:var(--t3);letter-spacing:.08em;
   padding:10px 0;border-top:1px solid var(--bd);border-bottom:1px solid var(--bd);
 }
 .hero-platform span{color:var(--og);}
 .hero-btns{display:flex;gap:14px;flex-wrap:wrap;}
 .btn-p{
-  font-family:var(--mono);font-size:11px;letter-spacing:.12em;font-weight:700;
+  font-family:var(--mono);font-size:12px;letter-spacing:.12em;font-weight:700;
   background:var(--og);color:#000;border:none;padding:14px 32px;cursor:crosshair;
   clip-path:polygon(10px 0%,100% 0%,calc(100% - 10px) 100%,0% 100%);
   transition:background .2s,transform .2s;
 }
 .btn-p:hover{background:var(--tiger);transform:translateY(-2px);}
 .btn-g{
-  font-family:var(--mono);font-size:11px;letter-spacing:.12em;
+  font-family:var(--mono);font-size:12px;letter-spacing:.12em;
   background:transparent;color:var(--t1);border:1px solid var(--bd2);
   padding:14px 32px;cursor:crosshair;transition:border-color .2s,color .2s;
 }
@@ -108,12 +138,12 @@ body::before{
 }
 #heroDrone img{width:100%;height:auto;display:block;}
 .tele{
-  position:absolute;font-family:var(--mono);font-size:10px;
+  position:absolute;font-family:var(--mono);font-size:12px;
   color:var(--og);letter-spacing:.1em;pointer-events:none;
 }
 .tele-line{
   display:flex;align-items:center;gap:8px;
-  background:rgba(8,8,8,.85);border:1px solid rgba(240,140,0,.35);padding:5px 10px;
+  background:rgba(8,8,8,.85);border:1px solid rgba(255,107,26,.35);padding:5px 10px;
 }
 .tele-dot{width:5px;height:5px;border-radius:50%;background:var(--og);animation:tdot 2.4s ease-in-out infinite;}
 @keyframes tdot{0%,100%{opacity:1;}50%{opacity:.15;}}
@@ -131,7 +161,7 @@ body::before{
 .scroll-hint{
   position:absolute;bottom:20px;left:50%;transform:translateX(-50%);
   z-index:2;display:flex;flex-direction:column;align-items:center;gap:6px;
-  font-family:var(--mono);font-size:9px;color:var(--t3);letter-spacing:.18em;
+  font-family:var(--mono);font-size:11px;color:var(--t3);letter-spacing:.18em;
   animation:shint 2.5s ease-in-out infinite;
 }
 .scroll-hint::after{content:'';display:block;width:1px;height:36px;background:linear-gradient(to bottom,var(--t3),transparent);}
@@ -146,7 +176,7 @@ body::before{
   display:flex;white-space:nowrap;height:100%;align-items:center;
   animation:tick 36s linear infinite;
 }
-.t-item{font-family:var(--mono);font-size:10px;color:var(--t3);letter-spacing:.14em;padding:0 32px;text-transform:uppercase;}
+.t-item{font-family:var(--mono);font-size:12px;color:var(--t3);letter-spacing:.14em;padding:0 32px;text-transform:uppercase;}
 .t-item.highlight{color:var(--og);}
 .t-sep{color:var(--bd2);font-family:var(--mono);}
 @keyframes tick{from{transform:translateX(0);}to{transform:translateX(-50%);}}
@@ -165,18 +195,24 @@ body::before{
 .proof-item:last-child{border-right:none;}
 .proof-item.revealed{opacity:1;transform:translateY(0);}
 .proof-num{font-family:var(--disp);font-size:clamp(44px,5.5vw,80px);font-weight:900;color:var(--og);line-height:1;letter-spacing:-.02em;}
-.proof-label{font-family:var(--mono);font-size:10px;color:var(--t3);letter-spacing:.14em;text-transform:uppercase;margin-top:6px;}
+.proof-label{font-family:var(--mono);font-size:12px;color:var(--t3);letter-spacing:.14em;text-transform:uppercase;margin-top:6px;}
 
 /* ── SEC HEAD ── */
 .sec-head{text-align:center;padding:80px 60px 0;}
 .sec-tag{
-  font-family:var(--mono);font-size:10px;letter-spacing:.22em;color:var(--og);
+  font-family:var(--mono);font-size:12px;letter-spacing:.22em;color:var(--og);
   text-transform:uppercase;margin-bottom:12px;
   display:flex;align-items:center;justify-content:center;gap:16px;
 }
 .sec-tag::before,.sec-tag::after{content:'';display:block;width:28px;height:1px;background:var(--og);opacity:.6;}
-.sec-title{font-family:var(--disp);font-size:clamp(26px,3.2vw,52px);font-weight:900;letter-spacing:-.01em;line-height:1.1;}
-.sec-title span{color:var(--og);}
+.sec-title{font-family:var(--disp);font-size:clamp(26px,3.2vw,52px);font-weight:900;letter-spacing:-.01em;line-height:1.1;color:#c8c8c8;}
+/* outlined (hollow) emphasis word — tiger-lily stroke + faint interior hairlines */
+.sec-title span{
+  -webkit-text-stroke:1.5px var(--og);text-stroke:1.5px var(--og);
+  background:repeating-linear-gradient(0deg,rgba(255,255,255,.20) 0 1px,transparent 1px 5px);
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;color:transparent;
+}
 .sec-desc{font-size:17px;color:var(--t2);max-width:520px;margin:14px auto 0;line-height:1.6;}
 
 /* ── PIPELINE (desktop sticky) ── */
@@ -206,12 +242,12 @@ body::before{
 .step-bg-num{
   position:absolute;top:-30px;right:-10px;
   font-family:var(--disp);font-size:clamp(100px,12vw,160px);font-weight:900;
-  color:rgba(240,140,0,.05);line-height:1;pointer-events:none;user-select:none;
+  color:rgba(255,107,26,.05);line-height:1;pointer-events:none;user-select:none;
 }
-.step-code{font-family:var(--mono);font-size:10px;color:var(--og);letter-spacing:.2em;margin-bottom:16px;display:flex;align-items:center;gap:10px;}
+.step-code{font-family:var(--mono);font-size:12px;color:var(--og);letter-spacing:.2em;margin-bottom:16px;display:flex;align-items:center;gap:10px;}
 .step-code::before{content:'';display:block;width:18px;height:1px;background:var(--og);}
 .step-title{font-family:var(--disp);font-size:clamp(22px,2.2vw,36px);font-weight:900;color:var(--t1);line-height:1.1;margin-bottom:20px;}
-.step-body{font-size:15px;color:var(--t2);line-height:1.75;max-width:380px;}
+.step-body{font-size:16px;color:var(--t2);line-height:1.75;max-width:380px;}
 .pl-dots{
   display:flex;gap:8px;padding-top:32px;border-top:1px solid var(--bd);margin-top:auto;
 }
@@ -242,12 +278,13 @@ body::before{
 .why-card.revealed{opacity:1;transform:translateY(0);}
 .why-card:hover{background:var(--card2);}
 .why-icon{
-  width:40px;height:40px;border:1px solid var(--bd2);
+  width:56px;height:56px;border:1px solid var(--bd2);
   display:flex;align-items:center;justify-content:center;color:var(--og);
 }
-.why-code{font-family:var(--mono);font-size:10px;color:var(--og);letter-spacing:.15em;}
-.why-title{font-family:var(--disp);font-size:15px;font-weight:700;color:var(--t1);letter-spacing:.03em;}
-.why-body{font-size:14px;color:var(--t2);line-height:1.65;}
+.why-icon svg{width:28px;height:28px;}
+.why-code{font-family:var(--mono);font-size:12px;color:var(--og);letter-spacing:.15em;}
+.why-title{font-family:var(--disp);font-size:16px;font-weight:700;color:var(--t1);letter-spacing:.03em;}
+.why-body{font-size:15px;color:var(--t2);line-height:1.65;}
 
 /* ── SERVICES ── */
 .svc-section{position:relative;z-index:1;padding:0 0 80px;background:var(--surf);border-top:1px solid var(--bd);}
@@ -266,12 +303,12 @@ body::before{
   background:linear-gradient(90deg,var(--og),transparent);opacity:0;transition:opacity .3s;
 }
 .svc-card:hover::before{opacity:1;}
-.svc-div{font-family:var(--mono);font-size:10px;color:var(--og);letter-spacing:.2em;margin-bottom:20px;}
+.svc-div{font-family:var(--mono);font-size:12px;color:var(--og);letter-spacing:.2em;margin-bottom:20px;}
 .svc-title{font-family:var(--disp);font-size:17px;font-weight:700;color:var(--t1);margin-bottom:12px;letter-spacing:.02em;}
-.svc-body{font-size:14px;color:var(--t2);line-height:1.65;}
+.svc-body{font-size:15px;color:var(--t2);line-height:1.65;}
 .svc-wm{
   position:absolute;bottom:-16px;right:-8px;font-family:var(--disp);
-  font-size:72px;font-weight:900;color:rgba(240,140,0,.04);
+  font-size:72px;font-weight:900;color:rgba(255,107,26,.04);
   line-height:1;pointer-events:none;user-select:none;
 }
 
@@ -290,8 +327,12 @@ body::before{
   transition:opacity .4s,transform .4s;
 }
 .trust-item.revealed{opacity:1;transform:translateY(0);}
-.trust-icon{font-size:22px;color:var(--og);}
-.trust-label{font-family:var(--mono);font-size:10px;color:var(--t3);letter-spacing:.1em;margin-top:8px;text-transform:uppercase;}
+.trust-icon{
+  width:48px;height:48px;border:1px solid var(--bd2);margin:0 auto;
+  display:flex;align-items:center;justify-content:center;color:var(--og);
+}
+.trust-icon svg{width:24px;height:24px;}
+.trust-label{font-family:var(--mono);font-size:12px;color:var(--t3);letter-spacing:.1em;margin-top:8px;text-transform:uppercase;}
 
 /* ── FORM ── */
 .form-section{position:relative;z-index:1;padding:80px 60px;background:var(--surf);border-top:1px solid var(--bd);}
@@ -299,7 +340,7 @@ body::before{
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:40px;}
 .form-group{display:flex;flex-direction:column;gap:6px;}
 .form-group.full{grid-column:1/-1;}
-.form-label{font-family:var(--mono);font-size:10px;color:var(--t3);letter-spacing:.15em;text-transform:uppercase;}
+.form-label{font-family:var(--mono);font-size:12px;color:var(--t3);letter-spacing:.15em;text-transform:uppercase;}
 .form-input,.form-select,.form-textarea{
   background:var(--card);border:1px solid var(--bd);color:var(--t1);
   font-family:var(--body);font-size:16px;padding:12px 16px;outline:none;
@@ -325,16 +366,19 @@ footer{
 .foot-brand{display:flex;flex-direction:column;gap:14px;}
 .foot-logo{font-family:var(--disp);font-size:22px;font-weight:900;color:var(--t1);letter-spacing:.06em;}
 .foot-logo em{color:var(--og);font-style:normal;}
-.foot-tag{font-family:var(--mono);font-size:10px;color:var(--t3);letter-spacing:.12em;}
-.foot-col-title{font-family:var(--mono);font-size:10px;color:var(--og);letter-spacing:.2em;text-transform:uppercase;margin-bottom:16px;}
+.foot-tag{font-family:var(--mono);font-size:12px;color:var(--t3);letter-spacing:.12em;}
+.foot-col-title{font-family:var(--mono);font-size:12px;color:var(--og);letter-spacing:.2em;text-transform:uppercase;margin-bottom:16px;}
 .foot-links{list-style:none;display:flex;flex-direction:column;gap:10px;}
-.foot-links a{font-size:14px;color:var(--t2);text-decoration:none;transition:color .2s;}
+.foot-links a{font-size:15px;color:var(--t2);text-decoration:none;transition:color .2s;}
 .foot-links a:hover{color:var(--og);}
 .foot-bottom{
   border-top:1px solid var(--bd);padding-top:24px;
   display:flex;justify-content:space-between;align-items:center;
 }
-.foot-copy{font-family:var(--mono);font-size:10px;color:var(--t3);letter-spacing:.1em;}
+.foot-copy{font-family:var(--mono);font-size:12px;color:var(--t3);letter-spacing:.1em;}
+
+/* ── PHASE 1 · STICKY MOBILE CTA ── */
+.mobile-cta{display:none;}
 
 /* ── MOBILE ── */
 @media(max-width:900px){
@@ -354,24 +398,47 @@ footer{
   footer{padding:40px 20px 24px;}
   .foot-inner{grid-template-columns:1fr;gap:36px;}
   .sec-head{padding:60px 20px 0;}
+  /* sticky CTA + clearance so footer isn't covered */
+  body{padding-bottom:62px;}
+  .mobile-cta{
+    display:block;position:fixed;left:0;right:0;bottom:0;z-index:190;
+    padding:9px 16px;background:rgba(8,8,8,.96);backdrop-filter:blur(12px);
+    border-top:1px solid var(--bd);
+  }
+  .mobile-cta button{
+    width:100%;font-family:var(--mono);font-size:12px;letter-spacing:.12em;font-weight:700;
+    background:var(--og);color:#000;border:none;padding:14px;cursor:pointer;
+    clip-path:polygon(10px 0%,100% 0%,calc(100% - 10px) 100%,0% 100%);
+  }
 }
+/* Section rail is desktop-only */
+@media(max-width:1023px){.section-rail{display:none;}}
+
 @media(prefers-reduced-motion:reduce){
-  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;}
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;animation-iteration-count:1!important;}
+  .scroll-progress{transition:none!important;}
+  .ticker-track{animation:none!important;}
 }
 </style>
 </head>
 <body>
 
+<!-- PHASE 1 · scroll progress + section rail -->
+<div class="scroll-progress" id="scrollProgress"></div>
+<div class="section-rail" id="sectionRail" aria-label="Section navigation"></div>
+
 <!-- NAV -->
 <nav class="nav">
-  <a class="nav-logo" href="#">DØ<em>i</em> LABS</a>
+  <a class="nav-logo" href="#hero">DØ<em>i</em> LABS</a>
+  <!-- PHASE 1 · canonical IA. Future entries activate with their phases:
+       INDUSTRIES (#industries · Phase 3) · QA (#qa · Phase 4) · DELIVERABLES (#deliverables · Phase 7) -->
   <ul class="nav-links">
-    <li><a href="#pipeline">PIPELINE</a></li>
-    <li><a href="#mission">CAPABILITIES</a></li>
-    <li><a href="#services">SERVICES</a></li>
+    <li><a href="#services">CAPABILITIES</a></li>
+    <li><a href="#pipeline">PROCESS</a></li>
+    <li><a href="#mission">WHY DØi</a></li>
     <li><a href="#contact">CONTACT</a></li>
   </ul>
-  <button class="nav-cta" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">DEPLOY NOW</button>
+  <button class="nav-cta" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">REQUEST CONSULTATION</button>
 </nav>
 
 <!-- HERO SCROLL ZONE -->
@@ -390,7 +457,7 @@ footer{
         <div class="hero-platform">
           PLATFORM: <span>DJI MATRICE 4T</span> &nbsp;·&nbsp;
           STATUS: <span>OPERATIONAL</span> &nbsp;·&nbsp;
-          CERT: <span>FAA 107.29</span>
+          CERT: <span>FAA 107</span>
         </div>
         <div class="hero-btns">
           <button class="btn-p" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">REQUEST MISSION BRIEF</button>
@@ -399,22 +466,22 @@ footer{
       </div>
       <div class="hero-right">
         <div id="heroDrone">
-          <img src="IMG_4044.webp" alt="DJI Matrice 4T" loading="eager">
+          <img src="IMG_4044.webp" alt="DJI Matrice 4T" width="620" height="465" fetchpriority="high" loading="eager">
           <div class="tele tele-alt"><div class="tele-line"><div class="tele-dot"></div>ALT: 120M AGL</div></div>
           <div class="tele tele-spd"><div class="tele-line"><div class="tele-dot"></div>SPD: 15.2 M/S</div></div>
           <div class="tele tele-bat"><div class="tele-line"><div class="tele-dot"></div>BAT: 94%</div></div>
           <div class="reticle">
             <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="40" cy="40" r="30" stroke="rgba(240,140,0,.45)" stroke-width="1"/>
-              <circle cx="40" cy="40" r="3" fill="rgba(240,140,0,.8)"/>
-              <line x1="40" y1="5" x2="40" y2="20" stroke="rgba(240,140,0,.45)" stroke-width="1"/>
-              <line x1="40" y1="60" x2="40" y2="75" stroke="rgba(240,140,0,.45)" stroke-width="1"/>
-              <line x1="5" y1="40" x2="20" y2="40" stroke="rgba(240,140,0,.45)" stroke-width="1"/>
-              <line x1="60" y1="40" x2="75" y2="40" stroke="rgba(240,140,0,.45)" stroke-width="1"/>
-              <rect x="5" y="5" width="12" height="12" stroke="rgba(240,140,0,.6)" stroke-width="1" fill="none"/>
-              <rect x="63" y="5" width="12" height="12" stroke="rgba(240,140,0,.6)" stroke-width="1" fill="none"/>
-              <rect x="5" y="63" width="12" height="12" stroke="rgba(240,140,0,.6)" stroke-width="1" fill="none"/>
-              <rect x="63" y="63" width="12" height="12" stroke="rgba(240,140,0,.6)" stroke-width="1" fill="none"/>
+              <circle cx="40" cy="40" r="30" stroke="rgba(255,107,26,.45)" stroke-width="1"/>
+              <circle cx="40" cy="40" r="3" fill="rgba(255,107,26,.8)"/>
+              <line x1="40" y1="5" x2="40" y2="20" stroke="rgba(255,107,26,.45)" stroke-width="1"/>
+              <line x1="40" y1="60" x2="40" y2="75" stroke="rgba(255,107,26,.45)" stroke-width="1"/>
+              <line x1="5" y1="40" x2="20" y2="40" stroke="rgba(255,107,26,.45)" stroke-width="1"/>
+              <line x1="60" y1="40" x2="75" y2="40" stroke="rgba(255,107,26,.45)" stroke-width="1"/>
+              <rect x="5" y="5" width="12" height="12" stroke="rgba(255,107,26,.6)" stroke-width="1" fill="none"/>
+              <rect x="63" y="5" width="12" height="12" stroke="rgba(255,107,26,.6)" stroke-width="1" fill="none"/>
+              <rect x="5" y="63" width="12" height="12" stroke="rgba(255,107,26,.6)" stroke-width="1" fill="none"/>
+              <rect x="63" y="63" width="12" height="12" stroke="rgba(255,107,26,.6)" stroke-width="1" fill="none"/>
             </svg>
           </div>
         </div>
@@ -443,7 +510,7 @@ footer{
       <img class="pl-img" src="C61D48F2-DEC0-4CF1-A878-9E8B0E367EE7.png" alt="Step 4" loading="lazy">
       <img class="pl-img" src="30B9913C-3ABA-4C13-ABF7-42353E6242EB.png" alt="Step 5" loading="lazy">
       <img class="pl-img" src="E9D566CE-BDDB-4C42-A612-00B7E73D43E2.png" alt="Step 6" loading="lazy">
-      <img class="pl-img" src="EB6D5C86-02AE-49B8-A805-6BC7E33F5B65.png" alt="Step 7" loading="lazy">
+      <img class="pl-img" src="EB6D5C86-02AE-49B8-A805-6BC7E73D43E2.png" alt="Step 7" loading="lazy">
     </div>
     <div class="pl-content">
       <div class="sec-head" style="padding:0 0 32px;text-align:left;">
@@ -562,7 +629,7 @@ footer{
       </div>
     </div>
     <div class="mob-step">
-      <img class="mob-step-img" src="EB6D5C86-02AE-49B8-A805-6BC7E33F5B65.png" alt="QUALITY CONTROL & VALIDATION" loading="lazy">
+      <img class="mob-step-img" src="EB6D5C86-02AE-49B8-A805-6BC7E73D43E2.png" alt="QUALITY CONTROL & VALIDATION" loading="lazy">
       <div class="mob-step-content">
         <div class="step-code">QCV-07 · VALIDATION</div>
         <h3 class="step-title">QUALITY CONTROL & VALIDATION</h3>
@@ -645,12 +712,12 @@ footer{
     <h2 class="sec-title">CERTIFIED. INSURED. <span>READY.</span></h2>
   </div>
   <div class="trust-grid">
-    <div class="trust-item"><div class="trust-icon">✈</div><div class="trust-label">FAA PART 107</div></div>
-    <div class="trust-item"><div class="trust-icon">🌙</div><div class="trust-label">NIGHT OPS 107.29</div></div>
-    <div class="trust-item"><div class="trust-icon">🛡</div><div class="trust-label">$2M LIABILITY</div></div>
-    <div class="trust-item"><div class="trust-icon">📡</div><div class="trust-label">LAANC CERTIFIED</div></div>
-    <div class="trust-item"><div class="trust-icon">🔒</div><div class="trust-label">DATA SECURE</div></div>
-    <div class="trust-item"><div class="trust-icon">⚡</div><div class="trust-label">DJI ENTERPRISE</div></div>
+    <div class="trust-item"><div class="trust-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="6"/><path d="M8.5 13.5 7 22l5-3 5 3-1.5-8.5"/></svg></div><div class="trust-label">FAA PART 107</div></div>
+    <div class="trust-item"><div class="trust-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"/></svg></div><div class="trust-label">NIGHT OPS 107.29</div></div>
+    <div class="trust-item"><div class="trust-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="trust-label">$2M LIABILITY</div></div>
+    <div class="trust-item"><div class="trust-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="2"/><path d="M16.24 7.76a6 6 0 0 1 0 8.49M7.76 16.24a6 6 0 0 1 0-8.49M19.07 4.93a10 10 0 0 1 0 14.14M4.93 19.07a10 10 0 0 1 0-14.14"/></svg></div><div class="trust-label">LAANC CERTIFIED</div></div>
+    <div class="trust-item"><div class="trust-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></div><div class="trust-label">DATA SECURE</div></div>
+    <div class="trust-item"><div class="trust-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="9" y="9" width="6" height="6" rx="1"/><circle cx="5" cy="5" r="2.5"/><circle cx="19" cy="5" r="2.5"/><circle cx="5" cy="19" r="2.5"/><circle cx="19" cy="19" r="2.5"/><path d="m7 7 2 2M17 7l-2 2M7 17l2-2M17 17l-2-2"/></svg></div><div class="trust-label">DJI ENTERPRISE</div></div>
   </div>
 </section>
 
@@ -691,8 +758,7 @@ footer{
   <div class="foot-inner">
     <div class="foot-brand">
       <div class="foot-logo">DØ<em>i</em> LABS</div>
-      <div class="foot-tag">THE DEPARTMENT OF INNOVATION</div>
-      <div style="font-family:var(--mono);font-size:10px;color:var(--t3);line-height:1.9;">CALIFORNIA-BASED<br>FAA PART 107 · LICENSE #4782910<br>SERVING NATIONWIDE</div>
+      <div style="font-family:var(--mono);font-size:12px;color:var(--t3);line-height:1.9;">CALIFORNIA-BASED<br>FAA PART 107 · LICENSE #4782910<br>SERVING CALIFORNIA</div>
     </div>
     <div>
       <div class="foot-col-title">OPERATIONS</div>
@@ -715,16 +781,23 @@ footer{
     </div>
   </div>
   <div class="foot-bottom">
-    <div class="foot-copy">© 2026 DØi LABS — THE DEPARTMENT OF INNOVATION. ALL RIGHTS RESERVED.</div>
-    <div class="foot-copy">FAA PART 107 · CALIFORNIA · FOUNDED 2023</div>
+    <div class="foot-copy">© 2026 DØi LABS. ALL RIGHTS RESERVED.</div>
+    <div class="foot-copy">FAA PART 107 · CALIFORNIA · FOUNDED 2025</div>
   </div>
 </footer>
 
+<!-- PHASE 1 · STICKY MOBILE CTA -->
+<div class="mobile-cta">
+  <button onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">REQUEST CONSULTATION</button>
+</div>
+
 <script>
+// ── PHASE 1 · MOTION/PERF SCAFFOLD ──
+const REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
 // ── DRONE SCROLL ANIMATION ──
 const heroZone = document.querySelector('.hero-zone');
 const heroDrone = document.getElementById('heroDrone');
-let lastScroll = -1;
 
 function updateHero() {
   if (!heroZone || !heroDrone) return;
@@ -764,11 +837,25 @@ function updateHero() {
   heroDrone.style.opacity = opacity.toFixed(3);
 }
 
-function heroLoop() {
-  updateHero();
-  requestAnimationFrame(heroLoop);
+// PHASE 1 · only run the rAF loop while the hero is in view, and skip entirely under reduced-motion.
+let heroRAF = null, heroInView = true;
+function heroLoop(){ updateHero(); heroRAF = requestAnimationFrame(heroLoop); }
+function startHero(){ if (heroRAF === null && !REDUCE) heroLoop(); }
+function stopHero(){ if (heroRAF !== null){ cancelAnimationFrame(heroRAF); heroRAF = null; } }
+
+if (heroZone && heroDrone) {
+  if (REDUCE) {
+    // static, decoded, no continuous motion
+    heroDrone.style.transform = 'translateX(0) translateY(0) scale(1)';
+    heroDrone.style.opacity = '1';
+  } else {
+    const heroIO = new IntersectionObserver((entries) => {
+      entries.forEach(e => { heroInView = e.isIntersecting; heroInView ? startHero() : stopHero(); });
+    }, {threshold: 0});
+    heroIO.observe(heroZone);
+    startHero();
+  }
 }
-heroLoop();
 
 // ── PIPELINE SCROLL ──
 const plZone = document.querySelector('.pipeline-zone');
@@ -795,6 +882,55 @@ function updatePipeline() {
 }
 window.addEventListener('scroll', updatePipeline, {passive:true});
 updatePipeline();
+
+// ── PHASE 1 · SCROLL PROGRESS BAR ──
+const progressBar = document.getElementById('scrollProgress');
+function updateProgress(){
+  const h = document.documentElement;
+  const max = h.scrollHeight - h.clientHeight;
+  const pct = max > 0 ? (h.scrollTop / max) * 100 : 0;
+  progressBar.style.width = pct.toFixed(2) + '%';
+}
+window.addEventListener('scroll', updateProgress, {passive:true});
+window.addEventListener('resize', updateProgress, {passive:true});
+updateProgress();
+
+// ── PHASE 1 · SECTION DOT RAIL (desktop) ──
+// Canonical spine. Future sections flip on with their phases:
+//   {id:'industries',label:'INDUSTRIES'}  (Phase 3)
+//   {id:'qa',label:'AERIAL QA'}            (Phase 4)
+//   {id:'deliverables',label:'DELIVERABLES'} (Phase 7)
+const RAIL = [
+  {id:'hero',     label:'HERO'},
+  {id:'pipeline', label:'PROCESS'},
+  {id:'mission',  label:'WHY DØi'},
+  {id:'services', label:'CAPABILITIES'},
+  {id:'contact',  label:'CONTACT'}
+];
+const rail = document.getElementById('sectionRail');
+const railDots = [];
+RAIL.forEach(s => {
+  const el = document.getElementById(s.id);
+  if (!el) return;
+  const dot = document.createElement('button');
+  dot.className = 'rail-dot';
+  dot.setAttribute('data-label', s.label);
+  dot.setAttribute('aria-label', s.label);
+  dot.addEventListener('click', () => el.scrollIntoView({behavior:'smooth'}));
+  rail.appendChild(dot);
+  railDots.push({dot, el});
+});
+// scroll-spy: mark the section nearest the top as active
+function updateRail(){
+  let activeIdx = 0, minDist = Infinity;
+  railDots.forEach((d, i) => {
+    const dist = Math.abs(d.el.getBoundingClientRect().top - 80);
+    if (dist < minDist){ minDist = dist; activeIdx = i; }
+  });
+  railDots.forEach((d, i) => d.dot.classList.toggle('active', i === activeIdx));
+}
+window.addEventListener('scroll', updateRail, {passive:true});
+updateRail();
 
 // ── INTERSECTION REVEALS ──
 const revealEls = document.querySelectorAll('.why-card, .svc-card, .trust-item, .proof-item');
