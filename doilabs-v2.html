@@ -85,7 +85,7 @@ section[id],div[id]{scroll-margin-top:72px;}
   display:flex;flex-direction:column;background:var(--bg);
 }
 .hero-video{position:absolute;inset:0;z-index:0;overflow:hidden;}
-.hero-video video{width:100%;height:100%;object-fit:cover;opacity:.42;transform:scale(.8);}
+.hero-video video{width:100%;height:100%;object-fit:cover;opacity:.72;transform:scale(.7);}
 .hero-video::after{
   content:'';position:absolute;inset:0;
   background:linear-gradient(120deg,rgba(8,8,8,.95) 0%,rgba(8,8,8,.55) 55%,rgba(8,8,8,.9) 100%);
@@ -479,7 +479,11 @@ footer{
 
 <!-- NAV -->
 <nav class="nav">
-  <a class="nav-logo" href="#hero">DØ<em>i</em> LABS</a>
+  <a class="nav-logo" href="#hero" style="display:flex;align-items:center;padding:0;">
+    <video autoplay muted loop playsinline style="height:44px;width:auto;display:block;">
+      <source src="DOi_Glowlogo.mp4" type="video/mp4">
+    </video>
+  </a>
   <!-- PHASE 1 · canonical IA. Future entries activate with their phases:
        INDUSTRIES (#industries · Phase 3) · QA (#qa · Phase 4) · DELIVERABLES (#deliverables · Phase 7) -->
   <ul class="nav-links">
@@ -520,7 +524,7 @@ footer{
       <div class="hero-right">
         <div id="heroDrone">
           <video autoplay muted loop playsinline style="width:100%;height:auto;display:block;">
-            <source src="MatriceT4_Flyin.mp4" type="video/mp4">
+            <source src="MatriceT4_Flyin1.mp4" type="video/mp4">
           </video>
         </div>
       </div>
