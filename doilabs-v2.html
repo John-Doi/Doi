@@ -444,16 +444,18 @@ footer{
 <!-- HERO SCROLL ZONE -->
 <section class="hero-zone" id="hero">
   <div class="hero-pin">
+    <!-- PHASE 2 · poster = preloaded WebP handles LCP; video src injected after window.load to avoid blocking paint -->
     <div class="hero-video">
-      <video autoplay muted loop playsinline>
-        <source src="_imagine-public_share-videos_db0d29c6-75a5-485f-bc1d-72feb7115e67_hd.mp4" type="video/mp4">
+      <video id="heroVideo" muted loop playsinline poster="IMG_4044.webp">
+        <source data-src="_imagine-public_share-videos_db0d29c6-75a5-485f-bc1d-72feb7115e67_hd.mp4" type="video/mp4">
       </video>
     </div>
     <div class="hero-inner">
       <div class="hero-left">
         <p class="hero-eyebrow">DJI Matrice 4T Enterprise Operations</p>
         <h1 class="hero-h1">ADVANCED<span class="og">AERIAL</span>INTELLIGENCE</h1>
-        <p class="hero-sub">Enterprise drone operations delivering thermal inspection, precision mapping, and actionable intelligence. FAA Part 107 certified. California-based.</p>
+        <!-- PHASE 2 · ICP-specific sub: leads with verticals, surfaces 48HR differentiator -->
+        <p class="hero-sub">Construction QA, thermal inspection, precision mapping, and aerial intelligence — delivered as 48HR decision-ready reports. FAA Part 107 certified. California-based.</p>
         <div class="hero-platform">
           PLATFORM: <span>DJI MATRICE 4T</span> &nbsp;·&nbsp;
           STATUS: <span>OPERATIONAL</span> &nbsp;·&nbsp;
@@ -943,6 +945,21 @@ const io = new IntersectionObserver((entries) => {
   });
 }, {threshold: 0.1});
 revealEls.forEach(el => io.observe(el));
+
+// ── PHASE 2 · DEFERRED VIDEO LOAD ──
+// IMG_4044.webp (preloaded) handles LCP. The 4MB+ mp4 is injected only after the
+// page is fully interactive — never blocks first paint or LCP.
+window.addEventListener('load', () => {
+  if (REDUCE) return; // honour reduced-motion — no autoplay
+  const vid = document.getElementById('heroVideo');
+  if (!vid) return;
+  const source = vid.querySelector('[data-src]');
+  if (source) {
+    source.setAttribute('src', source.dataset.src);
+    vid.load();
+    vid.play().catch(() => {}); // swallow autoplay policy errors gracefully
+  }
+}, {once: true});
 
 // ── FORM ──
 function handleSubmit(e) {
