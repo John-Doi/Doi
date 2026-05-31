@@ -88,7 +88,7 @@ section[id],div[id]{scroll-margin-top:72px;}
 /* HERO BG — Logo PNG centered + glow pulse + animated scan line */
 .hero-glow-bg{position:absolute;inset:0;z-index:0;display:flex;align-items:center;justify-content:center;}
 .hero-logo-img{
-  width:55%;max-width:700px;height:auto;
+  width:82%;max-width:1000px;height:auto;
   opacity:.18;
   animation:logoPulse 3.5s ease-in-out infinite;
   pointer-events:none;user-select:none;
@@ -116,8 +116,8 @@ section[id],div[id]{scroll-margin-top:72px;}
 
 .hero-inner{
   position:relative;z-index:1;flex:1;
-  display:grid;grid-template-columns:1fr 1fr;
-  align-items:center;padding:80px 60px 0;gap:20px;
+  display:flex;flex-direction:column;justify-content:center;
+  padding:80px 60px 0;max-width:760px;
 }
 .hero-left{display:flex;flex-direction:column;gap:22px;}
 .hero-eyebrow{
@@ -546,11 +546,6 @@ footer{
           <button class="btn-g" onclick="document.getElementById('pipeline').scrollIntoView({behavior:'smooth'})">VIEW PIPELINE →</button>
         </div>
       </div>
-      <div class="hero-right">
-        <div id="heroDrone">
-          <img src="IMG_4044.webp" alt="DJI Matrice 4T" width="620" height="465" fetchpriority="high" loading="eager">
-        </div>
-      </div>
     </div>
     <div class="hero-ticker"><div class="ticker-track"><span class="t-item highlight">FAA PART 107 CERTIFIED</span><span class="t-sep">///</span><span class="t-item dim">DJI ENTERPRISE PARTNER</span><span class="t-sep">///</span><span class="t-item highlight">THERMAL IMAGING · M4T</span><span class="t-sep">///</span><span class="t-item dim">CALIFORNIA OPERATIONS</span><span class="t-sep">///</span><span class="t-item highlight">REAL-TIME DATA DELIVERY</span><span class="t-sep">///</span><span class="t-item dim">CONSTRUCTION & INSPECTION</span><span class="t-sep">///</span><span class="t-item highlight">NIGHT OPS 107.29 AUTHORIZED</span><span class="t-sep">///</span><span class="t-item dim">PRECISION MAPPING · 2CM GSD</span><span class="t-sep">///</span><span class="t-item highlight">AI-ASSISTED INTELLIGENCE</span><span class="t-sep">///</span><span class="t-item dim">72-HOUR RAPID DEPLOYMENT</span><span class="t-sep">///</span><span class="t-item highlight">FAA PART 107 CERTIFIED</span><span class="t-sep">///</span><span class="t-item dim">DJI ENTERPRISE PARTNER</span><span class="t-sep">///</span><span class="t-item highlight">THERMAL IMAGING · M4T</span><span class="t-sep">///</span><span class="t-item dim">CALIFORNIA OPERATIONS</span><span class="t-sep">///</span><span class="t-item highlight">REAL-TIME DATA DELIVERY</span><span class="t-sep">///</span><span class="t-item dim">CONSTRUCTION & INSPECTION</span><span class="t-sep">///</span><span class="t-item highlight">NIGHT OPS 107.29 AUTHORIZED</span><span class="t-sep">///</span><span class="t-item dim">PRECISION MAPPING · 2CM GSD</span><span class="t-sep">///</span><span class="t-item highlight">AI-ASSISTED INTELLIGENCE</span><span class="t-sep">///</span><span class="t-item dim">72-HOUR RAPID DEPLOYMENT</span><span class="t-sep">///</span></div></div>
     <div class="scroll-hint">SCROLL TO DEPLOY</div>
@@ -891,68 +886,6 @@ footer{
 <script>
 // ── PHASE 1 · MOTION/PERF SCAFFOLD ──
 const REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-// ── DRONE SCROLL ANIMATION ──
-const heroZone = document.querySelector('.hero-zone');
-const heroDrone = document.getElementById('heroDrone');
-
-function updateHero() {
-  if (!heroZone || !heroDrone) return;
-  const rect = heroZone.getBoundingClientRect();
-  const maxScroll = heroZone.offsetHeight - window.innerHeight;
-  const scrolled = Math.max(0, -rect.top);
-  const progress = Math.min(1, scrolled / maxScroll);
-
-  let tx, ty, scale, opacity, rot;
-  const t = performance.now() / 1000;
-
-  if (progress < 0.4) {
-    const p = progress / 0.4;
-    const ease = 1 - Math.pow(1 - p, 3);
-    tx = 110 * (1 - ease);
-    ty = -24 * (1 - ease);
-    scale = 0.72 + 0.28 * ease;
-    opacity = Math.min(1, ease * 1.6);
-    rot = 7 * (1 - ease);
-  } else if (progress < 0.72) {
-    tx = Math.sin(t * 0.4) * 2;
-    ty = Math.sin(t * 0.7) * 9;
-    scale = 1;
-    opacity = 1;
-    rot = Math.sin(t * 0.5) * 1.5;
-  } else {
-    const p = (progress - 0.72) / 0.28;
-    const ease = p * p;
-    tx = -110 * ease;
-    ty = 32 * ease;
-    scale = 1 - 0.28 * ease;
-    opacity = Math.max(0, 1 - ease * 1.6);
-    rot = -8 * ease;
-  }
-
-  heroDrone.style.transform = `translateX(${tx.toFixed(1)}%) translateY(${ty.toFixed(1)}px) scale(${scale.toFixed(3)}) rotate(${rot.toFixed(2)}deg)`;
-  heroDrone.style.opacity = opacity.toFixed(3);
-}
-
-// PHASE 1 · only run the rAF loop while the hero is in view, and skip entirely under reduced-motion.
-let heroRAF = null, heroInView = true;
-function heroLoop(){ updateHero(); heroRAF = requestAnimationFrame(heroLoop); }
-function startHero(){ if (heroRAF === null && !REDUCE) heroLoop(); }
-function stopHero(){ if (heroRAF !== null){ cancelAnimationFrame(heroRAF); heroRAF = null; } }
-
-if (heroZone && heroDrone) {
-  if (REDUCE) {
-    // static, decoded, no continuous motion
-    heroDrone.style.transform = 'translateX(0) translateY(0) scale(1)';
-    heroDrone.style.opacity = '1';
-  } else {
-    const heroIO = new IntersectionObserver((entries) => {
-      entries.forEach(e => { heroInView = e.isIntersecting; heroInView ? startHero() : stopHero(); });
-    }, {threshold: 0});
-    heroIO.observe(heroZone);
-    startHero();
-  }
-}
 
 // ── PIPELINE SCROLL ──
 const plZone = document.querySelector('.pipeline-zone');
