@@ -85,20 +85,22 @@ section[id],div[id]{scroll-margin-top:72px;}
   display:flex;flex-direction:column;background:var(--bg);
 }
 .hero-video{position:absolute;inset:0;z-index:0;overflow:hidden;}
-/* HERO BG — CSS glow + animated scan line; no video zoom */
-.hero-glow-bg{position:absolute;inset:0;z-index:0;}
+/* HERO BG — Logo PNG centered + glow pulse + animated scan line */
+.hero-glow-bg{position:absolute;inset:0;z-index:0;display:flex;align-items:center;justify-content:center;}
+.hero-logo-img{
+  width:55%;max-width:700px;height:auto;
+  opacity:.18;
+  animation:logoPulse 3.5s ease-in-out infinite;
+  pointer-events:none;user-select:none;
+}
+@keyframes logoPulse{0%,100%{opacity:.14;filter:brightness(1);}50%{opacity:.28;filter:brightness(1.4) drop-shadow(0 0 32px rgba(255,107,26,.5));}}
 .hero-glow-bg::before{
   content:'';position:absolute;inset:0;
   background-image:
-    linear-gradient(rgba(255,107,26,.055) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(255,107,26,.055) 1px,transparent 1px);
+    linear-gradient(rgba(255,107,26,.04) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,107,26,.04) 1px,transparent 1px);
   background-size:52px 52px;
-  animation:gridGlow 3.5s ease-in-out infinite;
-}
-.hero-glow-bg::after{
-  content:'';position:absolute;inset:0;
-  background:radial-gradient(ellipse 65% 55% at 50% 50%,rgba(255,107,26,.10) 0%,transparent 70%);
-  animation:heroPulse 3s ease-in-out infinite;
+  animation:gridGlow 4s ease-in-out infinite;
 }
 .hero-scanline{
   position:absolute;left:0;right:0;height:1px;z-index:1;
@@ -106,7 +108,6 @@ section[id],div[id]{scroll-margin-top:72px;}
   animation:scanDown 5s linear infinite;
 }
 @keyframes gridGlow{0%,100%{opacity:.55;}50%{opacity:1;}}
-@keyframes heroPulse{0%,100%{opacity:.5;}50%{opacity:1;}}
 @keyframes scanDown{0%{top:-1px;opacity:0;}5%{opacity:1;}95%{opacity:.8;}100%{top:100%;opacity:0;}}
 .hero-video::after{
   content:'';position:absolute;inset:0;
@@ -158,8 +159,7 @@ section[id],div[id]{scroll-margin-top:72px;}
   width:100%;max-width:620px;will-change:transform,opacity;
   filter:drop-shadow(0 30px 60px rgba(255,107,26,.2));
 }
-#heroDrone{background:transparent;}
-#heroDrone img,#heroDrone video{width:100%;height:auto;display:block;mix-blend-mode:screen;filter:brightness(1.15) contrast(1.05);}
+#heroDrone img,#heroDrone video{width:100%;height:auto;display:block;}
 .tele{
   position:absolute;font-family:var(--mono);font-size:12px;
   color:var(--og);letter-spacing:.1em;pointer-events:none;
@@ -525,7 +525,10 @@ footer{
 <section class="hero-zone" id="hero">
   <div class="hero-pin">
     <div class="hero-video">
-      <div class="hero-glow-bg"><div class="hero-scanline"></div></div>
+      <div class="hero-glow-bg">
+        <img class="hero-logo-img" src="DOiLabs_Logo.png" alt="">
+        <div class="hero-scanline"></div>
+      </div>
     </div>
     <div class="hero-inner">
       <div class="hero-left">
@@ -545,9 +548,7 @@ footer{
       </div>
       <div class="hero-right">
         <div id="heroDrone">
-          <video autoplay muted loop playsinline style="width:100%;height:auto;display:block;">
-            <source src="MatriceT4_Flyin1.mp4" type="video/mp4">
-          </video>
+          <img src="IMG_4044.webp" alt="DJI Matrice 4T" width="620" height="465" fetchpriority="high" loading="eager">
         </div>
       </div>
     </div>
