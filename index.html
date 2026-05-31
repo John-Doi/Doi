@@ -136,7 +136,7 @@ section[id],div[id]{scroll-margin-top:72px;}
   width:100%;max-width:620px;will-change:transform,opacity;
   filter:drop-shadow(0 30px 60px rgba(255,107,26,.2));
 }
-#heroDrone img{width:100%;height:auto;display:block;}
+#heroDrone img,#heroDrone video{width:100%;height:auto;display:block;}
 .tele{
   position:absolute;font-family:var(--mono);font-size:12px;
   color:var(--og);letter-spacing:.1em;pointer-events:none;
@@ -498,7 +498,7 @@ footer{
     <!-- PHASE 2 · poster = preloaded WebP handles LCP; video src injected after window.load to avoid blocking paint -->
     <div class="hero-video">
       <video id="heroVideo" muted loop playsinline poster="IMG_4044.webp">
-        <source data-src="_imagine-public_share-videos_db0d29c6-75a5-485f-bc1d-72feb7115e67_hd.mp4" type="video/mp4">
+        <source data-src="DOi_logomain.mp4" type="video/mp4">
       </video>
     </div>
     <div class="hero-inner">
@@ -519,7 +519,9 @@ footer{
       </div>
       <div class="hero-right">
         <div id="heroDrone">
-          <img src="IMG_4044.webp" alt="DJI Matrice 4T" width="620" height="465" fetchpriority="high" loading="eager">
+          <video autoplay muted loop playsinline style="width:100%;height:auto;display:block;">
+            <source src="MatriceT4_Flyin.mp4" type="video/mp4">
+          </video>
           <div class="tele tele-alt"><div class="tele-line"><div class="tele-dot"></div>ALT: 120M AGL</div></div>
           <div class="tele tele-spd"><div class="tele-line"><div class="tele-dot"></div>SPD: 15.2 M/S</div></div>
           <div class="tele tele-bat"><div class="tele-line"><div class="tele-dot"></div>BAT: 94%</div></div>
