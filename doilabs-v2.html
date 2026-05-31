@@ -377,6 +377,51 @@ footer{
 }
 .foot-copy{font-family:var(--mono);font-size:12px;color:var(--t3);letter-spacing:.1em;}
 
+/* ── INDUSTRIES (Phase 3) ── */
+.ind-section{position:relative;z-index:1;padding:0 0 80px;background:var(--surf);border-top:1px solid var(--bd);}
+.ind-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--bd);border:1px solid var(--bd);margin:40px 60px 0;}
+.ind-card{background:var(--card);padding:36px 40px;position:relative;overflow:hidden;opacity:0;transform:translateY(18px);transition:opacity .5s,transform .5s cubic-bezier(.16,1,.3,1),background .3s;}
+.ind-card.revealed{opacity:1;transform:translateY(0);}
+.ind-card:hover{background:var(--card2);}
+.ind-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--og),transparent);opacity:0;transition:opacity .3s;}
+.ind-card:hover::before{opacity:1;}
+.ind-label{font-family:var(--mono);font-size:11px;color:var(--og);letter-spacing:.2em;margin-bottom:14px;}
+.ind-title{font-family:var(--disp);font-size:16px;font-weight:700;color:var(--t1);margin-bottom:10px;letter-spacing:.02em;}
+.ind-body{font-size:14px;color:var(--t2);line-height:1.65;}
+.ind-wm{position:absolute;bottom:-12px;right:-6px;font-family:var(--disp);font-size:64px;font-weight:900;color:rgba(255,107,26,.04);line-height:1;pointer-events:none;user-select:none;}
+
+/* ── CONSTRUCTION QA (Phase 4) ── */
+.qa-section{position:relative;z-index:1;padding:0 0 80px;background:var(--bg);border-top:1px solid var(--bd);}
+.qa-inner{display:grid;grid-template-columns:1fr 1fr;gap:0;margin:40px 60px 0;border:1px solid var(--bd);}
+.qa-visual{background:var(--surf);position:relative;overflow:hidden;min-height:420px;display:flex;align-items:stretch;}
+.qa-visual img{width:100%;height:100%;object-fit:cover;opacity:.65;display:block;}
+.qa-overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(8,8,8,.65) 0%,rgba(8,8,8,.2) 100%);}
+.qa-stat-badge{position:absolute;bottom:24px;left:24px;background:rgba(8,8,8,.92);border:1px solid var(--og);padding:14px 20px;}
+.qa-stat-num{font-family:var(--disp);font-size:32px;font-weight:900;color:var(--og);line-height:1;}
+.qa-stat-label{font-family:var(--mono);font-size:11px;color:var(--t3);letter-spacing:.14em;margin-top:4px;}
+.qa-content{padding:48px;background:var(--card);border-left:1px solid var(--bd);display:flex;flex-direction:column;gap:24px;}
+.qa-title{font-family:var(--disp);font-size:clamp(18px,1.8vw,28px);font-weight:900;color:var(--t1);line-height:1.15;}
+.qa-title span{color:var(--og);}
+.qa-lead{font-size:15px;color:var(--t2);line-height:1.7;}
+.qa-checklist{list-style:none;display:flex;flex-direction:column;gap:9px;}
+.qa-checklist li{font-family:var(--mono);font-size:12px;color:var(--t2);letter-spacing:.06em;display:flex;align-items:center;gap:10px;}
+.qa-checklist li::before{content:'';display:block;width:14px;height:1px;background:var(--og);flex-shrink:0;}
+.qa-cta{font-family:var(--mono);font-size:12px;letter-spacing:.12em;font-weight:700;background:var(--og);color:#000;border:none;padding:14px 28px;cursor:crosshair;clip-path:polygon(10px 0%,100% 0%,calc(100% - 10px) 100%,0% 100%);transition:background .2s;align-self:flex-start;}
+.qa-cta:hover{background:var(--tiger);}
+
+/* ── DELIVERABLES (Phase 7) ── */
+.del-section{position:relative;z-index:1;padding:0 0 80px;background:var(--surf);border-top:1px solid var(--bd);}
+.del-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--bd);border:1px solid var(--bd);margin:40px 60px 0;}
+.del-card{background:var(--card);padding:36px 40px;opacity:0;transform:translateY(14px);transition:opacity .5s,transform .5s cubic-bezier(.16,1,.3,1);}
+.del-card.revealed{opacity:1;transform:translateY(0);}
+.del-type{font-family:var(--mono);font-size:11px;color:var(--og);letter-spacing:.2em;margin-bottom:12px;}
+.del-title{font-family:var(--disp);font-size:15px;font-weight:700;color:var(--t1);margin-bottom:10px;letter-spacing:.02em;}
+.del-body{font-size:14px;color:var(--t2);line-height:1.65;}
+.del-format{margin-top:14px;font-family:var(--mono);font-size:11px;color:var(--t3);letter-spacing:.1em;padding-top:12px;border-top:1px solid var(--bd);}
+
+/* ── TRUST (inline row inside why-section, Phase 8) ── */
+.trust-inline{display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:var(--bd);border:1px solid var(--bd);margin:40px 60px 0;}
+
 /* ── PHASE 1 · STICKY MOBILE CTA ── */
 .mobile-cta{display:none;}
 
@@ -398,6 +443,11 @@ footer{
   footer{padding:40px 20px 24px;}
   .foot-inner{grid-template-columns:1fr;gap:36px;}
   .sec-head{padding:60px 20px 0;}
+  .ind-grid,.del-grid{grid-template-columns:1fr;margin:40px 20px 0;}
+  .qa-inner{grid-template-columns:1fr;margin:40px 20px 0;}
+  .qa-visual{min-height:260px;}
+  .qa-content{padding:28px 20px;}
+  .trust-inline{grid-template-columns:repeat(3,1fr);}
   /* sticky CTA + clearance so footer isn't covered */
   body{padding-bottom:62px;}
   .mobile-cta{
@@ -433,6 +483,7 @@ footer{
   <!-- PHASE 1 · canonical IA. Future entries activate with their phases:
        INDUSTRIES (#industries · Phase 3) · QA (#qa · Phase 4) · DELIVERABLES (#deliverables · Phase 7) -->
   <ul class="nav-links">
+    <li><a href="#industries">INDUSTRIES</a></li>
     <li><a href="#services">CAPABILITIES</a></li>
     <li><a href="#pipeline">PROCESS</a></li>
     <li><a href="#mission">WHY DØi</a></li>
@@ -502,65 +553,115 @@ footer{
   <div class="proof-item"><div class="proof-num">100%</div><div class="proof-label">FAA COMPLIANT</div></div>
 </section>
 
-<!-- MISSION PIPELINE (desktop sticky) -->
+<!-- INDUSTRIES (Phase 3) -->
+<section class="ind-section" id="industries">
+  <div class="sec-head">
+    <div class="sec-tag">INDUSTRIES SERVED</div>
+    <h2 class="sec-title">BUILT FOR <span>THE FIELD</span></h2>
+    <p class="sec-desc">Specialized aerial intelligence for the operations that can't afford to guess.</p>
+  </div>
+  <div class="ind-grid">
+    <div class="ind-card"><div class="ind-label">IND · 01</div><div class="ind-title">CONSTRUCTION</div><p class="ind-body">Weekly progress documentation, cut/fill volumetrics, and as-built vs design comparison. Direct BIM and PM platform integration.</p><div class="ind-wm">CON</div></div>
+    <div class="ind-card"><div class="ind-label">IND · 02</div><div class="ind-title">SOLAR & UTILITIES</div><p class="ind-body">Calibrated thermal imaging for panel efficiency mapping, hotspot detection, and electrical infrastructure inspection at scale.</p><div class="ind-wm">SOL</div></div>
+    <div class="ind-card"><div class="ind-label">IND · 03</div><div class="ind-title">REAL ESTATE</div><p class="ind-body">High-resolution marketing aerials, site boundary documentation, and pre-acquisition land surveys for developers and brokers.</p><div class="ind-wm">RE</div></div>
+    <div class="ind-card"><div class="ind-label">IND · 04</div><div class="ind-title">PUBLIC SAFETY</div><p class="ind-body">Perimeter surveillance, search and rescue support, incident documentation, and real-time situational awareness for emergency ops.</p><div class="ind-wm">SAF</div></div>
+    <div class="ind-card"><div class="ind-label">IND · 05</div><div class="ind-title">AGRICULTURE</div><p class="ind-body">NDVI crop health mapping, irrigation analysis, and yield estimation across large-acreage operations with sub-2cm resolution.</p><div class="ind-wm">AGR</div></div>
+    <div class="ind-card"><div class="ind-label">IND · 06</div><div class="ind-title">INFRASTRUCTURE</div><p class="ind-body">Bridge, road, and facility inspection with thermal and RGB payloads. OSHA-compliant documentation and anomaly reporting.</p><div class="ind-wm">INF</div></div>
+  </div>
+</section>
+
+<!-- CONSTRUCTION QA (Phase 4) -->
+<section class="qa-section" id="qa">
+  <div class="sec-head">
+    <div class="sec-tag">AERIAL CONSTRUCTION QA</div>
+    <h2 class="sec-title">TRACK EVERY POUR. <span>EVERY GRADE.</span></h2>
+    <p class="sec-desc">DØi embeds into your project schedule — weekly flyovers, 24HR deliverables, discrepancy reports before your next site visit.</p>
+  </div>
+  <div class="qa-inner">
+    <div class="qa-visual">
+      <img src="IMG_4045.webp" alt="Aerial construction documentation" loading="lazy">
+      <div class="qa-overlay"></div>
+      <div class="qa-stat-badge"><div class="qa-stat-num">24HR</div><div class="qa-stat-label">REPORT TURNAROUND</div></div>
+    </div>
+    <div class="qa-content">
+      <div class="qa-title">AERIAL QA THAT CATCHES PROBLEMS <span>BEFORE THEY COST YOU</span></div>
+      <p class="qa-lead">Traditional site walks miss what drones catch in minutes. DØi delivers georeferenced documentation, volumetric analysis, and thermal inspection on your schedule — not ours.</p>
+      <ul class="qa-checklist">
+        <li>Weekly georeferenced progress documentation</li>
+        <li>Cut / fill volumetric analysis (±2cm accuracy)</li>
+        <li>As-built vs. design overlay comparison</li>
+        <li>BIM-ready orthomosaic exports</li>
+        <li>Thermal envelope & moisture inspection</li>
+        <li>OSHA-compliant site documentation</li>
+        <li>Discrepancy flagging with GPS coordinates</li>
+      </ul>
+      <button class="qa-cta" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">REQUEST CONSTRUCTION BRIEF →</button>
+    </div>
+  </div>
+</section>
+
+<!-- CAPABILITIES (Phase 5 — moved before pipeline) -->
+<section class="svc-section" id="services">
+  <div class="sec-head">
+    <div class="sec-tag">MISSION MODULES</div>
+    <h2 class="sec-title">OPERATIONAL <span>CAPABILITIES</span></h2>
+    <p class="sec-desc">Six specialized divisions. One integrated platform. Total aerial intelligence coverage.</p>
+  </div>
+  <div class="svc-grid">
+    <div class="svc-card"><div class="svc-div">DIV · RCN</div><div class="svc-title">AERIAL RECONNAISSANCE</div><div class="svc-body">Wide-area surveillance and site assessment. RGB + thermal + wide-angle simultaneous capture. Real-time downlink for live situational awareness.</div><div class="svc-wm">RCN</div></div>
+    <div class="svc-card"><div class="svc-div">DIV · OPS</div><div class="svc-title">CONSTRUCTION OPERATIONS</div><div class="svc-body">Progress documentation, volumetric measurement, cut/fill analysis, and as-built surveys. Integrate directly with BIM workflows and project management platforms.</div><div class="svc-wm">OPS</div></div>
+    <div class="svc-card"><div class="svc-div">DIV · SYN</div><div class="svc-title">PRECISION MAPPING</div><div class="svc-body">Survey-grade topographic mapping with RTK/PPK processing. Sub-2cm accuracy. Deliverables include GeoTIFF orthomosaics, DSM/DTM, and LAS point clouds.</div><div class="svc-wm">SYN</div></div>
+    <div class="svc-card"><div class="svc-div">DIV · THM</div><div class="svc-title">THERMAL INSPECTION</div><div class="svc-body">Solar panel efficiency analysis, electrical inspection, HVAC assessment, roof moisture mapping, and wildfire perimeter monitoring using calibrated thermal sensors.</div><div class="svc-wm">THM</div></div>
+    <div class="svc-card"><div class="svc-div">DIV · XLAB</div><div class="svc-title">INTELLIGENCE ANALYSIS</div><div class="svc-body">AI-enhanced object detection, change analysis, anomaly identification, and predictive modeling. Turn raw aerial data into decision-ready intelligence reports.</div><div class="svc-wm">XLAB</div></div>
+    <div class="svc-card"><div class="svc-div">DIV · FAB</div><div class="svc-title">CUSTOM MISSION DESIGN</div><div class="svc-body">Bespoke operational planning for complex, multi-objective missions. Specialized payload integration, extended BVLOS coordination, and custom data pipeline development.</div><div class="svc-wm">FAB</div></div>
+  </div>
+</section>
+
+<!-- HOW DØi WORKS — desktop sticky (Phase 6 — 7 steps → 5) -->
 <div class="pipeline-zone" id="pipeline">
   <div class="pipeline-pin">
     <div class="pl-images">
-      <img class="pl-img active" src="06919491-6C2B-45CF-9C85-601D32BFAC9F.png" alt="Step 1" loading="eager">
-      <img class="pl-img" src="CBED9937-245F-4118-9F60-13298EFD03FD.png" alt="Step 2" loading="lazy">
-      <img class="pl-img" src="26721F3E-B47C-4151-BE3C-22BE642708E6.png" alt="Step 3" loading="lazy">
-      <img class="pl-img" src="C61D48F2-DEC0-4CF1-A878-9E8B0E367EE7.png" alt="Step 4" loading="lazy">
-      <img class="pl-img" src="30B9913C-3ABA-4C13-ABF7-42353E6242EB.png" alt="Step 5" loading="lazy">
-      <img class="pl-img" src="E9D566CE-BDDB-4C42-A612-00B7E73D43E2.png" alt="Step 6" loading="lazy">
-      <img class="pl-img" src="EB6D5C86-02AE-49B8-A805-6BC7E73D43E2.png" alt="Step 7" loading="lazy">
+      <img class="pl-img active" src="06919491-6C2B-45CF-9C85-601D32BFAC9F.png" alt="Mission Brief" loading="eager">
+      <img class="pl-img" src="CBED9937-245F-4118-9F60-13298EFD03FD.png" alt="Airspace Authorization" loading="lazy">
+      <img class="pl-img" src="26721F3E-B47C-4151-BE3C-22BE642708E6.png" alt="Field Execution" loading="lazy">
+      <img class="pl-img" src="C61D48F2-DEC0-4CF1-A878-9E8B0E367EE7.png" alt="Data Processing" loading="lazy">
+      <img class="pl-img" src="30B9913C-3ABA-4C13-ABF7-42353E6242EB.png" alt="Deliverable Package" loading="lazy">
     </div>
     <div class="pl-content">
       <div class="sec-head" style="padding:0 0 32px;text-align:left;">
-        <div class="sec-tag" style="justify-content:flex-start;">MISSION PIPELINE</div>
-        <h2 class="sec-title">7-STEP <span>OPERATION</span></h2>
+        <div class="sec-tag" style="justify-content:flex-start;">HOW DØi WORKS</div>
+        <h2 class="sec-title">5-STEP <span>PROCESS</span></h2>
       </div>
       <div class="pl-steps">
       <div class="pl-step active">
         <div class="step-bg-num">01</div>
-        <div class="step-code">RCN-01 · INTAKE</div>
-        <h3 class="step-title">MISSION INTAKE</h3>
-        <p class="step-body">Every operation begins with a client consultation and site assessment. We gather mission objectives, property details, airspace constraints, and deliverable requirements to build the correct deployment plan.</p>
+        <div class="step-code">RCN-01 · BRIEF</div>
+        <h3 class="step-title">MISSION BRIEF</h3>
+        <p class="step-body">Client consultation, site assessment, and operational planning. We define objectives, verify airspace, analyze risk, and configure the mission route before a single rotor spins.</p>
       </div>
       <div class="pl-step">
         <div class="step-bg-num">02</div>
-        <div class="step-code">OPS-02 · PLANNING</div>
-        <h3 class="step-title">OPERATIONAL PLANNING</h3>
-        <p class="step-body">DØi performs pre-flight planning, FAA airspace verification, risk analysis, weather evaluation, and mission route configuration. Every mission is structured for safety, efficiency, and precision data capture.</p>
+        <div class="step-code">OPS-02 · AIRSPACE</div>
+        <h3 class="step-title">AIRSPACE AUTHORIZATION</h3>
+        <p class="step-body">LAANC approval, FAA airspace coordination, weather evaluation, and pre-flight safety verification. Every mission launches with full regulatory clearance and zero surprises.</p>
       </div>
       <div class="pl-step">
         <div class="step-bg-num">03</div>
-        <div class="step-code">SYN-03 · INTEL</div>
-        <h3 class="step-title">INTELLIGENCE ANALYSIS</h3>
-        <p class="step-body">DØi analyzes all collected data to identify threats, patterns, and opportunities. We assess risks, validate intel, and generate actionable insights that drive mission success and protect assets on the ground.</p>
+        <div class="step-code">EXE-03 · FLIGHT</div>
+        <h3 class="step-title">FIELD EXECUTION</h3>
+        <p class="step-body">Precision autonomous flight with real-time telemetry monitoring. Simultaneous RGB, thermal, and wide-angle capture. Live downlink for immediate situational awareness when required.</p>
       </div>
       <div class="pl-step">
         <div class="step-bg-num">04</div>
-        <div class="step-code">EXE-04 · EXECUTION</div>
-        <h3 class="step-title">MISSION EXECUTION</h3>
-        <p class="step-body">DØi executes missions with precision and purpose. Real-time data, advanced payloads, and autonomous capabilities deliver actionable intelligence when it matters most. Every mission. Every detail. Every advantage.</p>
+        <div class="step-code">DAT-04 · PROCESSING</div>
+        <h3 class="step-title">DATA PROCESSING</h3>
+        <p class="step-body">Photogrammetric reconstruction, thermal calibration, AI-assisted anomaly detection, and 3D model generation. Every dataset cleaned, structured, and validated for accuracy.</p>
       </div>
       <div class="pl-step">
         <div class="step-bg-num">05</div>
-        <div class="step-code">ANL-05 · POST-OPS</div>
-        <h3 class="step-title">POST-MISSION ANALYSIS</h3>
-        <p class="step-body">DØi transforms raw data into actionable intelligence. We analyze, validate, and deliver insights that inform decisions, optimize operations, and drive mission success. Every dataset. Every advantage.</p>
-      </div>
-      <div class="pl-step">
-        <div class="step-bg-num">06</div>
-        <div class="step-code">DAT-06 · PROCESSING</div>
-        <h3 class="step-title">DATA PROCESSING & MODELING</h3>
-        <p class="step-body">Raw data is processed and transformed into intelligent 3D models and maps. We clean, structure, and enrich every dataset to ensure accuracy and reliability. Precision in processing. Confidence in every model.</p>
-      </div>
-      <div class="pl-step">
-        <div class="step-bg-num">07</div>
-        <div class="step-code">QCV-07 · VALIDATION</div>
-        <h3 class="step-title">QUALITY CONTROL & VALIDATION</h3>
-        <p class="step-body">Every dataset undergoes rigorous quality control to ensure accuracy, completeness, and reliability. We validate, verify, and cross-check every detail so you can trust the results. Precision verified. Confidence delivered.</p>
+        <div class="step-code">DEL-05 · DELIVERY</div>
+        <h3 class="step-title">DELIVERABLE PACKAGE</h3>
+        <p class="step-body">QC-verified reports, orthomosaics, point clouds, and intelligence briefs delivered within 48 hours. Every file format your team needs, ready to action immediately.</p>
       </div>
       </div>
       <div class="pl-dots">
@@ -569,78 +670,77 @@ footer{
       <div class="pl-dot"></div>
       <div class="pl-dot"></div>
       <div class="pl-dot"></div>
-      <div class="pl-dot"></div>
-      <div class="pl-dot"></div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- MISSION PIPELINE (mobile fallback) -->
+<!-- HOW DØi WORKS — mobile fallback (Phase 6 — 5 steps) -->
 <div class="mob-pipeline" id="pipeline-mob">
   <div class="sec-head">
-    <div class="sec-tag">MISSION PIPELINE</div>
-    <h2 class="sec-title">7-STEP <span>OPERATION</span></h2>
+    <div class="sec-tag">HOW DØi WORKS</div>
+    <h2 class="sec-title">5-STEP <span>PROCESS</span></h2>
   </div>
     <div class="mob-step">
-      <img class="mob-step-img" src="06919491-6C2B-45CF-9C85-601D32BFAC9F.png" alt="MISSION INTAKE" loading="lazy">
+      <img class="mob-step-img" src="06919491-6C2B-45CF-9C85-601D32BFAC9F.png" alt="Mission Brief" loading="lazy">
       <div class="mob-step-content">
-        <div class="step-code">RCN-01 · INTAKE</div>
-        <h3 class="step-title">MISSION INTAKE</h3>
-        <p class="step-body">Every operation begins with a client consultation and site assessment. We gather mission objectives, property details, airspace constraints, and deliverable requirements to build the correct deployment plan.</p>
+        <div class="step-code">RCN-01 · BRIEF</div>
+        <h3 class="step-title">MISSION BRIEF</h3>
+        <p class="step-body">Client consultation, site assessment, and operational planning. We define objectives, verify airspace, analyze risk, and configure the mission route before a single rotor spins.</p>
       </div>
     </div>
     <div class="mob-step">
-      <img class="mob-step-img" src="CBED9937-245F-4118-9F60-13298EFD03FD.png" alt="OPERATIONAL PLANNING" loading="lazy">
+      <img class="mob-step-img" src="CBED9937-245F-4118-9F60-13298EFD03FD.png" alt="Airspace Authorization" loading="lazy">
       <div class="mob-step-content">
-        <div class="step-code">OPS-02 · PLANNING</div>
-        <h3 class="step-title">OPERATIONAL PLANNING</h3>
-        <p class="step-body">DØi performs pre-flight planning, FAA airspace verification, risk analysis, weather evaluation, and mission route configuration. Every mission is structured for safety, efficiency, and precision data capture.</p>
+        <div class="step-code">OPS-02 · AIRSPACE</div>
+        <h3 class="step-title">AIRSPACE AUTHORIZATION</h3>
+        <p class="step-body">LAANC approval, FAA airspace coordination, weather evaluation, and pre-flight safety verification. Every mission launches with full regulatory clearance.</p>
       </div>
     </div>
     <div class="mob-step">
-      <img class="mob-step-img" src="26721F3E-B47C-4151-BE3C-22BE642708E6.png" alt="INTELLIGENCE ANALYSIS" loading="lazy">
+      <img class="mob-step-img" src="26721F3E-B47C-4151-BE3C-22BE642708E6.png" alt="Field Execution" loading="lazy">
       <div class="mob-step-content">
-        <div class="step-code">SYN-03 · INTEL</div>
-        <h3 class="step-title">INTELLIGENCE ANALYSIS</h3>
-        <p class="step-body">DØi analyzes all collected data to identify threats, patterns, and opportunities. We assess risks, validate intel, and generate actionable insights that drive mission success and protect assets on the ground.</p>
+        <div class="step-code">EXE-03 · FLIGHT</div>
+        <h3 class="step-title">FIELD EXECUTION</h3>
+        <p class="step-body">Precision autonomous flight with simultaneous RGB, thermal, and wide-angle capture. Live downlink for immediate situational awareness when required.</p>
       </div>
     </div>
     <div class="mob-step">
-      <img class="mob-step-img" src="C61D48F2-DEC0-4CF1-A878-9E8B0E367EE7.png" alt="MISSION EXECUTION" loading="lazy">
+      <img class="mob-step-img" src="C61D48F2-DEC0-4CF1-A878-9E8B0E367EE7.png" alt="Data Processing" loading="lazy">
       <div class="mob-step-content">
-        <div class="step-code">EXE-04 · EXECUTION</div>
-        <h3 class="step-title">MISSION EXECUTION</h3>
-        <p class="step-body">DØi executes missions with precision and purpose. Real-time data, advanced payloads, and autonomous capabilities deliver actionable intelligence when it matters most. Every mission. Every detail. Every advantage.</p>
+        <div class="step-code">DAT-04 · PROCESSING</div>
+        <h3 class="step-title">DATA PROCESSING</h3>
+        <p class="step-body">Photogrammetric reconstruction, thermal calibration, AI-assisted anomaly detection, and 3D model generation. Every dataset validated for accuracy.</p>
       </div>
     </div>
     <div class="mob-step">
-      <img class="mob-step-img" src="30B9913C-3ABA-4C13-ABF7-42353E6242EB.png" alt="POST-MISSION ANALYSIS" loading="lazy">
+      <img class="mob-step-img" src="30B9913C-3ABA-4C13-ABF7-42353E6242EB.png" alt="Deliverable Package" loading="lazy">
       <div class="mob-step-content">
-        <div class="step-code">ANL-05 · POST-OPS</div>
-        <h3 class="step-title">POST-MISSION ANALYSIS</h3>
-        <p class="step-body">DØi transforms raw data into actionable intelligence. We analyze, validate, and deliver insights that inform decisions, optimize operations, and drive mission success. Every dataset. Every advantage.</p>
-      </div>
-    </div>
-    <div class="mob-step">
-      <img class="mob-step-img" src="E9D566CE-BDDB-4C42-A612-00B7E73D43E2.png" alt="DATA PROCESSING & MODELING" loading="lazy">
-      <div class="mob-step-content">
-        <div class="step-code">DAT-06 · PROCESSING</div>
-        <h3 class="step-title">DATA PROCESSING & MODELING</h3>
-        <p class="step-body">Raw data is processed and transformed into intelligent 3D models and maps. We clean, structure, and enrich every dataset to ensure accuracy and reliability. Precision in processing. Confidence in every model.</p>
-      </div>
-    </div>
-    <div class="mob-step">
-      <img class="mob-step-img" src="EB6D5C86-02AE-49B8-A805-6BC7E73D43E2.png" alt="QUALITY CONTROL & VALIDATION" loading="lazy">
-      <div class="mob-step-content">
-        <div class="step-code">QCV-07 · VALIDATION</div>
-        <h3 class="step-title">QUALITY CONTROL & VALIDATION</h3>
-        <p class="step-body">Every dataset undergoes rigorous quality control to ensure accuracy, completeness, and reliability. We validate, verify, and cross-check every detail so you can trust the results. Precision verified. Confidence delivered.</p>
+        <div class="step-code">DEL-05 · DELIVERY</div>
+        <h3 class="step-title">DELIVERABLE PACKAGE</h3>
+        <p class="step-body">QC-verified reports, orthomosaics, point clouds, and intelligence briefs delivered within 48 hours. Every file format your team needs, ready to action immediately.</p>
       </div>
     </div>
 </div>
 
-<!-- WHY DØi -->
+<!-- DELIVERABLES (Phase 7) -->
+<section class="del-section" id="deliverables">
+  <div class="sec-head">
+    <div class="sec-tag">WHAT YOU RECEIVE</div>
+    <h2 class="sec-title">REPORTS THAT <span>MOVE PROJECTS</span></h2>
+    <p class="sec-desc">Every mission ends with production-ready deliverables — not raw footage.</p>
+  </div>
+  <div class="del-grid">
+    <div class="del-card"><div class="del-type">DEL · 01</div><div class="del-title">ORTHOMOSAIC GEOTIFF</div><p class="del-body">Georeferenced aerial imagery stitched to survey-grade accuracy. Used for site measurement, design overlays, and record documentation.</p><div class="del-format">FORMAT: GeoTIFF · 2CM GSD · WGS84</div></div>
+    <div class="del-card"><div class="del-type">DEL · 02</div><div class="del-title">3D POINT CLOUD</div><p class="del-body">Dense photogrammetric point cloud for earthwork analysis, as-built verification, and BIM integration. Survey-grade vertical accuracy.</p><div class="del-format">FORMAT: LAS / LAZ · ±2CM ACCURACY</div></div>
+    <div class="del-card"><div class="del-type">DEL · 03</div><div class="del-title">THERMAL REPORT</div><p class="del-body">Annotated thermal maps with defect classifications, GPS coordinates, and severity ratings. Ready for maintenance scheduling.</p><div class="del-format">FORMAT: PDF + GEOTIFF · RADIOMETRIC</div></div>
+    <div class="del-card"><div class="del-type">DEL · 04</div><div class="del-title">PROGRESS REPORT PDF</div><p class="del-body">Timestamped site documentation with overlays, issue flags, and completion percentage. PM and legal-grade record keeping.</p><div class="del-format">FORMAT: PDF · TIMESTAMPED · GPS-TAGGED</div></div>
+    <div class="del-card"><div class="del-type">DEL · 05</div><div class="del-title">SURFACE MODEL (DSM/DTM)</div><p class="del-body">Digital surface and terrain models for drainage analysis, cut/fill quantification, and grading plan verification.</p><div class="del-format">FORMAT: GeoTIFF / XYZ · 5CM POSTING</div></div>
+    <div class="del-card"><div class="del-type">DEL · 06</div><div class="del-title">INTELLIGENCE BRIEF</div><p class="del-body">AI-assisted anomaly detection with prioritized action items. Change detection between missions. Decision-ready summary for project leads.</p><div class="del-format">FORMAT: PDF + ANNOTATED IMAGERY</div></div>
+  </div>
+</section>
+
+<!-- WHY DØi + TRUST (Phase 8 — trust badges merged inline) -->
 <section class="why-section" id="mission">
   <img class="why-bg" src="D92BA55E-36E7-48DF-9269-094B136883BA.png" alt="">
   <div style="position:relative;">
@@ -687,39 +787,15 @@ footer{
         <div class="why-body">72-hour notice deployment for time-sensitive operations. Emergency response, insurance assessment, wildfire monitoring, and urgent infrastructure inspection.</div>
       </div>
     </div>
-  </div>
-</section>
-
-<!-- SERVICES -->
-<section class="svc-section" id="services">
-  <div class="sec-head">
-    <div class="sec-tag">MISSION MODULES</div>
-    <h2 class="sec-title">OPERATIONAL <span>SERVICES</span></h2>
-    <p class="sec-desc">Six specialized divisions. One integrated platform. Total aerial intelligence coverage.</p>
-  </div>
-  <div class="svc-grid">
-    <div class="svc-card"><div class="svc-div">DIV · RCN</div><div class="svc-title">AERIAL RECONNAISSANCE</div><div class="svc-body">Wide-area surveillance and site assessment. RGB + thermal + wide-angle simultaneous capture. Real-time downlink for live situational awareness.</div><div class="svc-wm">RCN</div></div>
-    <div class="svc-card"><div class="svc-div">DIV · OPS</div><div class="svc-title">CONSTRUCTION OPERATIONS</div><div class="svc-body">Progress documentation, volumetric measurement, cut/fill analysis, and as-built surveys. Integrate directly with BIM workflows and project management platforms.</div><div class="svc-wm">OPS</div></div>
-    <div class="svc-card"><div class="svc-div">DIV · SYN</div><div class="svc-title">PRECISION MAPPING</div><div class="svc-body">Survey-grade topographic mapping with RTK/PPK processing. Sub-2cm accuracy. Deliverables include GeoTIFF orthomosaics, DSM/DTM, and LAS point clouds.</div><div class="svc-wm">SYN</div></div>
-    <div class="svc-card"><div class="svc-div">DIV · THM</div><div class="svc-title">THERMAL INSPECTION</div><div class="svc-body">Solar panel efficiency analysis, electrical inspection, HVAC assessment, roof moisture mapping, and wildfire perimeter monitoring using calibrated thermal sensors.</div><div class="svc-wm">THM</div></div>
-    <div class="svc-card"><div class="svc-div">DIV · XLAB</div><div class="svc-title">INTELLIGENCE ANALYSIS</div><div class="svc-body">AI-enhanced object detection, change analysis, anomaly identification, and predictive modeling. Turn raw aerial data into decision-ready intelligence reports.</div><div class="svc-wm">XLAB</div></div>
-    <div class="svc-card"><div class="svc-div">DIV · FAB</div><div class="svc-title">CUSTOM MISSION DESIGN</div><div class="svc-body">Bespoke operational planning for complex, multi-objective missions. Specialized payload integration, extended BVLOS coordination, and custom data pipeline development.</div><div class="svc-wm">FAB</div></div>
-  </div>
-</section>
-
-<!-- TRUST -->
-<section class="trust-section">
-  <div class="sec-head">
-    <div class="sec-tag">COMPLIANCE & CERTIFICATION</div>
-    <h2 class="sec-title">CERTIFIED. INSURED. <span>READY.</span></h2>
-  </div>
-  <div class="trust-grid">
-    <div class="trust-item"><div class="trust-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="6"/><path d="M8.5 13.5 7 22l5-3 5 3-1.5-8.5"/></svg></div><div class="trust-label">FAA PART 107</div></div>
-    <div class="trust-item"><div class="trust-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"/></svg></div><div class="trust-label">NIGHT OPS 107.29</div></div>
-    <div class="trust-item"><div class="trust-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="trust-label">$2M LIABILITY</div></div>
-    <div class="trust-item"><div class="trust-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="2"/><path d="M16.24 7.76a6 6 0 0 1 0 8.49M7.76 16.24a6 6 0 0 1 0-8.49M19.07 4.93a10 10 0 0 1 0 14.14M4.93 19.07a10 10 0 0 1 0-14.14"/></svg></div><div class="trust-label">LAANC CERTIFIED</div></div>
-    <div class="trust-item"><div class="trust-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></div><div class="trust-label">DATA SECURE</div></div>
-    <div class="trust-item"><div class="trust-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="9" y="9" width="6" height="6" rx="1"/><circle cx="5" cy="5" r="2.5"/><circle cx="19" cy="5" r="2.5"/><circle cx="5" cy="19" r="2.5"/><circle cx="19" cy="19" r="2.5"/><path d="m7 7 2 2M17 7l-2 2M7 17l2-2M17 17l-2-2"/></svg></div><div class="trust-label">DJI ENTERPRISE</div></div>
+    <!-- Inline trust badges (Phase 8 — replaces standalone trust section) -->
+    <div class="trust-inline">
+      <div class="trust-item"><div class="trust-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="6"/><path d="M8.5 13.5 7 22l5-3 5 3-1.5-8.5"/></svg></div><div class="trust-label">FAA PART 107</div></div>
+      <div class="trust-item"><div class="trust-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"/></svg></div><div class="trust-label">NIGHT OPS 107.29</div></div>
+      <div class="trust-item"><div class="trust-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="trust-label">$2M LIABILITY</div></div>
+      <div class="trust-item"><div class="trust-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="2"/><path d="M16.24 7.76a6 6 0 0 1 0 8.49M7.76 16.24a6 6 0 0 1 0-8.49M19.07 4.93a10 10 0 0 1 0 14.14M4.93 19.07a10 10 0 0 1 0-14.14"/></svg></div><div class="trust-label">LAANC CERTIFIED</div></div>
+      <div class="trust-item"><div class="trust-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></div><div class="trust-label">DATA SECURE</div></div>
+      <div class="trust-item"><div class="trust-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="9" y="9" width="6" height="6" rx="1"/><circle cx="5" cy="5" r="2.5"/><circle cx="19" cy="5" r="2.5"/><circle cx="5" cy="19" r="2.5"/><circle cx="19" cy="19" r="2.5"/><path d="m7 7 2 2M17 7l-2 2M7 17l2-2M17 17l-2-2"/></svg></div><div class="trust-label">DJI ENTERPRISE</div></div>
+    </div>
   </div>
 </section>
 
@@ -903,11 +979,14 @@ updateProgress();
 //   {id:'qa',label:'AERIAL QA'}            (Phase 4)
 //   {id:'deliverables',label:'DELIVERABLES'} (Phase 7)
 const RAIL = [
-  {id:'hero',     label:'HERO'},
-  {id:'pipeline', label:'PROCESS'},
-  {id:'mission',  label:'WHY DØi'},
-  {id:'services', label:'CAPABILITIES'},
-  {id:'contact',  label:'CONTACT'}
+  {id:'hero',        label:'HERO'},
+  {id:'industries',  label:'INDUSTRIES'},
+  {id:'qa',          label:'CONSTR. QA'},
+  {id:'services',    label:'CAPABILITIES'},
+  {id:'pipeline',    label:'PROCESS'},
+  {id:'deliverables',label:'DELIVERABLES'},
+  {id:'mission',     label:'WHY DØi'},
+  {id:'contact',     label:'CONTACT'}
 ];
 const rail = document.getElementById('sectionRail');
 const railDots = [];
@@ -935,7 +1014,7 @@ window.addEventListener('scroll', updateRail, {passive:true});
 updateRail();
 
 // ── INTERSECTION REVEALS ──
-const revealEls = document.querySelectorAll('.why-card, .svc-card, .trust-item, .proof-item');
+const revealEls = document.querySelectorAll('.why-card, .svc-card, .trust-item, .proof-item, .ind-card, .del-card');
 const io = new IntersectionObserver((entries) => {
   entries.forEach((e, i) => {
     if (e.isIntersecting) {
