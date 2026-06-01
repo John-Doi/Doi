@@ -53,7 +53,7 @@ body{font-family:var(--body);font-size:18px;line-height:1.65;background:var(--bg
   -webkit-text-stroke:0;
 }
 /* PHASE 1 · anchor jumps clear the 60px fixed nav */
-section[id],div[id]{scroll-margin-top:156px;}
+section[id],div[id]{scroll-margin-top:108px;}
 
 /* ── PHASE 1 · SCROLL PROGRESS BAR ── */
 .scroll-progress{
@@ -85,7 +85,7 @@ section[id],div[id]{scroll-margin-top:156px;}
 .nav{
   position:fixed;top:0;left:0;right:0;z-index:200;
   display:flex;align-items:center;justify-content:space-between;
-  padding:0 48px;height:156px;
+  padding:0 48px;height:108px;
   background:rgba(8,8,8,.9);backdrop-filter:blur(16px);
   border-bottom:1px solid var(--bd);
 }
@@ -96,11 +96,11 @@ section[id],div[id]{scroll-margin-top:156px;}
 .nav-logo.visible{opacity:1;pointer-events:auto;}
 .nav-logo em{color:var(--og);font-style:normal;}
 .nav-links{display:flex;gap:28px;list-style:none;}
-.nav-links a{font-family:var(--mono);font-size:12px;color:var(--t2);text-decoration:none;letter-spacing:.14em;text-transform:uppercase;transition:color .2s;}
+.nav-links a{font-family:var(--mono);font-size:16px;color:var(--t2);text-decoration:none;letter-spacing:.14em;text-transform:uppercase;transition:color .2s;}
 .nav-links a:hover{color:var(--og);}
 .nav-cta{
-  font-family:var(--mono);font-size:12px;letter-spacing:.12em;font-weight:700;
-  background:var(--og);color:#000;border:none;padding:8px 22px;cursor:crosshair;
+  font-family:var(--mono);font-size:16px;letter-spacing:.12em;font-weight:700;
+  background:var(--og);color:#000;border:none;padding:12px 28px;cursor:crosshair;
   clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);
   transition:background .2s;
 }
@@ -549,7 +549,7 @@ footer{
 <!-- NAV -->
 <nav class="nav">
   <a class="nav-logo" href="#hero" style="display:flex;align-items:center;padding:0;">
-    <img src="DOi_Cornerlogo.jpg" alt="DØi Labs" style="height:48px;width:auto;display:block;">
+    <img src="DOi_Cornerlogo.jpg" alt="DØi Labs" style="height:80px;width:auto;display:block;">
   </a>
   <!-- PHASE 1 · canonical IA. Future entries activate with their phases:
        INDUSTRIES (#industries · Phase 3) · QA (#qa · Phase 4) · DELIVERABLES (#deliverables · Phase 7) -->
