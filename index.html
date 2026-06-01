@@ -22,13 +22,26 @@
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
-body{font-family:var(--body);font-size:17px;line-height:1.6;background:var(--bg);color:var(--t1);overflow-x:hidden;cursor:crosshair;}
-/* Thin grey lines on white text only */
+body{font-family:var(--body);font-size:18px;line-height:1.65;background:var(--bg);color:var(--t1);overflow-x:hidden;cursor:crosshair;}
+/* Global small-text upsize: mono labels 12px→14px, 11px→13px */
+[class*="font-family:var(--mono)"]{font-size:14px;}
+.rail-dot::after{font-size:13px!important;}
+.nav-links a,.nav-cta,.hero-eyebrow,.hero-platform,.t-item,.proof-label,
+.sec-tag,.step-code,.why-code,.svc-div,.ind-label,.del-type,.del-format,
+.trust-label,.form-label,.foot-col-title,.foot-copy,.qa-checklist li,.qa-cta,
+.btn-p,.btn-g,.scroll-hint{font-size:14px!important;}
+.sec-desc,.why-body,.svc-body,.ind-body,.del-body,.qa-lead,.step-body{font-size:17px!important;}
+.foot-links a{font-size:16px!important;}
+/* Thin grey lines on WHITE text only — orange elements explicitly excluded */
 .hero-h1,.sec-title,.step-title,.qa-title,.del-title,.ind-title,.svc-title,.why-title,.foot-logo{
   text-decoration:underline;
-  text-decoration-color:rgba(200,200,200,.13);
+  text-decoration-color:rgba(200,200,200,.14);
   text-underline-offset:5px;
   text-decoration-thickness:1px;
+}
+/* Remove underline from any orange/accent child text */
+.sec-title span,.hero-h1 .og,.og,.sec-tag,.step-code,.why-code,.svc-div,.ind-label,.del-type,.proof-num,.qa-title span{
+  text-decoration:none;
 }
 /* PHASE 1 · anchor jumps clear the 60px fixed nav */
 section[id],div[id]{scroll-margin-top:72px;}
@@ -88,9 +101,10 @@ section[id],div[id]{scroll-margin-top:72px;}
 }
 .hero-video{position:absolute;inset:0;z-index:0;overflow:hidden;}
 /* HERO BG — Logo PNG centered + glow pulse + animated scan line */
-.hero-glow-bg{position:absolute;inset:0;z-index:0;display:flex;align-items:center;justify-content:center;}
+.hero-glow-bg{position:absolute;inset:0;z-index:0;display:flex;align-items:center;justify-content:flex-end;}
 .hero-logo-img{
-  width:88%;max-width:1100px;height:auto;
+  width:80%;max-width:1000px;height:auto;
+  margin-right:-8%;
   pointer-events:none;user-select:none;
   mix-blend-mode:screen;
 }
@@ -512,9 +526,7 @@ footer{
 <!-- NAV -->
 <nav class="nav">
   <a class="nav-logo" href="#hero" style="display:flex;align-items:center;padding:0;">
-    <video autoplay muted loop playsinline style="height:52px;width:auto;display:block;">
-      <source src="DOi_Glowlogo.mp4" type="video/mp4">
-    </video>
+    <img src="DOiLabsLogo1.png" alt="DØi Labs" style="height:48px;width:auto;display:block;">
   </a>
   <!-- PHASE 1 · canonical IA. Future entries activate with their phases:
        INDUSTRIES (#industries · Phase 3) · QA (#qa · Phase 4) · DELIVERABLES (#deliverables · Phase 7) -->
