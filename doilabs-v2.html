@@ -113,9 +113,11 @@ section[id],div[id]{scroll-margin-top:72px;}
 /* HERO BG — Logo PNG centered + glow pulse + animated scan line */
 /* hero-glow-bg: grid + scanline only — logo is now in content flow */
 .hero-glow-bg{position:absolute;inset:0;z-index:0;}
-/* In-flow logo — text sits naturally below it */
+/* In-flow logo — constrained so text always fits in 100vh */
 .hero-logo-img{
-  width:88%;max-width:1100px;height:auto;
+  width:88%;max-width:1100px;
+  height:auto;max-height:48vh;
+  object-fit:contain;
   display:block;margin:0 auto;
   pointer-events:none;user-select:none;
   mix-blend-mode:screen;
