@@ -465,12 +465,12 @@ footer{
 /* ── CONSTRUCTION QA (Phase 4) ── */
 .qa-section{position:relative;z-index:1;padding:0 0 80px;background:transparent;border-top:1px solid var(--bd);}
 .qa-inner{position:relative;margin:40px 60px 0;min-height:480px;}
-/* Drone anchored to left side of section */
-.qa-visual{position:absolute;top:0;bottom:0;left:-10%;width:60%;z-index:0;overflow:visible;}
-.qa-visual video{width:100%;height:100%;object-fit:cover;object-position:center center;mix-blend-mode:screen;opacity:.85;}
-.qa-visual::after{content:'';position:absolute;inset:0;background:linear-gradient(to right,rgba(8,8,8,.1) 0%,rgba(8,8,8,.8) 100%);z-index:1;}
+/* Drone covers full section, object-position shifts it left */
+.qa-visual{position:absolute;inset:0;z-index:0;}
+.qa-visual video{width:100%;height:100%;object-fit:cover;object-position:15% center;mix-blend-mode:screen;opacity:.85;}
+.qa-visual::after{content:'';position:absolute;inset:0;background:linear-gradient(to right,rgba(8,8,8,.05) 0%,rgba(8,8,8,.75) 50%,rgba(8,8,8,.9) 100%);z-index:1;}
 .qa-overlay{display:none;}
-/* Content floats on top right */
+/* Content on right half */
 .qa-content{position:relative;z-index:2;padding:48px;margin-left:48%;background:transparent;display:flex;flex-direction:column;gap:24px;}
 .qa-stat-badge{position:absolute;bottom:24px;left:24px;background:rgba(8,8,8,.92);border:1px solid var(--og);padding:14px 20px;}
 .qa-stat-num{font-family:var(--disp);font-size:32px;font-weight:900;color:var(--og);line-height:1;}
