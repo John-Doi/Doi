@@ -32,16 +32,25 @@ body{font-family:var(--body);font-size:18px;line-height:1.65;background:var(--bg
 .btn-p,.btn-g,.scroll-hint{font-size:14px!important;}
 .sec-desc,.why-body,.svc-body,.ind-body,.del-body,.qa-lead,.step-body{font-size:17px!important;}
 .foot-links a{font-size:16px!important;}
-/* Thin grey lines on WHITE text only — orange elements explicitly excluded */
-.hero-h1,.sec-title,.step-title,.qa-title,.del-title,.ind-title,.svc-title,.why-title,.foot-logo{
-  text-decoration:underline;
-  text-decoration-color:rgba(200,200,200,.14);
-  text-underline-offset:5px;
-  text-decoration-thickness:1px;
+/* ── HEADING TEXTURE: solid fill + repeating horizontal hairlines ── */
+/* White headings — matches the "CALIFORNIA" style in reference */
+.hero-h1,.sec-title,.step-title,.del-title,.ind-title,.svc-title,.why-title,.foot-logo{
+  background:repeating-linear-gradient(180deg,#e4e4e4 0 4px,rgba(140,140,140,.45) 4px 5px);
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;color:transparent;
 }
-/* Remove underline from any orange/accent child text */
-.sec-title span,.hero-h1 .og,.og,.sec-tag,.step-code,.why-code,.svc-div,.ind-label,.del-type,.proof-num,.qa-title span{
-  text-decoration:none;
+/* qa-title white part */
+.qa-title{
+  background:repeating-linear-gradient(180deg,#e4e4e4 0 4px,rgba(140,140,140,.45) 4px 5px);
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;color:transparent;
+}
+/* Orange heading text — same hairline treatment in orange */
+.sec-title span,.hero-h1 .og,.qa-title span{
+  background:repeating-linear-gradient(180deg,var(--og) 0 4px,rgba(160,55,0,.65) 4px 5px);
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;color:transparent;
+  -webkit-text-stroke:0;text-stroke:0;
 }
 /* PHASE 1 · anchor jumps clear the 60px fixed nav */
 section[id],div[id]{scroll-margin-top:72px;}
@@ -101,10 +110,10 @@ section[id],div[id]{scroll-margin-top:72px;}
 }
 .hero-video{position:absolute;inset:0;z-index:0;overflow:hidden;}
 /* HERO BG — Logo PNG centered + glow pulse + animated scan line */
-.hero-glow-bg{position:absolute;inset:0;z-index:0;display:flex;align-items:center;justify-content:flex-end;}
+.hero-glow-bg{position:absolute;inset:0;z-index:0;display:flex;align-items:center;justify-content:center;}
 .hero-logo-img{
   width:80%;max-width:1000px;height:auto;
-  margin-right:-8%;
+  transform:translateX(12%);
   pointer-events:none;user-select:none;
   mix-blend-mode:screen;
 }
@@ -437,7 +446,7 @@ footer{
 /* ── CONSTRUCTION QA (Phase 4) ── */
 .qa-section{position:relative;z-index:1;padding:0 0 80px;background:var(--bg);border-top:1px solid var(--bd);}
 .qa-inner{display:grid;grid-template-columns:1fr 1fr;gap:0;margin:40px 60px 0;border:1px solid var(--bd);}
-.qa-visual{background:var(--surf);position:relative;overflow:hidden;min-height:420px;display:flex;align-items:stretch;}
+.qa-visual{background:var(--surf);position:relative;overflow:hidden;min-height:320px;display:flex;align-items:stretch;}
 .qa-visual img{width:100%;height:100%;object-fit:cover;opacity:.65;display:block;}
 .qa-overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(8,8,8,.65) 0%,rgba(8,8,8,.2) 100%);}
 .qa-stat-badge{position:absolute;bottom:24px;left:24px;background:rgba(8,8,8,.92);border:1px solid var(--og);padding:14px 20px;}
