@@ -922,13 +922,13 @@ footer{
 </div>
 
 <script>
-// ── CORNER LOGO: show after scrolling to #industries ──
+// ── CORNER LOGO: show once hero glow logo scrolls out of view ──
 const cornerLogo = document.querySelector('.nav-logo');
-const industriesSec = document.getElementById('industries');
+const heroZoneEl = document.querySelector('.hero-zone');
 function updateCornerLogo(){
-  if (!industriesSec || !cornerLogo) return;
-  const top = industriesSec.getBoundingClientRect().top;
-  if (top <= 80) {
+  if (!heroZoneEl || !cornerLogo) return;
+  // hero-zone.bottom <= 0 means the whole sticky hero has scrolled off
+  if (heroZoneEl.getBoundingClientRect().bottom <= 0) {
     cornerLogo.classList.add('visible');
   } else {
     cornerLogo.classList.remove('visible');
