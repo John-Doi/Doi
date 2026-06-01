@@ -21,11 +21,7 @@
   --body:'Rajdhani',sans-serif;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-html{scroll-behavior:smooth;scroll-snap-type:y proximity;}
-/* Scroll stops at each section */
-.hero-zone,#industries,#qa,#services,.pipeline-zone,#deliverables,#mission,#contact,footer{
-  scroll-snap-align:start;
-}
+html{scroll-behavior:smooth;}
 body{font-family:var(--body);font-size:18px;line-height:1.65;background:var(--bg);color:var(--t1);overflow-x:hidden;cursor:crosshair;}
 /* Global small-text upsize: mono labels 12px→14px, 11px→13px */
 [class*="font-family:var(--mono)"]{font-size:14px;}
