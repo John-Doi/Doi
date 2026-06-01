@@ -465,13 +465,13 @@ footer{
 /* ── CONSTRUCTION QA (Phase 4) ── */
 .qa-section{position:relative;z-index:1;padding:0 0 80px;background:var(--bg);border-top:1px solid var(--bd);}
 .qa-inner{display:flex;align-items:stretch;margin:40px 60px 0;min-height:520px;position:relative;}
-/* Drone panel — left half */
-.qa-visual{flex:0 0 50%;position:relative;overflow:hidden;}
+/* Text panel — left half */
+.qa-content{flex:0 0 50%;padding:48px 32px 48px 48px;background:transparent;display:flex;flex-direction:column;gap:24px;margin-left:0;order:1;}
+/* Drone panel — right half */
+.qa-visual{flex:0 0 50%;position:relative;overflow:hidden;order:2;}
 .qa-visual video{position:absolute;top:50%;left:50%;height:100%;width:auto;transform:translate(-50%,-50%);opacity:.9;}
-.qa-visual::after{content:'';position:absolute;inset:0;background:linear-gradient(to right,transparent 50%,var(--bg) 100%);z-index:1;}
+.qa-visual::after{content:'';position:absolute;inset:0;background:linear-gradient(to left,transparent 50%,var(--bg) 100%);z-index:1;}
 .qa-overlay{display:none;}
-/* Text panel — right half */
-.qa-content{flex:0 0 50%;padding:48px 48px 48px 32px;background:transparent;display:flex;flex-direction:column;gap:24px;margin-left:0;}
 .qa-stat-badge{position:absolute;bottom:24px;left:24px;background:rgba(8,8,8,.92);border:1px solid var(--og);padding:14px 20px;}
 .qa-stat-num{font-family:var(--disp);font-size:32px;font-weight:900;color:var(--og);line-height:1;}
 .qa-stat-label{font-family:var(--mono);font-size:11px;color:var(--t3);letter-spacing:.14em;margin-top:4px;}
