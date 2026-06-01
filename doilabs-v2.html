@@ -35,22 +35,22 @@ body{font-family:var(--body);font-size:18px;line-height:1.65;background:var(--bg
 /* ── HEADING TEXTURE: solid fill + repeating horizontal hairlines ── */
 /* White headings — matches the "CALIFORNIA" style in reference */
 .hero-h1,.sec-title,.step-title,.del-title,.ind-title,.svc-title,.why-title,.foot-logo{
-  background:repeating-linear-gradient(180deg,#e4e4e4 0 4px,rgba(140,140,140,.45) 4px 5px);
+  background:repeating-linear-gradient(180deg,#e4e4e4 0 4px,rgba(210,210,210,.22) 4px 5px);
   -webkit-background-clip:text;background-clip:text;
   -webkit-text-fill-color:transparent;color:transparent;
 }
 /* qa-title white part */
 .qa-title{
-  background:repeating-linear-gradient(180deg,#e4e4e4 0 4px,rgba(140,140,140,.45) 4px 5px);
+  background:repeating-linear-gradient(180deg,#e4e4e4 0 4px,rgba(210,210,210,.22) 4px 5px);
   -webkit-background-clip:text;background-clip:text;
   -webkit-text-fill-color:transparent;color:transparent;
 }
 /* Orange heading text — same hairline treatment in orange */
 .sec-title span,.hero-h1 .og,.qa-title span{
-  background:repeating-linear-gradient(180deg,var(--og) 0 4px,rgba(160,55,0,.65) 4px 5px);
-  -webkit-background-clip:text;background-clip:text;
-  -webkit-text-fill-color:transparent;color:transparent;
-  -webkit-text-stroke:0;text-stroke:0;
+  background:none;
+  -webkit-background-clip:unset;background-clip:unset;
+  -webkit-text-fill-color:var(--og);color:var(--og);
+  -webkit-text-stroke:0;
 }
 /* PHASE 1 · anchor jumps clear the 60px fixed nav */
 section[id],div[id]{scroll-margin-top:72px;}
@@ -554,7 +554,7 @@ footer{
   <div class="hero-pin">
     <div class="hero-video">
       <div class="hero-glow-bg">
-        <video class="hero-logo-img" autoplay muted loop playsinline>
+        <video class="hero-logo-img" autoplay muted loop playsinline onloadeddata="this.playbackRate=0.5">
           <source src="DOi_Glowlogo.mp4" type="video/mp4">
         </video>
         <div class="hero-scanline"></div>
@@ -562,7 +562,7 @@ footer{
     </div>
     <div class="hero-inner">
       <div class="hero-left">
-        <p class="hero-eyebrow">DJI Matrice 4T Enterprise Operations</p>
+        <p class="hero-eyebrow">DØi Labs</p>
         <h1 class="hero-h1">ADVANCED<span class="og">AERIAL</span>INTELLIGENCE</h1>
         <!-- PHASE 2 · ICP-specific sub: leads with verticals, surfaces 48HR differentiator -->
         <p class="hero-sub">Construction QA, thermal inspection, precision mapping, and aerial intelligence — delivered as 48HR decision-ready reports. FAA Part 107 certified. California-based.</p>
