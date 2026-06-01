@@ -89,7 +89,11 @@ section[id],div[id]{scroll-margin-top:72px;}
   background:rgba(8,8,8,.9);backdrop-filter:blur(16px);
   border-bottom:1px solid var(--bd);
 }
-.nav-logo{font-family:var(--disp);font-size:16px;font-weight:900;color:var(--t1);text-decoration:none;letter-spacing:.06em;}
+.nav-logo{font-family:var(--disp);font-size:16px;font-weight:900;color:var(--t1);text-decoration:none;letter-spacing:.06em;
+  opacity:0;pointer-events:none;
+  transition:opacity .5s ease;
+}
+.nav-logo.visible{opacity:1;pointer-events:auto;}
 .nav-logo em{color:var(--og);font-style:normal;}
 .nav-links{display:flex;gap:28px;list-style:none;}
 .nav-links a{font-family:var(--mono);font-size:12px;color:var(--t2);text-decoration:none;letter-spacing:.14em;text-transform:uppercase;transition:color .2s;}
@@ -918,6 +922,21 @@ footer{
 </div>
 
 <script>
+// ── CORNER LOGO: show after scrolling to #industries ──
+const cornerLogo = document.querySelector('.nav-logo');
+const industriesSec = document.getElementById('industries');
+function updateCornerLogo(){
+  if (!industriesSec || !cornerLogo) return;
+  const top = industriesSec.getBoundingClientRect().top;
+  if (top <= 80) {
+    cornerLogo.classList.add('visible');
+  } else {
+    cornerLogo.classList.remove('visible');
+  }
+}
+window.addEventListener('scroll', updateCornerLogo, {passive:true});
+updateCornerLogo();
+
 // ── PHASE 1 · MOTION/PERF SCAFFOLD ──
 const REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
