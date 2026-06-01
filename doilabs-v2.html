@@ -110,10 +110,12 @@ section[id],div[id]{scroll-margin-top:72px;}
 }
 .hero-video{position:absolute;inset:0;z-index:0;overflow:hidden;}
 /* HERO BG — Logo PNG centered + glow pulse + animated scan line */
-.hero-glow-bg{position:absolute;inset:0;z-index:0;display:flex;align-items:center;justify-content:center;}
+/* hero-glow-bg: grid + scanline only — logo is now in content flow */
+.hero-glow-bg{position:absolute;inset:0;z-index:0;}
+/* In-flow logo — text sits naturally below it */
 .hero-logo-img{
-  width:90%;max-width:1200px;height:auto;
-  transform:translateY(-5%);
+  width:88%;max-width:1100px;height:auto;
+  display:block;margin:0 auto;
   pointer-events:none;user-select:none;
   mix-blend-mode:screen;
 }
@@ -136,13 +138,13 @@ section[id],div[id]{scroll-margin-top:72px;}
   content:'';position:absolute;inset:0;
   background:linear-gradient(to bottom,rgba(8,8,8,.55) 0%,rgba(8,8,8,.15) 40%,rgba(8,8,8,.72) 100%);
 }
-/* Hero layout: text pinned to bottom-center, logo owns the space above */
+/* Hero layout: logo + text in one centered column */
 .hero-inner{
   position:relative;z-index:1;
-  display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
-  padding:0 40px 52px;flex:1;text-align:center;max-width:none;width:100%;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:72px 40px 20px;flex:1;text-align:center;max-width:none;width:100%;
 }
-.hero-left{display:flex;flex-direction:column;align-items:center;gap:14px;}
+.hero-left{display:flex;flex-direction:column;align-items:center;gap:14px;margin-top:0;}
 .hero-eyebrow{
   font-family:var(--mono);font-size:13px;letter-spacing:.2em;color:var(--og);
   text-transform:uppercase;display:flex;align-items:center;gap:12px;
@@ -559,13 +561,13 @@ footer{
   <div class="hero-pin">
     <div class="hero-video">
       <div class="hero-glow-bg">
-        <video class="hero-logo-img" autoplay muted loop playsinline onloadeddata="this.playbackRate=0.5">
-          <source src="DOi_Glowlogo.mp4" type="video/mp4">
-        </video>
         <div class="hero-scanline"></div>
       </div>
     </div>
     <div class="hero-inner">
+      <video class="hero-logo-img" autoplay muted loop playsinline onloadeddata="this.playbackRate=0.5">
+        <source src="DOi_Glowlogo.mp4" type="video/mp4">
+      </video>
       <div class="hero-left">
         <h1 class="hero-h1">RECON<span class="og">DIVISION</span></h1>
         <p class="hero-sub-head">ADVANCED AERIAL INTELLIGENCE</p>
