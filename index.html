@@ -35,13 +35,13 @@ body{font-family:var(--body);font-size:18px;line-height:1.65;background:var(--bg
 /* ── HEADING TEXTURE: solid fill + repeating horizontal hairlines ── */
 /* White headings — matches the "CALIFORNIA" style in reference */
 .hero-h1,.sec-title,.step-title,.del-title,.ind-title,.svc-title,.why-title,.foot-logo{
-  background:repeating-linear-gradient(180deg,#e4e4e4 0 4px,rgba(210,210,210,.22) 4px 5px);
+  background:repeating-linear-gradient(180deg,#e4e4e4 0 4px,rgba(220,220,220,.12) 4px 5px);
   -webkit-background-clip:text;background-clip:text;
   -webkit-text-fill-color:transparent;color:transparent;
 }
 /* qa-title white part */
 .qa-title{
-  background:repeating-linear-gradient(180deg,#e4e4e4 0 4px,rgba(210,210,210,.22) 4px 5px);
+  background:repeating-linear-gradient(180deg,#e4e4e4 0 4px,rgba(220,220,220,.12) 4px 5px);
   -webkit-background-clip:text;background-clip:text;
   -webkit-text-fill-color:transparent;color:transparent;
 }
@@ -252,12 +252,12 @@ section[id],div[id]{scroll-margin-top:72px;}
 }
 .sec-tag::before,.sec-tag::after{content:'';display:block;width:28px;height:1px;background:var(--og);opacity:.6;}
 .sec-title{font-family:var(--disp);font-size:clamp(26px,3.2vw,52px);font-weight:900;letter-spacing:-.01em;line-height:1.1;color:#c8c8c8;}
-/* outlined (hollow) emphasis word — tiger-lily stroke + faint interior hairlines */
+/* Orange accent words — solid filled, no lines, no stroke */
 .sec-title span{
-  -webkit-text-stroke:1.5px var(--og);text-stroke:1.5px var(--og);
-  background:repeating-linear-gradient(0deg,rgba(255,255,255,.20) 0 1px,transparent 1px 5px);
-  -webkit-background-clip:text;background-clip:text;
-  -webkit-text-fill-color:transparent;color:transparent;
+  -webkit-text-stroke:0;text-stroke:0;
+  background:none;
+  -webkit-background-clip:unset;background-clip:unset;
+  -webkit-text-fill-color:var(--og);color:var(--og);
 }
 .sec-desc{font-size:17px;color:var(--t2);max-width:520px;margin:14px auto 0;line-height:1.6;}
 
@@ -562,8 +562,7 @@ footer{
     </div>
     <div class="hero-inner">
       <div class="hero-left">
-        <p class="hero-eyebrow">DØi Labs</p>
-        <h1 class="hero-h1">ADVANCED<span class="og">AERIAL</span>INTELLIGENCE</h1>
+        <h1 class="hero-h1" style="margin-top:18vh;">ADVANCED<span class="og">AERIAL</span>INTELLIGENCE</h1>
         <!-- PHASE 2 · ICP-specific sub: leads with verticals, surfaces 48HR differentiator -->
         <p class="hero-sub">Construction QA, thermal inspection, precision mapping, and aerial intelligence — delivered as 48HR decision-ready reports. FAA Part 107 certified. California-based.</p>
         <div class="hero-platform">
