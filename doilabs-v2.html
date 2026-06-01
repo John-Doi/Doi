@@ -90,12 +90,10 @@ section[id],div[id]{scroll-margin-top:72px;}
 /* HERO BG — Logo PNG centered + glow pulse + animated scan line */
 .hero-glow-bg{position:absolute;inset:0;z-index:0;display:flex;align-items:center;justify-content:center;}
 .hero-logo-img{
-  width:82%;max-width:1000px;height:auto;
-  opacity:.18;
-  animation:logoPulse 3.5s ease-in-out infinite;
+  width:88%;max-width:1100px;height:auto;
   pointer-events:none;user-select:none;
+  mix-blend-mode:screen;
 }
-@keyframes logoPulse{0%,100%{opacity:.14;filter:brightness(1);}50%{opacity:.28;filter:brightness(1.4) drop-shadow(0 0 32px rgba(255,107,26,.5));}}
 .hero-glow-bg::before{
   content:'';position:absolute;inset:0;
   background-image:
@@ -535,7 +533,9 @@ footer{
   <div class="hero-pin">
     <div class="hero-video">
       <div class="hero-glow-bg">
-        <img class="hero-logo-img" src="DOiLabs_Logo.png" alt="">
+        <video class="hero-logo-img" autoplay muted loop playsinline>
+          <source src="DOi_Glowlogo.mp4" type="video/mp4">
+        </video>
         <div class="hero-scanline"></div>
       </div>
     </div>
