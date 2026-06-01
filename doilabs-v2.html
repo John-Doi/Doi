@@ -463,12 +463,13 @@ footer{
 .ind-wm{position:absolute;bottom:-12px;right:-6px;font-family:var(--disp);font-size:64px;font-weight:900;color:rgba(255,107,26,.04);line-height:1;pointer-events:none;user-select:none;}
 
 /* ── CONSTRUCTION QA (Phase 4) ── */
-.qa-section{position:relative;z-index:1;padding:0 0 80px;background:rgba(8,8,8,0);border-top:1px solid var(--bd);}
-.qa-inner{display:grid;grid-template-columns:1fr 1fr;gap:0;margin:40px 60px 0;border:1px solid var(--bd);position:relative;overflow:hidden;min-height:380px;background:transparent;}
-.qa-bg-video{position:absolute;top:50%;left:50%;transform:translate(-65%,-50%) scaleX(-1);width:90%;height:auto;z-index:0;opacity:.85;}
-.qa-overlay{position:absolute;inset:0;background:linear-gradient(90deg,rgba(8,8,8,.15) 0%,rgba(8,8,8,.0) 60%);z-index:1;}
-.qa-visual{position:relative;z-index:2;background:transparent;min-height:380px;display:flex;align-items:flex-end;}
-.qa-content{position:relative;z-index:2;padding:48px;background:transparent;border-left:1px solid var(--bd);display:flex;flex-direction:column;gap:24px;}
+.qa-section{position:relative;z-index:1;padding:0 0 80px;background:transparent;border-top:none;}
+/* No box — drone floats freely, content overlaid */
+.qa-inner{display:grid;grid-template-columns:1fr 1fr;gap:0;margin:40px 60px 0;border:none;position:relative;min-height:420px;background:transparent;}
+.qa-bg-video{position:absolute;top:50%;left:0;transform:translateY(-50%) scaleX(-1);width:58%;height:auto;z-index:0;opacity:.9;}
+.qa-overlay{display:none;}
+.qa-visual{position:relative;z-index:2;background:transparent;min-height:420px;display:flex;align-items:flex-end;}
+.qa-content{position:relative;z-index:2;padding:48px 48px 48px 0;background:transparent;border:none;display:flex;flex-direction:column;gap:24px;}
 .qa-stat-badge{position:absolute;bottom:24px;left:24px;background:rgba(8,8,8,.92);border:1px solid var(--og);padding:14px 20px;}
 .qa-stat-num{font-family:var(--disp);font-size:32px;font-weight:900;color:var(--og);line-height:1;}
 .qa-stat-label{font-family:var(--mono);font-size:11px;color:var(--t3);letter-spacing:.14em;margin-top:4px;}
