@@ -112,8 +112,8 @@ section[id],div[id]{scroll-margin-top:72px;}
 /* HERO BG — Logo PNG centered + glow pulse + animated scan line */
 .hero-glow-bg{position:absolute;inset:0;z-index:0;display:flex;align-items:center;justify-content:center;}
 .hero-logo-img{
-  width:80%;max-width:1000px;height:auto;
-  transform:translateX(12%) translateY(-14%);
+  width:90%;max-width:1200px;height:auto;
+  transform:translateY(-5%);
   pointer-events:none;user-select:none;
   mix-blend-mode:screen;
 }
@@ -134,15 +134,15 @@ section[id],div[id]{scroll-margin-top:72px;}
 @keyframes scanDown{0%{top:-1px;opacity:0;}5%{opacity:1;}95%{opacity:.8;}100%{top:100%;opacity:0;}}
 .hero-video::after{
   content:'';position:absolute;inset:0;
-  background:linear-gradient(120deg,rgba(8,8,8,.88) 0%,rgba(8,8,8,.45) 55%,rgba(8,8,8,.82) 100%);
+  background:linear-gradient(to bottom,rgba(8,8,8,.55) 0%,rgba(8,8,8,.15) 40%,rgba(8,8,8,.72) 100%);
 }
-
+/* Hero layout: text pinned to bottom-center, logo owns the space above */
 .hero-inner{
-  position:relative;z-index:1;flex:1;
-  display:flex;flex-direction:column;justify-content:center;
-  padding:80px 60px 0;max-width:760px;
+  position:relative;z-index:1;
+  display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
+  padding:0 40px 52px;flex:1;text-align:center;max-width:none;width:100%;
 }
-.hero-left{display:flex;flex-direction:column;gap:22px;}
+.hero-left{display:flex;flex-direction:column;align-items:center;gap:14px;}
 .hero-eyebrow{
   font-family:var(--mono);font-size:13px;letter-spacing:.2em;color:var(--og);
   text-transform:uppercase;display:flex;align-items:center;gap:12px;
@@ -567,18 +567,11 @@ footer{
     </div>
     <div class="hero-inner">
       <div class="hero-left">
-        <h1 class="hero-h1" style="margin-top:18vh;">RECON<span class="og">DIVISION</span></h1>
+        <h1 class="hero-h1">RECON<span class="og">DIVISION</span></h1>
         <p class="hero-sub-head">ADVANCED AERIAL INTELLIGENCE</p>
-        <!-- PHASE 2 · ICP-specific sub: leads with verticals, surfaces 48HR differentiator -->
-        <p class="hero-sub">Construction QA, thermal inspection, precision mapping, and aerial intelligence — delivered as 48HR decision-ready reports. FAA Part 107 certified. California-based.</p>
-        <div class="hero-platform">
-          PLATFORM: <span>DJI MATRICE 4T</span> &nbsp;·&nbsp;
-          STATUS: <span>OPERATIONAL</span> &nbsp;·&nbsp;
-          CERT: <span>FAA 107</span>
-        </div>
-        <div class="hero-btns">
+        <div class="hero-btns" style="justify-content:center;margin-top:8px;">
           <button class="btn-p" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">REQUEST MISSION BRIEF</button>
-          <button class="btn-g" onclick="document.getElementById('pipeline').scrollIntoView({behavior:'smooth'})">VIEW PIPELINE →</button>
+          <button class="btn-g" onclick="document.getElementById('pipeline').scrollIntoView({behavior:'smooth'})">VIEW PROCESS →</button>
         </div>
       </div>
     </div>
