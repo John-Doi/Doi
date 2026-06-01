@@ -264,9 +264,10 @@ section[id],div[id]{scroll-margin-top:72px;}
 .pl-step.active{opacity:1;transform:translateY(0);pointer-events:auto;}
 /* Faint DØi logo watermark on every pipeline slide */
 .pl-step::before{
-  content:'';position:absolute;bottom:0;right:0;width:72%;padding-bottom:72%;
+  content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:75%;padding-bottom:75%;
   background:url('DOiLabs_Logo.png') center/contain no-repeat;
-  opacity:.055;pointer-events:none;user-select:none;
+  opacity:.07;pointer-events:none;user-select:none;
 }
 .step-bg-num{
   position:absolute;top:-30px;right:-10px;
@@ -511,7 +512,7 @@ footer{
 <!-- NAV -->
 <nav class="nav">
   <a class="nav-logo" href="#hero" style="display:flex;align-items:center;padding:0;">
-    <img src="DOiLabsLogo1.png" alt="DØi Labs" style="height:40px;width:auto;display:block;">
+    <img src="DOiLabsLogo1.png" alt="DØi Labs" style="height:56px;width:auto;display:block;">
   </a>
   <!-- PHASE 1 · canonical IA. Future entries activate with their phases:
        INDUSTRIES (#industries · Phase 3) · QA (#qa · Phase 4) · DELIVERABLES (#deliverables · Phase 7) -->
