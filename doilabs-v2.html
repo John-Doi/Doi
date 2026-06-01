@@ -464,10 +464,10 @@ footer{
 
 /* ── CONSTRUCTION QA (Phase 4) ── */
 .qa-section{position:relative;z-index:1;padding:0 0 80px;background:transparent;border-top:1px solid var(--bd);}
-.qa-inner{position:relative;margin:40px 60px 0;min-height:480px;overflow:hidden;}
+.qa-inner{position:relative;margin:40px 60px 0;min-height:480px;}
 /* Drone as full background */
 .qa-visual{position:absolute;inset:0;z-index:0;}
-.qa-visual video{position:absolute;top:50%;left:-45%;transform:translateY(-50%);width:55%;height:auto;mix-blend-mode:screen;opacity:.85;}
+.qa-visual video{position:absolute;top:50%;left:0;transform:translateX(-35%) translateY(-50%);width:55%;height:auto;mix-blend-mode:screen;opacity:.85;}
 .qa-visual::after{content:'';position:absolute;inset:0;background:linear-gradient(to right,rgba(8,8,8,.2) 0%,rgba(8,8,8,.65) 55%,rgba(8,8,8,.85) 100%);z-index:1;}
 .qa-overlay{display:none;}
 /* Content floats on top */
