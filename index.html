@@ -1246,23 +1246,27 @@ function submitForm(){
   };
   var btn=document.getElementById('submitBtn');
   if(btn){btn.disabled=true;btn.innerHTML='<svg width="9" height="9" viewBox="0 0 10 10" fill="currentColor"><polygon points="0,0 10,5 0,10"/></svg>SENDING...';}
+  console.log('Submitting payload:',JSON.stringify(payload,null,2));
   fetch('https://default0d40bf1b41654c7d969c39a9979f57.9f.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/c3f9d453e88e40e6810e83184ae56864/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=XCJHs_qSpTIS9kFqtQhsMXU7jGRPwwowLheaRLVPlpo',{
     method:'POST',
     headers:{'Content-Type':'application/json'},
     body:JSON.stringify(payload)
   }).then(function(res){
-    if(!res.ok){throw new Error('HTTP '+res.status);}
-    var ref='DØi-'+Date.now().toString(36).toUpperCase().slice(-6);
-    for(var i=1;i<=3;i++){var p=document.getElementById('sp'+i);if(p)p.classList.remove('active');}
-    document.getElementById('successCode').textContent='REF: '+ref;
-    document.getElementById('successPanel').classList.add('show');
-    document.querySelectorAll('.step-node').forEach(function(nd){nd.classList.add('done');});
-    document.getElementById('progFill').style.width='100%';
-    document.getElementById('contact').scrollIntoView({behavior:'smooth',block:'start'});
+    return res.text().then(function(body){
+      console.log('Power Automate response',res.status,body);
+      if(!res.ok){throw new Error('HTTP '+res.status+':\n'+body);}
+      var ref='DØi-'+Date.now().toString(36).toUpperCase().slice(-6);
+      for(var i=1;i<=3;i++){var p=document.getElementById('sp'+i);if(p)p.classList.remove('active');}
+      document.getElementById('successCode').textContent='REF: '+ref;
+      document.getElementById('successPanel').classList.add('show');
+      document.querySelectorAll('.step-node').forEach(function(nd){nd.classList.add('done');});
+      document.getElementById('progFill').style.width='100%';
+      document.getElementById('contact').scrollIntoView({behavior:'smooth',block:'start'});
+    });
   }).catch(function(err){
     if(btn){btn.disabled=false;btn.innerHTML='<svg width="9" height="9" viewBox="0 0 10 10" fill="currentColor"><polygon points="0,0 10,5 0,10"/></svg>SUBMIT REQUEST';}
     console.error('Submission error:',err);
-    alert('Submission failed ('+err.message+'). Please try again or contact us directly.');
+    alert('Submission failed — open the browser console (F12) and share the error with your developer.\n\n'+err.message);
   });
 }
 </script>
