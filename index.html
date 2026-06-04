@@ -571,7 +571,7 @@ footer{
 .fsel{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpolyline points='0,0 5,6 10,0' fill='none' stroke='%23888' stroke-width='1.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:34px;}
 .fsel option,.fsel optgroup{background:#0a0a0a;color:var(--t1);}
 .ftxt{resize:vertical;min-height:110px;}
-.finp[type="date"]::-webkit-calendar-picker-indicator{filter:invert(55%) sepia(90%) saturate(600%) hue-rotate(2deg) brightness(110%);cursor:pointer;}
+.finp[type="date"]::-webkit-calendar-picker-indicator{filter:brightness(0) saturate(100%) invert(47%) sepia(93%) saturate(743%) hue-rotate(347deg) brightness(101%);cursor:pointer;}
 .finp:focus,.fsel:focus,.ftxt:focus{border-color:var(--bo);background:rgba(255,107,0,0.02);}
 .finp::placeholder,.ftxt::placeholder{color:#2a2a2a;}
 .deliverables-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;}
@@ -1237,7 +1237,7 @@ function submitForm(){
     'Client Email':email,
     'Client Phone':phone,
     'Mission Type Value':document.getElementById('f-type').value,
-    'deliverablesRequested':'',
+    'deliverablesRequested':[],
     'Requested Date':document.getElementById('f-date').value,
     'Requested Time Window':document.getElementById('f-time-window').value,
     'Urgency Level':document.getElementById('f-urgency').value,
