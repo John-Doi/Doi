@@ -863,6 +863,7 @@ footer{
       <div class="form-group"><label class="form-label">COMPANY / ORGANIZATION</label><input class="form-input" name="company" type="text" placeholder="ACME Corp"></div>
       <div class="form-group"><label class="form-label">EMAIL</label><input class="form-input" name="clientEmail" type="email" placeholder="ops@company.com" required></div>
       <div class="form-group"><label class="form-label">PHONE</label><input class="form-input" name="clientPhone" type="tel" placeholder="+1 (555) 000-0000" required></div>
+      <div class="form-group"><label class="form-label">PROJECT NAME</label><input class="form-input" name="projectName" type="text" placeholder="e.g. Warehouse Roof Thermal Inspection"></div>
       <div class="form-group"><label class="form-label">OPERATION LOCATION</label><input class="form-input" name="location" type="text" placeholder="City, State or Address"></div>
       <div class="form-group">
         <label class="form-label">SERVICE TYPE</label>
@@ -876,7 +877,32 @@ footer{
           <option>Custom Mission Design (FAB)</option>
         </select>
       </div>
-      <div class="form-group full"><label class="form-label">MISSION OBJECTIVE</label><textarea class="form-textarea" placeholder="Describe your operational requirements, site conditions, and expected deliverables..."></textarea></div>
+      <div class="form-group">
+        <label class="form-label">URGENCY LEVEL</label>
+        <select class="form-select" name="urgencyLevel">
+          <option value="">SELECT URGENCY</option>
+          <option>Standard (7+ days)</option>
+          <option>Priority (3–6 days)</option>
+          <option>Urgent (1–2 days)</option>
+          <option>Emergency (Same day)</option>
+        </select>
+      </div>
+      <div class="form-group"><label class="form-label">REQUESTED DATE</label><input class="form-input" name="requestedDate" type="date"></div>
+      <div class="form-group"><label class="form-label">PREFERRED TIME WINDOW</label><input class="form-input" name="requestedTimeWindow" type="text" placeholder="e.g. Morning, 8am–12pm"></div>
+      <div class="form-group full">
+        <label class="form-label">DELIVERABLES REQUESTED</label>
+        <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:4px;" id="deliverables-list">
+          <label style="display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:13px;color:var(--t2);cursor:crosshair;"><input type="checkbox" value="Edited Photos"> Edited Photos</label>
+          <label style="display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:13px;color:var(--t2);cursor:crosshair;"><input type="checkbox" value="Edited Video"> Edited Video</label>
+          <label style="display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:13px;color:var(--t2);cursor:crosshair;"><input type="checkbox" value="Thermal Report"> Thermal Report</label>
+          <label style="display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:13px;color:var(--t2);cursor:crosshair;"><input type="checkbox" value="Orthomosaic / Map"> Orthomosaic / Map</label>
+          <label style="display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:13px;color:var(--t2);cursor:crosshair;"><input type="checkbox" value="3D Model / Point Cloud"> 3D Model / Point Cloud</label>
+          <label style="display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:13px;color:var(--t2);cursor:crosshair;"><input type="checkbox" value="Inspection Report"> Inspection Report</label>
+          <label style="display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:13px;color:var(--t2);cursor:crosshair;"><input type="checkbox" value="AI Analysis Report"> AI Analysis Report</label>
+          <label style="display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:13px;color:var(--t2);cursor:crosshair;"><input type="checkbox" value="GIS / CAD Files"> GIS / CAD Files</label>
+        </div>
+      </div>
+      <div class="form-group full"><label class="form-label">MISSION OBJECTIVE</label><textarea class="form-textarea" name="specialInstructions" placeholder="Describe your operational requirements, site conditions, and any specific requirements..."></textarea></div>
       <div class="form-group full"><button type="submit" class="form-submit">SUBMIT MISSION BRIEF →</button></div>
     </form>
   </div>
@@ -1049,41 +1075,42 @@ async function handleSubmit(e) {
   e.preventDefault();
   const form = e.target;
   const btn = form.querySelector('.form-submit');
-  const data = Object.fromEntries(new FormData(form));
+  const fd = new FormData(form);
+  const deliverablesRequested = Array.from(form.querySelectorAll('#deliverables-list input[type="checkbox"]:checked')).map(el => el.value);
+  const payload = {
+    'Project Name': fd.get('projectName') || '',
+    'Organization': fd.get('company') || '',
+    'Client Name': fd.get('clientName') || '',
+    'Client Email': fd.get('clientEmail') || '',
+    'Client Phone': fd.get('clientPhone') || '',
+    'Mission Type Value': fd.get('missionType') || '',
+    'deliverablesRequested': deliverablesRequested,
+    'Requested Date': fd.get('requestedDate') || '',
+    'Requested Time Window': fd.get('requestedTimeWindow') || '',
+    'Urgency Level': fd.get('urgencyLevel') || '',
+    'Site Address': fd.get('location') || '',
+    'Special Instructions': fd.get('specialInstructions') || ''
+  };
 
   btn.textContent = 'TRANSMITTING…';
   btn.disabled = true;
 
   try {
-    const res = await fetch('/api/mission-intake', {
+    await fetch('https://default0d40bf1b41654c7d969c39a9979f57.9f.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/c3f9d453e88e40e6810e83184ae56864/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=XCJHs_qSpTIS9kFqtQhsMXU7jGRPwwowLheaRLVPlpo', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
+      body: JSON.stringify(payload)
     });
-    const json = await res.json();
-
-    if (res.ok && json.success) {
-      btn.textContent = 'MISSION BRIEF RECEIVED — STANDBY FOR CONTACT';
-      btn.style.background = '#22c55e';
-      btn.style.clipPath = 'none';
-      form.reset();
-      setTimeout(() => {
-        btn.textContent = 'SUBMIT MISSION BRIEF →';
-        btn.style.background = '';
-        btn.style.clipPath = '';
-        btn.disabled = false;
-      }, 6000);
-    } else {
-      btn.textContent = 'ERROR — TRY AGAIN';
-      btn.style.background = '#ef4444';
-      btn.style.clipPath = 'none';
-      setTimeout(() => {
-        btn.textContent = 'SUBMIT MISSION BRIEF →';
-        btn.style.background = '';
-        btn.style.clipPath = '';
-        btn.disabled = false;
-      }, 4000);
-    }
+    btn.textContent = 'MISSION BRIEF RECEIVED — STANDBY FOR CONTACT';
+    btn.style.background = '#22c55e';
+    btn.style.clipPath = 'none';
+    form.reset();
+    setTimeout(() => {
+      btn.textContent = 'SUBMIT MISSION BRIEF →';
+      btn.style.background = '';
+      btn.style.clipPath = '';
+      btn.disabled = false;
+    }, 6000);
   } catch {
     btn.textContent = 'NETWORK ERROR — TRY AGAIN';
     btn.style.background = '#ef4444';
