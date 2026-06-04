@@ -259,11 +259,11 @@ details.faq-item[open] .faq-a{max-height:800px;padding:0 32px 28px;}
 
 /* FORM */
 #contact{padding:100px 0;}
-.intake-wrap{max-width:800px;margin:0 auto;padding:0 52px;}
+.intake-wrap{max-width:1160px;margin:0 auto;padding:0 52px;}
 .intake-stepper{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-bottom:3px;position:relative;}
 .intake-stepper::before{content:"";position:absolute;top:50%;left:0;right:0;height:1px;z-index:0;background:var(--bd);}
 .step-node{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:7px;padding:0 6px;}
-.step-num{width:42px;height:42px;border:1px solid var(--bd);background:rgba(5,5,5,0.97);display:flex;align-items:center;justify-content:center;font-family:var(--disp);font-size:11px;font-weight:700;color:var(--t3);clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);transition:background .2s var(--ease-out),border-color .2s var(--ease-out),color .2s var(--ease-out);}
+.step-num{width:50px;height:50px;border:1px solid var(--bd);background:rgba(5,5,5,0.97);display:flex;align-items:center;justify-content:center;font-family:var(--disp);font-size:13px;font-weight:700;color:var(--t3);clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);transition:background .2s var(--ease-out),border-color .2s var(--ease-out),color .2s var(--ease-out);}
 .step-node.done .step-num{border-color:var(--bo);color:var(--og2);background:rgba(255,107,0,0.04);}
 .step-node.active .step-num{border-color:var(--og2);color:#000;background:var(--og-grad);box-shadow:0 0 14px var(--oglow);}
 .step-lbl{font-family:var(--mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--t3);text-align:center;white-space:nowrap;}
@@ -272,19 +272,19 @@ details.faq-item[open] .faq-a{max-height:800px;padding:0 32px 28px;}
 .intake-prog-fill{height:100%;background:var(--og-grad-h);transition:width .5s;}
 .step-panel{display:none;}
 .step-panel.active{display:block;animation:fadeUp .35s ease both;}
-.panel{background:rgba(4,4,4,0.98);border:1px solid var(--bd);padding:40px;position:relative;backdrop-filter:blur(8px);}
+.panel{background:rgba(4,4,4,0.98);border:1px solid var(--bd);padding:52px 60px;position:relative;backdrop-filter:blur(8px);}
 .panel::before{content:attr(data-label);position:absolute;top:-1px;left:40px;font-family:var(--mono);font-size:9px;letter-spacing:3px;background:var(--og-grad-h);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-color:rgba(4,4,4,0.98);padding:0 10px;transform:translateY(-50%);z-index:1;white-space:nowrap;}
-.panel-title{font-family:var(--disp);font-size:18px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--t1);margin-bottom:5px;}
-.panel-sub{font-family:var(--body);font-size:16px;color:var(--t2);margin-bottom:24px;line-height:1.65;font-weight:500;}
-.form-2col{display:grid;grid-template-columns:1fr 1fr;gap:14px 16px;}
+.panel-title{font-family:var(--disp);font-size:24px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--t1);margin-bottom:8px;}
+.panel-sub{font-family:var(--body);font-size:19px;color:var(--t2);margin-bottom:28px;line-height:1.65;font-weight:500;}
+.form-2col{display:grid;grid-template-columns:1fr 1fr;gap:22px 28px;}
 .form-2col .span2{grid-column:1/-1;}
 .fg{display:flex;flex-direction:column;gap:6px;}
-.flbl{font-family:var(--mono);font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--t2);display:block;}
+.flbl{font-family:var(--mono);font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--t2);display:block;}
 .flbl .req{background:var(--og-grad-h);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-left:2px;}
-.finp,.fsel,.ftxt{display:block;width:100%;background:rgba(255,255,255,0.025);border:1px solid var(--bd);color:var(--t1);font-family:var(--body);font-size:17px;font-weight:500;padding:13px 15px;outline:none;-webkit-appearance:none;transition:border-color .25s,background .25s;line-height:1.4;}
+.finp,.fsel,.ftxt{display:block;width:100%;background:rgba(255,255,255,0.025);border:1px solid var(--bd);color:var(--t1);font-family:var(--body);font-size:20px;font-weight:500;padding:16px 18px;outline:none;-webkit-appearance:none;transition:border-color .25s,background .25s;line-height:1.4;}
 .fsel{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpolyline points='0,0 5,6 10,0' fill='none' stroke='%23888' stroke-width='1.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:34px;}
 .fsel option,.fsel optgroup{background:#0a0a0a;color:var(--t1);}
-.ftxt{resize:vertical;min-height:92px;}
+.ftxt{resize:vertical;min-height:130px;}
 .finp:focus,.fsel:focus,.ftxt:focus{border-color:var(--bo);background:rgba(255,107,0,0.02);}
 .finp::placeholder,.ftxt::placeholder{color:#2a2a2a;}
 .deliverables-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;}
@@ -2093,7 +2093,7 @@ details.faq-item[open] { background: rgba(10,10,12,0.60) !important; }
             </select>
           </div>
           <div class="fg"><label class="flbl">Preferred Date</label><input type="date" class="finp" id="f-date"></div>
-          <div class="fg"><label class="flbl">Preferred Time Window</label><input type="text" class="finp" id="f-time-window" placeholder="e.g. Morning, 8am–12pm"></div>
+          <div class="fg"><label class="flbl">Preferred Time Window</label><select class="fsel" id="f-time-window"><option value="">Select a time window</option><option value="Morning (6am–12pm)">Morning (6am–12pm)</option><option value="Afternoon (12pm–5pm)">Afternoon (12pm–5pm)</option><option value="Evening (5pm–8pm)">Evening (5pm–8pm)</option><option value="Flexible">Flexible / Any Time</option></select></div>
           <div class="fg"><label class="flbl">Urgency Level</label><select class="fsel" id="f-urgency"><option value="">— Select —</option><option>Standard (7+ days)</option><option>Priority (3–6 days)</option><option>Urgent (1–2 days)</option><option>Emergency (Same day)</option></select></div>
           <div class="fg span2"><label class="flbl">Site Address / Location <span class="req">*</span></label><input type="text" class="finp" id="f-address" placeholder="Full address or general location" autocomplete="street-address"></div>
           <div class="fg span2"><label class="flbl">Project Description <span class="req">*</span></label><textarea class="ftxt" id="f-desc" placeholder="What do you need and why? Include property type, site size, access details, or any specific requirements. The more context you give us, the faster we can turn around an accurate quote."></textarea></div>
