@@ -1219,15 +1219,15 @@ window.addEventListener('load', () => {
 }, {once: true});
 
 // ── FORM ──
-var curStep=1;
+var wizStep=1;
 var uploadedFiles=[];
 function goStep(n){
-  document.getElementById('sp'+curStep).classList.remove('active');
+  document.getElementById('sp'+wizStep).classList.remove('active');
   document.getElementById('sp'+n).classList.add('active');
   document.querySelectorAll('.step-node').forEach(function(nd,i){nd.classList.remove('active','done');if(i+1<n)nd.classList.add('done');if(i+1===n)nd.classList.add('active');});
   document.getElementById('progFill').style.width=(n/4*100)+'%';
   if(n===4)buildReview();
-  curStep=n;
+  wizStep=n;
   document.getElementById('contact').scrollIntoView({behavior:'smooth',block:'start'});
 }
 function toggleCheck(el){el.classList.toggle('checked');}
@@ -1273,7 +1273,7 @@ function submitForm(){
     for(var i=1;i<=4;i++){var p=document.getElementById('sp'+i);if(p)p.classList.remove('active');}
     document.getElementById('successCode').textContent='REF: '+ref;
     document.getElementById('successPanel').classList.add('show');
-    document.querySelectorAll('.step-node').forEach(function(n){n.classList.add('done');});
+    document.querySelectorAll('.step-node').forEach(function(nd){nd.classList.add('done');});
     document.getElementById('progFill').style.width='100%';
     document.getElementById('contact').scrollIntoView({behavior:'smooth',block:'start'});
   }).catch(function(){
