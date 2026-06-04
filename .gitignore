@@ -1,0 +1,3 @@
+node_modules/
+.claude-flow/data/
+.claude-flow/sessions/
