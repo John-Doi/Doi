@@ -2236,17 +2236,17 @@ function submitForm(){
   if(!Array.from(document.querySelectorAll('.lcheck')).every(l=>l.classList.contains('checked'))){alert('Please confirm all items before submitting.');return;}
   const deliverables=Array.from(document.querySelectorAll('.dcheck.checked .dcheck-lbl')).map(el=>el.textContent.trim());
   const payload={
-    projectName:document.getElementById('f-project').value.trim(),
-    organization:document.getElementById('f-company').value.trim(),
-    clientName:name,
-    clientEmail:email,
-    clientPhone:phone,
-    missionTypeValue:document.getElementById('f-type').value,
-    requestedDate:document.getElementById('f-date').value,
-    requestedTimeWindow:document.getElementById('f-time-window').value,
-    urgencyLevel:document.getElementById('f-urgency').value,
-    siteAddress:document.getElementById('f-address').value.trim(),
-    specialInstructions:document.getElementById('f-desc').value.trim()
+    'Project Name':document.getElementById('f-project').value.trim(),
+    'Organization':document.getElementById('f-company').value.trim(),
+    'Client Name':name,
+    'Client Email':email,
+    'Client Phone':phone,
+    'Mission Type Value':document.getElementById('f-type').value,
+    'Requested Date':document.getElementById('f-date').value,
+    'Requested Time Window':document.getElementById('f-time-window').value,
+    'Urgency Level':document.getElementById('f-urgency').value,
+    'Site Address':document.getElementById('f-address').value.trim(),
+    'Special Instructions':document.getElementById('f-desc').value.trim()
   };
   const btn=document.querySelector('#sp4 .btn-pri[onclick="submitForm()"]');
   if(btn){btn.disabled=true;btn.innerHTML='<svg width="9" height="9" viewBox="0 0 10 10" fill="currentColor"><polygon points="0,0 10,5 0,10"/></svg>SENDING...';}
