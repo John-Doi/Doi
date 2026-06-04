@@ -542,8 +542,8 @@ footer{
   .ticker-track{animation:none!important;}
 }
 /* ── MULTI-STEP WIZARD ── */
-.intake-wrap{max-width:800px;margin:0 auto;padding:0 52px;}
-.intake-stepper{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-bottom:3px;position:relative;}
+.intake-wrap{max-width:1040px;margin:0 auto;padding:0 52px;}
+.intake-stepper{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-bottom:3px;position:relative;}
 .intake-stepper::before{content:"";position:absolute;top:50%;left:0;right:0;height:1px;z-index:0;background:var(--bd);}
 .step-node{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:7px;padding:0 6px;}
 .step-num{width:42px;height:42px;border:1px solid var(--bd);background:rgba(5,5,5,0.97);display:flex;align-items:center;justify-content:center;font-family:var(--disp);font-size:11px;font-weight:700;color:var(--t3);clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);transition:all .3s;}
@@ -567,10 +567,11 @@ footer{
 .fg{display:flex;flex-direction:column;gap:6px;}
 .flbl{font-family:var(--mono);font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--t2);display:block;}
 .flbl .req{background:var(--og-grad-h);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-left:2px;}
-.finp,.fsel,.ftxt{display:block;width:100%;background:rgba(255,255,255,0.025);border:1px solid var(--bd);color:var(--t1);font-family:var(--body);font-size:17px;font-weight:500;padding:13px 15px;outline:none;-webkit-appearance:none;transition:border-color .25s,background .25s;line-height:1.4;}
+.finp,.fsel,.ftxt{display:block;width:100%;background:rgba(255,255,255,0.025);border:1px solid var(--bd);color:var(--t1);font-family:var(--body);font-size:19px;font-weight:500;padding:15px 17px;outline:none;-webkit-appearance:none;transition:border-color .25s,background .25s;line-height:1.4;}
 .fsel{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpolyline points='0,0 5,6 10,0' fill='none' stroke='%23888' stroke-width='1.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:34px;}
 .fsel option,.fsel optgroup{background:#0a0a0a;color:var(--t1);}
-.ftxt{resize:vertical;min-height:92px;}
+.ftxt{resize:vertical;min-height:110px;}
+.finp[type="date"]::-webkit-calendar-picker-indicator{filter:invert(55%) sepia(90%) saturate(600%) hue-rotate(2deg) brightness(110%);cursor:pointer;}
 .finp:focus,.fsel:focus,.ftxt:focus{border-color:var(--bo);background:rgba(255,107,0,0.02);}
 .finp::placeholder,.ftxt::placeholder{color:#2a2a2a;}
 .deliverables-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;}
@@ -951,10 +952,9 @@ footer{
       <div class="intake-stepper">
         <div class="step-node active"><div class="step-num">01</div><div class="step-lbl">Contact</div></div>
         <div class="step-node"><div class="step-num">02</div><div class="step-lbl">Project</div></div>
-        <div class="step-node"><div class="step-num">03</div><div class="step-lbl">Deliverables</div></div>
-        <div class="step-node"><div class="step-num">04</div><div class="step-lbl">Submit</div></div>
+        <div class="step-node"><div class="step-num">03</div><div class="step-lbl">Submit</div></div>
       </div>
-      <div class="intake-prog"><div class="intake-prog-fill" id="progFill" style="width:25%"></div></div>
+      <div class="intake-prog"><div class="intake-prog-fill" id="progFill" style="width:33%"></div></div>
 
       <div class="step-panel active" id="sp1">
         <div class="panel" data-label="STEP 01 — CONTACT INFO"><div class="bc tl"></div><div class="bc br"></div>
@@ -967,7 +967,7 @@ footer{
             <div class="fg"><label class="flbl">Phone <span class="req">*</span></label><input type="tel" class="finp" id="f-phone" placeholder="+1 (___) ___-____" autocomplete="tel" inputmode="tel"></div>
           </div>
         </div>
-        <div class="step-nav"><div class="step-info">STEP 1 / 4</div><button class="btn-wiz-pri" onclick="goStep(2)">NEXT <svg width="9" height="9" viewBox="0 0 10 10" fill="currentColor"><polygon points="0,0 10,5 0,10"/></svg></button></div>
+        <div class="step-nav"><div class="step-info">STEP 1 / 3</div><button class="btn-wiz-pri" onclick="goStep(2)">NEXT <svg width="9" height="9" viewBox="0 0 10 10" fill="currentColor"><polygon points="0,0 10,5 0,10"/></svg></button></div>
       </div>
 
       <div class="step-panel" id="sp2">
@@ -986,45 +986,23 @@ footer{
             </div>
             <div class="fg"><label class="flbl">Urgency Level</label><select class="fsel" id="f-urgency"><option value="">— Select —</option><option>Standard (7+ days)</option><option>Priority (3–6 days)</option><option>Urgent (1–2 days)</option><option>Emergency (Same day)</option></select></div>
             <div class="fg"><label class="flbl">Preferred Date</label><input type="date" class="finp" id="f-date"></div>
-            <div class="fg"><label class="flbl">Preferred Time Window</label><input type="text" class="finp" id="f-time-window" placeholder="e.g. Morning, 8am–12pm"></div>
+            <div class="fg"><label class="flbl">Preferred Time Window</label>
+              <select class="fsel" id="f-time-window">
+                <option value="">— Select —</option>
+                <option value="Morning (6am–12pm)">Morning (6am–12pm)</option>
+                <option value="Afternoon (12pm–5pm)">Afternoon (12pm–5pm)</option>
+                <option value="Evening (5pm–9pm)">Evening (5pm–9pm)</option>
+              </select>
+            </div>
             <div class="fg span2"><label class="flbl">Site Address / Location <span class="req">*</span></label><input type="text" class="finp" id="f-address" placeholder="Full address or general location" autocomplete="street-address"></div>
             <div class="fg span2"><label class="flbl">Project Description <span class="req">*</span></label><textarea class="ftxt" id="f-desc" placeholder="What do you need and why? Include property type, site size, access details, or any specific requirements."></textarea></div>
           </div>
         </div>
-        <div class="step-nav"><button class="btn-wiz-ghost" onclick="goStep(1)">← BACK</button><div class="step-info">STEP 2 / 4</div><button class="btn-wiz-pri" onclick="goStep(3)">NEXT <svg width="9" height="9" viewBox="0 0 10 10" fill="currentColor"><polygon points="0,0 10,5 0,10"/></svg></button></div>
+        <div class="step-nav"><button class="btn-wiz-ghost" onclick="goStep(1)">← BACK</button><div class="step-info">STEP 2 / 3</div><button class="btn-wiz-pri" onclick="goStep(3)">REVIEW &amp; SUBMIT <svg width="9" height="9" viewBox="0 0 10 10" fill="currentColor"><polygon points="0,0 10,5 0,10"/></svg></button></div>
       </div>
 
       <div class="step-panel" id="sp3">
-        <div class="panel" data-label="STEP 03 — DELIVERABLES"><div class="bc tl"></div><div class="bc br"></div>
-          <div class="panel-title">What Do You Need Delivered?</div>
-          <div class="panel-sub">Select all formats that apply. We'll confirm specs during our follow-up call.</div>
-          <div class="deliverables-grid">
-            <div class="dcheck" onclick="toggleCheck(this)"><div class="dcheck-box"><svg viewBox="0 0 12 10"><polyline points="1,5 4.5,9 11,1"/></svg></div><div class="dcheck-lbl">Edited Photos</div></div>
-            <div class="dcheck" onclick="toggleCheck(this)"><div class="dcheck-box"><svg viewBox="0 0 12 10"><polyline points="1,5 4.5,9 11,1"/></svg></div><div class="dcheck-lbl">Edited Video</div></div>
-            <div class="dcheck" onclick="toggleCheck(this)"><div class="dcheck-box"><svg viewBox="0 0 12 10"><polyline points="1,5 4.5,9 11,1"/></svg></div><div class="dcheck-lbl">Thermal Report</div></div>
-            <div class="dcheck" onclick="toggleCheck(this)"><div class="dcheck-box"><svg viewBox="0 0 12 10"><polyline points="1,5 4.5,9 11,1"/></svg></div><div class="dcheck-lbl">Orthomosaic / Map</div></div>
-            <div class="dcheck" onclick="toggleCheck(this)"><div class="dcheck-box"><svg viewBox="0 0 12 10"><polyline points="1,5 4.5,9 11,1"/></svg></div><div class="dcheck-lbl">3D Model / Point Cloud</div></div>
-            <div class="dcheck" onclick="toggleCheck(this)"><div class="dcheck-box"><svg viewBox="0 0 12 10"><polyline points="1,5 4.5,9 11,1"/></svg></div><div class="dcheck-lbl">Inspection Report</div></div>
-            <div class="dcheck" onclick="toggleCheck(this)"><div class="dcheck-box"><svg viewBox="0 0 12 10"><polyline points="1,5 4.5,9 11,1"/></svg></div><div class="dcheck-lbl">AI Analysis Report</div></div>
-            <div class="dcheck" onclick="toggleCheck(this)"><div class="dcheck-box"><svg viewBox="0 0 12 10"><polyline points="1,5 4.5,9 11,1"/></svg></div><div class="dcheck-lbl">GIS / CAD Files</div></div>
-            <div class="dcheck" onclick="toggleCheck(this)"><div class="dcheck-box"><svg viewBox="0 0 12 10"><polyline points="1,5 4.5,9 11,1"/></svg></div><div class="dcheck-lbl">Not Sure Yet</div></div>
-          </div>
-          <div class="sect-divider">Reference Files — Optional</div>
-          <div class="panel-sub" style="margin-bottom:10px;font-size:15px;">Site plans, prior photos, or reference documents help us quote accurately and plan the mission.</div>
-          <div class="upload-zone" id="uploadZone">
-            <input type="file" id="fileInput" multiple accept=".jpg,.jpeg,.png,.pdf,.dwg,.dxf,.kml,.kmz,.doc,.docx,.zip" onchange="handleFiles(this.files)">
-            <div class="upload-icon"><svg viewBox="0 0 40 40"><path d="M20 28V12M20 12L13 19M20 12L27 19" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><rect x="6" y="28" width="28" height="8" rx="1"/></svg></div>
-            <div class="upload-title">Drop Files or Click to Browse</div>
-            <div class="upload-sub">50MB max per file</div>
-            <div class="upload-types"><span class="utype">JPG</span><span class="utype">PDF</span><span class="utype">KML</span><span class="utype">DWG</span><span class="utype">ZIP</span></div>
-          </div>
-          <div class="file-list" id="fileList"></div>
-        </div>
-        <div class="step-nav"><button class="btn-wiz-ghost" onclick="goStep(2)">← BACK</button><div class="step-info">STEP 3 / 4</div><button class="btn-wiz-pri" onclick="goStep(4)">REVIEW &amp; SUBMIT <svg width="9" height="9" viewBox="0 0 10 10" fill="currentColor"><polygon points="0,0 10,5 0,10"/></svg></button></div>
-      </div>
-
-      <div class="step-panel" id="sp4">
-        <div class="panel" data-label="STEP 04 — CONFIRM"><div class="bc tl"></div><div class="bc br"></div>
+        <div class="panel" data-label="STEP 03 — CONFIRM"><div class="bc tl"></div><div class="bc br"></div>
           <div class="panel-title">Almost Done</div>
           <div class="panel-sub">Confirm the details below and submit. We'll respond within one business day.</div>
           <div class="legal-list">
@@ -1040,8 +1018,8 @@ footer{
           <div style="font-family:var(--body);font-size:15px;color:var(--t3);padding:12px 14px;background:rgba(255,107,0,0.025);border:1px solid var(--bo);line-height:1.62;font-weight:500;">All submissions are handled confidentially. We respond within one business day with a clear scope and quote.</div>
         </div>
         <div class="step-nav">
-          <button class="btn-wiz-ghost" onclick="goStep(3)">← BACK</button>
-          <div class="step-info">STEP 4 / 4</div>
+          <button class="btn-wiz-ghost" onclick="goStep(2)">← BACK</button>
+          <div class="step-info">STEP 3 / 3</div>
           <button class="btn-wiz-pri" id="submitBtn" onclick="submitForm()"><svg width="9" height="9" viewBox="0 0 10 10" fill="currentColor"><polygon points="0,0 10,5 0,10"/></svg>SUBMIT REQUEST</button>
         </div>
       </div>
@@ -1220,38 +1198,31 @@ window.addEventListener('load', () => {
 
 // ── FORM ──
 var wizStep=1;
-var uploadedFiles=[];
 function goStep(n){
   if(n===2 && wizStep===1){
-    var name=document.getElementById('f-name').value.trim();
-    var email=document.getElementById('f-email').value.trim();
-    var phone=document.getElementById('f-phone').value.trim();
-    if(!name||!email||!phone){alert('Please fill in your name, email, and phone before continuing.');return;}
+    var nm=document.getElementById('f-name').value.trim();
+    var em=document.getElementById('f-email').value.trim();
+    var ph=document.getElementById('f-phone').value.trim();
+    if(!nm||!em||!ph){alert('Please fill in your name, email, and phone before continuing.');return;}
   }
   if(n===3 && wizStep===2){
-    var project=document.getElementById('f-project').value.trim();
-    var address=document.getElementById('f-address').value.trim();
+    var proj=document.getElementById('f-project').value.trim();
+    var addr=document.getElementById('f-address').value.trim();
     var desc=document.getElementById('f-desc').value.trim();
-    if(!project||!address||!desc){alert('Please fill in Project Name, Site Address, and Project Description before continuing.');return;}
+    if(!proj||!addr||!desc){alert('Please fill in Project Name, Site Address, and Project Description before continuing.');return;}
+    buildReview();
   }
   document.getElementById('sp'+wizStep).classList.remove('active');
   document.getElementById('sp'+n).classList.add('active');
   document.querySelectorAll('.step-node').forEach(function(nd,i){nd.classList.remove('active','done');if(i+1<n)nd.classList.add('done');if(i+1===n)nd.classList.add('active');});
-  document.getElementById('progFill').style.width=(n/4*100)+'%';
-  if(n===4)buildReview();
+  document.getElementById('progFill').style.width=(n/3*100)+'%';
   wizStep=n;
   document.getElementById('contact').scrollIntoView({behavior:'smooth',block:'start'});
 }
-function toggleCheck(el){el.classList.toggle('checked');}
 function toggleLegal(el){el.classList.toggle('checked');}
-function handleFiles(files){Array.from(files).forEach(function(f){if(!uploadedFiles.find(function(x){return x.name===f.name;}))uploadedFiles.push(f);});renderFiles();}
-function renderFiles(){document.getElementById('fileList').innerHTML=uploadedFiles.map(function(f,i){return'<div class="file-item"><span class="file-nm">'+f.name+'</span><span class="file-sz">'+(f.size/1024).toFixed(1)+'KB</span><span class="file-rm" onclick="removeFile('+i+')">✕</span></div>';}).join('');}
-function removeFile(i){uploadedFiles.splice(i,1);renderFiles();}
-(function(){var uz=document.getElementById('uploadZone');if(!uz)return;uz.addEventListener('dragover',function(e){e.preventDefault();uz.classList.add('drag');});uz.addEventListener('dragleave',function(){uz.classList.remove('drag');});uz.addEventListener('drop',function(e){e.preventDefault();uz.classList.remove('drag');handleFiles(e.dataTransfer.files);});})();
 function buildReview(){
-  var delivs=Array.from(document.querySelectorAll('.dcheck.checked .dcheck-lbl')).map(function(el){return el.textContent;}).join(', ')||'None selected';
-  var rows=[['Name',document.getElementById('f-name').value||'—'],['Company',document.getElementById('f-company').value||'—'],['Email',document.getElementById('f-email').value||'—'],['Phone',document.getElementById('f-phone').value||'—'],['Project',document.getElementById('f-project').value||'—'],['Service',document.getElementById('f-type').value||'—'],['Urgency',document.getElementById('f-urgency').value||'—'],['Date',document.getElementById('f-date').value||'—'],['Time Window',document.getElementById('f-time-window').value||'—'],['Location',document.getElementById('f-address').value||'—'],['Deliverables',delivs],['Files',uploadedFiles.length>0?uploadedFiles.length+' attached':'None']];
-  document.getElementById('reviewGrid').innerHTML=rows.map(function(r){return'<div style="display:flex;gap:10px;background:rgba(7,7,7,0.98);border:1px solid var(--bd);padding:10px 13px;"><span style="font-family:var(--mono);font-size:9px;letter-spacing:2px;color:var(--t3);text-transform:uppercase;min-width:88px;flex-shrink:0;">'+r[0]+'</span><span style="font-family:var(--body);font-size:15px;color:var(--t1);font-weight:500;">'+r[1]+'</span></div>';}).join('');
+  var rows=[['Name',document.getElementById('f-name').value||'—'],['Company',document.getElementById('f-company').value||'—'],['Email',document.getElementById('f-email').value||'—'],['Phone',document.getElementById('f-phone').value||'—'],['Project',document.getElementById('f-project').value||'—'],['Service',document.getElementById('f-type').value||'—'],['Urgency',document.getElementById('f-urgency').value||'—'],['Date',document.getElementById('f-date').value||'—'],['Time Window',document.getElementById('f-time-window').value||'—'],['Location',document.getElementById('f-address').value||'—'],['Description',document.getElementById('f-desc').value||'—']];
+  document.getElementById('reviewGrid').innerHTML=rows.map(function(r){return'<div style="display:flex;gap:10px;background:rgba(7,7,7,0.98);border:1px solid var(--bd);padding:10px 13px;"><span style="font-family:var(--mono);font-size:9px;letter-spacing:2px;color:var(--t3);text-transform:uppercase;min-width:96px;flex-shrink:0;">'+r[0]+'</span><span style="font-family:var(--body);font-size:15px;color:var(--t1);font-weight:500;">'+r[1]+'</span></div>';}).join('');
 }
 function submitForm(){
   var name=document.getElementById('f-name').value.trim();
@@ -1259,7 +1230,6 @@ function submitForm(){
   var phone=document.getElementById('f-phone').value.trim();
   if(!name||!email||!phone){alert('Please fill in your contact details in Step 1.');goStep(1);return;}
   if(!Array.from(document.querySelectorAll('.lcheck')).every(function(l){return l.classList.contains('checked');})){alert('Please confirm all items before submitting.');return;}
-  var deliverablesRequested=Array.from(document.querySelectorAll('.dcheck.checked .dcheck-lbl')).map(function(el){return el.textContent.trim();}).join(', ');
   var payload={
     'Project Name':document.getElementById('f-project').value.trim(),
     'Organization':document.getElementById('f-company').value.trim(),
@@ -1267,9 +1237,9 @@ function submitForm(){
     'Client Email':email,
     'Client Phone':phone,
     'Mission Type Value':document.getElementById('f-type').value,
-    'deliverablesRequested':deliverablesRequested,
+    'deliverablesRequested':'',
     'Requested Date':document.getElementById('f-date').value,
-    'Requested Time Window':document.getElementById('f-time-window').value.trim(),
+    'Requested Time Window':document.getElementById('f-time-window').value,
     'Urgency Level':document.getElementById('f-urgency').value,
     'Site Address':document.getElementById('f-address').value.trim(),
     'Special Instructions':document.getElementById('f-desc').value.trim()
@@ -1280,17 +1250,19 @@ function submitForm(){
     method:'POST',
     headers:{'Content-Type':'application/json'},
     body:JSON.stringify(payload)
-  }).then(function(){
+  }).then(function(res){
+    if(!res.ok){throw new Error('HTTP '+res.status);}
     var ref='DØi-'+Date.now().toString(36).toUpperCase().slice(-6);
-    for(var i=1;i<=4;i++){var p=document.getElementById('sp'+i);if(p)p.classList.remove('active');}
+    for(var i=1;i<=3;i++){var p=document.getElementById('sp'+i);if(p)p.classList.remove('active');}
     document.getElementById('successCode').textContent='REF: '+ref;
     document.getElementById('successPanel').classList.add('show');
     document.querySelectorAll('.step-node').forEach(function(nd){nd.classList.add('done');});
     document.getElementById('progFill').style.width='100%';
     document.getElementById('contact').scrollIntoView({behavior:'smooth',block:'start'});
-  }).catch(function(){
+  }).catch(function(err){
     if(btn){btn.disabled=false;btn.innerHTML='<svg width="9" height="9" viewBox="0 0 10 10" fill="currentColor"><polygon points="0,0 10,5 0,10"/></svg>SUBMIT REQUEST';}
-    alert('Submission failed. Please try again or contact us directly.');
+    console.error('Submission error:',err);
+    alert('Submission failed ('+err.message+'). Please try again or contact us directly.');
   });
 }
 </script>
