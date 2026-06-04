@@ -1222,6 +1222,18 @@ window.addEventListener('load', () => {
 var wizStep=1;
 var uploadedFiles=[];
 function goStep(n){
+  if(n===2 && wizStep===1){
+    var name=document.getElementById('f-name').value.trim();
+    var email=document.getElementById('f-email').value.trim();
+    var phone=document.getElementById('f-phone').value.trim();
+    if(!name||!email||!phone){alert('Please fill in your name, email, and phone before continuing.');return;}
+  }
+  if(n===3 && wizStep===2){
+    var project=document.getElementById('f-project').value.trim();
+    var address=document.getElementById('f-address').value.trim();
+    var desc=document.getElementById('f-desc').value.trim();
+    if(!project||!address||!desc){alert('Please fill in Project Name, Site Address, and Project Description before continuing.');return;}
+  }
   document.getElementById('sp'+wizStep).classList.remove('active');
   document.getElementById('sp'+n).classList.add('active');
   document.querySelectorAll('.step-node').forEach(function(nd,i){nd.classList.remove('active','done');if(i+1<n)nd.classList.add('done');if(i+1===n)nd.classList.add('active');});
@@ -1247,7 +1259,7 @@ function submitForm(){
   var phone=document.getElementById('f-phone').value.trim();
   if(!name||!email||!phone){alert('Please fill in your contact details in Step 1.');goStep(1);return;}
   if(!Array.from(document.querySelectorAll('.lcheck')).every(function(l){return l.classList.contains('checked');})){alert('Please confirm all items before submitting.');return;}
-  var deliverablesRequested=Array.from(document.querySelectorAll('.dcheck.checked .dcheck-lbl')).map(function(el){return el.textContent.trim();});
+  var deliverablesRequested=Array.from(document.querySelectorAll('.dcheck.checked .dcheck-lbl')).map(function(el){return el.textContent.trim();}).join(', ');
   var payload={
     'Project Name':document.getElementById('f-project').value.trim(),
     'Organization':document.getElementById('f-company').value.trim(),
