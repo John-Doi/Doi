@@ -46,10 +46,10 @@
               FEASIBILITY REVIEW NOTIFICATION
             </p>
             <h1 class="h1" style="margin:0 0 8px;font-family:Arial,sans-serif;font-size:36px;font-weight:bold;color:#F0F0F0;text-transform:uppercase;line-height:1.1;mso-line-height-rule:exactly;">
-              @{triggerOutputs()?['body/siteName']}
+              @{triggerOutputs()?['body/Project Name']}
             </h1>
             <p style="margin:0;font-family:'Courier New',monospace;font-size:11px;letter-spacing:2px;color:#a0a0a0;text-transform:uppercase;">
-              @{triggerOutputs()?['body/serviceArea']}
+              @{triggerOutputs()?['body/Organization']}
             </p>
           </td>
         </tr>
@@ -67,7 +67,7 @@
         <tr>
           <td style="padding:14px 28px 4px;">
             <p style="margin:0 0 2px;font-family:'Courier New',monospace;font-size:9px;letter-spacing:3px;color:#FF6B00;text-transform:uppercase;">MISSION TYPE</p>
-            <p style="margin:0;font-family:Arial,sans-serif;font-size:16px;font-weight:bold;color:#F0F0F0;text-transform:uppercase;">@{triggerOutputs()?['body/missionType']}</p>
+            <p style="margin:0;font-family:Arial,sans-serif;font-size:16px;font-weight:bold;color:#F0F0F0;text-transform:uppercase;">@{triggerOutputs()?['body/Mission Type Value']}</p>
           </td>
         </tr>
 
@@ -75,7 +75,7 @@
         <tr>
           <td style="padding:10px 28px 4px;">
             <p style="margin:0 0 2px;font-family:'Courier New',monospace;font-size:9px;letter-spacing:3px;color:#FF6B00;text-transform:uppercase;">URGENCY</p>
-            <p style="margin:0;font-family:Arial,sans-serif;font-size:16px;font-weight:bold;color:#F0F0F0;text-transform:uppercase;">@{triggerOutputs()?['body/urgencyLevel']}</p>
+            <p style="margin:0;font-family:Arial,sans-serif;font-size:16px;font-weight:bold;color:#F0F0F0;text-transform:uppercase;">@{triggerOutputs()?['body/Urgency Level']}</p>
           </td>
         </tr>
 
@@ -92,15 +92,7 @@
         <tr>
           <td style="padding:10px 28px 4px;">
             <p style="margin:0 0 2px;font-family:'Courier New',monospace;font-size:9px;letter-spacing:3px;color:#FF6B00;text-transform:uppercase;">CLIENT</p>
-            <p style="margin:0;font-family:Arial,sans-serif;font-size:16px;font-weight:600;color:#F0F0F0;">@{triggerOutputs()?['body/clientName']}</p>
-          </td>
-        </tr>
-
-        <!-- ORGANIZATION -->
-        <tr>
-          <td style="padding:10px 28px 4px;">
-            <p style="margin:0 0 2px;font-family:'Courier New',monospace;font-size:9px;letter-spacing:3px;color:#FF6B00;text-transform:uppercase;">ORGANIZATION</p>
-            <p style="margin:0;font-family:Arial,sans-serif;font-size:15px;color:#F0F0F0;">@{triggerOutputs()?['body/companyType']}</p>
+            <p style="margin:0;font-family:Arial,sans-serif;font-size:16px;font-weight:600;color:#F0F0F0;">@{triggerOutputs()?['body/Client Name']}</p>
           </td>
         </tr>
 
@@ -108,7 +100,7 @@
         <tr>
           <td style="padding:10px 28px 4px;">
             <p style="margin:0 0 2px;font-family:'Courier New',monospace;font-size:9px;letter-spacing:3px;color:#FF6B00;text-transform:uppercase;">EMAIL</p>
-            <p style="margin:0;font-family:'Courier New',monospace;font-size:13px;color:#c0c0c0;">@{triggerOutputs()?['body/clientEmail']}</p>
+            <p style="margin:0;font-family:'Courier New',monospace;font-size:13px;color:#c0c0c0;">@{triggerOutputs()?['body/Client Email']}</p>
           </td>
         </tr>
 
@@ -116,7 +108,7 @@
         <tr>
           <td style="padding:10px 28px 4px;">
             <p style="margin:0 0 2px;font-family:'Courier New',monospace;font-size:9px;letter-spacing:3px;color:#FF6B00;text-transform:uppercase;">PHONE</p>
-            <p style="margin:0;font-family:'Courier New',monospace;font-size:13px;color:#c0c0c0;">@{triggerOutputs()?['body/clientPhone']}</p>
+            <p style="margin:0;font-family:'Courier New',monospace;font-size:13px;color:#c0c0c0;">@{triggerOutputs()?['body/Client Phone']}</p>
           </td>
         </tr>
 
@@ -133,7 +125,15 @@
         <tr>
           <td style="padding:10px 28px 4px;">
             <p style="margin:0 0 2px;font-family:'Courier New',monospace;font-size:9px;letter-spacing:3px;color:#FF6B00;text-transform:uppercase;">REQUESTED DATE</p>
-            <p style="margin:0;font-family:'Courier New',monospace;font-size:15px;font-weight:bold;color:#FF6B00;">@{triggerOutputs()?['body/requestedDate']}</p>
+            <p style="margin:0;font-family:'Courier New',monospace;font-size:15px;font-weight:bold;color:#FF6B00;">@{triggerOutputs()?['body/Requested Date']}</p>
+          </td>
+        </tr>
+
+        <!-- TIME WINDOW -->
+        <tr>
+          <td style="padding:10px 28px 4px;">
+            <p style="margin:0 0 2px;font-family:'Courier New',monospace;font-size:9px;letter-spacing:3px;color:#FF6B00;text-transform:uppercase;">TIME WINDOW</p>
+            <p style="margin:0;font-family:'Courier New',monospace;font-size:13px;color:#c0c0c0;">@{triggerOutputs()?['body/Requested Time Window']}</p>
           </td>
         </tr>
 
@@ -141,15 +141,15 @@
         <tr>
           <td style="padding:10px 28px 4px;">
             <p style="margin:0 0 2px;font-family:'Courier New',monospace;font-size:9px;letter-spacing:3px;color:#FF6B00;text-transform:uppercase;">SITE ADDRESS</p>
-            <p style="margin:0;font-family:Arial,sans-serif;font-size:14px;color:#c0c0c0;line-height:1.5;">@{triggerOutputs()?['body/siteAddress']}</p>
+            <p style="margin:0;font-family:Arial,sans-serif;font-size:14px;color:#c0c0c0;line-height:1.5;">@{triggerOutputs()?['body/Site Address']}</p>
           </td>
         </tr>
 
-        <!-- MISSION OBJECTIVE -->
+        <!-- SPECIAL INSTRUCTIONS -->
         <tr>
           <td style="padding:10px 28px 24px;">
-            <p style="margin:0 0 2px;font-family:'Courier New',monospace;font-size:9px;letter-spacing:3px;color:#FF6B00;text-transform:uppercase;">OBJECTIVE</p>
-            <p style="margin:0;font-family:Arial,sans-serif;font-size:14px;color:#c0c0c0;line-height:1.6;">@{triggerOutputs()?['body/missionObjective']}</p>
+            <p style="margin:0 0 2px;font-family:'Courier New',monospace;font-size:9px;letter-spacing:3px;color:#FF6B00;text-transform:uppercase;">SPECIAL INSTRUCTIONS</p>
+            <p style="margin:0;font-family:Arial,sans-serif;font-size:14px;color:#c0c0c0;line-height:1.6;">@{triggerOutputs()?['body/Special Instructions']}</p>
           </td>
         </tr>
 

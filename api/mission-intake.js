@@ -13,14 +13,14 @@ export default async function handler(req, res) {
   try {
     const payload = req.body;
 
-    const requiredFields = ["clientName", "clientEmail", "clientPhone", "missionType"];
+    const requiredFields = ["Client Name", "Client Email", "Client Phone", "Mission Type Value"];
     for (const field of requiredFields) {
       if (!payload[field]) {
         return res.status(400).json({ success: false, error: `Missing required field: ${field}` });
       }
     }
 
-    if (!EMAIL_RE.test(payload.clientEmail)) {
+    if (!EMAIL_RE.test(payload["Client Email"])) {
       return res.status(400).json({ success: false, error: "Invalid email format" });
     }
 

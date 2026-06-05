@@ -1254,17 +1254,17 @@ function submitForm(){
   var missionType=document.getElementById('f-type').value;
   if(!missionType){alert('Please select a mission type in Step 2.');goStep(2);return;}
   var payload={
-    clientName:name,
-    companyType:document.getElementById('f-company').value.trim(),
-    clientEmail:email,
-    clientPhone:phone,
-    siteName:document.getElementById('f-project').value.trim(),
-    missionType:missionType,
-    urgencyLevel:document.getElementById('f-urgency').value,
-    requestedDate:document.getElementById('f-date').value,
-    siteAddress:document.getElementById('f-address').value.trim(),
-    missionObjective:document.getElementById('f-desc').value.trim(),
-    serviceArea:'California'
+    'Project Name':document.getElementById('f-project').value.trim(),
+    'Organization':document.getElementById('f-company').value.trim(),
+    'Client Name':name,
+    'Client Email':email,
+    'Client Phone':phone,
+    'Mission Type Value':missionType,
+    'Requested Date':document.getElementById('f-date').value,
+    'Requested Time Window':document.getElementById('f-time-window')?document.getElementById('f-time-window').value:'',
+    'Urgency Level':document.getElementById('f-urgency').value,
+    'Site Address':document.getElementById('f-address').value.trim(),
+    'Special Instructions':document.getElementById('f-desc').value.trim()
   };
   var btn=document.getElementById('submitBtn');
   if(btn){btn.disabled=true;btn.innerHTML='<svg width="9" height="9" viewBox="0 0 10 10" fill="currentColor"><polygon points="0,0 10,5 0,10"/></svg>SENDING...';}
