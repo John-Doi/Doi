@@ -36,13 +36,18 @@ export default async function handler(req, res) {
       body: JSON.stringify(payload)
     });
 
+    const responseText = await response.text();
+    console.log("[mission-intake] PA status:", response.status, "body:", responseText);
+
     if (!response.ok) {
-      return res.status(502).json({ success: false, error: "Power Automate request failed" });
+      console.error("[mission-intake] PA rejected payload:", responseText);
+      return res.status(502).json({ success: false, error: "Power Automate request failed", detail: responseText });
     }
 
     return res.status(200).json({ success: true });
 
   } catch (error) {
-    return res.status(500).json({ success: false, error: "Server error" });
+    console.error("[mission-intake] Server error:", error);
+    return res.status(500).json({ success: false, error: "Server error", detail: error.message });
   }
 }
