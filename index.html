@@ -110,25 +110,22 @@ section[id],div[id]{scroll-margin-top:60px;}
 .nav-cta:hover{background:var(--tiger);}
 
 /* ── HERO SCROLL ZONE ── */
-.hero-zone{height:auto;position:relative;}
+.hero-zone{height:300vh;position:relative;}
 .hero-pin{
-  position:relative;height:100vh;overflow:hidden;
+  position:sticky;top:0;height:100vh;overflow:hidden;
   display:flex;flex-direction:column;background:var(--bg);
   z-index:10;
 }
 .hero-video{position:absolute;inset:0;z-index:0;overflow:hidden;}
 /* HERO BG — Logo PNG centered + glow pulse + animated scan line */
-/* hero-glow-bg: grid + scanline only — logo is now in content flow */
-.hero-glow-bg{position:absolute;inset:0;z-index:0;}
-/* In-flow logo — constrained so text always fits in 100vh */
+.hero-glow-bg{position:absolute;inset:0;z-index:0;display:flex;align-items:center;justify-content:center;}
 .hero-logo-img{
-  width:88%;max-width:1100px;
-  height:auto;max-height:48vh;
-  object-fit:contain;
-  display:block;margin:0 auto;
+  width:55%;max-width:700px;height:auto;
+  opacity:.18;
+  animation:logoPulse 3.5s ease-in-out infinite;
   pointer-events:none;user-select:none;
-  mix-blend-mode:screen;
 }
+@keyframes logoPulse{0%,100%{opacity:.14;filter:brightness(1);}50%{opacity:.28;filter:brightness(1.4) drop-shadow(0 0 32px rgba(255,107,26,.5));}}
 .hero-glow-bg::before{
   content:'';position:absolute;inset:0;
   background-image:
@@ -146,15 +143,14 @@ section[id],div[id]{scroll-margin-top:60px;}
 @keyframes scanDown{0%{top:-1px;opacity:0;}5%{opacity:1;}95%{opacity:.8;}100%{top:100%;opacity:0;}}
 .hero-video::after{
   content:'';position:absolute;inset:0;
-  background:linear-gradient(to bottom,rgba(8,8,8,.55) 0%,rgba(8,8,8,.15) 40%,rgba(8,8,8,.72) 100%);
+  background:linear-gradient(120deg,rgba(8,8,8,.88) 0%,rgba(8,8,8,.45) 55%,rgba(8,8,8,.82) 100%);
 }
-/* Hero layout: logo + text in one centered column */
 .hero-inner{
-  position:relative;z-index:1;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  padding:72px 40px 48px;flex:1;text-align:center;max-width:none;width:100%;
+  position:relative;z-index:1;flex:1;
+  display:grid;grid-template-columns:1fr 1fr;
+  align-items:center;padding:80px 60px 0;gap:20px;
 }
-.hero-left{display:flex;flex-direction:column;align-items:center;gap:14px;margin-top:0;}
+.hero-left{display:flex;flex-direction:column;gap:22px;}
 .hero-eyebrow{
   font-family:var(--mono);font-size:13px;letter-spacing:.2em;color:var(--og);
   text-transform:uppercase;display:flex;align-items:center;gap:12px;
@@ -193,27 +189,13 @@ section[id],div[id]{scroll-margin-top:60px;}
 
 /* ── DRONE ── */
 .hero-right{
-  position:absolute;right:0;top:50%;transform:translateY(-50%);
-  width:44%;max-width:620px;z-index:2;
-  display:flex;align-items:center;justify-content:center;
+  position:relative;display:flex;align-items:center;justify-content:center;
 }
 #heroDrone{
   width:100%;max-width:620px;will-change:transform,opacity;
   filter:drop-shadow(0 30px 60px rgba(255,107,26,.2));
-  animation:droneFlyin 1.1s cubic-bezier(.22,1,.36,1) .3s both,
-            droneFloat 5s ease-in-out 1.6s infinite;
 }
 #heroDrone img,#heroDrone video{width:100%;height:auto;display:block;}
-@keyframes droneFlyin{
-  from{opacity:0;transform:translateX(110%) scale(.72) rotate(7deg);}
-  to{opacity:1;transform:translateX(0) scale(1) rotate(0deg);}
-}
-@keyframes droneFloat{
-  0%,100%{transform:translate(0px,0px) rotate(0deg);}
-  35%{transform:translate(2%,-10px) rotate(1.5deg);}
-  70%{transform:translate(-1%,8px) rotate(-1deg);}
-}
-@media(prefers-reduced-motion:reduce){#heroDrone{animation:none;opacity:1;}}
 .tele{
   position:absolute;font-family:var(--mono);font-size:12px;
   color:var(--og);letter-spacing:.1em;pointer-events:none;
@@ -672,16 +654,16 @@ footer{
   <div class="hero-pin">
     <div class="hero-video">
       <div class="hero-glow-bg">
+        <img class="hero-logo-img" src="DØi _logo2.jpg" alt="">
         <div class="hero-scanline"></div>
       </div>
     </div>
     <div class="hero-inner">
-      <img class="hero-logo-img" src="DØi _logo2.jpg" alt="DØi Labs">
       <div class="hero-left">
         <h1 class="hero-h1">RECON<span class="og">DIVISION</span></h1>
         <p class="hero-sub-head">ADVANCED AERIAL INTELLIGENCE</p>
         <p class="hero-sub">Construction QA, thermal inspection, precision mapping, and aerial intelligence — delivered as 48HR decision-ready reports. FAA Part 107 certified. California-based.</p>
-        <div class="hero-btns" style="justify-content:center;margin-top:8px;">
+        <div class="hero-btns">
           <button class="btn-p" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">REQUEST MISSION BRIEF</button>
           <button class="btn-g" onclick="document.getElementById('pipeline').scrollIntoView({behavior:'smooth'})">VIEW PROCESS →</button>
         </div>
@@ -1107,6 +1089,55 @@ updateCornerLogo();
 
 // ── PHASE 1 · MOTION/PERF SCAFFOLD ──
 const REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// ── DRONE SCROLL ANIMATION ──
+const heroZone = document.querySelector('.hero-zone');
+const heroDrone = document.getElementById('heroDrone');
+
+function updateHero() {
+  if (!heroZone || !heroDrone) return;
+  const rect = heroZone.getBoundingClientRect();
+  const maxScroll = heroZone.offsetHeight - window.innerHeight;
+  const scrolled = Math.max(0, -rect.top);
+  const progress = Math.min(1, scrolled / maxScroll);
+  let tx, ty, scale, opacity, rot;
+  const t = performance.now() / 1000;
+  if (progress < 0.4) {
+    const p = progress / 0.4;
+    const ease = 1 - Math.pow(1 - p, 3);
+    tx = 110 * (1 - ease); ty = -24 * (1 - ease);
+    scale = 0.72 + 0.28 * ease; opacity = Math.min(1, ease * 1.6); rot = 7 * (1 - ease);
+  } else if (progress < 0.72) {
+    tx = Math.sin(t * 0.4) * 2; ty = Math.sin(t * 0.7) * 9;
+    scale = 1; opacity = 1; rot = Math.sin(t * 0.5) * 1.5;
+  } else {
+    const p = (progress - 0.72) / 0.28;
+    const ease = p * p;
+    tx = -110 * ease; ty = 32 * ease;
+    scale = 1 - 0.28 * ease; opacity = Math.max(0, 1 - ease * 1.6); rot = -8 * ease;
+  }
+  heroDrone.style.transform = `translateX(${tx.toFixed(1)}%) translateY(${ty.toFixed(1)}px) scale(${scale.toFixed(3)}) rotate(${rot.toFixed(2)}deg)`;
+  heroDrone.style.opacity = opacity.toFixed(3);
+}
+
+let heroRAF = null;
+function heroLoop(){ updateHero(); heroRAF = requestAnimationFrame(heroLoop); }
+function startHero(){ if (heroRAF === null && !REDUCE) heroLoop(); }
+function stopHero(){ if (heroRAF !== null){ cancelAnimationFrame(heroRAF); heroRAF = null; } }
+
+if (heroZone && heroDrone) {
+  if (REDUCE) {
+    heroDrone.style.transform = 'translateX(0) translateY(0) scale(1)';
+    heroDrone.style.opacity = '1';
+  } else {
+    const heroIO = new IntersectionObserver(
+      (entries) => entries.forEach(e => e.isIntersecting ? startHero() : stopHero()),
+      {threshold: 0}
+    );
+    heroIO.observe(heroZone);
+    startHero();
+  }
+}
 
 // ── PIPELINE SCROLL ──
 const plZone = document.querySelector('.pipeline-zone');
