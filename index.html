@@ -118,9 +118,8 @@ section[id],div[id]{scroll-margin-top:60px;}
 }
 .hero-video{position:absolute;inset:0;z-index:0;overflow:hidden;}
 .hero-bg-video{
-  position:absolute;top:50%;left:50%;
-  width:100vh;height:100vw;
-  transform:translate(-50%,-50%) rotate(-90deg);
+  position:absolute;inset:0;
+  width:100%;height:100%;
   object-fit:cover;object-position:center center;
   opacity:0;
   animation:heroBgReveal 2.5s ease-out 0.8s forwards;
@@ -671,7 +670,6 @@ footer{
     </div>
     <div class="hero-inner">
       <div class="hero-left">
-        <img class="hero-logo-img" src="DØi _logo2.jpg" alt="DØi Labs">
         <h1 class="hero-h1">RECON<span class="og">DIVISION</span></h1>
         <p class="hero-sub-head">ADVANCED AERIAL INTELLIGENCE</p>
         <p class="hero-sub">Construction QA, thermal inspection, precision mapping, and aerial intelligence — delivered as 48HR decision-ready reports. FAA Part 107 certified. California-based.</p>
