@@ -8,8 +8,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-<!-- PHASE 1 · LCP scaffold: preload hero image. TODO(asset): generate IMG_4044.avif + .webp and swap to <picture> per DØi-WEB-SPEC §4. -->
-<link rel="preload" as="image" href="IMG_4044.webp" fetchpriority="high">
 <style>
 :root {
   --bg:#080808;--surf:#0e0e0e;--card:#111;--card2:#141414;
@@ -122,15 +120,19 @@ section[id],div[id]{scroll-margin-top:60px;}
   width:100%;height:100%;
   object-fit:cover;object-position:center center;
   opacity:0;
-  animation:heroBgReveal 2.5s ease-out 0.8s forwards;
+  animation:heroBgReveal 5s ease-out 1s forwards;
 }
-@keyframes heroBgReveal{from{opacity:0;}to{opacity:.82;}}
+@keyframes heroBgReveal{
+  from{opacity:0;transform:scale(1.08);}
+  to{opacity:.82;transform:scale(1);}
+}
 /* HERO BG — grid + scanline only */
 .hero-glow-bg{position:absolute;inset:0;z-index:0;}
 .hero-logo-img{
   width:100%;max-width:480px;height:auto;
   display:block;
   mix-blend-mode:screen;
+  will-change:transform;
   pointer-events:none;user-select:none;
 }
 .hero-glow-bg::before{
@@ -154,8 +156,8 @@ section[id],div[id]{scroll-margin-top:60px;}
 }
 .hero-inner{
   position:relative;z-index:1;flex:1;
-  display:grid;grid-template-columns:1fr 1fr;
-  align-items:center;padding:80px 60px 0;gap:20px;
+  display:flex;flex-direction:column;justify-content:center;
+  padding:80px 60px 48px;
 }
 .hero-left{display:flex;flex-direction:column;gap:22px;}
 .hero-eyebrow{
@@ -194,15 +196,6 @@ section[id],div[id]{scroll-margin-top:60px;}
 }
 .btn-g:hover{border-color:var(--og);color:var(--og);}
 
-/* ── DRONE ── */
-.hero-right{
-  position:relative;display:flex;align-items:center;justify-content:center;
-}
-#heroDrone{
-  width:100%;max-width:620px;will-change:transform,opacity;
-  filter:drop-shadow(0 30px 60px rgba(255,107,26,.2));
-}
-#heroDrone img,#heroDrone video{width:100%;height:auto;display:block;}
 .tele{
   position:absolute;font-family:var(--mono);font-size:12px;
   color:var(--og);letter-spacing:.1em;pointer-events:none;
@@ -504,8 +497,7 @@ footer{
 @media(max-width:900px){
   .nav-links,.nav-cta{display:none;}
   .nav{padding:0 20px;}
-  .hero-inner{grid-template-columns:1fr;padding:80px 20px 20px;}
-  .hero-right{display:none;}
+  .hero-inner{padding:80px 20px 20px;}
   .proof-band{grid-template-columns:repeat(2,1fr);}
   .proof-item{padding:32px 20px;border-right:none;border-bottom:1px solid var(--bd);}
   .pipeline-zone,.pipeline-pin{display:none;}
@@ -677,11 +669,6 @@ footer{
         <div class="hero-btns">
           <button class="btn-p" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">REQUEST MISSION BRIEF</button>
           <button class="btn-g" onclick="document.getElementById('pipeline').scrollIntoView({behavior:'smooth'})">VIEW PROCESS →</button>
-        </div>
-      </div>
-      <div class="hero-right">
-        <div id="heroDrone">
-          <img src="IMG_4044.webp" alt="DJI Matrice 4T" width="620" height="465" fetchpriority="high" loading="eager">
         </div>
       </div>
     </div>
@@ -1100,55 +1087,6 @@ updateCornerLogo();
 
 // ── PHASE 1 · MOTION/PERF SCAFFOLD ──
 const REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-// ── DRONE SCROLL ANIMATION ──
-const heroZone = document.querySelector('.hero-zone');
-const heroDrone = document.getElementById('heroDrone');
-
-function updateHero() {
-  if (!heroZone || !heroDrone) return;
-  const rect = heroZone.getBoundingClientRect();
-  const maxScroll = heroZone.offsetHeight - window.innerHeight;
-  const scrolled = Math.max(0, -rect.top);
-  const progress = Math.min(1, scrolled / maxScroll);
-  let tx, ty, scale, opacity, rot;
-  const t = performance.now() / 1000;
-  if (progress < 0.4) {
-    const p = progress / 0.4;
-    const ease = 1 - Math.pow(1 - p, 3);
-    tx = 110 * (1 - ease); ty = -24 * (1 - ease);
-    scale = 0.72 + 0.28 * ease; opacity = Math.min(1, ease * 1.6); rot = 7 * (1 - ease);
-  } else if (progress < 0.72) {
-    tx = Math.sin(t * 0.4) * 2; ty = Math.sin(t * 0.7) * 9;
-    scale = 1; opacity = 1; rot = Math.sin(t * 0.5) * 1.5;
-  } else {
-    const p = (progress - 0.72) / 0.28;
-    const ease = p * p;
-    tx = -110 * ease; ty = 32 * ease;
-    scale = 1 - 0.28 * ease; opacity = Math.max(0, 1 - ease * 1.6); rot = -8 * ease;
-  }
-  heroDrone.style.transform = `translateX(${tx.toFixed(1)}%) translateY(${ty.toFixed(1)}px) scale(${scale.toFixed(3)}) rotate(${rot.toFixed(2)}deg)`;
-  heroDrone.style.opacity = opacity.toFixed(3);
-}
-
-let heroRAF = null;
-function heroLoop(){ updateHero(); heroRAF = requestAnimationFrame(heroLoop); }
-function startHero(){ if (heroRAF === null && !REDUCE) heroLoop(); }
-function stopHero(){ if (heroRAF !== null){ cancelAnimationFrame(heroRAF); heroRAF = null; } }
-
-if (heroZone && heroDrone) {
-  if (REDUCE) {
-    heroDrone.style.transform = 'translateX(0) translateY(0) scale(1)';
-    heroDrone.style.opacity = '1';
-  } else {
-    const heroIO = new IntersectionObserver(
-      (entries) => entries.forEach(e => e.isIntersecting ? startHero() : stopHero()),
-      {threshold: 0}
-    );
-    heroIO.observe(heroZone);
-    startHero();
-  }
-}
 
 // ── PIPELINE SCROLL ──
 const plZone = document.querySelector('.pipeline-zone');
