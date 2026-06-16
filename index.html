@@ -121,7 +121,7 @@ section[id],div[id]{scroll-margin-top:60px;}
   object-fit:cover;object-position:center center;
   opacity:0;
   transition:opacity 0.3s linear;
-  animation:bgKenBurns 22s ease-in-out 3.5s infinite alternate;
+  animation:bgKenBurns 22s ease-in-out 0s infinite alternate;
 }
 @keyframes bgKenBurns{
   from{transform:scale(1);}
@@ -1069,13 +1069,19 @@ footer{
 </div>
 
 <script>
-// ── HERO BG VIDEO: fade in on load, stay fully visible throughout hero zone ──
+// ── HERO BG VIDEO: fade in as soon as video can play ──
 const heroBgVid = document.querySelector('.hero-bg-video');
 if (heroBgVid) {
-  setTimeout(() => {
-    heroBgVid.style.transition = 'opacity 2.5s ease-out';
+  function showDrone() {
+    heroBgVid.style.transition = 'opacity 1.5s ease-out';
     heroBgVid.style.opacity = '0.82';
-  }, 500);
+  }
+  if (heroBgVid.readyState >= 3) {
+    showDrone();
+  } else {
+    heroBgVid.addEventListener('canplay', showDrone, {once:true});
+    setTimeout(showDrone, 800); // fallback if canplay never fires
+  }
 }
 
 // ── CORNER LOGO: show once hero glow logo scrolls out of view ──
