@@ -232,7 +232,7 @@ section[id],div[id]{scroll-margin-top:60px;}
 }
 .ticker-track{
   display:flex;white-space:nowrap;height:100%;align-items:center;
-  animation:tick 36s linear infinite;
+  animation:tick 10s linear infinite;
 }
 .t-item{font-family:var(--mono);font-size:12px;color:var(--t3);letter-spacing:.14em;padding:0 32px;text-transform:uppercase;}
 .t-item.highlight{color:var(--og);}
@@ -671,7 +671,7 @@ footer{
         </div>
       </div>
     </div>
-    <div class="hero-ticker"><div class="ticker-track"><span class="t-item highlight">FAA PART 107 CERTIFIED</span><span class="t-sep">///</span><span class="t-item dim">DJI ENTERPRISE PARTNER</span><span class="t-sep">///</span><span class="t-item highlight">THERMAL IMAGING · M4T</span><span class="t-sep">///</span><span class="t-item dim">CALIFORNIA OPERATIONS</span><span class="t-sep">///</span><span class="t-item highlight">REAL-TIME DATA DELIVERY</span><span class="t-sep">///</span><span class="t-item dim">CONSTRUCTION & INSPECTION</span><span class="t-sep">///</span><span class="t-item highlight">NIGHT OPS 107.29 AUTHORIZED</span><span class="t-sep">///</span><span class="t-item dim">PRECISION MAPPING · 2CM GSD</span><span class="t-sep">///</span><span class="t-item highlight">AI-ASSISTED INTELLIGENCE</span><span class="t-sep">///</span><span class="t-item dim">72-HOUR RAPID DEPLOYMENT</span><span class="t-sep">///</span><span class="t-item highlight">FAA PART 107 CERTIFIED</span><span class="t-sep">///</span><span class="t-item dim">DJI ENTERPRISE PARTNER</span><span class="t-sep">///</span><span class="t-item highlight">THERMAL IMAGING · M4T</span><span class="t-sep">///</span><span class="t-item dim">CALIFORNIA OPERATIONS</span><span class="t-sep">///</span><span class="t-item highlight">REAL-TIME DATA DELIVERY</span><span class="t-sep">///</span><span class="t-item dim">CONSTRUCTION & INSPECTION</span><span class="t-sep">///</span><span class="t-item highlight">NIGHT OPS 107.29 AUTHORIZED</span><span class="t-sep">///</span><span class="t-item dim">PRECISION MAPPING · 2CM GSD</span><span class="t-sep">///</span><span class="t-item highlight">AI-ASSISTED INTELLIGENCE</span><span class="t-sep">///</span><span class="t-item dim">72-HOUR RAPID DEPLOYMENT</span><span class="t-sep">///</span></div></div>
+    <div class="hero-ticker"><div class="ticker-track" id="tickerTrack"></div></div>
   </div>
 </section>
 
@@ -1201,6 +1201,78 @@ const io = new IntersectionObserver((entries) => {
   });
 }, {threshold: 0.1});
 revealEls.forEach(el => io.observe(el));
+
+// ── LIVE TICKER ──
+(function(){
+  var CITIES=[
+    {name:'LOS ANGELES',id:'LAX',lat:34.05,lon:-118.24},
+    {name:'SAN FRANCISCO',id:'SFO',lat:37.77,lon:-122.42},
+    {name:'SAN DIEGO',id:'SAN',lat:32.72,lon:-117.16},
+    {name:'LAS VEGAS',id:'LAS',lat:36.17,lon:-115.14}
+  ];
+  var WX_LABEL={0:'CLR',1:'MCLR',2:'PTCLD',3:'OVC',45:'FOG',48:'IFOG',
+    51:'LT DRZL',53:'DRZL',55:'HVY DRZL',61:'LT RAIN',63:'RAIN',65:'HVY RAIN',
+    71:'LT SNOW',73:'SNOW',75:'HVY SNOW',80:'SHWRS',81:'SHWRS',82:'HVY SHWRS',
+    95:'TSTM',96:'TSTM',99:'TSTM'};
+  function wxLabel(c){return WX_LABEL[c]||WX_LABEL[Math.floor(c/10)*10]||'UNKN';}
+  function zulu(){
+    var d=new Date();
+    return String(d.getUTCHours()).padStart(2,'0')+String(d.getUTCMinutes()).padStart(2,'0')+'Z';
+  }
+  var savings=2847392;
+  function savingsStr(){return '$'+Math.floor(savings).toLocaleString('en-US');}
+  var wx={};
+  function fetchWx(){
+    CITIES.forEach(function(city){
+      fetch('https://api.open-meteo.com/v1/forecast?latitude='+city.lat+'&longitude='+city.lon+
+        '&current=temperature_2m,wind_speed_10m,weather_code&temperature_unit=fahrenheit&wind_speed_unit=mph')
+        .then(function(r){return r.json();})
+        .then(function(d){
+          wx[city.id]={temp:Math.round(d.current.temperature_2m),wind:Math.round(d.current.wind_speed_10m),sky:wxLabel(d.current.weather_code)};
+          [0,1].forEach(function(i){
+            var el=document.getElementById('tk-wx-'+city.id+'-'+i);
+            if(el)el.textContent=city.id+' \xB7 '+wx[city.id].temp+'\xB0F \xB7 '+wx[city.id].sky+' \xB7 '+wx[city.id].wind+'KT';
+          });
+        }).catch(function(){});
+    });
+  }
+  function mkItem(t,h,id){
+    return '<span class="t-item'+(h?' highlight':' dim')+'"'+(id?' id="'+id+'"':'')+'>'+t+'</span><span class="t-sep">///</span>';
+  }
+  function mkHalf(n){
+    var s='';
+    s+=mkItem(zulu()+' ZULU',true,'tk-zulu-'+n);
+    CITIES.forEach(function(city){
+      var w=wx[city.id];
+      var t=w?city.id+' \xB7 '+w.temp+'\xB0F \xB7 '+w.sky+' \xB7 '+w.wind+'KT':city.id+' \xB7 FETCHING';
+      s+=mkItem(t,false,'tk-wx-'+city.id+'-'+n);
+    });
+    s+=mkItem('CLIENT SAVINGS \xB7 '+savingsStr(),true,'tk-sav-'+n);
+    [{t:'FAA PART 107 CERTIFIED',h:true},{t:'DJI ENTERPRISE PARTNER',h:false},
+     {t:'THERMAL IMAGING \xB7 M4T',h:true},{t:'NIGHT OPS 107.29',h:false},
+     {t:'PRECISION MAPPING \xB7 2CM GSD',h:true},{t:'AI-ASSISTED INTEL',h:false}
+    ].forEach(function(x){s+=mkItem(x.t,x.h);});
+    return s;
+  }
+  function buildTicker(){
+    var track=document.getElementById('tickerTrack');
+    if(track)track.innerHTML=mkHalf(0)+mkHalf(1);
+  }
+  function tickLive(){
+    savings+=0.18;
+    var z=zulu()+' ZULU', sv='CLIENT SAVINGS \xB7 '+savingsStr();
+    [0,1].forEach(function(i){
+      var ze=document.getElementById('tk-zulu-'+i);
+      var se=document.getElementById('tk-sav-'+i);
+      if(ze)ze.textContent=z;
+      if(se)se.textContent=sv;
+    });
+  }
+  buildTicker();
+  fetchWx();
+  setInterval(tickLive,1000);
+  setInterval(fetchWx,600000);
+})();
 
 // ── PHASE 2 · DEFERRED VIDEO LOAD ──
 // IMG_4044.webp (preloaded) handles LCP. The 4MB+ mp4 is injected only after the
