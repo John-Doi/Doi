@@ -1069,30 +1069,14 @@ footer{
 </div>
 
 <script>
-// ── HERO BG VIDEO: play once → freeze on last frame → fade out on scroll ──
+// ── HERO BG VIDEO: fade in on load, stay fully visible throughout hero zone ──
 const heroBgVid = document.querySelector('.hero-bg-video');
-let heroBgReady = false;
 if (heroBgVid) {
   setTimeout(() => {
     heroBgVid.style.transition = 'opacity 2.5s ease-out';
     heroBgVid.style.opacity = '0.82';
-    setTimeout(() => {
-      heroBgVid.style.transition = 'opacity 0.3s linear';
-      heroBgReady = true;
-    }, 2500);
   }, 500);
 }
-function updateHeroBgScroll() {
-  if (!heroZoneEl || !heroBgVid || !heroBgReady) return;
-  const rect = heroZoneEl.getBoundingClientRect();
-  const zoneScrollable = heroZoneEl.offsetHeight - window.innerHeight;
-  const scrolled = Math.max(0, -rect.top);
-  const progress = Math.min(1, scrolled / zoneScrollable);
-  const fadeStart = 0.18, fadeEnd = 0.52;
-  const t = Math.max(0, Math.min(1, (progress - fadeStart) / (fadeEnd - fadeStart)));
-  heroBgVid.style.opacity = (0.82 * (1 - t)).toFixed(3);
-}
-window.addEventListener('scroll', updateHeroBgScroll, {passive:true});
 
 // ── CORNER LOGO: show once hero glow logo scrolls out of view ──
 const cornerLogo = document.querySelector('.nav-logo');
