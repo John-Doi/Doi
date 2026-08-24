@@ -479,10 +479,19 @@ footer{
 /* ── DELIVERABLES (Phase 7) ── */
 .del-section{position:relative;z-index:1;padding:0 0 80px;background:var(--surf);border-top:1px solid var(--bd);}
 .del-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--bd);border:1px solid var(--bd);margin:40px 60px 0;}
-.del-card{background:var(--card);padding:36px 40px;opacity:0;transform:translateY(14px);transition:opacity .5s,transform .5s cubic-bezier(.16,1,.3,1);}
+.del-card{background:var(--card);opacity:0;transform:translateY(14px);transition:opacity .5s,transform .5s cubic-bezier(.16,1,.3,1);}
 .del-card.revealed{opacity:1;transform:translateY(0);}
-.del-type{font-family:var(--mono);font-size:11px;color:var(--og);letter-spacing:.2em;margin-bottom:12px;}
-.del-title{font-family:var(--disp);font-size:15px;font-weight:700;color:var(--t1);margin-bottom:10px;letter-spacing:.02em;}
+.del-head{width:100%;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:28px 40px;background:none;border:none;cursor:crosshair;text-align:left;font:inherit;color:inherit;-webkit-appearance:none;appearance:none;}
+.del-head-l{display:flex;flex-direction:column;gap:10px;}
+.del-type{font-family:var(--mono);font-size:11px;color:var(--og);letter-spacing:.2em;}
+.del-title{font-family:var(--disp);font-size:15px;font-weight:700;color:var(--t1);letter-spacing:.02em;}
+.del-toggle{position:relative;width:16px;height:16px;flex-shrink:0;}
+.del-toggle::before,.del-toggle::after{content:'';position:absolute;top:50%;left:50%;background:var(--og);transition:transform .3s ease;}
+.del-toggle::before{width:14px;height:1.5px;transform:translate(-50%,-50%);}
+.del-toggle::after{width:1.5px;height:14px;transform:translate(-50%,-50%);}
+.del-card.open .del-toggle::after{transform:translate(-50%,-50%) rotate(90deg);}
+.del-content{max-height:0;overflow:hidden;padding:0 40px;transition:max-height .4s cubic-bezier(.16,1,.3,1),padding .4s cubic-bezier(.16,1,.3,1);}
+.del-card.open .del-content{max-height:320px;padding:0 40px 32px;}
 .del-body{font-size:14px;color:var(--t2);line-height:1.65;}
 .del-format{margin-top:14px;font-family:var(--mono);font-size:11px;color:var(--t3);letter-spacing:.1em;padding-top:12px;border-top:1px solid var(--bd);}
 
@@ -863,12 +872,12 @@ footer{
     <p class="sec-desc">Every mission ends with production-ready deliverables — not raw footage.</p>
   </div>
   <div class="del-grid">
-    <div class="del-card"><div class="del-type">DEL · 01</div><div class="del-title">ORTHOMOSAIC GEOTIFF</div><p class="del-body">Georeferenced aerial imagery stitched to survey-grade accuracy. Used for site measurement, design overlays, and record documentation.</p><div class="del-format">FORMAT: GeoTIFF · 2CM GSD · WGS84</div></div>
-    <div class="del-card"><div class="del-type">DEL · 02</div><div class="del-title">3D POINT CLOUD</div><p class="del-body">Dense photogrammetric point cloud for earthwork analysis, as-built verification, and BIM integration. Survey-grade vertical accuracy.</p><div class="del-format">FORMAT: LAS / LAZ · ±2CM ACCURACY</div></div>
-    <div class="del-card"><div class="del-type">DEL · 03</div><div class="del-title">THERMAL REPORT</div><p class="del-body">Annotated thermal maps with defect classifications, GPS coordinates, and severity ratings. Ready for maintenance scheduling.</p><div class="del-format">FORMAT: PDF + GEOTIFF · RADIOMETRIC</div></div>
-    <div class="del-card"><div class="del-type">DEL · 04</div><div class="del-title">PROGRESS REPORT PDF</div><p class="del-body">Timestamped site documentation with overlays, issue flags, and completion percentage. PM and legal-grade record keeping.</p><div class="del-format">FORMAT: PDF · TIMESTAMPED · GPS-TAGGED</div></div>
-    <div class="del-card"><div class="del-type">DEL · 05</div><div class="del-title">SURFACE MODEL (DSM/DTM)</div><p class="del-body">Digital surface and terrain models for drainage analysis, cut/fill quantification, and grading plan verification.</p><div class="del-format">FORMAT: GeoTIFF / XYZ · 5CM POSTING</div></div>
-    <div class="del-card"><div class="del-type">DEL · 06</div><div class="del-title">INTELLIGENCE BRIEF</div><p class="del-body">AI-assisted anomaly detection with prioritized action items. Change detection between missions. Decision-ready summary for project leads.</p><div class="del-format">FORMAT: PDF + ANNOTATED IMAGERY</div></div>
+    <div class="del-card"><button class="del-head" type="button" aria-expanded="false" aria-controls="del-content-1"><span class="del-head-l"><span class="del-type">DEL · 01</span><span class="del-title">ORTHOMOSAIC GEOTIFF</span></span><span class="del-toggle" aria-hidden="true"></span></button><div class="del-content" id="del-content-1"><p class="del-body">Georeferenced aerial imagery stitched to survey-grade accuracy. Used for site measurement, design overlays, and record documentation.</p><div class="del-format">FORMAT: GeoTIFF · 2CM GSD · WGS84</div></div></div>
+    <div class="del-card"><button class="del-head" type="button" aria-expanded="false" aria-controls="del-content-2"><span class="del-head-l"><span class="del-type">DEL · 02</span><span class="del-title">3D POINT CLOUD</span></span><span class="del-toggle" aria-hidden="true"></span></button><div class="del-content" id="del-content-2"><p class="del-body">Dense photogrammetric point cloud for earthwork analysis, as-built verification, and BIM integration. Survey-grade vertical accuracy.</p><div class="del-format">FORMAT: LAS / LAZ · ±2CM ACCURACY</div></div></div>
+    <div class="del-card"><button class="del-head" type="button" aria-expanded="false" aria-controls="del-content-3"><span class="del-head-l"><span class="del-type">DEL · 03</span><span class="del-title">THERMAL REPORT</span></span><span class="del-toggle" aria-hidden="true"></span></button><div class="del-content" id="del-content-3"><p class="del-body">Annotated thermal maps with defect classifications, GPS coordinates, and severity ratings. Ready for maintenance scheduling.</p><div class="del-format">FORMAT: PDF + GEOTIFF · RADIOMETRIC</div></div></div>
+    <div class="del-card"><button class="del-head" type="button" aria-expanded="false" aria-controls="del-content-4"><span class="del-head-l"><span class="del-type">DEL · 04</span><span class="del-title">PROGRESS REPORT PDF</span></span><span class="del-toggle" aria-hidden="true"></span></button><div class="del-content" id="del-content-4"><p class="del-body">Timestamped site documentation with overlays, issue flags, and completion percentage. PM and legal-grade record keeping.</p><div class="del-format">FORMAT: PDF · TIMESTAMPED · GPS-TAGGED</div></div></div>
+    <div class="del-card"><button class="del-head" type="button" aria-expanded="false" aria-controls="del-content-5"><span class="del-head-l"><span class="del-type">DEL · 05</span><span class="del-title">SURFACE MODEL (DSM/DTM)</span></span><span class="del-toggle" aria-hidden="true"></span></button><div class="del-content" id="del-content-5"><p class="del-body">Digital surface and terrain models for drainage analysis, cut/fill quantification, and grading plan verification.</p><div class="del-format">FORMAT: GeoTIFF / XYZ · 5CM POSTING</div></div></div>
+    <div class="del-card"><button class="del-head" type="button" aria-expanded="false" aria-controls="del-content-6"><span class="del-head-l"><span class="del-type">DEL · 06</span><span class="del-title">INTELLIGENCE BRIEF</span></span><span class="del-toggle" aria-hidden="true"></span></button><div class="del-content" id="del-content-6"><p class="del-body">AI-assisted anomaly detection with prioritized action items. Change detection between missions. Decision-ready summary for project leads.</p><div class="del-format">FORMAT: PDF + ANNOTATED IMAGERY</div></div></div>
   </div>
 </section>
 
@@ -1191,6 +1200,15 @@ const io = new IntersectionObserver((entries) => {
   });
 }, {threshold: 0.1});
 revealEls.forEach(el => io.observe(el));
+
+// ── DELIVERABLES ACCORDION ──
+document.querySelectorAll('.del-head').forEach(head => {
+  head.addEventListener('click', () => {
+    const card = head.closest('.del-card');
+    const open = card.classList.toggle('open');
+    head.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+});
 
 // ── LIVE TICKER ──
 (function(){
