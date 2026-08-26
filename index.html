@@ -273,6 +273,27 @@ section[id],div[id]{scroll-margin-top:60px;}
 }
 .sec-desc{font-size:17px;color:var(--t2);max-width:520px;margin:14px auto 0;line-height:1.6;}
 
+/* Industries section: tag/title typography swapped per request —
+   "INDUSTRIES SERVED" takes the title look, "BUILT FOR THE FIELD" takes the tag look */
+#industries .sec-tag{
+  font-family:var(--disp)!important;font-size:clamp(26px,3.2vw,52px)!important;font-weight:900;
+  letter-spacing:-.01em;line-height:1.1;text-transform:none;
+  margin-bottom:12px;display:block;
+  background:repeating-linear-gradient(180deg,#e4e4e4 0 4px,rgba(220,220,220,.12) 4px 5px);
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;color:transparent;
+}
+#industries .sec-tag::before,#industries .sec-tag::after{display:none;}
+#industries .sec-title{
+  font-family:var(--mono)!important;font-size:12px!important;font-weight:400;letter-spacing:.22em;
+  line-height:1.4;text-transform:uppercase;margin-bottom:0;
+  display:flex;align-items:center;justify-content:center;gap:16px;
+  background:none;-webkit-background-clip:unset;background-clip:unset;
+  -webkit-text-fill-color:var(--og);color:var(--og);
+}
+#industries .sec-title::before,#industries .sec-title::after{content:'';display:block;width:28px;height:1px;background:var(--og);opacity:.6;}
+#industries .sec-title span{-webkit-text-fill-color:var(--og);color:var(--og);}
+
 /* ── PIPELINE (desktop sticky) ── */
 .pipeline-zone{height:800vh;position:relative;}
 .pipeline-pin{
@@ -732,7 +753,7 @@ footer{
   <div class="sec-head">
     <div class="sec-tag">AERIAL CONSTRUCTION QA</div>
     <h2 class="sec-title">TRACK EVERY POUR. <span>EVERY GRADE.</span></h2>
-    <p class="sec-desc">DØi embeds into your project schedule — weekly flyovers, 24HR deliverables, discrepancy reports before your next site visit.</p>
+    <p class="sec-desc">DØi embeds into your project schedule — weekly flyovers, 48HR deliverables, discrepancy reports before your next site visit.</p>
   </div>
   <div class="qa-inner">
     <video class="qa-bg-video" autoplay muted loop playsinline>
@@ -740,7 +761,7 @@ footer{
     </video>
     <div class="qa-overlay"></div>
     <div class="qa-visual">
-      <div class="qa-stat-badge"><div class="qa-stat-num">24HR</div><div class="qa-stat-label">REPORT TURNAROUND</div></div>
+      <div class="qa-stat-badge"><div class="qa-stat-num">48HR</div><div class="qa-stat-label">REPORT TURNAROUND</div></div>
     </div>
     <div class="qa-content">
       <div class="qa-title">AERIAL QA THAT CATCHES PROBLEMS <span>BEFORE THEY COST YOU</span></div>
