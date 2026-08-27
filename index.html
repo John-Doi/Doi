@@ -273,6 +273,48 @@ section[id],div[id]{scroll-margin-top:60px;}
 }
 .sec-desc{font-size:17px;color:var(--t2);max-width:520px;margin:14px auto 0;line-height:1.6;}
 
+/* Industries section: tag/title typography swapped per request —
+   "INDUSTRIES SERVED" takes the title look, "BUILT FOR THE FIELD" takes the tag look */
+#industries .sec-tag{
+  font-family:var(--disp)!important;font-size:clamp(26px,3.2vw,52px)!important;font-weight:900;
+  letter-spacing:-.01em;line-height:1.1;text-transform:none;
+  margin-bottom:12px;display:block;
+  background:repeating-linear-gradient(180deg,#e4e4e4 0 4px,rgba(220,220,220,.12) 4px 5px);
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;color:transparent;
+}
+#industries .sec-tag::before,#industries .sec-tag::after{display:none;}
+#industries .sec-title{
+  font-family:var(--mono)!important;font-size:12px!important;font-weight:400;letter-spacing:.22em;
+  line-height:1.4;text-transform:uppercase;margin-bottom:0;
+  display:flex;align-items:center;justify-content:center;gap:16px;
+  background:none;-webkit-background-clip:unset;background-clip:unset;
+  -webkit-text-fill-color:var(--og);color:var(--og);
+}
+#industries .sec-title::before,#industries .sec-title::after{content:'';display:block;width:28px;height:1px;background:var(--og);opacity:.6;}
+#industries .sec-title span{-webkit-text-fill-color:var(--og);color:var(--og);}
+
+/* Construction QA section: tag/title typography swapped per request —
+   "AERIAL CONSTRUCTION QA" takes the title look, "TRACK EVERY POUR. EVERY GRADE." takes the tag look */
+#qa .sec-tag{
+  font-family:var(--disp)!important;font-size:clamp(26px,3.2vw,52px)!important;font-weight:900;
+  letter-spacing:-.01em;line-height:1.1;text-transform:none;
+  margin-bottom:12px;display:block;
+  background:repeating-linear-gradient(180deg,#e4e4e4 0 4px,rgba(220,220,220,.12) 4px 5px);
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;color:transparent;
+}
+#qa .sec-tag::before,#qa .sec-tag::after{display:none;}
+#qa .sec-title{
+  font-family:var(--mono)!important;font-size:12px!important;font-weight:400;letter-spacing:.22em;
+  line-height:1.4;text-transform:uppercase;margin-bottom:0;
+  display:flex;align-items:center;justify-content:center;gap:16px;
+  background:none;-webkit-background-clip:unset;background-clip:unset;
+  -webkit-text-fill-color:var(--og);color:var(--og);
+}
+#qa .sec-title::before,#qa .sec-title::after{content:'';display:block;width:28px;height:1px;background:var(--og);opacity:.6;}
+#qa .sec-title span{-webkit-text-fill-color:var(--og);color:var(--og);}
+
 /* ── PIPELINE (desktop sticky) ── */
 .pipeline-zone{height:800vh;position:relative;}
 .pipeline-pin{
@@ -336,19 +378,28 @@ section[id],div[id]{scroll-margin-top:60px;}
   gap:1px;background:var(--bd);border:1px solid var(--bd);margin:40px 60px 0;
 }
 .why-card{
-  background:var(--card);padding:40px;display:flex;flex-direction:column;gap:14px;
+  background:var(--card);position:relative;overflow:hidden;
   opacity:0;transform:translateY(18px);
   transition:opacity .5s,transform .5s cubic-bezier(.16,1,.3,1),background .3s;
 }
 .why-card.revealed{opacity:1;transform:translateY(0);}
 .why-card:hover{background:var(--card2);}
+.why-head{width:100%;display:flex;align-items:center;gap:16px;padding:40px;background:none;border:none;cursor:crosshair;text-align:left;font:inherit;color:inherit;-webkit-appearance:none;appearance:none;}
+.why-head-l{display:flex;flex-direction:column;gap:10px;flex:1;min-width:0;}
 .why-icon{
-  width:56px;height:56px;border:1px solid var(--bd2);
+  width:56px;height:56px;border:1px solid var(--bd2);flex-shrink:0;
   display:flex;align-items:center;justify-content:center;color:var(--og);
 }
 .why-icon svg{width:28px;height:28px;}
 .why-code{font-family:var(--mono);font-size:12px;color:var(--og);letter-spacing:.15em;}
 .why-title{font-family:var(--disp);font-size:16px;font-weight:700;color:var(--t1);letter-spacing:.03em;}
+.why-toggle{position:relative;width:16px;height:16px;flex-shrink:0;}
+.why-toggle::before,.why-toggle::after{content:'';position:absolute;top:50%;left:50%;background:var(--og);transition:transform .3s ease;}
+.why-toggle::before{width:14px;height:1.5px;transform:translate(-50%,-50%);}
+.why-toggle::after{width:1.5px;height:14px;transform:translate(-50%,-50%);}
+.why-card.open .why-toggle::after{transform:translate(-50%,-50%) rotate(90deg);}
+.why-content{max-height:0;overflow:hidden;padding:0 40px;transition:max-height .4s cubic-bezier(.16,1,.3,1),padding .4s cubic-bezier(.16,1,.3,1);}
+.why-card.open .why-content{max-height:220px;padding:0 40px 40px;}
 .why-body{font-size:15px;color:var(--t2);line-height:1.65;}
 
 /* ── SERVICES ── */
@@ -358,7 +409,7 @@ section[id],div[id]{scroll-margin-top:60px;}
   gap:1px;background:var(--bd);border:1px solid var(--bd);margin:40px 60px 0;
 }
 .svc-card{
-  background:var(--card);padding:44px;position:relative;overflow:hidden;
+  background:var(--card);position:relative;overflow:hidden;
   opacity:0;transform:translateY(18px);
   transition:opacity .5s,transform .5s cubic-bezier(.16,1,.3,1);
 }
@@ -368,8 +419,17 @@ section[id],div[id]{scroll-margin-top:60px;}
   background:linear-gradient(90deg,var(--og),transparent);opacity:0;transition:opacity .3s;
 }
 .svc-card:hover::before{opacity:1;}
-.svc-div{font-family:var(--mono);font-size:12px;color:var(--og);letter-spacing:.2em;margin-bottom:20px;}
-.svc-title{font-family:var(--disp);font-size:17px;font-weight:700;color:var(--t1);margin-bottom:12px;letter-spacing:.02em;}
+.svc-head{width:100%;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:44px;background:none;border:none;cursor:crosshair;text-align:left;font:inherit;color:inherit;position:relative;z-index:1;-webkit-appearance:none;appearance:none;}
+.svc-head-l{display:flex;flex-direction:column;gap:14px;}
+.svc-div{font-family:var(--mono);font-size:12px;color:var(--og);letter-spacing:.2em;}
+.svc-title{font-family:var(--disp);font-size:17px;font-weight:700;color:var(--t1);letter-spacing:.02em;}
+.svc-toggle{position:relative;width:18px;height:18px;flex-shrink:0;}
+.svc-toggle::before,.svc-toggle::after{content:'';position:absolute;top:50%;left:50%;background:var(--og);transition:transform .3s ease;}
+.svc-toggle::before{width:16px;height:1.5px;transform:translate(-50%,-50%);}
+.svc-toggle::after{width:1.5px;height:16px;transform:translate(-50%,-50%);}
+.svc-card.open .svc-toggle::after{transform:translate(-50%,-50%) rotate(90deg);}
+.svc-content{max-height:0;overflow:hidden;padding:0 44px;position:relative;z-index:1;transition:max-height .4s cubic-bezier(.16,1,.3,1),padding .4s cubic-bezier(.16,1,.3,1);}
+.svc-card.open .svc-content{max-height:260px;padding:0 44px 44px;}
 .svc-body{font-size:15px;color:var(--t2);line-height:1.65;}
 .svc-wm{
   position:absolute;bottom:-16px;right:-8px;font-family:var(--disp);
@@ -479,10 +539,19 @@ footer{
 /* ── DELIVERABLES (Phase 7) ── */
 .del-section{position:relative;z-index:1;padding:0 0 80px;background:var(--surf);border-top:1px solid var(--bd);}
 .del-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--bd);border:1px solid var(--bd);margin:40px 60px 0;}
-.del-card{background:var(--card);padding:36px 40px;opacity:0;transform:translateY(14px);transition:opacity .5s,transform .5s cubic-bezier(.16,1,.3,1);}
+.del-card{background:var(--card);opacity:0;transform:translateY(14px);transition:opacity .5s,transform .5s cubic-bezier(.16,1,.3,1);}
 .del-card.revealed{opacity:1;transform:translateY(0);}
-.del-type{font-family:var(--mono);font-size:11px;color:var(--og);letter-spacing:.2em;margin-bottom:12px;}
-.del-title{font-family:var(--disp);font-size:15px;font-weight:700;color:var(--t1);margin-bottom:10px;letter-spacing:.02em;}
+.del-head{width:100%;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:28px 40px;background:none;border:none;cursor:crosshair;text-align:left;font:inherit;color:inherit;-webkit-appearance:none;appearance:none;}
+.del-head-l{display:flex;flex-direction:column;gap:10px;}
+.del-type{font-family:var(--mono);font-size:11px;color:var(--og);letter-spacing:.2em;}
+.del-title{font-family:var(--disp);font-size:15px;font-weight:700;color:var(--t1);letter-spacing:.02em;}
+.del-toggle{position:relative;width:16px;height:16px;flex-shrink:0;}
+.del-toggle::before,.del-toggle::after{content:'';position:absolute;top:50%;left:50%;background:var(--og);transition:transform .3s ease;}
+.del-toggle::before{width:14px;height:1.5px;transform:translate(-50%,-50%);}
+.del-toggle::after{width:1.5px;height:14px;transform:translate(-50%,-50%);}
+.del-card.open .del-toggle::after{transform:translate(-50%,-50%) rotate(90deg);}
+.del-content{max-height:0;overflow:hidden;padding:0 40px;transition:max-height .4s cubic-bezier(.16,1,.3,1),padding .4s cubic-bezier(.16,1,.3,1);}
+.del-card.open .del-content{max-height:320px;padding:0 40px 32px;}
 .del-body{font-size:14px;color:var(--t2);line-height:1.65;}
 .del-format{margin-top:14px;font-family:var(--mono);font-size:11px;color:var(--t3);letter-spacing:.1em;padding-top:12px;border-top:1px solid var(--bd);}
 
@@ -633,7 +702,7 @@ footer{
 <!-- NAV -->
 <nav class="nav">
   <a class="nav-logo" href="#hero" style="display:flex;align-items:center;padding:0;">
-    <img src="DOi_Cornerlogo.jpg" alt="DØi Labs" style="height:80px;width:auto;display:block;">
+    <img src="DOiLabsLogo_nav.png" alt="DØi Labs" style="height:80px;width:auto;display:block;">
   </a>
   <!-- PHASE 1 · canonical IA. Future entries activate with their phases:
        INDUSTRIES (#industries · Phase 3) · QA (#qa · Phase 4) · DELIVERABLES (#deliverables · Phase 7) -->
@@ -652,8 +721,8 @@ footer{
   <div class="hero-pin">
     <div class="hero-video">
       <video class="hero-bg-video" autoplay muted playsinline>
+        <source src="Dual_MatriceT4_3.mp4" type="video/mp4">
         <source src="Dual_MatriceT4_3.mov" type="video/quicktime">
-        <source src="Dual_MatriceT4_3.mov" type="video/mp4">
       </video>
       <div class="hero-glow-bg">
         <div class="hero-scanline"></div>
@@ -705,7 +774,7 @@ footer{
   <div class="sec-head">
     <div class="sec-tag">AERIAL CONSTRUCTION QA</div>
     <h2 class="sec-title">TRACK EVERY POUR. <span>EVERY GRADE.</span></h2>
-    <p class="sec-desc">DØi embeds into your project schedule — weekly flyovers, 24HR deliverables, discrepancy reports before your next site visit.</p>
+    <p class="sec-desc">DØi embeds into your project schedule — weekly flyovers, 48HR deliverables, discrepancy reports before your next site visit.</p>
   </div>
   <div class="qa-inner">
     <video class="qa-bg-video" autoplay muted loop playsinline>
@@ -713,7 +782,7 @@ footer{
     </video>
     <div class="qa-overlay"></div>
     <div class="qa-visual">
-      <div class="qa-stat-badge"><div class="qa-stat-num">24HR</div><div class="qa-stat-label">REPORT TURNAROUND</div></div>
+      <div class="qa-stat-badge"><div class="qa-stat-num">48HR</div><div class="qa-stat-label">REPORT TURNAROUND</div></div>
     </div>
     <div class="qa-content">
       <div class="qa-title">AERIAL QA THAT CATCHES PROBLEMS <span>BEFORE THEY COST YOU</span></div>
@@ -740,12 +809,12 @@ footer{
     <p class="sec-desc">Six specialized divisions. One integrated platform. Total aerial intelligence coverage.</p>
   </div>
   <div class="svc-grid">
-    <div class="svc-card"><div class="svc-div">DIV · RCN</div><div class="svc-title">AERIAL RECONNAISSANCE</div><div class="svc-body">Wide-area surveillance and site assessment. RGB + thermal + wide-angle simultaneous capture. Real-time downlink for live situational awareness.</div><div class="svc-wm">RCN</div></div>
-    <div class="svc-card"><div class="svc-div">DIV · OPS</div><div class="svc-title">CONSTRUCTION OPERATIONS</div><div class="svc-body">Progress documentation, volumetric measurement, cut/fill analysis, and as-built surveys. Integrate directly with BIM workflows and project management platforms.</div><div class="svc-wm">OPS</div></div>
-    <div class="svc-card"><div class="svc-div">DIV · SYN</div><div class="svc-title">PRECISION MAPPING</div><div class="svc-body">Survey-grade topographic mapping with RTK/PPK processing. Sub-2cm accuracy. Deliverables include GeoTIFF orthomosaics, DSM/DTM, and LAS point clouds.</div><div class="svc-wm">SYN</div></div>
-    <div class="svc-card"><div class="svc-div">DIV · THM</div><div class="svc-title">THERMAL INSPECTION</div><div class="svc-body">Solar panel efficiency analysis, electrical inspection, HVAC assessment, roof moisture mapping, and wildfire perimeter monitoring using calibrated thermal sensors.</div><div class="svc-wm">THM</div></div>
-    <div class="svc-card"><div class="svc-div">DIV · XLAB</div><div class="svc-title">INTELLIGENCE ANALYSIS</div><div class="svc-body">AI-enhanced object detection, change analysis, anomaly identification, and predictive modeling. Turn raw aerial data into decision-ready intelligence reports.</div><div class="svc-wm">XLAB</div></div>
-    <div class="svc-card"><div class="svc-div">DIV · FAB</div><div class="svc-title">CUSTOM MISSION DESIGN</div><div class="svc-body">Bespoke operational planning for complex, multi-objective missions. Specialized payload integration, extended BVLOS coordination, and custom data pipeline development.</div><div class="svc-wm">FAB</div></div>
+    <div class="svc-card"><button class="svc-head" type="button" aria-expanded="false" aria-controls="svc-content-1"><span class="svc-head-l"><span class="svc-div">DIV · RCN</span><span class="svc-title">AERIAL RECONNAISSANCE</span></span><span class="svc-toggle" aria-hidden="true"></span></button><div class="svc-content" id="svc-content-1"><div class="svc-body">Wide-area surveillance and site assessment. RGB + thermal + wide-angle simultaneous capture. Real-time downlink for live situational awareness.</div></div><div class="svc-wm">RCN</div></div>
+    <div class="svc-card"><button class="svc-head" type="button" aria-expanded="false" aria-controls="svc-content-2"><span class="svc-head-l"><span class="svc-div">DIV · OPS</span><span class="svc-title">CONSTRUCTION OPERATIONS</span></span><span class="svc-toggle" aria-hidden="true"></span></button><div class="svc-content" id="svc-content-2"><div class="svc-body">Progress documentation, volumetric measurement, cut/fill analysis, and as-built surveys. Integrate directly with BIM workflows and project management platforms.</div></div><div class="svc-wm">OPS</div></div>
+    <div class="svc-card"><button class="svc-head" type="button" aria-expanded="false" aria-controls="svc-content-3"><span class="svc-head-l"><span class="svc-div">DIV · SYN</span><span class="svc-title">PRECISION MAPPING</span></span><span class="svc-toggle" aria-hidden="true"></span></button><div class="svc-content" id="svc-content-3"><div class="svc-body">Survey-grade topographic mapping with RTK/PPK processing. Sub-2cm accuracy. Deliverables include GeoTIFF orthomosaics, DSM/DTM, and LAS point clouds.</div></div><div class="svc-wm">SYN</div></div>
+    <div class="svc-card"><button class="svc-head" type="button" aria-expanded="false" aria-controls="svc-content-4"><span class="svc-head-l"><span class="svc-div">DIV · THM</span><span class="svc-title">THERMAL INSPECTION</span></span><span class="svc-toggle" aria-hidden="true"></span></button><div class="svc-content" id="svc-content-4"><div class="svc-body">Solar panel efficiency analysis, electrical inspection, HVAC assessment, roof moisture mapping, and wildfire perimeter monitoring using calibrated thermal sensors.</div></div><div class="svc-wm">THM</div></div>
+    <div class="svc-card"><button class="svc-head" type="button" aria-expanded="false" aria-controls="svc-content-5"><span class="svc-head-l"><span class="svc-div">DIV · XLAB</span><span class="svc-title">INTELLIGENCE ANALYSIS</span></span><span class="svc-toggle" aria-hidden="true"></span></button><div class="svc-content" id="svc-content-5"><div class="svc-body">AI-enhanced object detection, change analysis, anomaly identification, and predictive modeling. Turn raw aerial data into decision-ready intelligence reports.</div></div><div class="svc-wm">XLAB</div></div>
+    <div class="svc-card"><button class="svc-head" type="button" aria-expanded="false" aria-controls="svc-content-6"><span class="svc-head-l"><span class="svc-div">DIV · FAB</span><span class="svc-title">CUSTOM MISSION DESIGN</span></span><span class="svc-toggle" aria-hidden="true"></span></button><div class="svc-content" id="svc-content-6"><div class="svc-body">Bespoke operational planning for complex, multi-objective missions. Specialized payload integration, extended BVLOS coordination, and custom data pipeline development.</div></div><div class="svc-wm">FAB</div></div>
   </div>
 </section>
 
@@ -863,12 +932,12 @@ footer{
     <p class="sec-desc">Every mission ends with production-ready deliverables — not raw footage.</p>
   </div>
   <div class="del-grid">
-    <div class="del-card"><div class="del-type">DEL · 01</div><div class="del-title">ORTHOMOSAIC GEOTIFF</div><p class="del-body">Georeferenced aerial imagery stitched to survey-grade accuracy. Used for site measurement, design overlays, and record documentation.</p><div class="del-format">FORMAT: GeoTIFF · 2CM GSD · WGS84</div></div>
-    <div class="del-card"><div class="del-type">DEL · 02</div><div class="del-title">3D POINT CLOUD</div><p class="del-body">Dense photogrammetric point cloud for earthwork analysis, as-built verification, and BIM integration. Survey-grade vertical accuracy.</p><div class="del-format">FORMAT: LAS / LAZ · ±2CM ACCURACY</div></div>
-    <div class="del-card"><div class="del-type">DEL · 03</div><div class="del-title">THERMAL REPORT</div><p class="del-body">Annotated thermal maps with defect classifications, GPS coordinates, and severity ratings. Ready for maintenance scheduling.</p><div class="del-format">FORMAT: PDF + GEOTIFF · RADIOMETRIC</div></div>
-    <div class="del-card"><div class="del-type">DEL · 04</div><div class="del-title">PROGRESS REPORT PDF</div><p class="del-body">Timestamped site documentation with overlays, issue flags, and completion percentage. PM and legal-grade record keeping.</p><div class="del-format">FORMAT: PDF · TIMESTAMPED · GPS-TAGGED</div></div>
-    <div class="del-card"><div class="del-type">DEL · 05</div><div class="del-title">SURFACE MODEL (DSM/DTM)</div><p class="del-body">Digital surface and terrain models for drainage analysis, cut/fill quantification, and grading plan verification.</p><div class="del-format">FORMAT: GeoTIFF / XYZ · 5CM POSTING</div></div>
-    <div class="del-card"><div class="del-type">DEL · 06</div><div class="del-title">INTELLIGENCE BRIEF</div><p class="del-body">AI-assisted anomaly detection with prioritized action items. Change detection between missions. Decision-ready summary for project leads.</p><div class="del-format">FORMAT: PDF + ANNOTATED IMAGERY</div></div>
+    <div class="del-card"><button class="del-head" type="button" aria-expanded="false" aria-controls="del-content-1"><span class="del-head-l"><span class="del-type">DEL · 01</span><span class="del-title">ORTHOMOSAIC GEOTIFF</span></span><span class="del-toggle" aria-hidden="true"></span></button><div class="del-content" id="del-content-1"><p class="del-body">Georeferenced aerial imagery stitched to survey-grade accuracy. Used for site measurement, design overlays, and record documentation.</p><div class="del-format">FORMAT: GeoTIFF · 2CM GSD · WGS84</div></div></div>
+    <div class="del-card"><button class="del-head" type="button" aria-expanded="false" aria-controls="del-content-2"><span class="del-head-l"><span class="del-type">DEL · 02</span><span class="del-title">3D POINT CLOUD</span></span><span class="del-toggle" aria-hidden="true"></span></button><div class="del-content" id="del-content-2"><p class="del-body">Dense photogrammetric point cloud for earthwork analysis, as-built verification, and BIM integration. Survey-grade vertical accuracy.</p><div class="del-format">FORMAT: LAS / LAZ · ±2CM ACCURACY</div></div></div>
+    <div class="del-card"><button class="del-head" type="button" aria-expanded="false" aria-controls="del-content-3"><span class="del-head-l"><span class="del-type">DEL · 03</span><span class="del-title">THERMAL REPORT</span></span><span class="del-toggle" aria-hidden="true"></span></button><div class="del-content" id="del-content-3"><p class="del-body">Annotated thermal maps with defect classifications, GPS coordinates, and severity ratings. Ready for maintenance scheduling.</p><div class="del-format">FORMAT: PDF + GEOTIFF · RADIOMETRIC</div></div></div>
+    <div class="del-card"><button class="del-head" type="button" aria-expanded="false" aria-controls="del-content-4"><span class="del-head-l"><span class="del-type">DEL · 04</span><span class="del-title">PROGRESS REPORT PDF</span></span><span class="del-toggle" aria-hidden="true"></span></button><div class="del-content" id="del-content-4"><p class="del-body">Timestamped site documentation with overlays, issue flags, and completion percentage. PM and legal-grade record keeping.</p><div class="del-format">FORMAT: PDF · TIMESTAMPED · GPS-TAGGED</div></div></div>
+    <div class="del-card"><button class="del-head" type="button" aria-expanded="false" aria-controls="del-content-5"><span class="del-head-l"><span class="del-type">DEL · 05</span><span class="del-title">SURFACE MODEL (DSM/DTM)</span></span><span class="del-toggle" aria-hidden="true"></span></button><div class="del-content" id="del-content-5"><p class="del-body">Digital surface and terrain models for drainage analysis, cut/fill quantification, and grading plan verification.</p><div class="del-format">FORMAT: GeoTIFF / XYZ · 5CM POSTING</div></div></div>
+    <div class="del-card"><button class="del-head" type="button" aria-expanded="false" aria-controls="del-content-6"><span class="del-head-l"><span class="del-type">DEL · 06</span><span class="del-title">INTELLIGENCE BRIEF</span></span><span class="del-toggle" aria-hidden="true"></span></button><div class="del-content" id="del-content-6"><p class="del-body">AI-assisted anomaly detection with prioritized action items. Change detection between missions. Decision-ready summary for project leads.</p><div class="del-format">FORMAT: PDF + ANNOTATED IMAGERY</div></div></div>
   </div>
 </section>
 
@@ -878,46 +947,40 @@ footer{
   <div style="position:relative;">
     <div class="sec-head" style="text-align:center;display:flex;flex-direction:column;align-items:center;">
       <div class="sec-tag">CAPABILITY OVERVIEW</div>
-      <h2 class="sec-title" style="text-align:center;display:block;width:100%;transform:translateX(30px);">WHY <img src="DOi.jpeg" alt="DØi" style="height:1.85em;width:auto;vertical-align:middle;display:inline-block;margin:0 2px;"> LABS</h2>
+      <h2 class="sec-title" style="text-align:center;display:block;width:100%;transform:translateX(30px);">WHY <img src="DOiLabs_WordmarkOnly.png" alt="DØi" style="height:1.85em;width:auto;vertical-align:middle;display:inline-block;margin:0 2px;"> LABS</h2>
       <p class="sec-desc">Precision tools, trained operators, and battle-tested workflows. This is the standard we operate at.</p>
     </div>
     <div class="why-grid">
-      <div class="why-card">
+      <div class="why-card"><button class="why-head" type="button" aria-expanded="false" aria-controls="why-content-1">
         <div class="why-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
-        <div class="why-code">CAP-01 · THERMAL</div>
-        <div class="why-title">DUAL THERMAL + RGB</div>
-        <div class="why-body">The DJI Matrice 4T delivers simultaneous thermal and RGB capture. Detect heat anomalies, assess infrastructure, and identify targets invisible to standard optics.</div>
-      </div>
-      <div class="why-card">
+        <span class="why-head-l"><span class="why-code">CAP-01 · THERMAL</span><span class="why-title">DUAL THERMAL + RGB</span></span>
+        <span class="why-toggle" aria-hidden="true"></span>
+      </button><div class="why-content" id="why-content-1"><div class="why-body">The DJI Matrice 4T delivers simultaneous thermal and RGB capture. Detect heat anomalies, assess infrastructure, and identify targets invisible to standard optics.</div></div></div>
+      <div class="why-card"><button class="why-head" type="button" aria-expanded="false" aria-controls="why-content-2">
         <div class="why-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
-        <div class="why-code">CAP-02 · MAPPING</div>
-        <div class="why-title">CENTIMETER PRECISION</div>
-        <div class="why-body">Sub-2cm accuracy mapping with RTK positioning. Generate survey-grade point clouds, orthomosaics, and 3D models for engineering and asset management.</div>
-      </div>
-      <div class="why-card">
+        <span class="why-head-l"><span class="why-code">CAP-02 · MAPPING</span><span class="why-title">CENTIMETER PRECISION</span></span>
+        <span class="why-toggle" aria-hidden="true"></span>
+      </button><div class="why-content" id="why-content-2"><div class="why-body">Sub-2cm accuracy mapping with RTK positioning. Generate survey-grade point clouds, orthomosaics, and 3D models for engineering and asset management.</div></div></div>
+      <div class="why-card"><button class="why-head" type="button" aria-expanded="false" aria-controls="why-content-3">
         <div class="why-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></div>
-        <div class="why-code">CAP-03 · SPEED</div>
-        <div class="why-title">48-HOUR TURNAROUND</div>
-        <div class="why-body">From wheels-up to deliverable in 48 hours. Our streamlined processing pipeline ensures you have actionable data while the window is still open.</div>
-      </div>
-      <div class="why-card">
+        <span class="why-head-l"><span class="why-code">CAP-03 · SPEED</span><span class="why-title">48-HOUR TURNAROUND</span></span>
+        <span class="why-toggle" aria-hidden="true"></span>
+      </button><div class="why-content" id="why-content-3"><div class="why-body">From wheels-up to deliverable in 48 hours. Our streamlined processing pipeline ensures you have actionable data while the window is still open.</div></div></div>
+      <div class="why-card"><button class="why-head" type="button" aria-expanded="false" aria-controls="why-content-4">
         <div class="why-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-        <div class="why-code">CAP-04 · COMPLIANCE</div>
-        <div class="why-title">FAA PART 107 CERTIFIED</div>
-        <div class="why-body">Fully licensed and insured with Night Ops authorization (107.29). We handle all airspace coordination, LAANC approvals, and regulatory compliance.</div>
-      </div>
-      <div class="why-card">
+        <span class="why-head-l"><span class="why-code">CAP-04 · COMPLIANCE</span><span class="why-title">FAA PART 107 CERTIFIED</span></span>
+        <span class="why-toggle" aria-hidden="true"></span>
+      </button><div class="why-content" id="why-content-4"><div class="why-body">Fully licensed and insured with Night Ops authorization (107.29). We handle all airspace coordination, LAANC approvals, and regulatory compliance.</div></div></div>
+      <div class="why-card"><button class="why-head" type="button" aria-expanded="false" aria-controls="why-content-5">
         <div class="why-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
-        <div class="why-code">CAP-05 · INTEL</div>
-        <div class="why-title">AI-ASSISTED ANALYSIS</div>
-        <div class="why-body">Machine learning-enhanced object detection, anomaly flagging, and change detection. We don't just collect data — we extract intelligence from it.</div>
-      </div>
-      <div class="why-card">
+        <span class="why-head-l"><span class="why-code">CAP-05 · INTEL</span><span class="why-title">AI-ASSISTED ANALYSIS</span></span>
+        <span class="why-toggle" aria-hidden="true"></span>
+      </button><div class="why-content" id="why-content-5"><div class="why-body">Machine learning-enhanced object detection, anomaly flagging, and change detection. We don't just collect data — we extract intelligence from it.</div></div></div>
+      <div class="why-card"><button class="why-head" type="button" aria-expanded="false" aria-controls="why-content-6">
         <div class="why-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
-        <div class="why-code">CAP-06 · RAPID</div>
-        <div class="why-title">RAPID DEPLOYMENT</div>
-        <div class="why-body">72-hour notice deployment for time-sensitive operations. Emergency response, insurance assessment, wildfire monitoring, and urgent infrastructure inspection.</div>
-      </div>
+        <span class="why-head-l"><span class="why-code">CAP-06 · RAPID</span><span class="why-title">RAPID DEPLOYMENT</span></span>
+        <span class="why-toggle" aria-hidden="true"></span>
+      </button><div class="why-content" id="why-content-6"><div class="why-body">72-hour notice deployment for time-sensitive operations. Emergency response, insurance assessment, wildfire monitoring, and urgent infrastructure inspection.</div></div></div>
     </div>
     <!-- Inline trust badges (Phase 8 — replaces standalone trust section) -->
     <div class="trust-inline">
@@ -1096,7 +1159,6 @@ function updateCornerLogo(){
     cornerLogo.classList.remove('visible');
   }
 }
-window.addEventListener('scroll', updateCornerLogo, {passive:true});
 updateCornerLogo();
 
 // ── PHASE 1 · MOTION/PERF SCAFFOLD ──
@@ -1125,7 +1187,6 @@ function updatePipeline() {
   plDots[step].classList.add('active');
   curStep = step;
 }
-window.addEventListener('scroll', updatePipeline, {passive:true});
 updatePipeline();
 
 // ── PHASE 1 · SCROLL PROGRESS BAR ──
@@ -1136,7 +1197,6 @@ function updateProgress(){
   const pct = max > 0 ? (h.scrollTop / max) * 100 : 0;
   progressBar.style.width = pct.toFixed(2) + '%';
 }
-window.addEventListener('scroll', updateProgress, {passive:true});
 window.addEventListener('resize', updateProgress, {passive:true});
 updateProgress();
 
@@ -1177,8 +1237,25 @@ function updateRail(){
   });
   railDots.forEach((d, i) => d.dot.classList.toggle('active', i === activeIdx));
 }
-window.addEventListener('scroll', updateRail, {passive:true});
 updateRail();
+
+// ── SCROLL DISPATCH: batch all scroll-driven updates into one rAF per frame ──
+// (previously 4 separate unthrottled 'scroll' listeners each forced their own
+// layout read/write, causing jank; this runs them all once per frame instead)
+let scrollTicking = false;
+function onScrollFrame(){
+  updateCornerLogo();
+  updatePipeline();
+  updateProgress();
+  updateRail();
+  scrollTicking = false;
+}
+window.addEventListener('scroll', () => {
+  if (!scrollTicking) {
+    scrollTicking = true;
+    requestAnimationFrame(onScrollFrame);
+  }
+}, {passive:true});
 
 // ── INTERSECTION REVEALS ──
 const revealEls = document.querySelectorAll('.why-card, .svc-card, .trust-item, .proof-item, .ind-card, .del-card');
@@ -1191,6 +1268,33 @@ const io = new IntersectionObserver((entries) => {
   });
 }, {threshold: 0.1});
 revealEls.forEach(el => io.observe(el));
+
+// ── DELIVERABLES ACCORDION ──
+document.querySelectorAll('.del-head').forEach(head => {
+  head.addEventListener('click', () => {
+    const card = head.closest('.del-card');
+    const open = card.classList.toggle('open');
+    head.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+});
+
+// ── CAPABILITIES ACCORDION ──
+document.querySelectorAll('.svc-head').forEach(head => {
+  head.addEventListener('click', () => {
+    const card = head.closest('.svc-card');
+    const open = card.classList.toggle('open');
+    head.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+});
+
+// ── CAPABILITY OVERVIEW (WHY DØi) ACCORDION ──
+document.querySelectorAll('.why-head').forEach(head => {
+  head.addEventListener('click', () => {
+    const card = head.closest('.why-card');
+    const open = card.classList.toggle('open');
+    head.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+});
 
 // ── LIVE TICKER ──
 (function(){
