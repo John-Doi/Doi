@@ -294,6 +294,27 @@ section[id],div[id]{scroll-margin-top:60px;}
 #industries .sec-title::before,#industries .sec-title::after{content:'';display:block;width:28px;height:1px;background:var(--og);opacity:.6;}
 #industries .sec-title span{-webkit-text-fill-color:var(--og);color:var(--og);}
 
+/* Construction QA section: tag/title typography swapped per request —
+   "AERIAL CONSTRUCTION QA" takes the title look, "TRACK EVERY POUR. EVERY GRADE." takes the tag look */
+#qa .sec-tag{
+  font-family:var(--disp)!important;font-size:clamp(26px,3.2vw,52px)!important;font-weight:900;
+  letter-spacing:-.01em;line-height:1.1;text-transform:none;
+  margin-bottom:12px;display:block;
+  background:repeating-linear-gradient(180deg,#e4e4e4 0 4px,rgba(220,220,220,.12) 4px 5px);
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;color:transparent;
+}
+#qa .sec-tag::before,#qa .sec-tag::after{display:none;}
+#qa .sec-title{
+  font-family:var(--mono)!important;font-size:12px!important;font-weight:400;letter-spacing:.22em;
+  line-height:1.4;text-transform:uppercase;margin-bottom:0;
+  display:flex;align-items:center;justify-content:center;gap:16px;
+  background:none;-webkit-background-clip:unset;background-clip:unset;
+  -webkit-text-fill-color:var(--og);color:var(--og);
+}
+#qa .sec-title::before,#qa .sec-title::after{content:'';display:block;width:28px;height:1px;background:var(--og);opacity:.6;}
+#qa .sec-title span{-webkit-text-fill-color:var(--og);color:var(--og);}
+
 /* ── PIPELINE (desktop sticky) ── */
 .pipeline-zone{height:800vh;position:relative;}
 .pipeline-pin{
