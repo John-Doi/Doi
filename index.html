@@ -400,6 +400,7 @@ section[id],div[id]{scroll-margin-top:60px;}
 /* ── WHY CARDS ── */
 .why-section{position:relative;z-index:1;padding:0 0 80px;background:var(--bg);border-top:1px solid var(--bd);}
 .why-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.06;pointer-events:none;}
+.why-title-wrap{text-align:center;display:block;width:100%;transform:translateX(30px);}
 .why-grid{
   position:relative;display:grid;grid-template-columns:repeat(3,1fr);
   gap:1px;background:var(--bd);border:1px solid var(--bd);margin:40px 60px 0;
@@ -598,6 +599,7 @@ footer{
   .pipeline-zone,.pipeline-pin{display:none;}
   .mob-pipeline{display:block;}
   .why-grid,.svc-grid{grid-template-columns:1fr;margin:40px 20px 0;}
+  .why-title-wrap{display:flex;flex-direction:column;align-items:center;gap:8px;transform:none;}
   .trust-section{padding:0 20px 60px;}
   .trust-grid{grid-template-columns:repeat(3,1fr);}
   .form-section{padding:60px 20px;}
@@ -974,7 +976,7 @@ footer{
   <div style="position:relative;">
     <div class="sec-head" style="text-align:center;display:flex;flex-direction:column;align-items:center;">
       <div class="sec-tag">CAPABILITY OVERVIEW</div>
-      <h2 class="sec-title" style="text-align:center;display:block;width:100%;transform:translateX(30px);">WHY <img src="DOiLabs_WordmarkOnly.png" alt="DØi" style="height:1.85em;width:auto;vertical-align:middle;display:inline-block;margin:0 2px;"> LABS</h2>
+      <h2 class="sec-title why-title-wrap">WHY <img src="DOiLabs_WordmarkOnly.png" alt="DØi" style="height:1.85em;width:auto;vertical-align:middle;display:inline-block;margin:0 2px;"> LABS</h2>
       <p class="sec-desc">Precision tools, trained operators, and battle-tested workflows. This is the standard we operate at.</p>
     </div>
     <div class="why-grid">
