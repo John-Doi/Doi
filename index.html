@@ -273,6 +273,33 @@ section[id],div[id]{scroll-margin-top:60px;}
 }
 .sec-desc{font-size:17px;color:var(--t2);max-width:520px;margin:14px auto 0;line-height:1.6;}
 
+/* ── GLOSSARY: clickable jargon terms + definition popup ── */
+.gloss{
+  color:var(--og);border-bottom:1px dotted rgba(240,140,0,.65);
+  cursor:pointer;font-weight:600;transition:color .15s,border-color .15s;
+}
+.gloss:hover,.gloss:focus-visible{color:var(--tiger);border-bottom-color:var(--tiger);outline:none;}
+.gloss-pop{
+  position:fixed;z-index:500;width:280px;max-width:calc(100vw - 32px);
+  background:rgba(8,8,8,.98);border:1px solid var(--bo);padding:16px 18px;
+  font-family:var(--body);font-size:14px;line-height:1.55;color:var(--t1);font-weight:500;
+  box-shadow:0 12px 36px rgba(0,0,0,.65);
+  clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px);
+  opacity:0;transform:translateY(4px);pointer-events:none;transition:opacity .18s ease,transform .18s ease;
+  visibility:hidden;
+}
+.gloss-pop.visible{opacity:1;transform:translateY(0);pointer-events:auto;visibility:visible;}
+.gloss-pop-term{
+  display:block;font-family:var(--mono);font-size:11px;letter-spacing:.16em;
+  color:var(--og);text-transform:uppercase;margin-bottom:8px;padding-right:16px;
+}
+.gloss-pop-body{display:block;}
+.gloss-pop-close{
+  position:absolute;top:8px;right:10px;color:var(--t3);cursor:pointer;
+  font-family:var(--mono);font-size:16px;line-height:1;background:none;border:none;padding:4px;
+}
+.gloss-pop-close:hover{color:var(--og);}
+
 /* Industries section: tag/title typography swapped per request —
    "INDUSTRIES SERVED" takes the title look, "BUILT FOR THE FIELD" takes the tag look */
 #industries .sec-tag{
@@ -733,7 +760,7 @@ footer{
         <img class="hero-logo-img" src="DOiLabs_Logo2.png" alt="DØi Labs">
         <h1 class="hero-h1">RECON<span class="og">DIVISION</span></h1>
         <p class="hero-sub-head">ADVANCED AERIAL INTELLIGENCE</p>
-        <p class="hero-sub">Construction QA, thermal inspection, precision mapping, and aerial intelligence — delivered as 48HR decision-ready reports. FAA Part 107 certified. California-based.</p>
+        <p class="hero-sub">Construction QA, thermal inspection, precision mapping, and aerial intelligence — delivered as 48HR decision-ready reports. FAA <span class="gloss" data-term="part107">Part 107</span> certified. California-based.</p>
         <div class="hero-btns">
           <button class="btn-p" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">REQUEST MISSION BRIEF</button>
           <button class="btn-g" onclick="document.getElementById('pipeline').scrollIntoView({behavior:'smooth'})">VIEW PROCESS →</button>
@@ -760,12 +787,12 @@ footer{
     <p class="sec-desc">Specialized aerial intelligence for the operations that can't afford to guess.</p>
   </div>
   <div class="ind-grid">
-    <div class="ind-card"><div class="ind-label">IND · 01</div><div class="ind-title">CONSTRUCTION</div><p class="ind-body">Weekly progress documentation, cut/fill volumetrics, and as-built vs design comparison. Direct BIM and PM platform integration.</p><div class="ind-wm">CON</div></div>
+    <div class="ind-card"><div class="ind-label">IND · 01</div><div class="ind-title">CONSTRUCTION</div><p class="ind-body">Weekly progress documentation, cut/fill <span class="gloss" data-term="volumetric">volumetrics</span>, and as-built vs design comparison. Direct BIM and PM platform integration.</p><div class="ind-wm">CON</div></div>
     <div class="ind-card"><div class="ind-label">IND · 02</div><div class="ind-title">SOLAR & UTILITIES</div><p class="ind-body">Calibrated thermal imaging for panel efficiency mapping, hotspot detection, and electrical infrastructure inspection at scale.</p><div class="ind-wm">SOL</div></div>
     <div class="ind-card"><div class="ind-label">IND · 03</div><div class="ind-title">REAL ESTATE</div><p class="ind-body">High-resolution marketing aerials, site boundary documentation, and pre-acquisition land surveys for developers and brokers.</p><div class="ind-wm">RE</div></div>
     <div class="ind-card"><div class="ind-label">IND · 04</div><div class="ind-title">PUBLIC SAFETY</div><p class="ind-body">Perimeter surveillance, search and rescue support, incident documentation, and real-time situational awareness for emergency ops.</p><div class="ind-wm">SAF</div></div>
-    <div class="ind-card"><div class="ind-label">IND · 05</div><div class="ind-title">AGRICULTURE</div><p class="ind-body">NDVI crop health mapping, irrigation analysis, and yield estimation across large-acreage operations with sub-2cm resolution.</p><div class="ind-wm">AGR</div></div>
-    <div class="ind-card"><div class="ind-label">IND · 06</div><div class="ind-title">INFRASTRUCTURE</div><p class="ind-body">Bridge, road, and facility inspection with thermal and RGB payloads. OSHA-compliant documentation and anomaly reporting.</p><div class="ind-wm">INF</div></div>
+    <div class="ind-card"><div class="ind-label">IND · 05</div><div class="ind-title">AGRICULTURE</div><p class="ind-body"><span class="gloss" data-term="ndvi">NDVI</span> crop health mapping, irrigation analysis, and yield estimation across large-acreage operations with sub-2cm resolution.</p><div class="ind-wm">AGR</div></div>
+    <div class="ind-card"><div class="ind-label">IND · 06</div><div class="ind-title">INFRASTRUCTURE</div><p class="ind-body">Bridge, road, and facility inspection with thermal and <span class="gloss" data-term="rgb">RGB</span> payloads. OSHA-compliant documentation and anomaly reporting.</p><div class="ind-wm">INF</div></div>
   </div>
 </section>
 
@@ -786,7 +813,7 @@ footer{
     </div>
     <div class="qa-content">
       <div class="qa-title">AERIAL QA THAT CATCHES PROBLEMS <span>BEFORE THEY COST YOU</span></div>
-      <p class="qa-lead">Traditional site walks miss what drones catch in minutes. DØi delivers georeferenced documentation, volumetric analysis, and thermal inspection on your schedule — not ours.</p>
+      <p class="qa-lead">Traditional site walks miss what drones catch in minutes. DØi delivers <span class="gloss" data-term="georeferenced">georeferenced</span> documentation, <span class="gloss" data-term="volumetric">volumetric analysis</span>, and thermal inspection on your schedule — not ours.</p>
       <ul class="qa-checklist">
         <li>Weekly georeferenced progress documentation</li>
         <li>Cut / fill volumetric analysis (±2cm accuracy)</li>
@@ -809,12 +836,12 @@ footer{
     <p class="sec-desc">Six specialized divisions. One integrated platform. Total aerial intelligence coverage.</p>
   </div>
   <div class="svc-grid">
-    <div class="svc-card"><button class="svc-head" type="button" aria-expanded="false" aria-controls="svc-content-1"><span class="svc-head-l"><span class="svc-div">DIV · RCN</span><span class="svc-title">AERIAL RECONNAISSANCE</span></span><span class="svc-toggle" aria-hidden="true"></span></button><div class="svc-content" id="svc-content-1"><div class="svc-body">Wide-area surveillance and site assessment. RGB + thermal + wide-angle simultaneous capture. Real-time downlink for live situational awareness.</div></div><div class="svc-wm">RCN</div></div>
+    <div class="svc-card"><button class="svc-head" type="button" aria-expanded="false" aria-controls="svc-content-1"><span class="svc-head-l"><span class="svc-div">DIV · RCN</span><span class="svc-title">AERIAL RECONNAISSANCE</span></span><span class="svc-toggle" aria-hidden="true"></span></button><div class="svc-content" id="svc-content-1"><div class="svc-body">Wide-area surveillance and site assessment. <span class="gloss" data-term="rgb">RGB</span> + thermal + wide-angle simultaneous capture. Real-time downlink for live situational awareness.</div></div><div class="svc-wm">RCN</div></div>
     <div class="svc-card"><button class="svc-head" type="button" aria-expanded="false" aria-controls="svc-content-2"><span class="svc-head-l"><span class="svc-div">DIV · OPS</span><span class="svc-title">CONSTRUCTION OPERATIONS</span></span><span class="svc-toggle" aria-hidden="true"></span></button><div class="svc-content" id="svc-content-2"><div class="svc-body">Progress documentation, volumetric measurement, cut/fill analysis, and as-built surveys. Integrate directly with BIM workflows and project management platforms.</div></div><div class="svc-wm">OPS</div></div>
     <div class="svc-card"><button class="svc-head" type="button" aria-expanded="false" aria-controls="svc-content-3"><span class="svc-head-l"><span class="svc-div">DIV · SYN</span><span class="svc-title">PRECISION MAPPING</span></span><span class="svc-toggle" aria-hidden="true"></span></button><div class="svc-content" id="svc-content-3"><div class="svc-body">Survey-grade topographic mapping with RTK/PPK processing. Sub-2cm accuracy. Deliverables include GeoTIFF orthomosaics, DSM/DTM, and LAS point clouds.</div></div><div class="svc-wm">SYN</div></div>
     <div class="svc-card"><button class="svc-head" type="button" aria-expanded="false" aria-controls="svc-content-4"><span class="svc-head-l"><span class="svc-div">DIV · THM</span><span class="svc-title">THERMAL INSPECTION</span></span><span class="svc-toggle" aria-hidden="true"></span></button><div class="svc-content" id="svc-content-4"><div class="svc-body">Solar panel efficiency analysis, electrical inspection, HVAC assessment, roof moisture mapping, and wildfire perimeter monitoring using calibrated thermal sensors.</div></div><div class="svc-wm">THM</div></div>
     <div class="svc-card"><button class="svc-head" type="button" aria-expanded="false" aria-controls="svc-content-5"><span class="svc-head-l"><span class="svc-div">DIV · XLAB</span><span class="svc-title">INTELLIGENCE ANALYSIS</span></span><span class="svc-toggle" aria-hidden="true"></span></button><div class="svc-content" id="svc-content-5"><div class="svc-body">AI-enhanced object detection, change analysis, anomaly identification, and predictive modeling. Turn raw aerial data into decision-ready intelligence reports.</div></div><div class="svc-wm">XLAB</div></div>
-    <div class="svc-card"><button class="svc-head" type="button" aria-expanded="false" aria-controls="svc-content-6"><span class="svc-head-l"><span class="svc-div">DIV · FAB</span><span class="svc-title">CUSTOM MISSION DESIGN</span></span><span class="svc-toggle" aria-hidden="true"></span></button><div class="svc-content" id="svc-content-6"><div class="svc-body">Bespoke operational planning for complex, multi-objective missions. Specialized payload integration, extended BVLOS coordination, and custom data pipeline development.</div></div><div class="svc-wm">FAB</div></div>
+    <div class="svc-card"><button class="svc-head" type="button" aria-expanded="false" aria-controls="svc-content-6"><span class="svc-head-l"><span class="svc-div">DIV · FAB</span><span class="svc-title">CUSTOM MISSION DESIGN</span></span><span class="svc-toggle" aria-hidden="true"></span></button><div class="svc-content" id="svc-content-6"><div class="svc-body">Bespoke operational planning for complex, multi-objective missions. Specialized payload integration, extended <span class="gloss" data-term="bvlos">BVLOS</span> coordination, and custom data pipeline development.</div></div><div class="svc-wm">FAB</div></div>
   </div>
 </section>
 
@@ -844,25 +871,25 @@ footer{
         <div class="step-bg-num">02</div>
         <div class="step-code">OPS-02 · AIRSPACE</div>
         <h3 class="step-title">AIRSPACE AUTHORIZATION</h3>
-        <p class="step-body">LAANC approval, FAA airspace coordination, weather evaluation, and pre-flight safety verification. Every mission launches with full regulatory clearance and zero surprises.</p>
+        <p class="step-body"><span class="gloss" data-term="laanc">LAANC</span> approval, FAA <span class="gloss" data-term="airspace">airspace coordination</span>, weather evaluation, and pre-flight safety verification. Every mission launches with full regulatory clearance and zero surprises.</p>
       </div>
       <div class="pl-step">
         <div class="step-bg-num">03</div>
         <div class="step-code">EXE-03 · FLIGHT</div>
         <h3 class="step-title">FIELD EXECUTION</h3>
-        <p class="step-body">Precision autonomous flight with real-time telemetry monitoring. Simultaneous RGB, thermal, and wide-angle capture. Live downlink for immediate situational awareness when required.</p>
+        <p class="step-body">Precision autonomous flight with real-time telemetry monitoring. Simultaneous <span class="gloss" data-term="rgb">RGB</span>, thermal, and wide-angle capture. Live downlink for immediate situational awareness when required.</p>
       </div>
       <div class="pl-step">
         <div class="step-bg-num">04</div>
         <div class="step-code">DAT-04 · PROCESSING</div>
         <h3 class="step-title">DATA PROCESSING</h3>
-        <p class="step-body">Photogrammetric reconstruction, thermal calibration, AI-assisted anomaly detection, and 3D model generation. Every dataset cleaned, structured, and validated for accuracy.</p>
+        <p class="step-body"><span class="gloss" data-term="photogrammetric">Photogrammetric</span> reconstruction, thermal calibration, AI-assisted anomaly detection, and 3D model generation. Every dataset cleaned, structured, and validated for accuracy.</p>
       </div>
       <div class="pl-step">
         <div class="step-bg-num">05</div>
         <div class="step-code">DEL-05 · DELIVERY</div>
         <h3 class="step-title">DELIVERABLE PACKAGE</h3>
-        <p class="step-body">QC-verified reports, orthomosaics, point clouds, and intelligence briefs delivered within 48 hours. Every file format your team needs, ready to action immediately.</p>
+        <p class="step-body">QC-verified reports, <span class="gloss" data-term="orthomosaic">orthomosaics</span>, <span class="gloss" data-term="pointcloud">point clouds</span>, and intelligence briefs delivered within 48 hours. Every file format your team needs, ready to action immediately.</p>
       </div>
       </div>
       <div class="pl-dots">
@@ -895,7 +922,7 @@ footer{
       <div class="mob-step-content">
         <div class="step-code">OPS-02 · AIRSPACE</div>
         <h3 class="step-title">AIRSPACE AUTHORIZATION</h3>
-        <p class="step-body">LAANC approval, FAA airspace coordination, weather evaluation, and pre-flight safety verification. Every mission launches with full regulatory clearance.</p>
+        <p class="step-body"><span class="gloss" data-term="laanc">LAANC</span> approval, FAA <span class="gloss" data-term="airspace">airspace coordination</span>, weather evaluation, and pre-flight safety verification. Every mission launches with full regulatory clearance.</p>
       </div>
     </div>
     <div class="mob-step">
@@ -903,7 +930,7 @@ footer{
       <div class="mob-step-content">
         <div class="step-code">EXE-03 · FLIGHT</div>
         <h3 class="step-title">FIELD EXECUTION</h3>
-        <p class="step-body">Precision autonomous flight with simultaneous RGB, thermal, and wide-angle capture. Live downlink for immediate situational awareness when required.</p>
+        <p class="step-body">Precision autonomous flight with simultaneous <span class="gloss" data-term="rgb">RGB</span>, thermal, and wide-angle capture. Live downlink for immediate situational awareness when required.</p>
       </div>
     </div>
     <div class="mob-step">
@@ -911,7 +938,7 @@ footer{
       <div class="mob-step-content">
         <div class="step-code">DAT-04 · PROCESSING</div>
         <h3 class="step-title">DATA PROCESSING</h3>
-        <p class="step-body">Photogrammetric reconstruction, thermal calibration, AI-assisted anomaly detection, and 3D model generation. Every dataset validated for accuracy.</p>
+        <p class="step-body"><span class="gloss" data-term="photogrammetric">Photogrammetric</span> reconstruction, thermal calibration, AI-assisted anomaly detection, and 3D model generation. Every dataset validated for accuracy.</p>
       </div>
     </div>
     <div class="mob-step">
@@ -919,7 +946,7 @@ footer{
       <div class="mob-step-content">
         <div class="step-code">DEL-05 · DELIVERY</div>
         <h3 class="step-title">DELIVERABLE PACKAGE</h3>
-        <p class="step-body">QC-verified reports, orthomosaics, point clouds, and intelligence briefs delivered within 48 hours. Every file format your team needs, ready to action immediately.</p>
+        <p class="step-body">QC-verified reports, <span class="gloss" data-term="orthomosaic">orthomosaics</span>, <span class="gloss" data-term="pointcloud">point clouds</span>, and intelligence briefs delivered within 48 hours. Every file format your team needs, ready to action immediately.</p>
       </div>
     </div>
 </div>
@@ -955,12 +982,12 @@ footer{
         <div class="why-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
         <span class="why-head-l"><span class="why-code">CAP-01 · THERMAL</span><span class="why-title">DUAL THERMAL + RGB</span></span>
         <span class="why-toggle" aria-hidden="true"></span>
-      </button><div class="why-content" id="why-content-1"><div class="why-body">The DJI Matrice 4T delivers simultaneous thermal and RGB capture. Detect heat anomalies, assess infrastructure, and identify targets invisible to standard optics.</div></div></div>
+      </button><div class="why-content" id="why-content-1"><div class="why-body">The DJI Matrice 4T delivers simultaneous thermal and <span class="gloss" data-term="rgb">RGB</span> capture. Detect heat anomalies, assess infrastructure, and identify targets invisible to standard optics.</div></div></div>
       <div class="why-card"><button class="why-head" type="button" aria-expanded="false" aria-controls="why-content-2">
         <div class="why-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
         <span class="why-head-l"><span class="why-code">CAP-02 · MAPPING</span><span class="why-title">CENTIMETER PRECISION</span></span>
         <span class="why-toggle" aria-hidden="true"></span>
-      </button><div class="why-content" id="why-content-2"><div class="why-body">Sub-2cm accuracy mapping with RTK positioning. Generate survey-grade point clouds, orthomosaics, and 3D models for engineering and asset management.</div></div></div>
+      </button><div class="why-content" id="why-content-2"><div class="why-body">Sub-2cm accuracy mapping with <span class="gloss" data-term="rtk">RTK</span> positioning. Generate survey-grade <span class="gloss" data-term="pointcloud">point clouds</span>, <span class="gloss" data-term="orthomosaic">orthomosaics</span>, and 3D models for engineering and asset management.</div></div></div>
       <div class="why-card"><button class="why-head" type="button" aria-expanded="false" aria-controls="why-content-3">
         <div class="why-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></div>
         <span class="why-head-l"><span class="why-code">CAP-03 · SPEED</span><span class="why-title">48-HOUR TURNAROUND</span></span>
@@ -970,7 +997,7 @@ footer{
         <div class="why-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
         <span class="why-head-l"><span class="why-code">CAP-04 · COMPLIANCE</span><span class="why-title">FAA PART 107 CERTIFIED</span></span>
         <span class="why-toggle" aria-hidden="true"></span>
-      </button><div class="why-content" id="why-content-4"><div class="why-body">Fully licensed and insured with Night Ops authorization (107.29). We handle all airspace coordination, LAANC approvals, and regulatory compliance.</div></div></div>
+      </button><div class="why-content" id="why-content-4"><div class="why-body">Fully licensed and insured with <span class="gloss" data-term="nightops">Night Ops authorization (107.29)</span>. We handle all <span class="gloss" data-term="airspace">airspace coordination</span>, <span class="gloss" data-term="laanc">LAANC</span> approvals, and regulatory compliance.</div></div></div>
       <div class="why-card"><button class="why-head" type="button" aria-expanded="false" aria-controls="why-content-5">
         <div class="why-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
         <span class="why-head-l"><span class="why-code">CAP-05 · INTEL</span><span class="why-title">AI-ASSISTED ANALYSIS</span></span>
@@ -1248,6 +1275,7 @@ function onScrollFrame(){
   updatePipeline();
   updateProgress();
   updateRail();
+  if (typeof closeGlossPopup === 'function') closeGlossPopup();
   scrollTicking = false;
 }
 window.addEventListener('scroll', () => {
@@ -1295,6 +1323,77 @@ document.querySelectorAll('.why-head').forEach(head => {
     head.setAttribute('aria-expanded', open ? 'true' : 'false');
   });
 });
+
+// ── GLOSSARY: click a burnt-orange term for a short definition popup ──
+const GLOSSARY = {
+  part107: 'The FAA commercial drone pilot certification required to legally fly drones for business.',
+  volumetric: 'Calculating the precise volume of a stockpile, cut, or excavation from aerial measurements.',
+  ndvi: 'Normalized Difference Vegetation Index — a way to gauge plant health from aerial imagery.',
+  rgb: 'Standard full-color visual imagery, like a normal photo — as opposed to thermal or other sensors.',
+  bvlos: 'Beyond Visual Line of Sight — flying a drone farther than the pilot can see it, requiring a special FAA waiver.',
+  laanc: 'The FAA’s Low Altitude Authorization and Notification Capability — an automated system for near real-time airspace clearance.',
+  airspace: 'Getting FAA clearance to legally fly in controlled airspace, such as near airports.',
+  photogrammetric: 'The science of extracting precise 3D measurements from overlapping photographs.',
+  orthomosaic: 'A single, distortion-corrected aerial image stitched from hundreds of photos — accurately scaled like a map.',
+  pointcloud: 'A 3D dataset made of millions of measured points, used to model terrain, buildings, or stockpiles.',
+  rtk: 'Real-Time Kinematic — a GPS correction technique that boosts mapping accuracy down to about 1–2cm.',
+  nightops: 'An FAA waiver (14 CFR 107.29) allowing certified pilots to legally fly drones after dark.',
+  georeferenced: 'Anchored to real-world GPS coordinates, so every pixel lines up precisely on a map.',
+};
+const glossPop = document.createElement('div');
+glossPop.className = 'gloss-pop';
+glossPop.innerHTML = '<button class="gloss-pop-close" aria-label="Close definition">×</button><span class="gloss-pop-term"></span><span class="gloss-pop-body"></span>';
+document.body.appendChild(glossPop);
+const glossTermEl = glossPop.querySelector('.gloss-pop-term');
+const glossBodyEl = glossPop.querySelector('.gloss-pop-body');
+let glossActive = null;
+
+function closeGlossPopup(){
+  if (!glossActive) return;
+  glossPop.classList.remove('visible');
+  glossActive.setAttribute('aria-expanded', 'false');
+  glossActive = null;
+}
+
+function openGlossPopup(trigger){
+  const def = GLOSSARY[trigger.getAttribute('data-term')];
+  if (!def) return;
+  glossTermEl.textContent = trigger.textContent;
+  glossBodyEl.textContent = def;
+  trigger.setAttribute('aria-expanded', 'true');
+  glossActive = trigger;
+  const r = trigger.getBoundingClientRect();
+  let left = Math.min(r.left, window.innerWidth - 280 - 16);
+  left = Math.max(16, left);
+  glossPop.style.left = left + 'px';
+  glossPop.style.top = (r.bottom + 8) + 'px';
+  glossPop.classList.add('visible');
+  requestAnimationFrame(() => {
+    const ph = glossPop.offsetHeight;
+    if (r.bottom + 8 + ph > window.innerHeight - 16) {
+      glossPop.style.top = Math.max(16, r.top - ph - 8) + 'px';
+    }
+  });
+}
+
+document.querySelectorAll('.gloss').forEach(term => {
+  term.setAttribute('tabindex', '0');
+  term.setAttribute('role', 'button');
+  term.setAttribute('aria-haspopup', 'true');
+  term.setAttribute('aria-expanded', 'false');
+  term.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (glossActive === term) { closeGlossPopup(); return; }
+    openGlossPopup(term);
+  });
+  term.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); term.click(); }
+  });
+});
+glossPop.querySelector('.gloss-pop-close').addEventListener('click', closeGlossPopup);
+glossPop.addEventListener('click', (e) => e.stopPropagation());
+document.addEventListener('click', closeGlossPopup);
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeGlossPopup(); });
 
 // ── LIVE TICKER ──
 (function(){
