@@ -346,22 +346,17 @@ section[id],div[id]{scroll-margin-top:60px;}
 .pipeline-zone{height:800vh;position:relative;}
 .pipeline-pin{
   position:sticky;top:0;height:100vh;overflow:hidden;
-  display:grid;grid-template-columns:1fr 1fr;
+  display:flex;
 }
-.pl-images{position:relative;overflow:hidden;}
-.pl-img{
-  position:absolute;inset:0;object-fit:cover;width:100%;height:100%;
-  opacity:0;transition:opacity .7s cubic-bezier(.16,1,.3,1);
-}
-.pl-img.active{opacity:1;}
 .pl-content{
-  display:flex;flex-direction:column;padding:60px;
-  background:var(--surf);border-left:1px solid var(--bd);
+  display:flex;flex-direction:column;align-items:center;padding:60px;
+  background:var(--surf);
   position:relative;overflow:hidden;
+  width:100%;max-width:900px;margin:0 auto;
 }
-.pl-steps{position:relative;flex:1;}
+.pl-steps{position:relative;flex:1;width:100%;}
 .pl-step{
-  position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;
+  position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
   opacity:0;transform:translateY(28px);pointer-events:none;
   transition:opacity .5s cubic-bezier(.16,1,.3,1),transform .5s cubic-bezier(.16,1,.3,1);
 }
@@ -381,9 +376,9 @@ section[id],div[id]{scroll-margin-top:60px;}
 .step-code{font-family:var(--mono);font-size:12px;color:var(--og);letter-spacing:.2em;margin-bottom:16px;display:flex;align-items:center;gap:10px;}
 .step-code::before{content:'';display:block;width:18px;height:1px;background:var(--og);}
 .step-title{font-family:var(--disp);font-size:clamp(22px,2.2vw,36px);font-weight:900;color:var(--t1);line-height:1.1;margin-bottom:20px;}
-.step-body{font-size:16px;color:var(--t2);line-height:1.75;max-width:380px;}
+.step-body{font-size:16px;color:var(--t2);line-height:1.75;max-width:560px;}
 .pl-dots{
-  display:flex;gap:8px;padding-top:32px;border-top:1px solid var(--bd);margin-top:auto;
+  display:flex;justify-content:center;gap:8px;padding-top:32px;border-top:1px solid var(--bd);margin-top:auto;width:100%;
 }
 .pl-dot{
   width:6px;height:6px;border-radius:50%;background:var(--bd2);
@@ -394,7 +389,6 @@ section[id],div[id]{scroll-margin-top:60px;}
 /* Mobile pipeline (replaces sticky on small screens) */
 .mob-pipeline{display:none;}
 .mob-step{border-bottom:1px solid var(--bd);}
-.mob-step-img{width:100%;height:260px;object-fit:cover;display:block;}
 .mob-step-content{padding:32px 20px;background:var(--surf);}
 
 /* ── WHY CARDS ── */
@@ -850,16 +844,9 @@ footer{
 <!-- HOW DØi WORKS — desktop sticky (Phase 6 — 7 steps → 5) -->
 <div class="pipeline-zone" id="pipeline">
   <div class="pipeline-pin">
-    <div class="pl-images">
-      <img class="pl-img active" src="06919491-6C2B-45CF-9C85-601D32BFAC9F.png" alt="Mission Brief" loading="eager">
-      <img class="pl-img" src="CBED9937-245F-4118-9F60-13298EFD03FD.png" alt="Airspace Authorization" loading="lazy">
-      <img class="pl-img" src="26721F3E-B47C-4151-BE3C-22BE642708E6.png" alt="Field Execution" loading="lazy">
-      <img class="pl-img" src="C61D48F2-DEC0-4CF1-A878-9E8B0E367EE7.png" alt="Data Processing" loading="lazy">
-      <img class="pl-img" src="30B9913C-3ABA-4C13-ABF7-42353E6242EB.png" alt="Deliverable Package" loading="lazy">
-    </div>
     <div class="pl-content">
-      <div class="sec-head" style="padding:0 0 32px;text-align:left;">
-        <div class="sec-tag" style="justify-content:flex-start;">HOW DØi WORKS</div>
+      <div class="sec-head" style="padding:0 0 32px;text-align:center;">
+        <div class="sec-tag">HOW DØi WORKS</div>
         <h2 class="sec-title">5-STEP <span>PROCESS</span></h2>
       </div>
       <div class="pl-steps">
@@ -912,7 +899,6 @@ footer{
     <h2 class="sec-title">5-STEP <span>PROCESS</span></h2>
   </div>
     <div class="mob-step">
-      <img class="mob-step-img" src="06919491-6C2B-45CF-9C85-601D32BFAC9F.png" alt="Mission Brief" loading="lazy">
       <div class="mob-step-content">
         <div class="step-code">RCN-01 · BRIEF</div>
         <h3 class="step-title">MISSION BRIEF</h3>
@@ -920,7 +906,6 @@ footer{
       </div>
     </div>
     <div class="mob-step">
-      <img class="mob-step-img" src="CBED9937-245F-4118-9F60-13298EFD03FD.png" alt="Airspace Authorization" loading="lazy">
       <div class="mob-step-content">
         <div class="step-code">OPS-02 · AIRSPACE</div>
         <h3 class="step-title">AIRSPACE AUTHORIZATION</h3>
@@ -928,7 +913,6 @@ footer{
       </div>
     </div>
     <div class="mob-step">
-      <img class="mob-step-img" src="26721F3E-B47C-4151-BE3C-22BE642708E6.png" alt="Field Execution" loading="lazy">
       <div class="mob-step-content">
         <div class="step-code">EXE-03 · FLIGHT</div>
         <h3 class="step-title">FIELD EXECUTION</h3>
@@ -936,7 +920,6 @@ footer{
       </div>
     </div>
     <div class="mob-step">
-      <img class="mob-step-img" src="C61D48F2-DEC0-4CF1-A878-9E8B0E367EE7.png" alt="Data Processing" loading="lazy">
       <div class="mob-step-content">
         <div class="step-code">DAT-04 · PROCESSING</div>
         <h3 class="step-title">DATA PROCESSING</h3>
@@ -944,7 +927,6 @@ footer{
       </div>
     </div>
     <div class="mob-step">
-      <img class="mob-step-img" src="30B9913C-3ABA-4C13-ABF7-42353E6242EB.png" alt="Deliverable Package" loading="lazy">
       <div class="mob-step-content">
         <div class="step-code">DEL-05 · DELIVERY</div>
         <h3 class="step-title">DELIVERABLE PACKAGE</h3>
@@ -1195,23 +1177,20 @@ const REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 // ── PIPELINE SCROLL ──
 const plZone = document.querySelector('.pipeline-zone');
-const plImgs = document.querySelectorAll('.pl-img');
 const plSteps = document.querySelectorAll('.pl-step');
 const plDots = document.querySelectorAll('.pl-dot');
 let curStep = 0;
 
 function updatePipeline() {
-  if (!plZone || !plImgs.length) return;
+  if (!plZone || !plSteps.length) return;
   const rect = plZone.getBoundingClientRect();
   const maxScroll = plZone.offsetHeight - window.innerHeight;
   const scrolled = Math.max(0, -rect.top);
   const progress = Math.min(0.9999, scrolled / maxScroll);
-  const step = Math.min(plImgs.length - 1, Math.floor(progress * plImgs.length));
+  const step = Math.min(plSteps.length - 1, Math.floor(progress * plSteps.length));
   if (step === curStep) return;
-  plImgs[curStep].classList.remove('active');
   plSteps[curStep].classList.remove('active');
   plDots[curStep].classList.remove('active');
-  plImgs[step].classList.add('active');
   plSteps[step].classList.add('active');
   plDots[step].classList.add('active');
   curStep = step;
