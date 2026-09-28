@@ -246,13 +246,13 @@ section[id],div[id]{scroll-margin-top:60px;}
   background:var(--surf);border-top:1px solid var(--bd);border-bottom:1px solid var(--bd);
 }
 .proof-item{
-  padding:48px 44px;border-right:1px solid var(--bd);
+  padding:48px 44px;border-right:1px solid var(--bd);min-width:0;
   opacity:0;transform:translateY(16px);
   transition:opacity .5s,transform .5s cubic-bezier(.16,1,.3,1);
 }
 .proof-item:last-child{border-right:none;}
 .proof-item.revealed{opacity:1;transform:translateY(0);}
-.proof-num{font-family:var(--disp);font-size:clamp(44px,5.5vw,80px);font-weight:900;color:var(--og);line-height:1;letter-spacing:-.02em;}
+.proof-num{font-family:var(--disp);font-size:clamp(44px,5.5vw,80px);font-weight:900;color:var(--og);line-height:1;letter-spacing:-.02em;overflow-wrap:break-word;hyphens:auto;}
 .proof-label{font-family:var(--mono);font-size:12px;color:var(--t3);letter-spacing:.14em;text-transform:uppercase;margin-top:6px;}
 
 /* ── SEC HEAD ── */
@@ -523,6 +523,19 @@ footer{
   display:flex;justify-content:space-between;align-items:center;
 }
 .foot-copy{font-family:var(--mono);font-size:12px;color:var(--t3);letter-spacing:.1em;}
+.foot-veteran{
+  text-align:center;padding:28px 0;border-top:1px solid var(--bd);
+}
+.foot-veteran-mark{
+  display:flex;align-items:center;justify-content:center;gap:16px;
+  font-family:var(--disp);font-size:clamp(15px,1.8vw,20px);font-weight:900;
+  color:var(--t1);letter-spacing:.08em;text-transform:uppercase;
+}
+.foot-veteran-mark::before,.foot-veteran-mark::after{content:'';display:block;width:28px;height:1px;background:var(--og);opacity:.6;flex-shrink:0;}
+.foot-veteran-sub{
+  margin-top:10px;font-family:var(--mono);font-size:11px;color:var(--t3);
+  letter-spacing:.22em;text-transform:uppercase;
+}
 
 /* ── INDUSTRIES (Phase 3) ── */
 .ind-section{position:relative;z-index:1;padding:0 0 80px;background:var(--surf);border-top:1px solid var(--bd);}
@@ -589,7 +602,8 @@ footer{
   .nav{padding:0 20px;}
   .hero-inner{padding:80px 20px 20px;}
   .proof-band{grid-template-columns:repeat(2,1fr);}
-  .proof-item{padding:32px 20px;border-right:none;border-bottom:1px solid var(--bd);}
+  .proof-item{padding:32px 20px;border-right:none;border-bottom:1px solid var(--bd);min-width:0;}
+  .proof-num{font-size:clamp(26px,7.2vw,44px);}
   .pipeline-zone,.pipeline-pin{display:none;}
   .mob-pipeline{display:block;}
   .why-grid,.svc-grid{grid-template-columns:1fr;margin:40px 20px 0;}
@@ -769,10 +783,10 @@ footer{
 
 <!-- PROOF BAND -->
 <section class="proof-band">
-  <div class="proof-item"><div class="proof-num">500+</div><div class="proof-label">MISSIONS FLOWN</div></div>
-  <div class="proof-item"><div class="proof-num">48HR</div><div class="proof-label">REPORT TURNAROUND</div></div>
-  <div class="proof-item"><div class="proof-num">2CM</div><div class="proof-label">MAPPING ACCURACY</div></div>
-  <div class="proof-item"><div class="proof-num">100%</div><div class="proof-label">FAA COMPLIANT</div></div>
+  <div class="proof-item"><div class="proof-num">PLAN</div><div class="proof-label">MISSION-READY OPERATIONS</div></div>
+  <div class="proof-item"><div class="proof-num">CAPTURE</div><div class="proof-label">MULTI-SENSOR INTELLIGENCE</div></div>
+  <div class="proof-item"><div class="proof-num">ANALYZE</div><div class="proof-label">DATA → ACTIONABLE INSIGHT</div></div>
+  <div class="proof-item"><div class="proof-num">DELIVER</div><div class="proof-label">DECISION-READY OUTPUT</div></div>
 </section>
 
 <!-- INDUSTRIES (Phase 3) -->
@@ -1130,6 +1144,10 @@ footer{
         <li><a href="#">About DØi Labs</a></li>
       </ul>
     </div>
+  </div>
+  <div class="foot-veteran">
+    <div class="foot-veteran-mark">VETERAN OWNED &amp; OPERATED</div>
+    <div class="foot-veteran-sub">MISSION DISCIPLINE · TECHNICAL PRECISION · OPERATIONAL INTEGRITY</div>
   </div>
   <div class="foot-bottom">
     <div class="foot-copy">© 2026 DØi LABS. ALL RIGHTS RESERVED.</div>
