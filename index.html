@@ -54,9 +54,9 @@ body{font-family:var(--body);font-size:18px;line-height:1.65;background:var(--bg
 .rail-dot::after{font-size:13px!important;}
 .nav-links a,.nav-cta,.hero-eyebrow,.hero-platform,.t-item,.proof-label,
 .sec-tag,.step-code,.why-code,.svc-div,.ind-label,.del-type,.del-format,
-.trust-label,.form-label,.foot-col-title,.foot-copy,.qa-checklist li,.qa-cta,
+.trust-label,.form-label,.foot-col-title,.foot-copy,.step-micro,
 .btn-p,.btn-g,.scroll-hint{font-size:14px!important;}
-.sec-desc,.why-body,.svc-body,.ind-body,.del-body,.qa-lead,.step-body{font-size:17px!important;}
+.sec-desc,.why-body,.svc-body,.ind-body,.del-body,.step-body{font-size:17px!important;}
 .foot-links a{font-size:16px!important;}
 /* ── HEADING TEXTURE: solid fill + repeating horizontal hairlines ── */
 /* White headings — matches the "CALIFORNIA" style in reference */
@@ -65,14 +65,8 @@ body{font-family:var(--body);font-size:18px;line-height:1.65;background:var(--bg
   -webkit-background-clip:text;background-clip:text;
   -webkit-text-fill-color:transparent;color:transparent;
 }
-/* qa-title white part */
-.qa-title{
-  background:repeating-linear-gradient(180deg,#e4e4e4 0 4px,rgba(220,220,220,.12) 4px 5px);
-  -webkit-background-clip:text;background-clip:text;
-  -webkit-text-fill-color:transparent;color:transparent;
-}
 /* Orange heading text — same hairline treatment in orange */
-.sec-title span,.hero-h1 .og,.qa-title span{
+.sec-title span,.hero-h1 .og{
   background:none;
   -webkit-background-clip:unset;background-clip:unset;
   -webkit-text-fill-color:var(--og);color:var(--og);
@@ -346,29 +340,8 @@ section[id],div[id]{scroll-margin-top:60px;}
 #industries .sec-title::before,#industries .sec-title::after{content:'';display:block;width:28px;height:1px;background:var(--og);opacity:.6;}
 #industries .sec-title span{-webkit-text-fill-color:var(--og);color:var(--og);}
 
-/* Construction QA section: tag/title typography swapped per request —
-   "AERIAL CONSTRUCTION QA" takes the title look, "TRACK EVERY POUR. EVERY GRADE." takes the tag look */
-#qa .sec-tag{
-  font-family:var(--disp)!important;font-size:clamp(26px,3.2vw,52px)!important;font-weight:900;
-  letter-spacing:-.01em;line-height:1.1;text-transform:none;
-  margin-bottom:12px;display:block;
-  background:repeating-linear-gradient(180deg,#e4e4e4 0 4px,rgba(220,220,220,.12) 4px 5px);
-  -webkit-background-clip:text;background-clip:text;
-  -webkit-text-fill-color:transparent;color:transparent;
-}
-#qa .sec-tag::before,#qa .sec-tag::after{display:none;}
-#qa .sec-title{
-  font-family:var(--mono)!important;font-size:12px!important;font-weight:400;letter-spacing:.22em;
-  line-height:1.4;text-transform:uppercase;margin-bottom:0;
-  display:flex;align-items:center;justify-content:center;gap:16px;
-  background:none;-webkit-background-clip:unset;background-clip:unset;
-  -webkit-text-fill-color:var(--og);color:var(--og);
-}
-#qa .sec-title::before,#qa .sec-title::after{content:'';display:block;width:28px;height:1px;background:var(--og);opacity:.6;}
-#qa .sec-title span{-webkit-text-fill-color:var(--og);color:var(--og);}
-
-/* ── PIPELINE (desktop sticky) ── */
-.pipeline-zone{height:800vh;position:relative;}
+/* ── WORKFLOW PIPELINE (desktop sticky) ── */
+.pipeline-zone{height:500vh;position:relative;}
 .pipeline-pin{
   position:sticky;top:0;height:100vh;overflow:hidden;
   display:flex;
@@ -379,7 +352,7 @@ section[id],div[id]{scroll-margin-top:60px;}
   position:relative;overflow:hidden;
   width:100%;max-width:900px;margin:0 auto;
 }
-.pl-steps{position:relative;flex:1;width:100%;}
+.pl-steps{position:relative;flex:1;width:100%;z-index:2;}
 .pl-step{
   position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
   opacity:0;transform:translateY(28px);pointer-events:none;
@@ -400,9 +373,11 @@ section[id],div[id]{scroll-margin-top:60px;}
 }
 .step-code{font-family:var(--mono);font-size:12px;color:var(--og);letter-spacing:.2em;margin-bottom:16px;display:flex;align-items:center;gap:10px;}
 .step-code::before{content:'';display:block;width:18px;height:1px;background:var(--og);}
-.step-title{font-family:var(--disp);font-size:clamp(22px,2.2vw,36px);font-weight:900;color:var(--t1);line-height:1.1;margin-bottom:20px;}
+.step-title{font-family:var(--disp);font-size:clamp(22px,2.2vw,36px);font-weight:900;color:var(--t1);line-height:1.1;margin-bottom:10px;}
+.step-micro{font-family:var(--mono);font-size:11px;color:var(--t3);letter-spacing:.2em;text-transform:uppercase;margin-bottom:16px;}
 .step-body{font-size:16px;color:var(--t2);line-height:1.75;max-width:560px;}
 .pl-dots{
+  position:relative;z-index:2;
   display:flex;justify-content:center;gap:8px;padding-top:32px;border-top:1px solid var(--bd);margin-top:auto;width:100%;
 }
 .pl-dot{
@@ -411,10 +386,33 @@ section[id],div[id]{scroll-margin-top:60px;}
 }
 .pl-dot.active{background:var(--og);transform:scale(1.5);}
 
+/* Repurposed CAPTURE→PROCESS visual (was the AERIAL CONSTRUCTION QA background video) —
+   a small supporting "feed" panel, not a dominant background */
+.pl-visual{
+  position:absolute;right:36px;bottom:64px;width:200px;height:130px;
+  overflow:hidden;z-index:0;pointer-events:none;
+  border:1px solid var(--og);background:#000;
+  box-shadow:0 12px 40px rgba(0,0,0,.6);
+  opacity:0;transform:translateY(14px) scale(.96);
+  transition:opacity .55s cubic-bezier(.16,1,.3,1),transform .55s cubic-bezier(.16,1,.3,1);
+}
+.pl-visual::before{
+  content:'CAPTURE FEED';position:absolute;top:6px;left:8px;z-index:1;
+  font-family:var(--mono);font-size:9px;letter-spacing:.18em;color:var(--og);
+  text-shadow:0 1px 3px rgba(0,0,0,.8);
+}
+.pl-bg-video{width:100%;height:100%;object-fit:cover;object-position:center;transform:scaleX(-1);filter:brightness(.75) saturate(1.05);display:block;}
+.pl-content[data-step="2"] .pl-visual{opacity:1;transform:translateY(0) scale(1);}
+.pl-content[data-step="3"] .pl-visual{opacity:.5;transform:translateY(6px) scale(.98);}
+
 /* Mobile pipeline (replaces sticky on small screens) */
 .mob-pipeline{display:none;}
 .mob-step{border-bottom:1px solid var(--bd);}
 .mob-step-content{padding:32px 20px;background:var(--surf);}
+.mob-visual{position:relative;width:100%;height:150px;overflow:hidden;background:#000;border-bottom:1px solid var(--bd);}
+.mob-bg-video{width:100%;height:100%;object-fit:cover;object-position:center;transform:scaleX(-1);filter:brightness(.6) saturate(1.05);display:block;}
+.mob-visual::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,8,8,.05) 0%,rgba(8,8,8,.65) 100%);}
+.mob-visual-label{position:absolute;bottom:10px;left:16px;z-index:1;font-family:var(--mono);font-size:10px;letter-spacing:.18em;color:var(--og);text-transform:uppercase;}
 
 /* ── WHY CARDS ── */
 .why-section{position:relative;z-index:1;padding:0 0 80px;background:var(--bg);border-top:1px solid var(--bd);}
@@ -575,26 +573,8 @@ footer{
 .ind-body{font-size:14px;color:var(--t2);line-height:1.65;}
 .ind-wm{position:absolute;bottom:-12px;right:-6px;font-family:var(--disp);font-size:64px;font-weight:900;color:rgba(255,107,26,.04);line-height:1;pointer-events:none;user-select:none;}
 
-/* ── CONSTRUCTION QA (Phase 4) ── */
-.qa-section{position:relative;z-index:1;padding:0 0 80px;background:rgba(8,8,8,0);border-top:1px solid var(--bd);}
-.qa-inner{display:grid;grid-template-columns:1fr 1fr;gap:0;margin:40px 60px 0;border:1px solid var(--bd);position:relative;overflow:hidden;min-height:380px;background:transparent;}
-.qa-bg-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:calc(50% + 550px) center;transform:scaleX(-1);z-index:0;}
-.qa-overlay{display:none;}
-.qa-visual{position:relative;z-index:2;background:transparent;min-height:380px;display:flex;align-items:flex-end;}
-.qa-content{position:relative;z-index:2;padding:48px;background:transparent;border-left:none;display:flex;flex-direction:column;gap:24px;}
-.qa-stat-badge{position:absolute;bottom:24px;left:24px;background:rgba(8,8,8,.92);border:1px solid var(--og);padding:14px 20px;}
-.qa-stat-num{font-family:var(--disp);font-size:32px;font-weight:900;color:var(--og);line-height:1;}
-.qa-stat-label{font-family:var(--mono);font-size:11px;color:var(--t3);letter-spacing:.14em;margin-top:4px;}
-.qa-title{font-family:var(--disp);font-size:clamp(26px,2.8vw,48px);font-weight:900;color:var(--t1);line-height:1.1;}
 /* Oversized titles for Deliverables + Why sections */
 .del-section .sec-title,.why-section .sec-title{font-size:clamp(38px,5vw,80px);}
-.qa-title span{color:var(--og);}
-.qa-lead{font-size:15px;color:var(--t2);line-height:1.7;}
-.qa-checklist{list-style:none;display:flex;flex-direction:column;gap:9px;}
-.qa-checklist li{font-family:var(--mono);font-size:12px;color:var(--t2);letter-spacing:.06em;display:flex;align-items:center;gap:10px;}
-.qa-checklist li::before{content:'';display:block;width:14px;height:1px;background:var(--og);flex-shrink:0;}
-.qa-cta{font-family:var(--mono);font-size:12px;letter-spacing:.12em;font-weight:700;background:var(--og);color:#000;border:none;padding:14px 28px;cursor:crosshair;clip-path:polygon(10px 0%,100% 0%,calc(100% - 10px) 100%,0% 100%);transition:background .2s;align-self:flex-start;}
-.qa-cta:hover{background:var(--tiger);}
 
 /* ── DELIVERABLES (Phase 7) ── */
 .del-section{position:relative;z-index:1;padding:0 0 80px;background:var(--surf);border-top:1px solid var(--bd);}
@@ -641,9 +621,6 @@ footer{
   .foot-inner{grid-template-columns:1fr;gap:36px;}
   .sec-head{padding:60px 20px 0;}
   .ind-grid,.del-grid{grid-template-columns:1fr;margin:40px 20px 0;}
-  .qa-inner{grid-template-columns:1fr;margin:40px 20px 0;}
-  .qa-visual{min-height:260px;}
-  .qa-content{padding:28px 20px;}
   .trust-inline{grid-template-columns:repeat(3,1fr);}
   /* sticky CTA + clearance so footer isn't covered */
   body{padding-bottom:62px;}
@@ -766,12 +743,10 @@ footer{
   <a class="nav-logo" href="#hero" style="display:flex;align-items:center;padding:0;">
     <img src="DOiLabsLogo_nav.png" alt="DØi Labs" style="height:80px;width:auto;display:block;">
   </a>
-  <!-- PHASE 1 · canonical IA. Future entries activate with their phases:
-       INDUSTRIES (#industries · Phase 3) · QA (#qa · Phase 4) · DELIVERABLES (#deliverables · Phase 7) -->
   <ul class="nav-links">
     <li><a href="#industries">INDUSTRIES</a></li>
     <li><a href="#services">CAPABILITIES</a></li>
-    <li><a href="#pipeline">PROCESS</a></li>
+    <li><a href="#pipeline">WORKFLOW</a></li>
     <li><a href="#mission">WHY DØi</a></li>
     <li><a href="#contact">CONTACT</a></li>
   </ul>
@@ -831,38 +806,6 @@ footer{
   </div>
 </section>
 
-<!-- CONSTRUCTION QA (Phase 4) -->
-<section class="qa-section" id="qa">
-  <div class="sec-head">
-    <div class="sec-tag">AERIAL CONSTRUCTION QA</div>
-    <h2 class="sec-title">TRACK EVERY POUR. <span>EVERY GRADE.</span></h2>
-    <p class="sec-desc">DØi embeds into your project schedule — weekly flyovers, 48HR deliverables, discrepancy reports before your next site visit.</p>
-  </div>
-  <div class="qa-inner">
-    <video class="qa-bg-video" autoplay muted loop playsinline>
-      <source src="Matricet4_Floating.mp4" type="video/mp4">
-    </video>
-    <div class="qa-overlay"></div>
-    <div class="qa-visual">
-      <div class="qa-stat-badge"><div class="qa-stat-num">48HR</div><div class="qa-stat-label">REPORT TURNAROUND</div></div>
-    </div>
-    <div class="qa-content">
-      <div class="qa-title">AERIAL QA THAT CATCHES PROBLEMS <span>BEFORE THEY COST YOU</span></div>
-      <p class="qa-lead">Traditional site walks miss what drones catch in minutes. DØi delivers <span class="gloss" data-term="georeferenced">georeferenced</span> documentation, <span class="gloss" data-term="volumetric">volumetric analysis</span>, and thermal inspection on your schedule — not ours.</p>
-      <ul class="qa-checklist">
-        <li>Weekly georeferenced progress documentation</li>
-        <li>Cut / fill volumetric analysis (project-specific accuracy)</li>
-        <li>As-built vs. design overlay comparison</li>
-        <li>BIM-ready orthomosaic exports</li>
-        <li>Thermal envelope & moisture inspection</li>
-        <li>OSHA-compliant site documentation</li>
-        <li>Discrepancy flagging with GPS coordinates</li>
-      </ul>
-      <button class="qa-cta" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">REQUEST CONSTRUCTION BRIEF →</button>
-    </div>
-  </div>
-</section>
-
 <!-- CAPABILITIES (Phase 5 — moved before pipeline) -->
 <section class="svc-section" id="services">
   <div class="sec-head">
@@ -872,7 +815,7 @@ footer{
   </div>
   <div class="svc-grid">
     <div class="svc-card"><button class="svc-head" type="button" aria-expanded="false" aria-controls="svc-content-1"><span class="svc-head-l"><span class="svc-div">DIV · RCN</span><span class="svc-title">AERIAL RECONNAISSANCE</span></span><span class="svc-toggle" aria-hidden="true"></span></button><div class="svc-content" id="svc-content-1"><div class="svc-body">Aerial site reconnaissance, condition assessment, and situational documentation using visual and thermal sensing capabilities. Supports site assessment, project documentation, asset observation, and mission-specific field intelligence.</div></div><div class="svc-wm">RCN</div></div>
-    <div class="svc-card"><button class="svc-head" type="button" aria-expanded="false" aria-controls="svc-content-2"><span class="svc-head-l"><span class="svc-div">DIV · OPS</span><span class="svc-title">CONSTRUCTION OPERATIONS</span></span><span class="svc-toggle" aria-hidden="true"></span></button><div class="svc-content" id="svc-content-2"><div class="svc-body">Progress documentation, volumetric measurement, cut/fill analysis, and as-built surveys. Integrate directly with BIM workflows and project management platforms.</div></div><div class="svc-wm">OPS</div></div>
+    <div class="svc-card"><button class="svc-head" type="button" aria-expanded="false" aria-controls="svc-content-2"><span class="svc-head-l"><span class="svc-div">DIV · OPS</span><span class="svc-title">CONSTRUCTION OPERATIONS</span></span><span class="svc-toggle" aria-hidden="true"></span></button><div class="svc-content" id="svc-content-2"><div class="svc-body">Project progress documentation, condition assessment, milestone comparison, volumetric analysis, and site intelligence for construction teams. DØi captures repeatable aerial data that helps document conditions, identify changes, verify progress, and support project decision-making.</div></div><div class="svc-wm">OPS</div></div>
     <div class="svc-card"><button class="svc-head" type="button" aria-expanded="false" aria-controls="svc-content-3"><span class="svc-head-l"><span class="svc-div">DIV · SYN</span><span class="svc-title">PRECISION MAPPING</span></span><span class="svc-toggle" aria-hidden="true"></span></button><div class="svc-content" id="svc-content-3"><div class="svc-body">High-resolution aerial mapping with RTK/PPK-enabled workflows when mission requirements support them. Deliverables can include georeferenced orthomosaics, DSM/DTM products, point clouds, and other project-specific spatial datasets.</div></div><div class="svc-wm">SYN</div></div>
     <div class="svc-card"><button class="svc-head" type="button" aria-expanded="false" aria-controls="svc-content-4"><span class="svc-head-l"><span class="svc-div">DIV · THM</span><span class="svc-title">THERMAL INSPECTION</span></span><span class="svc-toggle" aria-hidden="true"></span></button><div class="svc-content" id="svc-content-4"><div class="svc-body">Solar panel efficiency analysis, electrical inspection, HVAC assessment, roof moisture mapping, and wildfire perimeter monitoring using calibrated thermal sensors.</div></div><div class="svc-wm">THM</div></div>
     <div class="svc-card"><button class="svc-head" type="button" aria-expanded="false" aria-controls="svc-content-5"><span class="svc-head-l"><span class="svc-div">DIV · XLAB</span><span class="svc-title">INTELLIGENCE ANALYSIS</span></span><span class="svc-toggle" aria-hidden="true"></span></button><div class="svc-content" id="svc-content-5"><div class="svc-body">AI-enhanced object detection, change analysis, anomaly identification, and predictive modeling. Turn raw aerial data into decision-ready intelligence reports.</div></div><div class="svc-wm">XLAB</div></div>
@@ -880,44 +823,58 @@ footer{
   </div>
 </section>
 
-<!-- HOW DØi WORKS — desktop sticky (Phase 6 — 7 steps → 5) -->
+<!-- OPERATIONAL WORKFLOW — merged process + deliverables narrative.
+     Replaces the standalone 5-STEP PROCESS and REPORTS THAT MOVE PROJECTS sections;
+     the drone visual repurposed from the removed AERIAL CONSTRUCTION QA section
+     appears at the CAPTURE→PROCESS transition. -->
 <div class="pipeline-zone" id="pipeline">
   <div class="pipeline-pin">
     <div class="pl-content">
-      <div class="sec-head" style="padding:0 0 32px;text-align:center;">
-        <div class="sec-tag">HOW DØi WORKS</div>
-        <h2 class="sec-title">5-STEP <span>PROCESS</span></h2>
+      <div class="sec-head" style="padding:0 0 24px;text-align:center;">
+        <div class="sec-tag">OPERATIONAL WORKFLOW</div>
+        <h2 class="sec-title">FROM CAPTURE <span>TO DECISION</span></h2>
+        <p class="sec-desc">A disciplined five-stage workflow transforms mission requirements and aerial data into project intelligence teams can act on.</p>
+      </div>
+      <div class="pl-visual" aria-hidden="true">
+        <video class="pl-bg-video" muted loop playsinline preload="none">
+          <source data-src="Matricet4_Floating.mp4" type="video/mp4">
+        </video>
       </div>
       <div class="pl-steps">
       <div class="pl-step active">
         <div class="step-bg-num">01</div>
-        <div class="step-code">RCN-01 · BRIEF</div>
-        <h3 class="step-title">MISSION BRIEF</h3>
-        <p class="step-body">Client consultation, site assessment, and operational planning. We define objectives, verify airspace, analyze risk, and configure the mission route before a single rotor spins.</p>
+        <div class="step-code">01 · DEFINE</div>
+        <h3 class="step-title">DEFINE THE MISSION</h3>
+        <div class="step-micro">MISSION REQUIREMENTS</div>
+        <p class="step-body">Establish the operational objective, site conditions, project requirements, areas of interest, and required outputs.</p>
       </div>
       <div class="pl-step">
         <div class="step-bg-num">02</div>
-        <div class="step-code">OPS-02 · AIRSPACE</div>
-        <h3 class="step-title">AIRSPACE AUTHORIZATION</h3>
-        <p class="step-body"><span class="gloss" data-term="laanc">LAANC</span> approval, FAA <span class="gloss" data-term="airspace">airspace coordination</span>, weather evaluation, and pre-flight safety verification. Every mission launches with full regulatory clearance and zero surprises.</p>
+        <div class="step-code">02 · PLAN</div>
+        <h3 class="step-title">PLAN THE OPERATION</h3>
+        <div class="step-micro">FLIGHT + DATA PLAN</div>
+        <p class="step-body">Configure <span class="gloss" data-term="airspace">airspace</span> requirements, flight parameters, sensing requirements, capture methodology, and mission-specific operational controls.</p>
       </div>
       <div class="pl-step">
         <div class="step-bg-num">03</div>
-        <div class="step-code">EXE-03 · FLIGHT</div>
-        <h3 class="step-title">FIELD EXECUTION</h3>
-        <p class="step-body">Precision autonomous flight with real-time telemetry monitoring. Simultaneous <span class="gloss" data-term="rgb">RGB</span>, thermal, and wide-angle capture. Live downlink for immediate situational awareness when required.</p>
+        <div class="step-code">03 · CAPTURE</div>
+        <h3 class="step-title">CAPTURE THE SITE</h3>
+        <div class="step-micro">AERIAL DATA ACQUISITION</div>
+        <p class="step-body">Collect repeatable visual, thermal, and spatial data according to the mission plan and required deliverables.</p>
       </div>
       <div class="pl-step">
         <div class="step-bg-num">04</div>
-        <div class="step-code">DAT-04 · PROCESSING</div>
-        <h3 class="step-title">DATA PROCESSING</h3>
-        <p class="step-body"><span class="gloss" data-term="photogrammetric">Photogrammetric</span> reconstruction, thermal calibration, AI-assisted anomaly detection, and 3D model generation. Every dataset cleaned, structured, and validated for accuracy.</p>
+        <div class="step-code">04 · PROCESS</div>
+        <h3 class="step-title">TRANSFORM THE DATA</h3>
+        <div class="step-micro">DATA PROCESSING</div>
+        <p class="step-body">Process captured data into usable spatial products, comparisons, measurements, models, imagery, and analytical outputs.</p>
       </div>
       <div class="pl-step">
         <div class="step-bg-num">05</div>
-        <div class="step-code">DEL-05 · DELIVERY</div>
-        <h3 class="step-title">DELIVERABLE PACKAGE</h3>
-        <p class="step-body">QC-verified reports, <span class="gloss" data-term="orthomosaic">orthomosaics</span>, <span class="gloss" data-term="pointcloud">point clouds</span>, and intelligence briefs delivered within 48 hours. Every file format your team needs, ready to action immediately.</p>
+        <div class="step-code">05 · DELIVER</div>
+        <h3 class="step-title">DECISION-READY INTELLIGENCE</h3>
+        <div class="step-micro">INTELLIGENCE DELIVERY</div>
+        <p class="step-body">Package mission outputs into project-specific deliverables designed to support documentation, assessment, coordination, and informed decision-making.</p>
       </div>
       </div>
       <div class="pl-dots">
@@ -931,56 +888,63 @@ footer{
   </div>
 </div>
 
-<!-- HOW DØi WORKS — mobile fallback (Phase 6 — 5 steps) -->
+<!-- Mobile fallback — simplified vertical progression, no sticky pin -->
 <div class="mob-pipeline" id="pipeline-mob">
   <div class="sec-head">
-    <div class="sec-tag">HOW DØi WORKS</div>
-    <h2 class="sec-title">5-STEP <span>PROCESS</span></h2>
+    <div class="sec-tag">OPERATIONAL WORKFLOW</div>
+    <h2 class="sec-title">FROM CAPTURE <span>TO DECISION</span></h2>
+    <p class="sec-desc">A disciplined five-stage workflow transforms mission requirements and aerial data into project intelligence teams can act on.</p>
   </div>
     <div class="mob-step">
       <div class="mob-step-content">
-        <div class="step-code">RCN-01 · BRIEF</div>
-        <h3 class="step-title">MISSION BRIEF</h3>
-        <p class="step-body">Client consultation, site assessment, and operational planning. We define objectives, verify airspace, analyze risk, and configure the mission route before a single rotor spins.</p>
+        <div class="step-code">01 · DEFINE</div>
+        <h3 class="step-title">DEFINE THE MISSION</h3>
+        <div class="step-micro">MISSION REQUIREMENTS</div>
+        <p class="step-body">Establish the operational objective, site conditions, project requirements, areas of interest, and required outputs.</p>
       </div>
     </div>
     <div class="mob-step">
       <div class="mob-step-content">
-        <div class="step-code">OPS-02 · AIRSPACE</div>
-        <h3 class="step-title">AIRSPACE AUTHORIZATION</h3>
-        <p class="step-body"><span class="gloss" data-term="laanc">LAANC</span> approval, FAA <span class="gloss" data-term="airspace">airspace coordination</span>, weather evaluation, and pre-flight safety verification. Every mission launches with full regulatory clearance.</p>
+        <div class="step-code">02 · PLAN</div>
+        <h3 class="step-title">PLAN THE OPERATION</h3>
+        <div class="step-micro">FLIGHT + DATA PLAN</div>
+        <p class="step-body">Configure <span class="gloss" data-term="airspace">airspace</span> requirements, flight parameters, sensing requirements, capture methodology, and mission-specific operational controls.</p>
       </div>
     </div>
     <div class="mob-step">
       <div class="mob-step-content">
-        <div class="step-code">EXE-03 · FLIGHT</div>
-        <h3 class="step-title">FIELD EXECUTION</h3>
-        <p class="step-body">Precision autonomous flight with simultaneous <span class="gloss" data-term="rgb">RGB</span>, thermal, and wide-angle capture. Live downlink for immediate situational awareness when required.</p>
+        <div class="step-code">03 · CAPTURE</div>
+        <h3 class="step-title">CAPTURE THE SITE</h3>
+        <div class="step-micro">AERIAL DATA ACQUISITION</div>
+        <p class="step-body">Collect repeatable visual, thermal, and spatial data according to the mission plan and required deliverables.</p>
+      </div>
+    </div>
+    <div class="mob-visual" aria-hidden="true">
+      <video class="mob-bg-video" muted loop playsinline preload="none">
+        <source data-src="Matricet4_Floating.mp4" type="video/mp4">
+      </video>
+      <div class="mob-visual-label">CAPTURE → PROCESS</div>
+    </div>
+    <div class="mob-step">
+      <div class="mob-step-content">
+        <div class="step-code">04 · PROCESS</div>
+        <h3 class="step-title">TRANSFORM THE DATA</h3>
+        <div class="step-micro">DATA PROCESSING</div>
+        <p class="step-body">Process captured data into usable spatial products, comparisons, measurements, models, imagery, and analytical outputs.</p>
       </div>
     </div>
     <div class="mob-step">
       <div class="mob-step-content">
-        <div class="step-code">DAT-04 · PROCESSING</div>
-        <h3 class="step-title">DATA PROCESSING</h3>
-        <p class="step-body"><span class="gloss" data-term="photogrammetric">Photogrammetric</span> reconstruction, thermal calibration, AI-assisted anomaly detection, and 3D model generation. Every dataset validated for accuracy.</p>
-      </div>
-    </div>
-    <div class="mob-step">
-      <div class="mob-step-content">
-        <div class="step-code">DEL-05 · DELIVERY</div>
-        <h3 class="step-title">DELIVERABLE PACKAGE</h3>
-        <p class="step-body">QC-verified reports, <span class="gloss" data-term="orthomosaic">orthomosaics</span>, <span class="gloss" data-term="pointcloud">point clouds</span>, and intelligence briefs delivered within 48 hours. Every file format your team needs, ready to action immediately.</p>
+        <div class="step-code">05 · DELIVER</div>
+        <h3 class="step-title">DECISION-READY INTELLIGENCE</h3>
+        <div class="step-micro">INTELLIGENCE DELIVERY</div>
+        <p class="step-body">Package mission outputs into project-specific deliverables designed to support documentation, assessment, coordination, and informed decision-making.</p>
       </div>
     </div>
 </div>
 
-<!-- DELIVERABLES (Phase 7) -->
-<section class="del-section" id="deliverables">
-  <div class="sec-head">
-    <div class="sec-tag">WHAT YOU RECEIVE</div>
-    <h2 class="sec-title">REPORTS THAT <span>MOVE PROJECTS</span></h2>
-    <p class="sec-desc">Every mission ends with production-ready deliverables — not raw footage.</p>
-  </div>
+<div class="del-section">
+  <div class="sec-tag" style="margin:0 0 28px;">WHAT YOU RECEIVE</div>
   <div class="del-grid">
     <div class="del-card"><button class="del-head" type="button" aria-expanded="false" aria-controls="del-content-1"><span class="del-head-l"><span class="del-type">DEL · 01</span><span class="del-title">ORTHOMOSAIC GEOTIFF</span></span><span class="del-toggle" aria-hidden="true"></span></button><div class="del-content" id="del-content-1"><p class="del-body">Georeferenced aerial imagery stitched for site measurement, design overlays, and record documentation.</p><div class="del-format">FORMAT: GeoTIFF · GEOREFERENCED OUTPUT</div></div></div>
     <div class="del-card"><button class="del-head" type="button" aria-expanded="false" aria-controls="del-content-2"><span class="del-head-l"><span class="del-type">DEL · 02</span><span class="del-title">3D POINT CLOUD</span></span><span class="del-toggle" aria-hidden="true"></span></button><div class="del-content" id="del-content-2"><p class="del-body">Dense photogrammetric point clouds for site documentation, earthwork analysis, change assessment, and integration with compatible design and project workflows.</p><div class="del-format">FORMAT: LAS / LAZ · PROJECT-SPECIFIC SPATIAL OUTPUT</div></div></div>
@@ -989,7 +953,7 @@ footer{
     <div class="del-card"><button class="del-head" type="button" aria-expanded="false" aria-controls="del-content-5"><span class="del-head-l"><span class="del-type">DEL · 05</span><span class="del-title">SURFACE MODEL (DSM/DTM)</span></span><span class="del-toggle" aria-hidden="true"></span></button><div class="del-content" id="del-content-5"><p class="del-body">Digital surface and terrain models for drainage analysis, cut/fill quantification, and grading plan verification.</p><div class="del-format">FORMAT: GeoTIFF / XYZ · 5CM POSTING</div></div></div>
     <div class="del-card"><button class="del-head" type="button" aria-expanded="false" aria-controls="del-content-6"><span class="del-head-l"><span class="del-type">DEL · 06</span><span class="del-title">INTELLIGENCE BRIEF</span></span><span class="del-toggle" aria-hidden="true"></span></button><div class="del-content" id="del-content-6"><p class="del-body">AI-assisted anomaly detection with prioritized action items. Change detection between missions. Decision-ready summary for project leads.</p><div class="del-format">FORMAT: PDF + ANNOTATED IMAGERY</div></div></div>
   </div>
-</section>
+</div>
 
 <!-- WHY DØi + TRUST (Phase 8 — trust badges merged inline) -->
 <section class="why-section" id="mission">
@@ -1222,6 +1186,7 @@ const REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const plZone = document.querySelector('.pipeline-zone');
 const plSteps = document.querySelectorAll('.pl-step');
 const plDots = document.querySelectorAll('.pl-dot');
+const plContent = document.querySelector('.pl-content');
 let curStep = 0;
 
 function updatePipeline() {
@@ -1237,6 +1202,7 @@ function updatePipeline() {
   plSteps[step].classList.add('active');
   plDots[step].classList.add('active');
   curStep = step;
+  if (plContent) plContent.setAttribute('data-step', step);
 }
 updatePipeline();
 
@@ -1252,17 +1218,11 @@ window.addEventListener('resize', updateProgress, {passive:true});
 updateProgress();
 
 // ── PHASE 1 · SECTION DOT RAIL (desktop) ──
-// Canonical spine. Future sections flip on with their phases:
-//   {id:'industries',label:'INDUSTRIES'}  (Phase 3)
-//   {id:'qa',label:'AERIAL QA'}            (Phase 4)
-//   {id:'deliverables',label:'DELIVERABLES'} (Phase 7)
 const RAIL = [
   {id:'hero',        label:'DØi LABS'},
   {id:'industries',  label:'INDUSTRIES'},
-  {id:'qa',          label:'CONSTR. QA'},
   {id:'services',    label:'CAPABILITIES'},
-  {id:'pipeline',    label:'PROCESS'},
-  {id:'deliverables',label:'DELIVERABLES'},
+  {id:'pipeline',    label:'WORKFLOW'},
   {id:'mission',     label:'WHY DØi'},
   {id:'contact',     label:'CONTACT'}
 ];
@@ -1492,13 +1452,23 @@ document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeGloss
 window.addEventListener('load', () => {
   if (REDUCE) return; // honour reduced-motion — no autoplay
   const vid = document.getElementById('heroVideo');
-  if (!vid) return;
-  const source = vid.querySelector('[data-src]');
-  if (source) {
-    source.setAttribute('src', source.dataset.src);
-    vid.load();
-    vid.play().catch(() => {}); // swallow autoplay policy errors gracefully
+  if (vid) {
+    const source = vid.querySelector('[data-src]');
+    if (source) {
+      source.setAttribute('src', source.dataset.src);
+      vid.load();
+      vid.play().catch(() => {}); // swallow autoplay policy errors gracefully
+    }
   }
+  // Repurposed CAPTURE→PROCESS visual (desktop pl-visual + mobile mob-visual)
+  document.querySelectorAll('.pl-bg-video, .mob-bg-video').forEach(v => {
+    const source = v.querySelector('[data-src]');
+    if (source) {
+      source.setAttribute('src', source.dataset.src);
+      v.load();
+      v.play().catch(() => {});
+    }
+  });
 }, {once: true});
 
 // ── FORM ──
