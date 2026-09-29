@@ -3,31 +3,31 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>DØi Labs — Aerial Intelligence for Construction &amp; Infrastructure</title>
-<meta name="description" content="DØi Labs provides aerial intelligence for construction and infrastructure teams through aerial mapping, thermal inspection, project progress documentation, site intelligence, and advanced data processing.">
+<title>DØi Labs — Aerial Intelligence for Complex Operations</title>
+<meta name="description" content="DØi Labs provides aerial intelligence for complex operations through mission-specific aircraft, sensors, and data workflows — aerial mapping, thermal inspection, project documentation, and advanced data processing for construction, infrastructure, and beyond.">
 <link rel="canonical" href="https://www.doilabs.la/">
 <!-- Open Graph -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="DØi Labs">
 <meta property="og:url" content="https://www.doilabs.la/">
-<meta property="og:title" content="DØi Labs — Aerial Intelligence for Construction &amp; Infrastructure">
-<meta property="og:description" content="Actionable aerial intelligence for construction and infrastructure teams. Mapping, thermal inspection, project progress documentation, site intelligence, and advanced data processing.">
+<meta property="og:title" content="DØi Labs — Aerial Intelligence for Complex Operations">
+<meta property="og:description" content="Actionable aerial intelligence for complex operations. Mission-specific aircraft, sensors, and data workflows for mapping, thermal inspection, project documentation, and data processing.">
 <meta property="og:image" content="https://www.doilabs.la/og-image.jpg">
-<meta property="og:image:alt" content="DØi Labs — Aerial Intelligence for Construction &amp; Infrastructure">
+<meta property="og:image:alt" content="DØi Labs — Aerial Intelligence for Complex Operations">
 <meta property="og:locale" content="en_US">
 <!-- X / Twitter -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="DØi Labs — Aerial Intelligence for Construction &amp; Infrastructure">
-<meta name="twitter:description" content="Actionable aerial intelligence for construction and infrastructure teams. Mapping, thermal inspection, project progress documentation, site intelligence, and advanced data processing.">
+<meta name="twitter:title" content="DØi Labs — Aerial Intelligence for Complex Operations">
+<meta name="twitter:description" content="Actionable aerial intelligence for complex operations. Mission-specific aircraft, sensors, and data workflows for mapping, thermal inspection, project documentation, and data processing.">
 <meta name="twitter:image" content="https://www.doilabs.la/og-image.jpg">
-<meta name="twitter:image:alt" content="DØi Labs — Aerial Intelligence for Construction &amp; Infrastructure">
+<meta name="twitter:image:alt" content="DØi Labs — Aerial Intelligence for Complex Operations">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "Organization",
   "name": "DØi Labs",
   "url": "https://www.doilabs.la/",
-  "description": "DØi Labs provides aerial intelligence for construction and infrastructure teams through aerial mapping, thermal inspection, project progress documentation, site intelligence, and advanced data processing."
+  "description": "DØi Labs provides aerial intelligence for complex operations using mission-specific aircraft, sensors, and data workflows, including aerial mapping, thermal inspection, project documentation, and advanced data processing."
 }
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -154,6 +154,12 @@ section[id],div[id]{scroll-margin-top:60px;}
   display:block;margin-top:1mm;
   pointer-events:none;user-select:none;
 }
+/* Desktop: logo becomes the dominant opening element (~40% of the hero's
+   usable content width) rather than capped at a fixed 380px. Mobile is
+   untouched -- it keeps the base rule above. */
+@media(min-width:901px){
+  .hero-logo-img{width:40vw;max-width:620px;min-width:320px;}
+}
 .hero-glow-bg::before{
   content:'';position:absolute;inset:0;
   background-image:
@@ -179,7 +185,16 @@ section[id],div[id]{scroll-margin-top:60px;}
   padding:96px 60px 48px;
 }
 .hero-left{display:flex;flex-direction:column;gap:22px;}
-.hero-stage2{display:flex;flex-direction:column;gap:22px;}
+.hero-stage2{display:flex;flex-direction:column;gap:22px;pointer-events:none;}
+.hero-stage2.stage2-active{pointer-events:auto;}
+/* Progressive disclosure on both desktop and mobile: the business
+   description, capability line, and primary CTA reveal in sequence (not
+   together) as the visitor scrolls through the hero, driven by --s1/--s2/--s3
+   set in updateHeroStage() from the same scroll-progress value that already
+   drives the hero on both breakpoints. */
+.hero-sub{opacity:var(--s1,0);transform:translateY(calc((1 - var(--s1,0)) * 14px));}
+.hero-platform{opacity:var(--s2,0);transform:translateY(calc((1 - var(--s2,0)) * 14px));}
+.hero-btns{opacity:var(--s3,0);transform:translateY(calc((1 - var(--s3,0)) * 14px));}
 .hero-eyebrow{
   font-family:var(--mono);font-size:13px;letter-spacing:.2em;color:var(--og);
   text-transform:uppercase;display:flex;align-items:center;gap:12px;
@@ -391,18 +406,21 @@ section[id],div[id]{scroll-margin-top:60px;}
 }
 .pl-dot.active{background:var(--og);transform:scale(1.5);}
 
-/* Workflow drone: an ambient background layer that travels left-to-right
-   across the whole card as the visitor scrolls through the five stages
-   (DEFINE -> DELIVER), reusing the same video asset that previously sat in
-   a small step-2/3-only inset panel. Deliberately subdued -- environmental
-   storytelling behind the workflow content, never the focal point. --dx/--dy/--ds
-   are written by updateDrone() in lockstep with the existing pipeline scroll
-   progress; see the reduced-motion block below for the static fallback. */
+/* Workflow drone: an ambient background layer that flies a variable path
+   through the whole card as the visitor scrolls through the five stages
+   (DEFINE -> DELIVER) -- progressing left-to-right while alternating
+   up/down, like a controlled aerial pass rather than a simple horizontal
+   slide. Reuses the same video asset that previously sat in a small
+   step-2/3-only inset panel. Deliberately subdued -- environmental
+   storytelling behind the workflow content, never the focal point.
+   --dx/--dy (percentages of this container) and --ds (scale) are written by
+   updateDrone() in lockstep with the existing pipeline scroll progress; see
+   the reduced-motion block below for the static fallback. */
 .pl-visual{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none;}
 .pl-bg-video{
-  position:absolute;top:50%;left:var(--dx,10%);
-  width:300px;height:190px;
-  transform:translate(-50%,-50%) translateY(var(--dy,0px)) scale(var(--ds,1));
+  position:absolute;left:var(--dx,10%);top:var(--dy,34%);
+  width:clamp(240px,40%,420px);aspect-ratio:1.6;
+  transform:translate(-50%,-50%) scale(var(--ds,1));
   transform-origin:center;
   object-fit:cover;object-position:center;
   opacity:.18;filter:brightness(.55) contrast(.9) saturate(1.05);
@@ -416,7 +434,7 @@ section[id],div[id]{scroll-margin-top:60px;}
 }
 .pl-content>.sec-head{position:relative;z-index:2;}
 @media(prefers-reduced-motion:reduce){
-  .pl-bg-video{left:45% !important;transform:translate(-50%,-50%) !important;}
+  .pl-bg-video{left:45% !important;top:45% !important;transform:translate(-50%,-50%) !important;}
 }
 
 /* Mobile pipeline (replaces sticky on small screens) */
@@ -495,6 +513,29 @@ section[id],div[id]{scroll-margin-top:60px;}
   font-size:72px;font-weight:900;color:rgba(255,107,26,.04);
   line-height:1;pointer-events:none;user-select:none;
 }
+
+/* ── MISSION PLATFORMS ── */
+.plat-section{position:relative;z-index:1;padding:0 0 80px;background:var(--bg);border-top:1px solid var(--bd);}
+/* Asymmetric columns give the Matrice 4T roughly 55% of the row's visual
+   weight; Avata 2 and Neo 2 split the rest -- deliberately not three equal
+   cards, so the primary/secondary platform hierarchy reads immediately. */
+.plat-grid{display:grid;grid-template-columns:2.4fr 1fr 1fr;gap:1px;background:var(--bd);border:1px solid var(--bd);margin:40px 60px 0;}
+.plat-card{background:var(--card);padding:36px 40px;position:relative;overflow:hidden;opacity:0;transform:translateY(18px);transition:opacity .5s,transform .5s cubic-bezier(.16,1,.3,1),background .3s;}
+.plat-card.revealed{opacity:1;transform:translateY(0);}
+.plat-card:hover{background:var(--card2);}
+.plat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--og),transparent);opacity:0;transition:opacity .3s;}
+.plat-card:hover::before{opacity:1;}
+.plat-primary::before{opacity:.7;background:linear-gradient(90deg,var(--og),var(--tiger));}
+.plat-badge{font-family:var(--mono);font-size:10px;color:var(--og);letter-spacing:.18em;margin-bottom:18px;}
+.plat-icon{width:48px;height:48px;border:1px solid var(--bd2);margin-bottom:18px;display:flex;align-items:center;justify-content:center;color:var(--og);}
+.plat-icon svg{width:24px;height:24px;}
+.plat-primary .plat-icon{width:64px;height:64px;}
+.plat-primary .plat-icon svg{width:34px;height:34px;}
+.plat-name{font-family:var(--disp);font-size:18px;font-weight:900;color:var(--t1);letter-spacing:.02em;margin-bottom:6px;}
+.plat-primary .plat-name{font-size:24px;}
+.plat-role{font-family:var(--mono);font-size:11px;color:var(--t3);letter-spacing:.12em;text-transform:uppercase;margin-bottom:16px;}
+.plat-body{font-size:14px;color:var(--t2);line-height:1.65;}
+.plat-primary .plat-body{font-size:15px;max-width:520px;}
 
 /* ── TRUST ── */
 .trust-section{
@@ -626,12 +667,6 @@ footer{
   .hero-zone{height:150vh;height:150svh;}
   .hero-pin{height:100vh;height:100svh;}
   .hero-inner{padding:80px var(--mobile-gutter) 20px;}
-  /* Stage 2 (business description, capability line, primary CTA) fades/slides
-     in as the visitor makes the first scroll through the shortened hero zone,
-     driven by the --hp custom property set in updateHeroStage(). Stage 1
-     (logo, headline, sub-head) stays static as the opening frame. */
-  .hero-stage2{opacity:var(--hp,0);transform:translateY(calc((1 - var(--hp,0)) * 18px));pointer-events:none;}
-  .hero-stage2.stage2-active{pointer-events:auto;}
   .proof-band{grid-template-columns:repeat(2,1fr);}
   .proof-item{padding:32px var(--mobile-gutter);border-right:none;border-bottom:1px solid var(--bd);min-width:0;}
   /* recalibrated against real Orbitron metrics for "CAPTURE" (the widest
@@ -649,7 +684,14 @@ footer{
   footer{padding:40px var(--mobile-gutter) 24px;}
   .foot-inner{grid-template-columns:1fr;gap:36px;}
   .sec-head{padding:60px var(--mobile-gutter) 0;}
-  .ind-grid,.del-grid{grid-template-columns:1fr;margin:40px var(--mobile-gutter) 0;}
+  .ind-grid,.del-grid,.plat-grid{grid-template-columns:1fr;margin:40px var(--mobile-gutter) 0;}
+  /* All three platform cards read at equal size once stacked full-width;
+     the primary/secondary hierarchy comes from the badge + PRIMARY PLATFORM
+     accent line, not from oversized type in a single narrow column. */
+  .plat-primary .plat-icon{width:48px;height:48px;}
+  .plat-primary .plat-icon svg{width:24px;height:24px;}
+  .plat-primary .plat-name{font-size:18px;}
+  .plat-primary .plat-body{font-size:14px;max-width:none;}
   /* Same gutter as every other mobile section (was inheriting the desktop
      60px margin, which made this grid look narrower/offset from its
      neighbors); 2 columns keeps longer labels like "AIRSPACE COORDINATION"
@@ -782,7 +824,7 @@ footer{
 <!-- NAV -->
 <nav class="nav">
   <a class="nav-logo" href="#hero" style="display:flex;align-items:center;padding:0;">
-    <img src="DOiLabsLogo_nav.png" alt="DØi Labs" style="height:80px;width:auto;display:block;">
+    <img src="DOiLabsLogo_nav.png" alt="DØi Labs" style="height:36px;width:auto;display:block;">
   </a>
   <ul class="nav-links">
     <li><a href="#industries">INDUSTRIES</a></li>
@@ -810,10 +852,10 @@ footer{
       <div class="hero-left">
         <img class="hero-logo-img" src="DOiLabs_Logo2.png" alt="DØi Labs">
         <h1 class="hero-h1">AERIAL<br><span class="og">INTELLIGENCE</span></h1>
-        <p class="hero-sub-head">FOR CONSTRUCTION + INFRASTRUCTURE</p>
+        <p class="hero-sub-head">FOR COMPLEX OPERATIONS</p>
         <div class="hero-stage2">
-          <p class="hero-sub">DØi Labs captures, processes, and transforms aerial data into actionable project intelligence for construction and infrastructure teams.</p>
-          <div class="hero-platform">AERIAL MAPPING · THERMAL INSPECTION · PROJECT PROGRESS · SITE INTELLIGENCE</div>
+          <p class="hero-sub">DØi Labs captures, processes, and transforms aerial data into actionable intelligence using mission-specific aircraft, sensors, and data workflows.</p>
+          <div class="hero-platform">AERIAL RECONNAISSANCE · MAPPING · THERMAL · PROJECT DOCUMENTATION · DATA ANALYSIS</div>
           <div class="hero-btns">
             <button class="btn-p" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">REQUEST MISSION BRIEF</button>
             <button class="btn-g" onclick="document.getElementById('pipeline').scrollIntoView({behavior:'smooth'})">VIEW PROCESS →</button>
@@ -859,11 +901,48 @@ footer{
   </div>
   <div class="svc-grid">
     <div class="svc-card"><button class="svc-head" type="button" aria-expanded="false" aria-controls="svc-content-1"><span class="svc-head-l"><span class="svc-div">DIV · RCN</span><span class="svc-title">AERIAL RECONNAISSANCE</span></span><span class="svc-toggle" aria-hidden="true"></span></button><div class="svc-content" id="svc-content-1"><div class="svc-body">Aerial site reconnaissance, condition assessment, and situational documentation using visual and thermal sensing capabilities. Supports site assessment, project documentation, asset observation, and mission-specific field intelligence.</div></div><div class="svc-wm">RCN</div></div>
-    <div class="svc-card"><button class="svc-head" type="button" aria-expanded="false" aria-controls="svc-content-2"><span class="svc-head-l"><span class="svc-div">DIV · OPS</span><span class="svc-title">CONSTRUCTION OPERATIONS</span></span><span class="svc-toggle" aria-hidden="true"></span></button><div class="svc-content" id="svc-content-2"><div class="svc-body">Project progress documentation, condition assessment, milestone comparison, volumetric analysis, and site intelligence for construction teams. DØi captures repeatable aerial data that helps document conditions, identify changes, verify progress, and support project decision-making.</div></div><div class="svc-wm">OPS</div></div>
+    <div class="svc-card"><button class="svc-head" type="button" aria-expanded="false" aria-controls="svc-content-2"><span class="svc-head-l"><span class="svc-div">DIV · OPS</span><span class="svc-title">PROJECT DOCUMENTATION</span></span><span class="svc-toggle" aria-hidden="true"></span></button><div class="svc-content" id="svc-content-2"><div class="svc-body">Project progress documentation, condition assessment, milestone comparison, and site intelligence across construction, infrastructure, and other operational projects. DØi captures repeatable aerial data that helps document conditions, identify changes, verify progress, and support project decision-making.</div></div><div class="svc-wm">OPS</div></div>
     <div class="svc-card"><button class="svc-head" type="button" aria-expanded="false" aria-controls="svc-content-3"><span class="svc-head-l"><span class="svc-div">DIV · SYN</span><span class="svc-title">PRECISION MAPPING</span></span><span class="svc-toggle" aria-hidden="true"></span></button><div class="svc-content" id="svc-content-3"><div class="svc-body">Georeferenced imagery capture, photogrammetric processing, and terrain/site modeling using RTK/PPK-enabled workflows when mission requirements support them.</div></div><div class="svc-wm">SYN</div></div>
     <div class="svc-card"><button class="svc-head" type="button" aria-expanded="false" aria-controls="svc-content-4"><span class="svc-head-l"><span class="svc-div">DIV · THM</span><span class="svc-title">THERMAL INSPECTION</span></span><span class="svc-toggle" aria-hidden="true"></span></button><div class="svc-content" id="svc-content-4"><div class="svc-body">Solar panel efficiency analysis, electrical inspection, HVAC assessment, roof moisture mapping, and wildfire perimeter monitoring using calibrated thermal sensors.</div></div><div class="svc-wm">THM</div></div>
-    <div class="svc-card"><button class="svc-head" type="button" aria-expanded="false" aria-controls="svc-content-5"><span class="svc-head-l"><span class="svc-div">DIV · XLAB</span><span class="svc-title">INTELLIGENCE ANALYSIS</span></span><span class="svc-toggle" aria-hidden="true"></span></button><div class="svc-content" id="svc-content-5"><div class="svc-body">AI-enhanced object detection, change analysis, and anomaly identification. Transforms captured aerial data into organized comparisons, observations, and analytical outputs teams can act on.</div></div><div class="svc-wm">XLAB</div></div>
+    <div class="svc-card"><button class="svc-head" type="button" aria-expanded="false" aria-controls="svc-content-5"><span class="svc-head-l"><span class="svc-div">DIV · XLAB</span><span class="svc-title">DATA PROCESSING + ANALYSIS</span></span><span class="svc-toggle" aria-hidden="true"></span></button><div class="svc-content" id="svc-content-5"><div class="svc-body">AI-enhanced object detection, change analysis, and anomaly identification. Transforms captured aerial data into organized comparisons, observations, and analytical outputs teams can act on.</div></div><div class="svc-wm">XLAB</div></div>
     <div class="svc-card"><button class="svc-head" type="button" aria-expanded="false" aria-controls="svc-content-6"><span class="svc-head-l"><span class="svc-div">DIV · FAB</span><span class="svc-title">CUSTOM MISSION DESIGN</span></span><span class="svc-toggle" aria-hidden="true"></span></button><div class="svc-content" id="svc-content-6"><div class="svc-body">Bespoke operational planning for complex, multi-objective missions. Specialized payload integration, extended <span class="gloss" data-term="bvlos">BVLOS</span> coordination, and custom data pipeline development.</div></div><div class="svc-wm">FAB</div></div>
+  </div>
+</section>
+
+<!-- MISSION PLATFORMS — the aircraft as an operating system, not a catalog.
+     Matrice 4T is the primary multi-sensor platform; Avata 2 and Neo 2 are
+     smaller complementary platforms selected for specific visual-capture
+     requirements. Capabilities above stay organized by function (RCN/OPS/
+     SYN/THM/XLAB/FAB); this section shows how DØi selects a platform to
+     execute them, not the other way around. -->
+<section class="plat-section" id="platforms">
+  <div class="sec-head">
+    <div class="sec-tag">MISSION PLATFORMS</div>
+    <h2 class="sec-title">THE RIGHT <span>AIRCRAFT</span> FOR THE REQUIREMENT</h2>
+    <p class="sec-desc">One operation, multiple capture tools. DØi selects the platform based on the mission — not the other way around.</p>
+  </div>
+  <div class="plat-grid">
+    <div class="plat-card plat-primary">
+      <div class="plat-badge">PRIMARY PLATFORM</div>
+      <div class="plat-icon"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="6" cy="6" r="3"/><circle cx="26" cy="6" r="3"/><circle cx="6" cy="26" r="3"/><circle cx="26" cy="26" r="3"/><path d="M8 8l6 6M24 8l-6 6M8 24l6-6M24 24l-6-6"/><rect x="12" y="12" width="8" height="8" rx="1"/></svg></div>
+      <div class="plat-name">DJI MATRICE 4T</div>
+      <div class="plat-role">Primary Multi-Sensor Platform</div>
+      <p class="plat-body">DØi's primary aerial platform, flying a multi-sensor payload built around wide-angle visual, telephoto, thermal, and laser-rangefinding capture. Supports mapping, inspection, reconnaissance, and repeatable site-documentation workflows, with low-light capability for mission-specific night operations.</p>
+    </div>
+    <div class="plat-card">
+      <div class="plat-badge">SPECIALIZED VISUAL PLATFORM</div>
+      <div class="plat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/></svg></div>
+      <div class="plat-name">DJI AVATA 2</div>
+      <div class="plat-role">Specialized Visual Platform</div>
+      <p class="plat-body">Compact FPV capture platform supporting dynamic visual documentation and mission-specific perspectives where a smaller aircraft and immersive camera movement provide useful context. Deployed alongside the Matrice 4T, not in place of it.</p>
+    </div>
+    <div class="plat-card">
+      <div class="plat-badge">LIGHTWEIGHT VISUAL PLATFORM</div>
+      <div class="plat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="6"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/></svg></div>
+      <div class="plat-name">DJI NEO 2</div>
+      <div class="plat-role">Lightweight Visual Platform</div>
+      <p class="plat-body">DØi's smallest platform, used for lightweight visual capture, rapid contextual imagery, and supplementary project documentation when a compact aircraft is operationally useful.</p>
+    </div>
   </div>
 </section>
 
@@ -1064,7 +1143,7 @@ footer{
       <div style="display:flex;gap:24px;justify-content:center;margin-top:16px;flex-wrap:wrap;">
         <a href="tel:3102997401" style="font-family:var(--mono);font-size:13px;color:var(--og);letter-spacing:.12em;text-decoration:none;">310.299.7401</a>
         <span style="font-family:var(--mono);font-size:13px;color:var(--t3);">·</span>
-        <a href="mailto:DOiRECON@DOILABS.CA" style="font-family:var(--mono);font-size:13px;color:var(--og);letter-spacing:.12em;text-decoration:none;">DOiRECON@DOILABS.CA</a>
+        <a href="mailto:DOiRECON@DOiLABS.LA" style="font-family:var(--mono);font-size:13px;color:var(--og);letter-spacing:.12em;text-decoration:none;">DOiRECON@DOiLABS.LA</a>
       </div>
     </div>
     <div class="intake-wrap" style="margin-top:40px;">
@@ -1158,8 +1237,8 @@ footer{
   <div class="foot-inner">
     <div class="foot-brand">
       <div class="foot-logo">DØ<em>i</em> LABS</div>
-      <div class="foot-tag">AERIAL INTELLIGENCE FOR CONSTRUCTION + INFRASTRUCTURE</div>
-      <p style="font-family:var(--body);font-size:14px;color:var(--t2);line-height:1.65;max-width:320px;">DØi Labs is a California-based aerial intelligence company supporting construction and infrastructure teams with project-specific aerial data capture, analysis, and technical deliverables.</p>
+      <div class="foot-tag">AERIAL INTELLIGENCE FOR COMPLEX OPERATIONS</div>
+      <p style="font-family:var(--body);font-size:14px;color:var(--t2);line-height:1.65;max-width:320px;">DØi Labs is a California-based aerial intelligence company supporting complex operations across construction, infrastructure, and other mission-specific applications with project-specific aerial data capture, analysis, and technical deliverables.</p>
       <div style="font-family:var(--mono);font-size:12px;color:var(--t3);line-height:1.9;">CALIFORNIA-BASED<br>FAA PART 107 · LICENSE #4782910<br>SERVING CALIFORNIA</div>
     </div>
     <div>
@@ -1183,7 +1262,7 @@ footer{
       <div class="foot-col-title">CONTACT</div>
       <ul class="foot-links">
         <li><a href="tel:3102997401">310.299.7401</a></li>
-        <li><a href="mailto:DOiRECON@DOILABS.CA">DOiRECON@DOILABS.CA</a></li>
+        <li><a href="mailto:DOiRECON@DOiLABS.LA">DOiRECON@DOiLABS.LA</a></li>
         <li><a href="#contact">Request Mission Brief</a></li>
       </ul>
     </div>
@@ -1236,17 +1315,30 @@ updateCornerLogo();
 // ── PHASE 1 · MOTION/PERF SCAFFOLD ──
 const REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-// ── MOBILE HERO: two-stage reveal (stage 2 fades/slides in on first scroll) ──
+// ── HERO PROGRESSIVE DISCLOSURE: business description, capability line, and
+// CTA reveal in sequence (not together) as the visitor scrolls through the
+// hero, on both desktop and mobile. Reuses the same scroll-progress math for
+// whichever hero-zone height is active at the current breakpoint. ──
 const mobileHeroQuery = window.matchMedia('(max-width:900px)');
 const heroStage2El = document.querySelector('.hero-stage2');
+function stagedOpacity(p, start, end){ return Math.max(0, Math.min(1, (p - start) / (end - start))); }
 function updateHeroStage(){
   if (!heroZoneEl || !heroStage2El) return;
-  if (!mobileHeroQuery.matches) { heroZoneEl.style.removeProperty('--hp'); heroStage2El.classList.remove('stage2-active'); return; }
-  if (REDUCE) { heroZoneEl.style.setProperty('--hp', 1); heroStage2El.classList.add('stage2-active'); return; }
+  if (REDUCE) {
+    heroZoneEl.style.setProperty('--hp', 1);
+    heroZoneEl.style.setProperty('--s1', 1);
+    heroZoneEl.style.setProperty('--s2', 1);
+    heroZoneEl.style.setProperty('--s3', 1);
+    heroStage2El.classList.add('stage2-active');
+    return;
+  }
   const total = heroZoneEl.offsetHeight - window.innerHeight;
   const progress = total > 0 ? Math.min(1, Math.max(0, window.scrollY / total)) : 1;
   heroZoneEl.style.setProperty('--hp', progress.toFixed(3));
-  heroStage2El.classList.toggle('stage2-active', progress > 0.12);
+  heroZoneEl.style.setProperty('--s1', stagedOpacity(progress, 0, 0.35).toFixed(3));
+  heroZoneEl.style.setProperty('--s2', stagedOpacity(progress, 0.3, 0.65).toFixed(3));
+  heroZoneEl.style.setProperty('--s3', stagedOpacity(progress, 0.55, 0.85).toFixed(3));
+  heroStage2El.classList.toggle('stage2-active', progress > 0.1);
 }
 updateHeroStage();
 window.addEventListener('resize', updateHeroStage, {passive:true});
@@ -1269,29 +1361,39 @@ const plContent = document.querySelector('.pl-content');
 const plDroneVideo = document.querySelector('.pl-bg-video');
 let curStep = 0;
 
-// Drone travels left (~10%) to right (~85%) across the five stages, tied to
-// the same scroll progress that drives the step transitions -- not a
-// decorative loop. Restrained secondary drift (vertical + scale) follows a
-// simple 3-point interpolation matching the "controlled aerial pass" spec:
-// start translateY(8px) scale(.94) -> mid translateY(-4px) scale(1) ->
-// end translateY(5px) scale(.96).
+// Drone flies a variable path through the workflow canvas, tied to the same
+// scroll progress that drives the step transitions -- progressing left to
+// right while alternating up/down (a restrained wave, not a simple slide),
+// like a controlled aerial pass through DEFINE -> PLAN -> CAPTURE -> PROCESS
+// -> DELIVER. x/y are percentages of the workflow canvas; continuous
+// interpolation between these 5 keyframes means reversing scroll naturally
+// retraces the same path -- there is no time-based or looping animation.
+const DRONE_PATH = [
+  {t:0.00, x:10, y:34, s:.92},
+  {t:0.25, x:28, y:62, s:.98},
+  {t:0.50, x:48, y:32, s:1.04},
+  {t:0.75, x:68, y:64, s:.97},
+  {t:1.00, x:88, y:36, s:.92},
+];
+function interpolateDronePath(progress) {
+  const p = Math.min(1, Math.max(0, progress));
+  let i = 0;
+  while (i < DRONE_PATH.length - 2 && p > DRONE_PATH[i + 1].t) i++;
+  const a = DRONE_PATH[i], b = DRONE_PATH[i + 1];
+  const t = (p - a.t) / (b.t - a.t || 1);
+  return {
+    x: a.x + (b.x - a.x) * t,
+    y: a.y + (b.y - a.y) * t,
+    s: a.s + (b.s - a.s) * t,
+  };
+}
 function updateDrone(progress) {
   if (!plDroneVideo) return;
   if (REDUCE) return; // CSS reduced-motion rule pins it to a static centered frame
-  const leftPct = 10 + progress * 75;
-  let dy, ds;
-  if (progress < 0.5) {
-    const t = progress / 0.5;
-    dy = 8 + (-4 - 8) * t;
-    ds = 0.94 + (1 - 0.94) * t;
-  } else {
-    const t = (progress - 0.5) / 0.5;
-    dy = -4 + (5 - -4) * t;
-    ds = 1 + (0.96 - 1) * t;
-  }
-  plDroneVideo.style.setProperty('--dx', leftPct.toFixed(2) + '%');
-  plDroneVideo.style.setProperty('--dy', dy.toFixed(2) + 'px');
-  plDroneVideo.style.setProperty('--ds', ds.toFixed(3));
+  const pos = interpolateDronePath(progress);
+  plDroneVideo.style.setProperty('--dx', pos.x.toFixed(2) + '%');
+  plDroneVideo.style.setProperty('--dy', pos.y.toFixed(2) + '%');
+  plDroneVideo.style.setProperty('--ds', pos.s.toFixed(3));
 }
 
 function updatePipeline() {
@@ -1378,7 +1480,7 @@ window.addEventListener('scroll', () => {
 }, {passive:true});
 
 // ── INTERSECTION REVEALS ──
-const revealEls = document.querySelectorAll('.why-card, .svc-card, .trust-item, .proof-item, .ind-card, .del-card');
+const revealEls = document.querySelectorAll('.why-card, .svc-card, .trust-item, .proof-item, .ind-card, .del-card, .plat-card');
 const io = new IntersectionObserver((entries) => {
   entries.forEach((e, i) => {
     if (e.isIntersecting) {
@@ -1530,7 +1632,7 @@ document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeGloss
       var t=w?city.id+' \xB7 '+w.temp+'\xB0F \xB7 '+w.sky+' \xB7 '+w.wind+'KT':city.id+' \xB7 FETCHING';
       s+=mkItem(t,false,'tk-wx-'+city.id+'-'+n);
     });
-    s+=mkItem('CONSTRUCTION \xB7 INFRASTRUCTURE \xB7 AERIAL INTELLIGENCE',true);
+    s+=mkItem('AERIAL INTELLIGENCE \xB7 COMPLEX OPERATIONS',true);
     [{t:'FAA PART 107 CERTIFIED',h:true},{t:'SINGLE POINT OF CONTACT',h:false},
      {t:'THERMAL IMAGING \xB7 M4T',h:true},{t:'NIGHT OPERATIONS CAPABLE',h:false},
      {t:'PRECISION MAPPING \xB7 RTK/PPK ENABLED',h:true},{t:'AI-ASSISTED INTEL',h:false}
