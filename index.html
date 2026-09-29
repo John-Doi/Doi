@@ -175,8 +175,8 @@ section[id],div[id]{scroll-margin-top:60px;}
 }
 .hero-inner{
   position:relative;z-index:1;flex:1;
-  display:flex;flex-direction:column;justify-content:center;
-  padding:80px 60px 48px;
+  display:flex;flex-direction:column;justify-content:flex-start;
+  padding:96px 60px 48px;
 }
 .hero-left{display:flex;flex-direction:column;gap:22px;}
 .hero-stage2{display:flex;flex-direction:column;gap:22px;}
@@ -263,17 +263,20 @@ section[id],div[id]{scroll-margin-top:60px;}
 /* ── PROOF BAND ── */
 .proof-band{
   position:relative;z-index:1;
-  display:grid;grid-template-columns:repeat(4,1fr);
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
   background:var(--surf);border-top:1px solid var(--bd);border-bottom:1px solid var(--bd);
 }
 .proof-item{
-  padding:48px 44px;border-right:1px solid var(--bd);min-width:0;
+  padding:44px 20px;border-right:1px solid var(--bd);min-width:0;
   opacity:0;transform:translateY(16px);
   transition:opacity .5s,transform .5s cubic-bezier(.16,1,.3,1);
 }
 .proof-item:last-child{border-right:none;}
 .proof-item.revealed{opacity:1;transform:translateY(0);}
-.proof-num{font-family:var(--disp);font-size:clamp(44px,5.5vw,80px);font-weight:900;color:var(--og);line-height:1;letter-spacing:-.02em;overflow-wrap:break-word;hyphens:auto;}
+/* clamp calibrated against the actual Orbitron 900 metrics for "CAPTURE" (the
+   widest of the four words, wider than "DELIVER") so none of the four can
+   wrap at any width from the 900px mobile breakpoint up through 1920px+ */
+.proof-num{font-family:var(--disp);font-size:clamp(24px,3.2vw,56px);font-weight:900;color:var(--og);line-height:1;letter-spacing:-.02em;white-space:nowrap;}
 .proof-label{font-family:var(--mono);font-size:12px;color:var(--t3);letter-spacing:.14em;text-transform:uppercase;margin-top:6px;}
 
 /* ── SEC HEAD ── */
@@ -388,24 +391,33 @@ section[id],div[id]{scroll-margin-top:60px;}
 }
 .pl-dot.active{background:var(--og);transform:scale(1.5);}
 
-/* Repurposed CAPTURE→PROCESS visual (was the AERIAL CONSTRUCTION QA background video) —
-   a small supporting "feed" panel, not a dominant background */
-.pl-visual{
-  position:absolute;right:36px;bottom:64px;width:200px;height:130px;
-  overflow:hidden;z-index:0;pointer-events:none;
-  border:1px solid var(--og);background:#000;
-  box-shadow:0 12px 40px rgba(0,0,0,.6);
-  opacity:0;transform:translateY(14px) scale(.96);
-  transition:opacity .55s cubic-bezier(.16,1,.3,1),transform .55s cubic-bezier(.16,1,.3,1);
+/* Workflow drone: an ambient background layer that travels left-to-right
+   across the whole card as the visitor scrolls through the five stages
+   (DEFINE -> DELIVER), reusing the same video asset that previously sat in
+   a small step-2/3-only inset panel. Deliberately subdued -- environmental
+   storytelling behind the workflow content, never the focal point. --dx/--dy/--ds
+   are written by updateDrone() in lockstep with the existing pipeline scroll
+   progress; see the reduced-motion block below for the static fallback. */
+.pl-visual{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none;}
+.pl-bg-video{
+  position:absolute;top:50%;left:var(--dx,10%);
+  width:300px;height:190px;
+  transform:translate(-50%,-50%) translateY(var(--dy,0px)) scale(var(--ds,1));
+  transform-origin:center;
+  object-fit:cover;object-position:center;
+  opacity:.18;filter:brightness(.55) contrast(.9) saturate(1.05);
+  display:block;
 }
-.pl-visual::before{
-  content:'CAPTURE FEED';position:absolute;top:6px;left:8px;z-index:1;
-  font-family:var(--mono);font-size:9px;letter-spacing:.18em;color:var(--og);
-  text-shadow:0 1px 3px rgba(0,0,0,.8);
+/* Scrim between the drone and the content; slightly stronger toward the
+   center where the title/step text sits than at the edges. */
+.pl-scrim{
+  position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:radial-gradient(ellipse at center,rgba(14,14,14,.55) 0%,rgba(14,14,14,.28) 45%,rgba(14,14,14,.14) 100%);
 }
-.pl-bg-video{width:100%;height:100%;object-fit:cover;object-position:center;transform:scaleX(-1);filter:brightness(.75) saturate(1.05);display:block;}
-.pl-content[data-step="2"] .pl-visual{opacity:1;transform:translateY(0) scale(1);}
-.pl-content[data-step="3"] .pl-visual{opacity:.5;transform:translateY(6px) scale(.98);}
+.pl-content>.sec-head{position:relative;z-index:2;}
+@media(prefers-reduced-motion:reduce){
+  .pl-bg-video{left:45% !important;transform:translate(-50%,-50%) !important;}
+}
 
 /* Mobile pipeline (replaces sticky on small screens) */
 .mob-pipeline{display:none;}
@@ -622,7 +634,10 @@ footer{
   .hero-stage2.stage2-active{pointer-events:auto;}
   .proof-band{grid-template-columns:repeat(2,1fr);}
   .proof-item{padding:32px var(--mobile-gutter);border-right:none;border-bottom:1px solid var(--bd);min-width:0;}
-  .proof-num{font-size:clamp(26px,7.2vw,44px);}
+  /* recalibrated against real Orbitron metrics for "CAPTURE" (the widest
+     word) in the 2-column mobile grid -- the previous clamp max (44px) was
+     measured to be within ~1px of overflowing at common phone widths */
+  .proof-num{font-size:clamp(20px,6vw,36px);}
   .pipeline-zone,.pipeline-pin{display:none;}
   .mob-pipeline{display:block;}
   .why-grid,.svc-grid{grid-template-columns:1fr;margin:40px var(--mobile-gutter) 0;}
@@ -869,6 +884,7 @@ footer{
           <source data-src="Matricet4_Floating.mp4" type="video/mp4">
         </video>
       </div>
+      <div class="pl-scrim" aria-hidden="true"></div>
       <div class="pl-steps">
       <div class="pl-step active">
         <div class="step-bg-num">01</div>
@@ -1250,14 +1266,41 @@ const plZone = document.querySelector('.pipeline-zone');
 const plSteps = document.querySelectorAll('.pl-step');
 const plDots = document.querySelectorAll('.pl-dot');
 const plContent = document.querySelector('.pl-content');
+const plDroneVideo = document.querySelector('.pl-bg-video');
 let curStep = 0;
+
+// Drone travels left (~10%) to right (~85%) across the five stages, tied to
+// the same scroll progress that drives the step transitions -- not a
+// decorative loop. Restrained secondary drift (vertical + scale) follows a
+// simple 3-point interpolation matching the "controlled aerial pass" spec:
+// start translateY(8px) scale(.94) -> mid translateY(-4px) scale(1) ->
+// end translateY(5px) scale(.96).
+function updateDrone(progress) {
+  if (!plDroneVideo) return;
+  if (REDUCE) return; // CSS reduced-motion rule pins it to a static centered frame
+  const leftPct = 10 + progress * 75;
+  let dy, ds;
+  if (progress < 0.5) {
+    const t = progress / 0.5;
+    dy = 8 + (-4 - 8) * t;
+    ds = 0.94 + (1 - 0.94) * t;
+  } else {
+    const t = (progress - 0.5) / 0.5;
+    dy = -4 + (5 - -4) * t;
+    ds = 1 + (0.96 - 1) * t;
+  }
+  plDroneVideo.style.setProperty('--dx', leftPct.toFixed(2) + '%');
+  plDroneVideo.style.setProperty('--dy', dy.toFixed(2) + 'px');
+  plDroneVideo.style.setProperty('--ds', ds.toFixed(3));
+}
 
 function updatePipeline() {
   if (!plZone || !plSteps.length) return;
   const rect = plZone.getBoundingClientRect();
   const maxScroll = plZone.offsetHeight - window.innerHeight;
   const scrolled = Math.max(0, -rect.top);
-  const progress = Math.min(0.9999, scrolled / maxScroll);
+  const progress = maxScroll > 0 ? Math.min(0.9999, Math.max(0, scrolled / maxScroll)) : 0;
+  updateDrone(progress);
   const step = Math.min(plSteps.length - 1, Math.floor(progress * plSteps.length));
   if (step === curStep) return;
   plSteps[curStep].classList.remove('active');
