@@ -45,6 +45,7 @@
   --mono:'Share Tech Mono',monospace;
   --disp:'Orbitron',sans-serif;
   --body:'Rajdhani',sans-serif;
+  --mobile-gutter:20px;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
@@ -178,6 +179,7 @@ section[id],div[id]{scroll-margin-top:60px;}
   padding:80px 60px 48px;
 }
 .hero-left{display:flex;flex-direction:column;gap:22px;}
+.hero-stage2{display:flex;flex-direction:column;gap:22px;}
 .hero-eyebrow{
   font-family:var(--mono);font-size:13px;letter-spacing:.2em;color:var(--og);
   text-transform:uppercase;display:flex;align-items:center;gap:12px;
@@ -604,32 +606,55 @@ footer{
 /* ── MOBILE ── */
 @media(max-width:900px){
   .nav-links,.nav-cta{display:none;}
-  .nav{padding:0 20px;}
-  .hero-zone{height:130vh;}
-  .hero-inner{padding:80px 20px 20px;}
+  .nav{padding:0 var(--mobile-gutter);}
+  /* Mobile hero: substantially shorter than desktop's cinematic zone so the
+     first swipe visibly advances the page. svh avoids Safari's dynamic
+     toolbar changing the scrollable distance mid-scroll (vh is the fallback
+     for browsers without svh support). */
+  .hero-zone{height:150vh;height:150svh;}
+  .hero-pin{height:100vh;height:100svh;}
+  .hero-inner{padding:80px var(--mobile-gutter) 20px;}
+  /* Stage 2 (business description, capability line, primary CTA) fades/slides
+     in as the visitor makes the first scroll through the shortened hero zone,
+     driven by the --hp custom property set in updateHeroStage(). Stage 1
+     (logo, headline, sub-head) stays static as the opening frame. */
+  .hero-stage2{opacity:var(--hp,0);transform:translateY(calc((1 - var(--hp,0)) * 18px));pointer-events:none;}
+  .hero-stage2.stage2-active{pointer-events:auto;}
   .proof-band{grid-template-columns:repeat(2,1fr);}
-  .proof-item{padding:32px 20px;border-right:none;border-bottom:1px solid var(--bd);min-width:0;}
+  .proof-item{padding:32px var(--mobile-gutter);border-right:none;border-bottom:1px solid var(--bd);min-width:0;}
   .proof-num{font-size:clamp(26px,7.2vw,44px);}
   .pipeline-zone,.pipeline-pin{display:none;}
   .mob-pipeline{display:block;}
-  .why-grid,.svc-grid{grid-template-columns:1fr;margin:40px 20px 0;}
+  .why-grid,.svc-grid{grid-template-columns:1fr;margin:40px var(--mobile-gutter) 0;}
   .why-title-wrap{display:flex;flex-direction:column;align-items:center;gap:8px;transform:none;}
-  .trust-section{padding:0 20px 60px;}
+  .trust-section{padding:0 var(--mobile-gutter) 60px;}
   .trust-grid{grid-template-columns:repeat(3,1fr);}
-  .form-section{padding:60px 20px;}
+  .form-section{padding:60px var(--mobile-gutter);}
   .form-grid{grid-template-columns:1fr;}
-  footer{padding:40px 20px 24px;}
+  footer{padding:40px var(--mobile-gutter) 24px;}
   .foot-inner{grid-template-columns:1fr;gap:36px;}
-  .sec-head{padding:60px 20px 0;}
-  .ind-grid,.del-grid{grid-template-columns:1fr;margin:40px 20px 0;}
-  .trust-inline{grid-template-columns:repeat(3,1fr);}
-  /* sticky CTA + clearance so footer isn't covered */
-  body{padding-bottom:62px;}
+  .sec-head{padding:60px var(--mobile-gutter) 0;}
+  .ind-grid,.del-grid{grid-template-columns:1fr;margin:40px var(--mobile-gutter) 0;}
+  /* Same gutter as every other mobile section (was inheriting the desktop
+     60px margin, which made this grid look narrower/offset from its
+     neighbors); 2 columns keeps longer labels like "AIRSPACE COORDINATION"
+     from feeling compressed. */
+  .trust-inline{grid-template-columns:repeat(2,1fr);margin:40px var(--mobile-gutter) 0;}
+  /* sticky CTA + clearance so footer isn't covered; safe-area-inset-bottom
+     accounts for the home-indicator bar on notched iPhones in Safari */
+  body{padding-bottom:calc(62px + env(safe-area-inset-bottom));}
   .mobile-cta{
     display:block;position:fixed;left:0;right:0;bottom:0;z-index:190;
-    padding:9px 16px;background:rgba(8,8,8,.96);backdrop-filter:blur(12px);
+    padding:9px var(--mobile-gutter) calc(9px + env(safe-area-inset-bottom));
+    background:rgba(8,8,8,.96);backdrop-filter:blur(12px);
     border-top:1px solid var(--bd);
+    transition:transform .3s ease;
   }
+  /* Hidden while any part of the hero is still on screen so it never
+     competes with the hero's own REQUEST MISSION BRIEF CTA; reappears once
+     the visitor has scrolled past the hero (same trigger point as the
+     corner logo reveal). */
+  .mobile-cta.hide-in-hero{transform:translateY(120%);}
   .mobile-cta button{
     width:100%;font-family:var(--mono);font-size:12px;letter-spacing:.12em;font-weight:700;
     background:var(--og);color:#000;border:none;padding:14px;cursor:pointer;
@@ -771,11 +796,13 @@ footer{
         <img class="hero-logo-img" src="DOiLabs_Logo2.png" alt="DØi Labs">
         <h1 class="hero-h1">AERIAL<br><span class="og">INTELLIGENCE</span></h1>
         <p class="hero-sub-head">FOR CONSTRUCTION + INFRASTRUCTURE</p>
-        <p class="hero-sub">DØi Labs captures, processes, and transforms aerial data into actionable project intelligence for construction and infrastructure teams.</p>
-        <div class="hero-platform">AERIAL MAPPING · THERMAL INSPECTION · PROJECT PROGRESS · SITE INTELLIGENCE</div>
-        <div class="hero-btns">
-          <button class="btn-p" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">REQUEST MISSION BRIEF</button>
-          <button class="btn-g" onclick="document.getElementById('pipeline').scrollIntoView({behavior:'smooth'})">VIEW PROCESS →</button>
+        <div class="hero-stage2">
+          <p class="hero-sub">DØi Labs captures, processes, and transforms aerial data into actionable project intelligence for construction and infrastructure teams.</p>
+          <div class="hero-platform">AERIAL MAPPING · THERMAL INSPECTION · PROJECT PROGRESS · SITE INTELLIGENCE</div>
+          <div class="hero-btns">
+            <button class="btn-p" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">REQUEST MISSION BRIEF</button>
+            <button class="btn-g" onclick="document.getElementById('pipeline').scrollIntoView({behavior:'smooth'})">VIEW PROCESS →</button>
+          </div>
         </div>
       </div>
     </div>
@@ -1193,6 +1220,31 @@ updateCornerLogo();
 // ── PHASE 1 · MOTION/PERF SCAFFOLD ──
 const REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+// ── MOBILE HERO: two-stage reveal (stage 2 fades/slides in on first scroll) ──
+const mobileHeroQuery = window.matchMedia('(max-width:900px)');
+const heroStage2El = document.querySelector('.hero-stage2');
+function updateHeroStage(){
+  if (!heroZoneEl || !heroStage2El) return;
+  if (!mobileHeroQuery.matches) { heroZoneEl.style.removeProperty('--hp'); heroStage2El.classList.remove('stage2-active'); return; }
+  if (REDUCE) { heroZoneEl.style.setProperty('--hp', 1); heroStage2El.classList.add('stage2-active'); return; }
+  const total = heroZoneEl.offsetHeight - window.innerHeight;
+  const progress = total > 0 ? Math.min(1, Math.max(0, window.scrollY / total)) : 1;
+  heroZoneEl.style.setProperty('--hp', progress.toFixed(3));
+  heroStage2El.classList.toggle('stage2-active', progress > 0.12);
+}
+updateHeroStage();
+window.addEventListener('resize', updateHeroStage, {passive:true});
+
+// ── MOBILE STICKY CTA: hidden while the hero is in view so it never
+// duplicates the hero's own REQUEST MISSION BRIEF button ──
+const mobileCtaEl = document.querySelector('.mobile-cta');
+function updateMobileCta(){
+  if (!mobileCtaEl || !heroZoneEl) return;
+  if (!mobileHeroQuery.matches) { mobileCtaEl.classList.remove('hide-in-hero'); return; }
+  mobileCtaEl.classList.toggle('hide-in-hero', heroZoneEl.getBoundingClientRect().bottom > 0);
+}
+updateMobileCta();
+
 // ── PIPELINE SCROLL ──
 const plZone = document.querySelector('.pipeline-zone');
 const plSteps = document.querySelectorAll('.pl-step');
@@ -1267,6 +1319,8 @@ updateRail();
 let scrollTicking = false;
 function onScrollFrame(){
   updateCornerLogo();
+  updateHeroStage();
+  updateMobileCta();
   updatePipeline();
   updateProgress();
   updateRail();
