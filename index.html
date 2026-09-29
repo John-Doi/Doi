@@ -45,9 +45,10 @@
   --mono:'Share Tech Mono',monospace;
   --disp:'Orbitron',sans-serif;
   --body:'Rajdhani',sans-serif;
+  --mobile-gutter:20px;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-html{scroll-behavior:auto;}
+html{scroll-behavior:smooth;}
 body{font-family:var(--body);font-size:18px;line-height:1.65;background:var(--bg);color:var(--t1);overflow-x:hidden;cursor:crosshair;}
 /* Global small-text upsize: mono labels 12px→14px, 11px→13px */
 [class*="font-family:var(--mono)"]{font-size:14px;}
@@ -127,7 +128,7 @@ section[id],div[id]{scroll-margin-top:60px;}
 .nav-cta:hover{background:var(--tiger);}
 
 /* ── HERO SCROLL ZONE ── */
-.hero-zone{height:300vh;position:relative;}
+.hero-zone{height:190vh;position:relative;}
 .hero-pin{
   position:sticky;top:0;height:100vh;overflow:hidden;
   display:flex;flex-direction:column;background:var(--bg);
@@ -174,10 +175,11 @@ section[id],div[id]{scroll-margin-top:60px;}
 }
 .hero-inner{
   position:relative;z-index:1;flex:1;
-  display:flex;flex-direction:column;justify-content:center;
-  padding:80px 60px 48px;
+  display:flex;flex-direction:column;justify-content:flex-start;
+  padding:96px 60px 48px;
 }
 .hero-left{display:flex;flex-direction:column;gap:22px;}
+.hero-stage2{display:flex;flex-direction:column;gap:22px;}
 .hero-eyebrow{
   font-family:var(--mono);font-size:13px;letter-spacing:.2em;color:var(--og);
   text-transform:uppercase;display:flex;align-items:center;gap:12px;
@@ -261,17 +263,20 @@ section[id],div[id]{scroll-margin-top:60px;}
 /* ── PROOF BAND ── */
 .proof-band{
   position:relative;z-index:1;
-  display:grid;grid-template-columns:repeat(4,1fr);
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
   background:var(--surf);border-top:1px solid var(--bd);border-bottom:1px solid var(--bd);
 }
 .proof-item{
-  padding:48px 44px;border-right:1px solid var(--bd);min-width:0;
+  padding:44px 20px;border-right:1px solid var(--bd);min-width:0;
   opacity:0;transform:translateY(16px);
   transition:opacity .5s,transform .5s cubic-bezier(.16,1,.3,1);
 }
 .proof-item:last-child{border-right:none;}
 .proof-item.revealed{opacity:1;transform:translateY(0);}
-.proof-num{font-family:var(--disp);font-size:clamp(44px,5.5vw,80px);font-weight:900;color:var(--og);line-height:1;letter-spacing:-.02em;overflow-wrap:break-word;hyphens:auto;}
+/* clamp calibrated against the actual Orbitron 900 metrics for "CAPTURE" (the
+   widest of the four words, wider than "DELIVER") so none of the four can
+   wrap at any width from the 900px mobile breakpoint up through 1920px+ */
+.proof-num{font-family:var(--disp);font-size:clamp(24px,3.2vw,56px);font-weight:900;color:var(--og);line-height:1;letter-spacing:-.02em;white-space:nowrap;}
 .proof-label{font-family:var(--mono);font-size:12px;color:var(--t3);letter-spacing:.14em;text-transform:uppercase;margin-top:6px;}
 
 /* ── SEC HEAD ── */
@@ -386,24 +391,33 @@ section[id],div[id]{scroll-margin-top:60px;}
 }
 .pl-dot.active{background:var(--og);transform:scale(1.5);}
 
-/* Repurposed CAPTURE→PROCESS visual (was the AERIAL CONSTRUCTION QA background video) —
-   a small supporting "feed" panel, not a dominant background */
-.pl-visual{
-  position:absolute;right:36px;bottom:64px;width:200px;height:130px;
-  overflow:hidden;z-index:0;pointer-events:none;
-  border:1px solid var(--og);background:#000;
-  box-shadow:0 12px 40px rgba(0,0,0,.6);
-  opacity:0;transform:translateY(14px) scale(.96);
-  transition:opacity .55s cubic-bezier(.16,1,.3,1),transform .55s cubic-bezier(.16,1,.3,1);
+/* Workflow drone: an ambient background layer that travels left-to-right
+   across the whole card as the visitor scrolls through the five stages
+   (DEFINE -> DELIVER), reusing the same video asset that previously sat in
+   a small step-2/3-only inset panel. Deliberately subdued -- environmental
+   storytelling behind the workflow content, never the focal point. --dx/--dy/--ds
+   are written by updateDrone() in lockstep with the existing pipeline scroll
+   progress; see the reduced-motion block below for the static fallback. */
+.pl-visual{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none;}
+.pl-bg-video{
+  position:absolute;top:50%;left:var(--dx,10%);
+  width:300px;height:190px;
+  transform:translate(-50%,-50%) translateY(var(--dy,0px)) scale(var(--ds,1));
+  transform-origin:center;
+  object-fit:cover;object-position:center;
+  opacity:.18;filter:brightness(.55) contrast(.9) saturate(1.05);
+  display:block;
 }
-.pl-visual::before{
-  content:'CAPTURE FEED';position:absolute;top:6px;left:8px;z-index:1;
-  font-family:var(--mono);font-size:9px;letter-spacing:.18em;color:var(--og);
-  text-shadow:0 1px 3px rgba(0,0,0,.8);
+/* Scrim between the drone and the content; slightly stronger toward the
+   center where the title/step text sits than at the edges. */
+.pl-scrim{
+  position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:radial-gradient(ellipse at center,rgba(14,14,14,.55) 0%,rgba(14,14,14,.28) 45%,rgba(14,14,14,.14) 100%);
 }
-.pl-bg-video{width:100%;height:100%;object-fit:cover;object-position:center;transform:scaleX(-1);filter:brightness(.75) saturate(1.05);display:block;}
-.pl-content[data-step="2"] .pl-visual{opacity:1;transform:translateY(0) scale(1);}
-.pl-content[data-step="3"] .pl-visual{opacity:.5;transform:translateY(6px) scale(.98);}
+.pl-content>.sec-head{position:relative;z-index:2;}
+@media(prefers-reduced-motion:reduce){
+  .pl-bg-video{left:45% !important;transform:translate(-50%,-50%) !important;}
+}
 
 /* Mobile pipeline (replaces sticky on small screens) */
 .mob-pipeline{display:none;}
@@ -532,7 +546,7 @@ footer{
   position:relative;z-index:1;background:var(--bg);
   border-top:1px solid var(--bd);padding:60px 60px 36px;
 }
-.foot-inner{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:60px;margin-bottom:40px;}
+.foot-inner{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:40px;margin-bottom:40px;}
 .foot-brand{display:flex;flex-direction:column;gap:14px;}
 .foot-logo{font-family:var(--disp);font-size:22px;font-weight:900;color:var(--t1);letter-spacing:.06em;}
 .foot-logo em{color:var(--og);font-style:normal;}
@@ -604,31 +618,58 @@ footer{
 /* ── MOBILE ── */
 @media(max-width:900px){
   .nav-links,.nav-cta{display:none;}
-  .nav{padding:0 20px;}
-  .hero-inner{padding:80px 20px 20px;}
+  .nav{padding:0 var(--mobile-gutter);}
+  /* Mobile hero: substantially shorter than desktop's cinematic zone so the
+     first swipe visibly advances the page. svh avoids Safari's dynamic
+     toolbar changing the scrollable distance mid-scroll (vh is the fallback
+     for browsers without svh support). */
+  .hero-zone{height:150vh;height:150svh;}
+  .hero-pin{height:100vh;height:100svh;}
+  .hero-inner{padding:80px var(--mobile-gutter) 20px;}
+  /* Stage 2 (business description, capability line, primary CTA) fades/slides
+     in as the visitor makes the first scroll through the shortened hero zone,
+     driven by the --hp custom property set in updateHeroStage(). Stage 1
+     (logo, headline, sub-head) stays static as the opening frame. */
+  .hero-stage2{opacity:var(--hp,0);transform:translateY(calc((1 - var(--hp,0)) * 18px));pointer-events:none;}
+  .hero-stage2.stage2-active{pointer-events:auto;}
   .proof-band{grid-template-columns:repeat(2,1fr);}
-  .proof-item{padding:32px 20px;border-right:none;border-bottom:1px solid var(--bd);min-width:0;}
-  .proof-num{font-size:clamp(26px,7.2vw,44px);}
+  .proof-item{padding:32px var(--mobile-gutter);border-right:none;border-bottom:1px solid var(--bd);min-width:0;}
+  /* recalibrated against real Orbitron metrics for "CAPTURE" (the widest
+     word) in the 2-column mobile grid -- the previous clamp max (44px) was
+     measured to be within ~1px of overflowing at common phone widths */
+  .proof-num{font-size:clamp(20px,6vw,36px);}
   .pipeline-zone,.pipeline-pin{display:none;}
   .mob-pipeline{display:block;}
-  .why-grid,.svc-grid{grid-template-columns:1fr;margin:40px 20px 0;}
+  .why-grid,.svc-grid{grid-template-columns:1fr;margin:40px var(--mobile-gutter) 0;}
   .why-title-wrap{display:flex;flex-direction:column;align-items:center;gap:8px;transform:none;}
-  .trust-section{padding:0 20px 60px;}
+  .trust-section{padding:0 var(--mobile-gutter) 60px;}
   .trust-grid{grid-template-columns:repeat(3,1fr);}
-  .form-section{padding:60px 20px;}
+  .form-section{padding:60px var(--mobile-gutter);}
   .form-grid{grid-template-columns:1fr;}
-  footer{padding:40px 20px 24px;}
+  footer{padding:40px var(--mobile-gutter) 24px;}
   .foot-inner{grid-template-columns:1fr;gap:36px;}
-  .sec-head{padding:60px 20px 0;}
-  .ind-grid,.del-grid{grid-template-columns:1fr;margin:40px 20px 0;}
-  .trust-inline{grid-template-columns:repeat(3,1fr);}
-  /* sticky CTA + clearance so footer isn't covered */
-  body{padding-bottom:62px;}
+  .sec-head{padding:60px var(--mobile-gutter) 0;}
+  .ind-grid,.del-grid{grid-template-columns:1fr;margin:40px var(--mobile-gutter) 0;}
+  /* Same gutter as every other mobile section (was inheriting the desktop
+     60px margin, which made this grid look narrower/offset from its
+     neighbors); 2 columns keeps longer labels like "AIRSPACE COORDINATION"
+     from feeling compressed. */
+  .trust-inline{grid-template-columns:repeat(2,1fr);margin:40px var(--mobile-gutter) 0;}
+  /* sticky CTA + clearance so footer isn't covered; safe-area-inset-bottom
+     accounts for the home-indicator bar on notched iPhones in Safari */
+  body{padding-bottom:calc(62px + env(safe-area-inset-bottom));}
   .mobile-cta{
     display:block;position:fixed;left:0;right:0;bottom:0;z-index:190;
-    padding:9px 16px;background:rgba(8,8,8,.96);backdrop-filter:blur(12px);
+    padding:9px var(--mobile-gutter) calc(9px + env(safe-area-inset-bottom));
+    background:rgba(8,8,8,.96);backdrop-filter:blur(12px);
     border-top:1px solid var(--bd);
+    transition:transform .3s ease;
   }
+  /* Hidden while any part of the hero is still on screen so it never
+     competes with the hero's own REQUEST MISSION BRIEF CTA; reappears once
+     the visitor has scrolled past the hero (same trigger point as the
+     corner logo reveal). */
+  .mobile-cta.hide-in-hero{transform:translateY(120%);}
   .mobile-cta button{
     width:100%;font-family:var(--mono);font-size:12px;letter-spacing:.12em;font-weight:700;
     background:var(--og);color:#000;border:none;padding:14px;cursor:pointer;
@@ -770,11 +811,13 @@ footer{
         <img class="hero-logo-img" src="DOiLabs_Logo2.png" alt="DØi Labs">
         <h1 class="hero-h1">AERIAL<br><span class="og">INTELLIGENCE</span></h1>
         <p class="hero-sub-head">FOR CONSTRUCTION + INFRASTRUCTURE</p>
-        <p class="hero-sub">DØi Labs captures, processes, and transforms aerial data into actionable project intelligence for construction and infrastructure teams.</p>
-        <div class="hero-platform">AERIAL MAPPING · THERMAL INSPECTION · PROJECT PROGRESS · SITE INTELLIGENCE</div>
-        <div class="hero-btns">
-          <button class="btn-p" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">REQUEST MISSION BRIEF</button>
-          <button class="btn-g" onclick="document.getElementById('pipeline').scrollIntoView({behavior:'smooth'})">VIEW PROCESS →</button>
+        <div class="hero-stage2">
+          <p class="hero-sub">DØi Labs captures, processes, and transforms aerial data into actionable project intelligence for construction and infrastructure teams.</p>
+          <div class="hero-platform">AERIAL MAPPING · THERMAL INSPECTION · PROJECT PROGRESS · SITE INTELLIGENCE</div>
+          <div class="hero-btns">
+            <button class="btn-p" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">REQUEST MISSION BRIEF</button>
+            <button class="btn-g" onclick="document.getElementById('pipeline').scrollIntoView({behavior:'smooth'})">VIEW PROCESS →</button>
+          </div>
         </div>
       </div>
     </div>
@@ -798,12 +841,12 @@ footer{
     <p class="sec-desc">Specialized aerial intelligence for the operations that can't afford to guess.</p>
   </div>
   <div class="ind-grid">
-    <div class="ind-card"><div class="ind-label">IND · 01</div><div class="ind-title">CONSTRUCTION</div><p class="ind-body">Weekly progress documentation, cut/fill <span class="gloss" data-term="volumetric">volumetrics</span>, and as-built vs design comparison. Direct BIM and PM platform integration.</p><div class="ind-wm">CON</div></div>
-    <div class="ind-card"><div class="ind-label">IND · 02</div><div class="ind-title">SOLAR & UTILITIES</div><p class="ind-body">Calibrated thermal imaging for panel efficiency mapping, hotspot detection, and electrical infrastructure inspection at scale.</p><div class="ind-wm">SOL</div></div>
-    <div class="ind-card"><div class="ind-label">IND · 03</div><div class="ind-title">REAL ESTATE</div><p class="ind-body">High-resolution marketing aerials, site boundary documentation, and pre-acquisition land surveys for developers and brokers.</p><div class="ind-wm">RE</div></div>
-    <div class="ind-card"><div class="ind-label">IND · 04</div><div class="ind-title">PUBLIC SAFETY</div><p class="ind-body">Perimeter surveillance, search and rescue support, incident documentation, and real-time situational awareness for emergency ops.</p><div class="ind-wm">SAF</div></div>
-    <div class="ind-card"><div class="ind-label">IND · 05</div><div class="ind-title">AGRICULTURE</div><p class="ind-body"><span class="gloss" data-term="ndvi">NDVI</span> crop health mapping, irrigation analysis, and yield estimation across large-acreage operations with resolution calibrated to mission requirements.</p><div class="ind-wm">AGR</div></div>
-    <div class="ind-card"><div class="ind-label">IND · 06</div><div class="ind-title">INFRASTRUCTURE</div><p class="ind-body">Bridge, road, and facility inspection with thermal and <span class="gloss" data-term="rgb">RGB</span> payloads. OSHA-compliant documentation and anomaly reporting.</p><div class="ind-wm">INF</div></div>
+    <div class="ind-card"><div class="ind-label">IND · 01</div><div class="ind-title">CONSTRUCTION</div><p class="ind-body">Repeatable aerial documentation gives project teams a clearer view of site conditions, progress, and change over time. DØi supports milestone documentation, progress assessment, site observation, earthwork/<span class="gloss" data-term="volumetric">volumetric</span> observation, and project coordination with consistent aerial data and project-specific outputs.</p><div class="ind-wm">CON</div></div>
+    <div class="ind-card"><div class="ind-label">IND · 02</div><div class="ind-title">SOLAR & UTILITIES</div><p class="ind-body">Panel and electrical assets are difficult to fully assess from the ground. Calibrated thermal and visual aerial imaging help identify hotspots, anomalies, and condition issues across a site, supporting inspection and maintenance planning.</p><div class="ind-wm">SOL</div></div>
+    <div class="ind-card"><div class="ind-label">IND · 03</div><div class="ind-title">REAL ESTATE</div><p class="ind-body">Ground-level photos rarely capture a property's full context. High-resolution aerial imagery documents site layout, condition, and surrounding context to support listings, marketing, and pre-acquisition review.</p><div class="ind-wm">RE</div></div>
+    <div class="ind-card"><div class="ind-label">IND · 04</div><div class="ind-title">PUBLIC SAFETY</div><p class="ind-body">Ground teams can't always safely or quickly assess an active incident or large area. Aerial observation provides real-time visual context and documentation to support search, incident response, and situational awareness for public safety teams.</p><div class="ind-wm">SAF</div></div>
+    <div class="ind-card"><div class="ind-label">IND · 05</div><div class="ind-title">AGRICULTURE</div><p class="ind-body">Ground-level crop inspection is slow and often incomplete. <span class="gloss" data-term="ndvi">NDVI</span> and visual aerial imagery help identify irrigation issues, stress patterns, and crop health variation across a field, supporting management decisions.</p><div class="ind-wm">AGR</div></div>
+    <div class="ind-card"><div class="ind-label">IND · 06</div><div class="ind-title">INFRASTRUCTURE</div><p class="ind-body"><span class="gloss" data-term="rgb">Visual</span>, thermal, and spatial data help teams document asset conditions and observe areas that are difficult or inefficient to assess from the ground. DØi supports condition documentation, inspection workflows, change assessment, and site intelligence.</p><div class="ind-wm">INF</div></div>
   </div>
 </section>
 
@@ -817,9 +860,9 @@ footer{
   <div class="svc-grid">
     <div class="svc-card"><button class="svc-head" type="button" aria-expanded="false" aria-controls="svc-content-1"><span class="svc-head-l"><span class="svc-div">DIV · RCN</span><span class="svc-title">AERIAL RECONNAISSANCE</span></span><span class="svc-toggle" aria-hidden="true"></span></button><div class="svc-content" id="svc-content-1"><div class="svc-body">Aerial site reconnaissance, condition assessment, and situational documentation using visual and thermal sensing capabilities. Supports site assessment, project documentation, asset observation, and mission-specific field intelligence.</div></div><div class="svc-wm">RCN</div></div>
     <div class="svc-card"><button class="svc-head" type="button" aria-expanded="false" aria-controls="svc-content-2"><span class="svc-head-l"><span class="svc-div">DIV · OPS</span><span class="svc-title">CONSTRUCTION OPERATIONS</span></span><span class="svc-toggle" aria-hidden="true"></span></button><div class="svc-content" id="svc-content-2"><div class="svc-body">Project progress documentation, condition assessment, milestone comparison, volumetric analysis, and site intelligence for construction teams. DØi captures repeatable aerial data that helps document conditions, identify changes, verify progress, and support project decision-making.</div></div><div class="svc-wm">OPS</div></div>
-    <div class="svc-card"><button class="svc-head" type="button" aria-expanded="false" aria-controls="svc-content-3"><span class="svc-head-l"><span class="svc-div">DIV · SYN</span><span class="svc-title">PRECISION MAPPING</span></span><span class="svc-toggle" aria-hidden="true"></span></button><div class="svc-content" id="svc-content-3"><div class="svc-body">High-resolution aerial mapping with RTK/PPK-enabled workflows when mission requirements support them. Deliverables can include georeferenced orthomosaics, DSM/DTM products, point clouds, and other project-specific spatial datasets.</div></div><div class="svc-wm">SYN</div></div>
+    <div class="svc-card"><button class="svc-head" type="button" aria-expanded="false" aria-controls="svc-content-3"><span class="svc-head-l"><span class="svc-div">DIV · SYN</span><span class="svc-title">PRECISION MAPPING</span></span><span class="svc-toggle" aria-hidden="true"></span></button><div class="svc-content" id="svc-content-3"><div class="svc-body">Georeferenced imagery capture, photogrammetric processing, and terrain/site modeling using RTK/PPK-enabled workflows when mission requirements support them.</div></div><div class="svc-wm">SYN</div></div>
     <div class="svc-card"><button class="svc-head" type="button" aria-expanded="false" aria-controls="svc-content-4"><span class="svc-head-l"><span class="svc-div">DIV · THM</span><span class="svc-title">THERMAL INSPECTION</span></span><span class="svc-toggle" aria-hidden="true"></span></button><div class="svc-content" id="svc-content-4"><div class="svc-body">Solar panel efficiency analysis, electrical inspection, HVAC assessment, roof moisture mapping, and wildfire perimeter monitoring using calibrated thermal sensors.</div></div><div class="svc-wm">THM</div></div>
-    <div class="svc-card"><button class="svc-head" type="button" aria-expanded="false" aria-controls="svc-content-5"><span class="svc-head-l"><span class="svc-div">DIV · XLAB</span><span class="svc-title">INTELLIGENCE ANALYSIS</span></span><span class="svc-toggle" aria-hidden="true"></span></button><div class="svc-content" id="svc-content-5"><div class="svc-body">AI-enhanced object detection, change analysis, anomaly identification, and predictive modeling. Turn raw aerial data into decision-ready intelligence reports.</div></div><div class="svc-wm">XLAB</div></div>
+    <div class="svc-card"><button class="svc-head" type="button" aria-expanded="false" aria-controls="svc-content-5"><span class="svc-head-l"><span class="svc-div">DIV · XLAB</span><span class="svc-title">INTELLIGENCE ANALYSIS</span></span><span class="svc-toggle" aria-hidden="true"></span></button><div class="svc-content" id="svc-content-5"><div class="svc-body">AI-enhanced object detection, change analysis, and anomaly identification. Transforms captured aerial data into organized comparisons, observations, and analytical outputs teams can act on.</div></div><div class="svc-wm">XLAB</div></div>
     <div class="svc-card"><button class="svc-head" type="button" aria-expanded="false" aria-controls="svc-content-6"><span class="svc-head-l"><span class="svc-div">DIV · FAB</span><span class="svc-title">CUSTOM MISSION DESIGN</span></span><span class="svc-toggle" aria-hidden="true"></span></button><div class="svc-content" id="svc-content-6"><div class="svc-body">Bespoke operational planning for complex, multi-objective missions. Specialized payload integration, extended <span class="gloss" data-term="bvlos">BVLOS</span> coordination, and custom data pipeline development.</div></div><div class="svc-wm">FAB</div></div>
   </div>
 </section>
@@ -841,6 +884,7 @@ footer{
           <source data-src="Matricet4_Floating.mp4" type="video/mp4">
         </video>
       </div>
+      <div class="pl-scrim" aria-hidden="true"></div>
       <div class="pl-steps">
       <div class="pl-step active">
         <div class="step-bg-num">01</div>
@@ -945,13 +989,14 @@ footer{
 </div>
 
 <div class="del-section">
-  <div class="sec-tag" style="margin:0 0 28px;">WHAT YOU RECEIVE</div>
+  <div class="sec-tag" style="margin:0 0 10px;">WHAT YOU RECEIVE</div>
+  <p class="sec-desc" style="margin:0 auto 28px;text-align:center;">The tangible outputs of the capabilities and workflow above, configured to each mission's specific requirements.</p>
   <div class="del-grid">
     <div class="del-card"><button class="del-head" type="button" aria-expanded="false" aria-controls="del-content-1"><span class="del-head-l"><span class="del-type">DEL · 01</span><span class="del-title">ORTHOMOSAIC GEOTIFF</span></span><span class="del-toggle" aria-hidden="true"></span></button><div class="del-content" id="del-content-1"><p class="del-body">Georeferenced aerial imagery stitched for site measurement, design overlays, and record documentation.</p><div class="del-format">FORMAT: GeoTIFF · GEOREFERENCED OUTPUT</div></div></div>
     <div class="del-card"><button class="del-head" type="button" aria-expanded="false" aria-controls="del-content-2"><span class="del-head-l"><span class="del-type">DEL · 02</span><span class="del-title">3D POINT CLOUD</span></span><span class="del-toggle" aria-hidden="true"></span></button><div class="del-content" id="del-content-2"><p class="del-body">Dense photogrammetric point clouds for site documentation, earthwork analysis, change assessment, and integration with compatible design and project workflows.</p><div class="del-format">FORMAT: LAS / LAZ · PROJECT-SPECIFIC SPATIAL OUTPUT</div></div></div>
     <div class="del-card"><button class="del-head" type="button" aria-expanded="false" aria-controls="del-content-3"><span class="del-head-l"><span class="del-type">DEL · 03</span><span class="del-title">THERMAL REPORT</span></span><span class="del-toggle" aria-hidden="true"></span></button><div class="del-content" id="del-content-3"><p class="del-body">Annotated thermal maps with defect classifications, GPS coordinates, and severity ratings. Ready for maintenance scheduling.</p><div class="del-format">FORMAT: PDF + GEOTIFF · RADIOMETRIC</div></div></div>
-    <div class="del-card"><button class="del-head" type="button" aria-expanded="false" aria-controls="del-content-4"><span class="del-head-l"><span class="del-type">DEL · 04</span><span class="del-title">PROGRESS REPORT PDF</span></span><span class="del-toggle" aria-hidden="true"></span></button><div class="del-content" id="del-content-4"><p class="del-body">Timestamped site documentation with overlays, issue flags, and completion percentage. PM and legal-grade record keeping.</p><div class="del-format">FORMAT: PDF · TIMESTAMPED · GPS-TAGGED</div></div></div>
-    <div class="del-card"><button class="del-head" type="button" aria-expanded="false" aria-controls="del-content-5"><span class="del-head-l"><span class="del-type">DEL · 05</span><span class="del-title">SURFACE MODEL (DSM/DTM)</span></span><span class="del-toggle" aria-hidden="true"></span></button><div class="del-content" id="del-content-5"><p class="del-body">Digital surface and terrain models for drainage analysis, cut/fill quantification, and grading plan verification.</p><div class="del-format">FORMAT: GeoTIFF / XYZ · 5CM POSTING</div></div></div>
+    <div class="del-card"><button class="del-head" type="button" aria-expanded="false" aria-controls="del-content-4"><span class="del-head-l"><span class="del-type">DEL · 04</span><span class="del-title">PROGRESS REPORT PDF</span></span><span class="del-toggle" aria-hidden="true"></span></button><div class="del-content" id="del-content-4"><p class="del-body">Timestamped site documentation with overlays, issue flags, and completion percentage, organized for project management recordkeeping.</p><div class="del-format">FORMAT: PDF · TIMESTAMPED · GPS-TAGGED</div></div></div>
+    <div class="del-card"><button class="del-head" type="button" aria-expanded="false" aria-controls="del-content-5"><span class="del-head-l"><span class="del-type">DEL · 05</span><span class="del-title">SURFACE MODEL (DSM/DTM)</span></span><span class="del-toggle" aria-hidden="true"></span></button><div class="del-content" id="del-content-5"><p class="del-body">Digital surface and terrain models for drainage analysis, cut/fill quantification, and grading plan verification.</p><div class="del-format">FORMAT: GeoTIFF / XYZ · PROJECT-SPECIFIC RESOLUTION</div></div></div>
     <div class="del-card"><button class="del-head" type="button" aria-expanded="false" aria-controls="del-content-6"><span class="del-head-l"><span class="del-type">DEL · 06</span><span class="del-title">INTELLIGENCE BRIEF</span></span><span class="del-toggle" aria-hidden="true"></span></button><div class="del-content" id="del-content-6"><p class="del-body">AI-assisted anomaly detection with prioritized action items. Change detection between missions. Decision-ready summary for project leads.</p><div class="del-format">FORMAT: PDF + ANNOTATED IMAGERY</div></div></div>
   </div>
 </div>
@@ -1004,7 +1049,7 @@ footer{
       <div class="trust-item"><div class="trust-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="trust-label">INSURED OPERATIONS</div></div>
       <div class="trust-item"><div class="trust-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="2"/><path d="M16.24 7.76a6 6 0 0 1 0 8.49M7.76 16.24a6 6 0 0 1 0-8.49M19.07 4.93a10 10 0 0 1 0 14.14M4.93 19.07a10 10 0 0 1 0-14.14"/></svg></div><div class="trust-label">AIRSPACE COORDINATION</div></div>
       <div class="trust-item"><div class="trust-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></div><div class="trust-label">DATA SECURE</div></div>
-      <div class="trust-item"><div class="trust-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="9" y="9" width="6" height="6" rx="1"/><circle cx="5" cy="5" r="2.5"/><circle cx="19" cy="5" r="2.5"/><circle cx="5" cy="19" r="2.5"/><circle cx="19" cy="19" r="2.5"/><path d="m7 7 2 2M17 7l-2 2M7 17l2-2M17 17l-2-2"/></svg></div><div class="trust-label">ENTERPRISE AERIAL OPERATIONS</div></div>
+      <div class="trust-item"><div class="trust-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="9" y="9" width="6" height="6" rx="1"/><circle cx="5" cy="5" r="2.5"/><circle cx="19" cy="5" r="2.5"/><circle cx="5" cy="19" r="2.5"/><circle cx="19" cy="19" r="2.5"/><path d="m7 7 2 2M17 7l-2 2M7 17l2-2M17 17l-2-2"/></svg></div><div class="trust-label">SINGLE POINT OF CONTACT</div></div>
     </div>
   </div>
 </section>
@@ -1113,25 +1158,33 @@ footer{
   <div class="foot-inner">
     <div class="foot-brand">
       <div class="foot-logo">DØ<em>i</em> LABS</div>
+      <div class="foot-tag">AERIAL INTELLIGENCE FOR CONSTRUCTION + INFRASTRUCTURE</div>
+      <p style="font-family:var(--body);font-size:14px;color:var(--t2);line-height:1.65;max-width:320px;">DØi Labs is a California-based aerial intelligence company supporting construction and infrastructure teams with project-specific aerial data capture, analysis, and technical deliverables.</p>
       <div style="font-family:var(--mono);font-size:12px;color:var(--t3);line-height:1.9;">CALIFORNIA-BASED<br>FAA PART 107 · LICENSE #4782910<br>SERVING CALIFORNIA</div>
     </div>
     <div>
-      <div class="foot-col-title">OPERATIONS</div>
+      <div class="foot-col-title">NAVIGATION</div>
       <ul class="foot-links">
-        <li><a href="#">Aerial Reconnaissance</a></li>
-        <li><a href="#">Construction Mapping</a></li>
-        <li><a href="#">Thermal Inspection</a></li>
-        <li><a href="#">Intelligence Analysis</a></li>
-        <li><a href="#">Custom Missions</a></li>
+        <li><a href="#industries">Industries</a></li>
+        <li><a href="#services">Capabilities</a></li>
+        <li><a href="#pipeline">Workflow</a></li>
+        <li><a href="#mission">Why DØi</a></li>
+        <li><a href="#contact">Contact</a></li>
       </ul>
     </div>
     <div>
-      <div class="foot-col-title">CONNECT</div>
+      <div class="foot-col-title">COMPANY</div>
       <ul class="foot-links">
+        <li><a href="/privacy">Privacy</a></li>
+        <li><a href="/terms">Terms</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="foot-col-title">CONTACT</div>
+      <ul class="foot-links">
+        <li><a href="tel:3102997401">310.299.7401</a></li>
+        <li><a href="mailto:DOiRECON@DOILABS.CA">DOiRECON@DOILABS.CA</a></li>
         <li><a href="#contact">Request Mission Brief</a></li>
-        <li><a href="#">Case Studies</a></li>
-        <li><a href="#">Compliance & Certs</a></li>
-        <li><a href="#">About DØi Labs</a></li>
       </ul>
     </div>
   </div>
@@ -1183,19 +1236,71 @@ updateCornerLogo();
 // ── PHASE 1 · MOTION/PERF SCAFFOLD ──
 const REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+// ── MOBILE HERO: two-stage reveal (stage 2 fades/slides in on first scroll) ──
+const mobileHeroQuery = window.matchMedia('(max-width:900px)');
+const heroStage2El = document.querySelector('.hero-stage2');
+function updateHeroStage(){
+  if (!heroZoneEl || !heroStage2El) return;
+  if (!mobileHeroQuery.matches) { heroZoneEl.style.removeProperty('--hp'); heroStage2El.classList.remove('stage2-active'); return; }
+  if (REDUCE) { heroZoneEl.style.setProperty('--hp', 1); heroStage2El.classList.add('stage2-active'); return; }
+  const total = heroZoneEl.offsetHeight - window.innerHeight;
+  const progress = total > 0 ? Math.min(1, Math.max(0, window.scrollY / total)) : 1;
+  heroZoneEl.style.setProperty('--hp', progress.toFixed(3));
+  heroStage2El.classList.toggle('stage2-active', progress > 0.12);
+}
+updateHeroStage();
+window.addEventListener('resize', updateHeroStage, {passive:true});
+
+// ── MOBILE STICKY CTA: hidden while the hero is in view so it never
+// duplicates the hero's own REQUEST MISSION BRIEF button ──
+const mobileCtaEl = document.querySelector('.mobile-cta');
+function updateMobileCta(){
+  if (!mobileCtaEl || !heroZoneEl) return;
+  if (!mobileHeroQuery.matches) { mobileCtaEl.classList.remove('hide-in-hero'); return; }
+  mobileCtaEl.classList.toggle('hide-in-hero', heroZoneEl.getBoundingClientRect().bottom > 0);
+}
+updateMobileCta();
+
 // ── PIPELINE SCROLL ──
 const plZone = document.querySelector('.pipeline-zone');
 const plSteps = document.querySelectorAll('.pl-step');
 const plDots = document.querySelectorAll('.pl-dot');
 const plContent = document.querySelector('.pl-content');
+const plDroneVideo = document.querySelector('.pl-bg-video');
 let curStep = 0;
+
+// Drone travels left (~10%) to right (~85%) across the five stages, tied to
+// the same scroll progress that drives the step transitions -- not a
+// decorative loop. Restrained secondary drift (vertical + scale) follows a
+// simple 3-point interpolation matching the "controlled aerial pass" spec:
+// start translateY(8px) scale(.94) -> mid translateY(-4px) scale(1) ->
+// end translateY(5px) scale(.96).
+function updateDrone(progress) {
+  if (!plDroneVideo) return;
+  if (REDUCE) return; // CSS reduced-motion rule pins it to a static centered frame
+  const leftPct = 10 + progress * 75;
+  let dy, ds;
+  if (progress < 0.5) {
+    const t = progress / 0.5;
+    dy = 8 + (-4 - 8) * t;
+    ds = 0.94 + (1 - 0.94) * t;
+  } else {
+    const t = (progress - 0.5) / 0.5;
+    dy = -4 + (5 - -4) * t;
+    ds = 1 + (0.96 - 1) * t;
+  }
+  plDroneVideo.style.setProperty('--dx', leftPct.toFixed(2) + '%');
+  plDroneVideo.style.setProperty('--dy', dy.toFixed(2) + 'px');
+  plDroneVideo.style.setProperty('--ds', ds.toFixed(3));
+}
 
 function updatePipeline() {
   if (!plZone || !plSteps.length) return;
   const rect = plZone.getBoundingClientRect();
   const maxScroll = plZone.offsetHeight - window.innerHeight;
   const scrolled = Math.max(0, -rect.top);
-  const progress = Math.min(0.9999, scrolled / maxScroll);
+  const progress = maxScroll > 0 ? Math.min(0.9999, Math.max(0, scrolled / maxScroll)) : 0;
+  updateDrone(progress);
   const step = Math.min(plSteps.length - 1, Math.floor(progress * plSteps.length));
   if (step === curStep) return;
   plSteps[curStep].classList.remove('active');
@@ -1257,6 +1362,8 @@ updateRail();
 let scrollTicking = false;
 function onScrollFrame(){
   updateCornerLogo();
+  updateHeroStage();
+  updateMobileCta();
   updatePipeline();
   updateProgress();
   updateRail();
@@ -1424,7 +1531,7 @@ document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeGloss
       s+=mkItem(t,false,'tk-wx-'+city.id+'-'+n);
     });
     s+=mkItem('CONSTRUCTION \xB7 INFRASTRUCTURE \xB7 AERIAL INTELLIGENCE',true);
-    [{t:'FAA PART 107 CERTIFIED',h:true},{t:'ENTERPRISE AERIAL OPERATIONS',h:false},
+    [{t:'FAA PART 107 CERTIFIED',h:true},{t:'SINGLE POINT OF CONTACT',h:false},
      {t:'THERMAL IMAGING \xB7 M4T',h:true},{t:'NIGHT OPERATIONS CAPABLE',h:false},
      {t:'PRECISION MAPPING \xB7 RTK/PPK ENABLED',h:true},{t:'AI-ASSISTED INTEL',h:false}
     ].forEach(function(x){s+=mkItem(x.t,x.h);});
