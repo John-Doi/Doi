@@ -127,7 +127,7 @@ section[id],div[id]{scroll-margin-top:60px;}
 .nav-cta:hover{background:var(--tiger);}
 
 /* ── HERO SCROLL ZONE ── */
-.hero-zone{height:300vh;position:relative;}
+.hero-zone{height:190vh;position:relative;}
 .hero-pin{
   position:sticky;top:0;height:100vh;overflow:hidden;
   display:flex;flex-direction:column;background:var(--bg);
@@ -532,7 +532,7 @@ footer{
   position:relative;z-index:1;background:var(--bg);
   border-top:1px solid var(--bd);padding:60px 60px 36px;
 }
-.foot-inner{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:60px;margin-bottom:40px;}
+.foot-inner{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:40px;margin-bottom:40px;}
 .foot-brand{display:flex;flex-direction:column;gap:14px;}
 .foot-logo{font-family:var(--disp);font-size:22px;font-weight:900;color:var(--t1);letter-spacing:.06em;}
 .foot-logo em{color:var(--og);font-style:normal;}
@@ -605,6 +605,7 @@ footer{
 @media(max-width:900px){
   .nav-links,.nav-cta{display:none;}
   .nav{padding:0 20px;}
+  .hero-zone{height:130vh;}
   .hero-inner{padding:80px 20px 20px;}
   .proof-band{grid-template-columns:repeat(2,1fr);}
   .proof-item{padding:32px 20px;border-right:none;border-bottom:1px solid var(--bd);min-width:0;}
@@ -798,12 +799,12 @@ footer{
     <p class="sec-desc">Specialized aerial intelligence for the operations that can't afford to guess.</p>
   </div>
   <div class="ind-grid">
-    <div class="ind-card"><div class="ind-label">IND · 01</div><div class="ind-title">CONSTRUCTION</div><p class="ind-body">Weekly progress documentation, cut/fill <span class="gloss" data-term="volumetric">volumetrics</span>, and as-built vs design comparison. Direct BIM and PM platform integration.</p><div class="ind-wm">CON</div></div>
-    <div class="ind-card"><div class="ind-label">IND · 02</div><div class="ind-title">SOLAR & UTILITIES</div><p class="ind-body">Calibrated thermal imaging for panel efficiency mapping, hotspot detection, and electrical infrastructure inspection at scale.</p><div class="ind-wm">SOL</div></div>
-    <div class="ind-card"><div class="ind-label">IND · 03</div><div class="ind-title">REAL ESTATE</div><p class="ind-body">High-resolution marketing aerials, site boundary documentation, and pre-acquisition land surveys for developers and brokers.</p><div class="ind-wm">RE</div></div>
-    <div class="ind-card"><div class="ind-label">IND · 04</div><div class="ind-title">PUBLIC SAFETY</div><p class="ind-body">Perimeter surveillance, search and rescue support, incident documentation, and real-time situational awareness for emergency ops.</p><div class="ind-wm">SAF</div></div>
-    <div class="ind-card"><div class="ind-label">IND · 05</div><div class="ind-title">AGRICULTURE</div><p class="ind-body"><span class="gloss" data-term="ndvi">NDVI</span> crop health mapping, irrigation analysis, and yield estimation across large-acreage operations with resolution calibrated to mission requirements.</p><div class="ind-wm">AGR</div></div>
-    <div class="ind-card"><div class="ind-label">IND · 06</div><div class="ind-title">INFRASTRUCTURE</div><p class="ind-body">Bridge, road, and facility inspection with thermal and <span class="gloss" data-term="rgb">RGB</span> payloads. OSHA-compliant documentation and anomaly reporting.</p><div class="ind-wm">INF</div></div>
+    <div class="ind-card"><div class="ind-label">IND · 01</div><div class="ind-title">CONSTRUCTION</div><p class="ind-body">Repeatable aerial documentation gives project teams a clearer view of site conditions, progress, and change over time. DØi supports milestone documentation, progress assessment, site observation, earthwork/<span class="gloss" data-term="volumetric">volumetric</span> observation, and project coordination with consistent aerial data and project-specific outputs.</p><div class="ind-wm">CON</div></div>
+    <div class="ind-card"><div class="ind-label">IND · 02</div><div class="ind-title">SOLAR & UTILITIES</div><p class="ind-body">Panel and electrical assets are difficult to fully assess from the ground. Calibrated thermal and visual aerial imaging help identify hotspots, anomalies, and condition issues across a site, supporting inspection and maintenance planning.</p><div class="ind-wm">SOL</div></div>
+    <div class="ind-card"><div class="ind-label">IND · 03</div><div class="ind-title">REAL ESTATE</div><p class="ind-body">Ground-level photos rarely capture a property's full context. High-resolution aerial imagery documents site layout, condition, and surrounding context to support listings, marketing, and pre-acquisition review.</p><div class="ind-wm">RE</div></div>
+    <div class="ind-card"><div class="ind-label">IND · 04</div><div class="ind-title">PUBLIC SAFETY</div><p class="ind-body">Ground teams can't always safely or quickly assess an active incident or large area. Aerial observation provides real-time visual context and documentation to support search, incident response, and situational awareness for public safety teams.</p><div class="ind-wm">SAF</div></div>
+    <div class="ind-card"><div class="ind-label">IND · 05</div><div class="ind-title">AGRICULTURE</div><p class="ind-body">Ground-level crop inspection is slow and often incomplete. <span class="gloss" data-term="ndvi">NDVI</span> and visual aerial imagery help identify irrigation issues, stress patterns, and crop health variation across a field, supporting management decisions.</p><div class="ind-wm">AGR</div></div>
+    <div class="ind-card"><div class="ind-label">IND · 06</div><div class="ind-title">INFRASTRUCTURE</div><p class="ind-body"><span class="gloss" data-term="rgb">Visual</span>, thermal, and spatial data help teams document asset conditions and observe areas that are difficult or inefficient to assess from the ground. DØi supports condition documentation, inspection workflows, change assessment, and site intelligence.</p><div class="ind-wm">INF</div></div>
   </div>
 </section>
 
@@ -817,9 +818,9 @@ footer{
   <div class="svc-grid">
     <div class="svc-card"><button class="svc-head" type="button" aria-expanded="false" aria-controls="svc-content-1"><span class="svc-head-l"><span class="svc-div">DIV · RCN</span><span class="svc-title">AERIAL RECONNAISSANCE</span></span><span class="svc-toggle" aria-hidden="true"></span></button><div class="svc-content" id="svc-content-1"><div class="svc-body">Aerial site reconnaissance, condition assessment, and situational documentation using visual and thermal sensing capabilities. Supports site assessment, project documentation, asset observation, and mission-specific field intelligence.</div></div><div class="svc-wm">RCN</div></div>
     <div class="svc-card"><button class="svc-head" type="button" aria-expanded="false" aria-controls="svc-content-2"><span class="svc-head-l"><span class="svc-div">DIV · OPS</span><span class="svc-title">CONSTRUCTION OPERATIONS</span></span><span class="svc-toggle" aria-hidden="true"></span></button><div class="svc-content" id="svc-content-2"><div class="svc-body">Project progress documentation, condition assessment, milestone comparison, volumetric analysis, and site intelligence for construction teams. DØi captures repeatable aerial data that helps document conditions, identify changes, verify progress, and support project decision-making.</div></div><div class="svc-wm">OPS</div></div>
-    <div class="svc-card"><button class="svc-head" type="button" aria-expanded="false" aria-controls="svc-content-3"><span class="svc-head-l"><span class="svc-div">DIV · SYN</span><span class="svc-title">PRECISION MAPPING</span></span><span class="svc-toggle" aria-hidden="true"></span></button><div class="svc-content" id="svc-content-3"><div class="svc-body">High-resolution aerial mapping with RTK/PPK-enabled workflows when mission requirements support them. Deliverables can include georeferenced orthomosaics, DSM/DTM products, point clouds, and other project-specific spatial datasets.</div></div><div class="svc-wm">SYN</div></div>
+    <div class="svc-card"><button class="svc-head" type="button" aria-expanded="false" aria-controls="svc-content-3"><span class="svc-head-l"><span class="svc-div">DIV · SYN</span><span class="svc-title">PRECISION MAPPING</span></span><span class="svc-toggle" aria-hidden="true"></span></button><div class="svc-content" id="svc-content-3"><div class="svc-body">Georeferenced imagery capture, photogrammetric processing, and terrain/site modeling using RTK/PPK-enabled workflows when mission requirements support them.</div></div><div class="svc-wm">SYN</div></div>
     <div class="svc-card"><button class="svc-head" type="button" aria-expanded="false" aria-controls="svc-content-4"><span class="svc-head-l"><span class="svc-div">DIV · THM</span><span class="svc-title">THERMAL INSPECTION</span></span><span class="svc-toggle" aria-hidden="true"></span></button><div class="svc-content" id="svc-content-4"><div class="svc-body">Solar panel efficiency analysis, electrical inspection, HVAC assessment, roof moisture mapping, and wildfire perimeter monitoring using calibrated thermal sensors.</div></div><div class="svc-wm">THM</div></div>
-    <div class="svc-card"><button class="svc-head" type="button" aria-expanded="false" aria-controls="svc-content-5"><span class="svc-head-l"><span class="svc-div">DIV · XLAB</span><span class="svc-title">INTELLIGENCE ANALYSIS</span></span><span class="svc-toggle" aria-hidden="true"></span></button><div class="svc-content" id="svc-content-5"><div class="svc-body">AI-enhanced object detection, change analysis, anomaly identification, and predictive modeling. Turn raw aerial data into decision-ready intelligence reports.</div></div><div class="svc-wm">XLAB</div></div>
+    <div class="svc-card"><button class="svc-head" type="button" aria-expanded="false" aria-controls="svc-content-5"><span class="svc-head-l"><span class="svc-div">DIV · XLAB</span><span class="svc-title">INTELLIGENCE ANALYSIS</span></span><span class="svc-toggle" aria-hidden="true"></span></button><div class="svc-content" id="svc-content-5"><div class="svc-body">AI-enhanced object detection, change analysis, and anomaly identification. Transforms captured aerial data into organized comparisons, observations, and analytical outputs teams can act on.</div></div><div class="svc-wm">XLAB</div></div>
     <div class="svc-card"><button class="svc-head" type="button" aria-expanded="false" aria-controls="svc-content-6"><span class="svc-head-l"><span class="svc-div">DIV · FAB</span><span class="svc-title">CUSTOM MISSION DESIGN</span></span><span class="svc-toggle" aria-hidden="true"></span></button><div class="svc-content" id="svc-content-6"><div class="svc-body">Bespoke operational planning for complex, multi-objective missions. Specialized payload integration, extended <span class="gloss" data-term="bvlos">BVLOS</span> coordination, and custom data pipeline development.</div></div><div class="svc-wm">FAB</div></div>
   </div>
 </section>
@@ -945,13 +946,14 @@ footer{
 </div>
 
 <div class="del-section">
-  <div class="sec-tag" style="margin:0 0 28px;">WHAT YOU RECEIVE</div>
+  <div class="sec-tag" style="margin:0 0 10px;">WHAT YOU RECEIVE</div>
+  <p class="sec-desc" style="margin:0 auto 28px;text-align:center;">The tangible outputs of the capabilities and workflow above, configured to each mission's specific requirements.</p>
   <div class="del-grid">
     <div class="del-card"><button class="del-head" type="button" aria-expanded="false" aria-controls="del-content-1"><span class="del-head-l"><span class="del-type">DEL · 01</span><span class="del-title">ORTHOMOSAIC GEOTIFF</span></span><span class="del-toggle" aria-hidden="true"></span></button><div class="del-content" id="del-content-1"><p class="del-body">Georeferenced aerial imagery stitched for site measurement, design overlays, and record documentation.</p><div class="del-format">FORMAT: GeoTIFF · GEOREFERENCED OUTPUT</div></div></div>
     <div class="del-card"><button class="del-head" type="button" aria-expanded="false" aria-controls="del-content-2"><span class="del-head-l"><span class="del-type">DEL · 02</span><span class="del-title">3D POINT CLOUD</span></span><span class="del-toggle" aria-hidden="true"></span></button><div class="del-content" id="del-content-2"><p class="del-body">Dense photogrammetric point clouds for site documentation, earthwork analysis, change assessment, and integration with compatible design and project workflows.</p><div class="del-format">FORMAT: LAS / LAZ · PROJECT-SPECIFIC SPATIAL OUTPUT</div></div></div>
     <div class="del-card"><button class="del-head" type="button" aria-expanded="false" aria-controls="del-content-3"><span class="del-head-l"><span class="del-type">DEL · 03</span><span class="del-title">THERMAL REPORT</span></span><span class="del-toggle" aria-hidden="true"></span></button><div class="del-content" id="del-content-3"><p class="del-body">Annotated thermal maps with defect classifications, GPS coordinates, and severity ratings. Ready for maintenance scheduling.</p><div class="del-format">FORMAT: PDF + GEOTIFF · RADIOMETRIC</div></div></div>
-    <div class="del-card"><button class="del-head" type="button" aria-expanded="false" aria-controls="del-content-4"><span class="del-head-l"><span class="del-type">DEL · 04</span><span class="del-title">PROGRESS REPORT PDF</span></span><span class="del-toggle" aria-hidden="true"></span></button><div class="del-content" id="del-content-4"><p class="del-body">Timestamped site documentation with overlays, issue flags, and completion percentage. PM and legal-grade record keeping.</p><div class="del-format">FORMAT: PDF · TIMESTAMPED · GPS-TAGGED</div></div></div>
-    <div class="del-card"><button class="del-head" type="button" aria-expanded="false" aria-controls="del-content-5"><span class="del-head-l"><span class="del-type">DEL · 05</span><span class="del-title">SURFACE MODEL (DSM/DTM)</span></span><span class="del-toggle" aria-hidden="true"></span></button><div class="del-content" id="del-content-5"><p class="del-body">Digital surface and terrain models for drainage analysis, cut/fill quantification, and grading plan verification.</p><div class="del-format">FORMAT: GeoTIFF / XYZ · 5CM POSTING</div></div></div>
+    <div class="del-card"><button class="del-head" type="button" aria-expanded="false" aria-controls="del-content-4"><span class="del-head-l"><span class="del-type">DEL · 04</span><span class="del-title">PROGRESS REPORT PDF</span></span><span class="del-toggle" aria-hidden="true"></span></button><div class="del-content" id="del-content-4"><p class="del-body">Timestamped site documentation with overlays, issue flags, and completion percentage, organized for project management recordkeeping.</p><div class="del-format">FORMAT: PDF · TIMESTAMPED · GPS-TAGGED</div></div></div>
+    <div class="del-card"><button class="del-head" type="button" aria-expanded="false" aria-controls="del-content-5"><span class="del-head-l"><span class="del-type">DEL · 05</span><span class="del-title">SURFACE MODEL (DSM/DTM)</span></span><span class="del-toggle" aria-hidden="true"></span></button><div class="del-content" id="del-content-5"><p class="del-body">Digital surface and terrain models for drainage analysis, cut/fill quantification, and grading plan verification.</p><div class="del-format">FORMAT: GeoTIFF / XYZ · PROJECT-SPECIFIC RESOLUTION</div></div></div>
     <div class="del-card"><button class="del-head" type="button" aria-expanded="false" aria-controls="del-content-6"><span class="del-head-l"><span class="del-type">DEL · 06</span><span class="del-title">INTELLIGENCE BRIEF</span></span><span class="del-toggle" aria-hidden="true"></span></button><div class="del-content" id="del-content-6"><p class="del-body">AI-assisted anomaly detection with prioritized action items. Change detection between missions. Decision-ready summary for project leads.</p><div class="del-format">FORMAT: PDF + ANNOTATED IMAGERY</div></div></div>
   </div>
 </div>
@@ -1004,7 +1006,7 @@ footer{
       <div class="trust-item"><div class="trust-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="trust-label">INSURED OPERATIONS</div></div>
       <div class="trust-item"><div class="trust-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="2"/><path d="M16.24 7.76a6 6 0 0 1 0 8.49M7.76 16.24a6 6 0 0 1 0-8.49M19.07 4.93a10 10 0 0 1 0 14.14M4.93 19.07a10 10 0 0 1 0-14.14"/></svg></div><div class="trust-label">AIRSPACE COORDINATION</div></div>
       <div class="trust-item"><div class="trust-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></div><div class="trust-label">DATA SECURE</div></div>
-      <div class="trust-item"><div class="trust-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="9" y="9" width="6" height="6" rx="1"/><circle cx="5" cy="5" r="2.5"/><circle cx="19" cy="5" r="2.5"/><circle cx="5" cy="19" r="2.5"/><circle cx="19" cy="19" r="2.5"/><path d="m7 7 2 2M17 7l-2 2M7 17l2-2M17 17l-2-2"/></svg></div><div class="trust-label">ENTERPRISE AERIAL OPERATIONS</div></div>
+      <div class="trust-item"><div class="trust-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="9" y="9" width="6" height="6" rx="1"/><circle cx="5" cy="5" r="2.5"/><circle cx="19" cy="5" r="2.5"/><circle cx="5" cy="19" r="2.5"/><circle cx="19" cy="19" r="2.5"/><path d="m7 7 2 2M17 7l-2 2M7 17l2-2M17 17l-2-2"/></svg></div><div class="trust-label">SINGLE POINT OF CONTACT</div></div>
     </div>
   </div>
 </section>
@@ -1113,25 +1115,33 @@ footer{
   <div class="foot-inner">
     <div class="foot-brand">
       <div class="foot-logo">DØ<em>i</em> LABS</div>
+      <div class="foot-tag">AERIAL INTELLIGENCE FOR CONSTRUCTION + INFRASTRUCTURE</div>
+      <p style="font-family:var(--body);font-size:14px;color:var(--t2);line-height:1.65;max-width:320px;">DØi Labs is a California-based aerial intelligence company supporting construction and infrastructure teams with project-specific aerial data capture, analysis, and technical deliverables.</p>
       <div style="font-family:var(--mono);font-size:12px;color:var(--t3);line-height:1.9;">CALIFORNIA-BASED<br>FAA PART 107 · LICENSE #4782910<br>SERVING CALIFORNIA</div>
     </div>
     <div>
-      <div class="foot-col-title">OPERATIONS</div>
+      <div class="foot-col-title">NAVIGATION</div>
       <ul class="foot-links">
-        <li><a href="#">Aerial Reconnaissance</a></li>
-        <li><a href="#">Construction Mapping</a></li>
-        <li><a href="#">Thermal Inspection</a></li>
-        <li><a href="#">Intelligence Analysis</a></li>
-        <li><a href="#">Custom Missions</a></li>
+        <li><a href="#industries">Industries</a></li>
+        <li><a href="#services">Capabilities</a></li>
+        <li><a href="#pipeline">Workflow</a></li>
+        <li><a href="#mission">Why DØi</a></li>
+        <li><a href="#contact">Contact</a></li>
       </ul>
     </div>
     <div>
-      <div class="foot-col-title">CONNECT</div>
+      <div class="foot-col-title">COMPANY</div>
       <ul class="foot-links">
+        <li><a href="/privacy">Privacy</a></li>
+        <li><a href="/terms">Terms</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="foot-col-title">CONTACT</div>
+      <ul class="foot-links">
+        <li><a href="tel:3102997401">310.299.7401</a></li>
+        <li><a href="mailto:DOiRECON@DOILABS.CA">DOiRECON@DOILABS.CA</a></li>
         <li><a href="#contact">Request Mission Brief</a></li>
-        <li><a href="#">Case Studies</a></li>
-        <li><a href="#">Compliance & Certs</a></li>
-        <li><a href="#">About DØi Labs</a></li>
       </ul>
     </div>
   </div>
@@ -1424,7 +1434,7 @@ document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeGloss
       s+=mkItem(t,false,'tk-wx-'+city.id+'-'+n);
     });
     s+=mkItem('CONSTRUCTION \xB7 INFRASTRUCTURE \xB7 AERIAL INTELLIGENCE',true);
-    [{t:'FAA PART 107 CERTIFIED',h:true},{t:'ENTERPRISE AERIAL OPERATIONS',h:false},
+    [{t:'FAA PART 107 CERTIFIED',h:true},{t:'SINGLE POINT OF CONTACT',h:false},
      {t:'THERMAL IMAGING \xB7 M4T',h:true},{t:'NIGHT OPERATIONS CAPABLE',h:false},
      {t:'PRECISION MAPPING \xB7 RTK/PPK ENABLED',h:true},{t:'AI-ASSISTED INTEL',h:false}
     ].forEach(function(x){s+=mkItem(x.t,x.h);});
