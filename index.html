@@ -361,7 +361,7 @@ section[id],div[id]{scroll-margin-top:60px;}
 }
 .pl-content{
   display:flex;flex-direction:column;align-items:center;padding:60px;
-  background:var(--surf);
+  background:rgba(14,14,14,.82);
   position:relative;overflow:hidden;
   width:100%;max-width:900px;margin:0 auto;
 }
@@ -404,9 +404,10 @@ section[id],div[id]{scroll-margin-top:60px;}
    as the visitor scrolls through the five stages (DEFINE -> DELIVER) --
    progressing left-to-right, edge to edge, while alternating up/down, like a
    controlled aerial pass rather than a simple horizontal slide. It sits as a
-   sibling of .pl-content, painted first, so the card's own opaque background
-   naturally occludes it while it passes behind the card and reveals it again
-   in the open space on either side. Reuses the same video asset that
+   sibling of .pl-content, painted first; the card's background is a
+   translucent near-black (not fully opaque) so the drone still reads faintly
+   through the card itself, in addition to being fully visible in the open
+   space on either side. Reuses the same video asset that
    previously sat in a small step-2/3-only inset panel. --dx/--dy (percentages
    of the pinned viewport) and --ds (scale) are written by updateDrone() in
    lockstep with the existing pipeline scroll progress; --dflip mirrors the
