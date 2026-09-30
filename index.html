@@ -219,6 +219,7 @@ section[id],div[id]{scroll-margin-top:60px;}
 .hero-platform{
   font-family:var(--mono);font-size:12px;color:var(--t3);letter-spacing:.08em;
   padding:10px 0;border-top:1px solid var(--bd);border-bottom:1px solid var(--bd);
+  text-align:center;
 }
 .hero-platform span{color:var(--og);}
 .hero-btns{display:flex;gap:14px;flex-wrap:wrap;}
@@ -288,6 +289,7 @@ section[id],div[id]{scroll-margin-top:60px;}
 }
 .proof-item{
   padding:44px 20px;border-right:1px solid var(--bd);min-width:0;
+  text-align:center;
   opacity:0;transform:translateY(16px);
   transition:opacity .5s,transform .5s cubic-bezier(.16,1,.3,1);
 }
@@ -435,9 +437,9 @@ section[id],div[id]{scroll-margin-top:60px;}
   transform:translate(-50%,-50%) scale(var(--ds,1)) scaleX(var(--dflip,1));
   transform-origin:center;
   object-fit:cover;object-position:center;
-  opacity:.16;filter:brightness(.22) contrast(1.15) saturate(1.05);
-  -webkit-mask-image:radial-gradient(ellipse 60% 60% at center,#000 15%,transparent 92%);
-  mask-image:radial-gradient(ellipse 60% 60% at center,#000 15%,transparent 92%);
+  opacity:.3;filter:brightness(.34) contrast(1.3) saturate(1.1) blur(1.5px);
+  -webkit-mask-image:radial-gradient(ellipse 65% 65% at center,#000 0%,transparent 96%);
+  mask-image:radial-gradient(ellipse 65% 65% at center,#000 0%,transparent 96%);
   display:block;
 }
 /* Scrim between the drone and the content; slightly stronger toward the
@@ -608,19 +610,29 @@ footer{
 
 /* ── INDUSTRIES (Phase 3) ── */
 .ind-section{position:relative;z-index:1;padding:0 0 80px;background:var(--surf);border-top:1px solid var(--bd);}
-/* Editorial numbered list instead of a bordered card grid -- deliberately a
-   different shape from Capabilities/Deliverables so the page doesn't read as
-   one card component repeated down the page. Reveal is a left-slide fade,
-   not the translateY used by the grid sections. */
-.ind-list{margin:40px 60px 0;border-top:1px solid var(--bd);}
-.ind-row{display:grid;grid-template-columns:64px 1fr;gap:28px;padding:32px 0;border-bottom:1px solid var(--bd);opacity:0;transform:translateX(-16px);transition:opacity .5s,transform .5s cubic-bezier(.16,1,.3,1),background .25s;}
-.ind-row.revealed{opacity:1;transform:translateX(0);}
-.ind-row:hover{background:rgba(255,107,26,.03);}
-.ind-row:hover .ind-num{color:var(--og);}
-.ind-num{font-family:var(--disp);font-size:32px;font-weight:900;color:rgba(255,107,26,.32);line-height:1;transition:color .25s;}
-.ind-main{min-width:0;}
-.ind-title{font-family:var(--disp);font-size:19px;font-weight:700;color:var(--t1);margin-bottom:10px;letter-spacing:.02em;}
-.ind-body{font-size:15px;color:var(--t2);line-height:1.65;max-width:660px;}
+/* Two-up bordered card grid, centered on the page like the other card
+   sections; each card leads with a themed line-icon (matching the Why DØi
+   icon treatment) instead of a plain index number. */
+.ind-list{
+  display:grid;grid-template-columns:repeat(2,1fr);
+  gap:1px;background:var(--bd);border:1px solid var(--bd);margin:40px 60px 0;
+}
+.ind-row{
+  background:var(--card);position:relative;overflow:hidden;
+  padding:36px;display:flex;flex-direction:column;gap:16px;
+  opacity:0;transform:translateY(18px);
+  transition:opacity .5s,transform .5s cubic-bezier(.16,1,.3,1),background .3s;
+}
+.ind-row.revealed{opacity:1;transform:translateY(0);}
+.ind-row:hover{background:var(--card2);}
+.ind-row-head{display:flex;align-items:center;gap:16px;}
+.ind-icon{
+  width:56px;height:56px;border:1px solid var(--bd2);flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;color:var(--og);
+}
+.ind-icon svg{width:28px;height:28px;}
+.ind-title{font-family:var(--disp);font-size:19px;font-weight:700;color:var(--t1);letter-spacing:.02em;}
+.ind-body{font-size:15px;color:var(--t2);line-height:1.65;}
 
 /* Oversized titles for Deliverables + Why sections */
 .del-section .sec-title,.why-section .sec-title{font-size:clamp(38px,5vw,80px);}
@@ -684,9 +696,8 @@ footer{
   footer{padding:40px var(--mobile-gutter) 24px;}
   .foot-inner{grid-template-columns:1fr;gap:36px;}
   .sec-head{padding:60px var(--mobile-gutter) 0;}
-  .ind-list{margin:40px var(--mobile-gutter) 0;}
-  .ind-row{grid-template-columns:36px 1fr;gap:16px;padding:24px 0;}
-  .ind-num{font-size:20px;}
+  .ind-list{grid-template-columns:1fr;margin:40px var(--mobile-gutter) 0;}
+  .ind-row{padding:28px var(--mobile-gutter);}
   .del-grid{grid-template-columns:1fr;margin:40px var(--mobile-gutter) 0;}
   /* Same gutter as every other mobile section (was inheriting the desktop
      60px margin, which made this grid look narrower/offset from its
@@ -880,12 +891,12 @@ footer{
     <p class="sec-desc">Specialized aerial intelligence for the operations that can't afford to guess.</p>
   </div>
   <div class="ind-list">
-    <div class="ind-row"><div class="ind-num">01</div><div class="ind-main"><div class="ind-title">CONSTRUCTION</div><p class="ind-body">Repeatable aerial documentation gives project teams a clearer view of site conditions, progress, and change over time. DØi supports milestone documentation, progress assessment, site observation, earthwork/<span class="gloss" data-term="volumetric">volumetric</span> observation, and project coordination with consistent aerial data and project-specific outputs.</p></div></div>
-    <div class="ind-row"><div class="ind-num">02</div><div class="ind-main"><div class="ind-title">SOLAR & UTILITIES</div><p class="ind-body">Panel and electrical assets are difficult to fully assess from the ground. Calibrated thermal and visual aerial imaging help identify hotspots, anomalies, and condition issues across a site, supporting inspection and maintenance planning.</p></div></div>
-    <div class="ind-row"><div class="ind-num">03</div><div class="ind-main"><div class="ind-title">REAL ESTATE</div><p class="ind-body">Ground-level photos rarely capture a property's full context. High-resolution aerial imagery documents site layout, condition, and surrounding context to support listings, marketing, and pre-acquisition review.</p></div></div>
-    <div class="ind-row"><div class="ind-num">04</div><div class="ind-main"><div class="ind-title">PUBLIC SAFETY</div><p class="ind-body">Ground teams can't always safely or quickly assess an active incident or large area. Aerial observation provides real-time visual context and documentation to support search, incident response, and situational awareness for public safety teams.</p></div></div>
-    <div class="ind-row"><div class="ind-num">05</div><div class="ind-main"><div class="ind-title">AGRICULTURE</div><p class="ind-body">Ground-level crop inspection is slow and often incomplete. <span class="gloss" data-term="ndvi">NDVI</span> and visual aerial imagery help identify irrigation issues, stress patterns, and crop health variation across a field, supporting management decisions.</p></div></div>
-    <div class="ind-row"><div class="ind-num">06</div><div class="ind-main"><div class="ind-title">INFRASTRUCTURE</div><p class="ind-body"><span class="gloss" data-term="rgb">Visual</span>, thermal, and spatial data help teams document asset conditions and observe areas that are difficult or inefficient to assess from the ground. DØi supports condition documentation, inspection workflows, change assessment, and site intelligence.</p></div></div>
+    <div class="ind-row"><div class="ind-row-head"><div class="ind-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 18v-1a8 8 0 0116 0v1"/><path d="M2 18h20"/><path d="M12 5v3"/></svg></div><div class="ind-title">CONSTRUCTION</div></div><p class="ind-body">Repeatable aerial documentation gives project teams a clearer view of site conditions, progress, and change over time. DØi supports milestone documentation, progress assessment, site observation, earthwork/<span class="gloss" data-term="volumetric">volumetric</span> observation, and project coordination with consistent aerial data and project-specific outputs.</p></div>
+    <div class="ind-row"><div class="ind-row-head"><div class="ind-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="4"/><path d="M12 3v2M12 19v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M3 12h2M19 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg></div><div class="ind-title">SOLAR & UTILITIES</div></div><p class="ind-body">Panel and electrical assets are difficult to fully assess from the ground. Calibrated thermal and visual aerial imaging help identify hotspots, anomalies, and condition issues across a site, supporting inspection and maintenance planning.</p></div>
+    <div class="ind-row"><div class="ind-row-head"><div class="ind-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h5v-6h4v6h5V10"/></svg></div><div class="ind-title">REAL ESTATE</div></div><p class="ind-body">Ground-level photos rarely capture a property's full context. High-resolution aerial imagery documents site layout, condition, and surrounding context to support listings, marketing, and pre-acquisition review.</p></div>
+    <div class="ind-row"><div class="ind-row-head"><div class="ind-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3l7 3v6c0 5-3.5 8.5-7 9-3.5-.5-7-4-7-9V6l7-3z"/></svg></div><div class="ind-title">PUBLIC SAFETY</div></div><p class="ind-body">Ground teams can't always safely or quickly assess an active incident or large area. Aerial observation provides real-time visual context and documentation to support search, incident response, and situational awareness for public safety teams.</p></div>
+    <div class="ind-row"><div class="ind-row-head"><div class="ind-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 21c8 0 14-6 14-14V5h-2C9 5 5 11 5 19v2z"/><path d="M5 21c3-4 7-8 12-11"/></svg></div><div class="ind-title">AGRICULTURE</div></div><p class="ind-body">Ground-level crop inspection is slow and often incomplete. <span class="gloss" data-term="ndvi">NDVI</span> and visual aerial imagery help identify irrigation issues, stress patterns, and crop health variation across a field, supporting management decisions.</p></div>
+    <div class="ind-row"><div class="ind-row-head"><div class="ind-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2l3 5h-2v13h-2V7H9l3-5z"/><path d="M7 15l-2 6M17 15l2 6"/></svg></div><div class="ind-title">INFRASTRUCTURE</div></div><p class="ind-body"><span class="gloss" data-term="rgb">Visual</span>, thermal, and spatial data help teams document asset conditions and observe areas that are difficult or inefficient to assess from the ground. DØi supports condition documentation, inspection workflows, change assessment, and site intelligence.</p></div>
   </div>
 </section>
 
@@ -1103,7 +1114,7 @@ footer{
       <div style="display:flex;gap:24px;justify-content:center;margin-top:16px;flex-wrap:wrap;">
         <a href="tel:3102997401" style="font-family:var(--mono);font-size:13px;color:var(--og);letter-spacing:.12em;text-decoration:none;">310.299.7401</a>
         <span style="font-family:var(--mono);font-size:13px;color:var(--t3);">·</span>
-        <a href="mailto:DOiRECON@DOiLABS.LA" style="font-family:var(--mono);font-size:13px;color:var(--og);letter-spacing:.12em;text-decoration:none;">DOiRECON@DOiLABS.LA</a>
+        <a href="mailto:DOiRECON@DOiLABS.LA" style="font-family:var(--mono);font-size:13px;color:var(--og);letter-spacing:.12em;text-decoration:none;">DØiRECON@DØiLABS.LA</a>
       </div>
     </div>
     <div class="intake-wrap" style="margin-top:40px;">
@@ -1222,7 +1233,7 @@ footer{
       <div class="foot-col-title">CONTACT</div>
       <ul class="foot-links">
         <li><a href="tel:3102997401">310.299.7401</a></li>
-        <li><a href="mailto:DOiRECON@DOiLABS.LA">DOiRECON@DOiLABS.LA</a></li>
+        <li><a href="mailto:DOiRECON@DOiLABS.LA">DØiRECON@DØiLABS.LA</a></li>
         <li><a href="#contact">Request Mission Brief</a></li>
       </ul>
     </div>
