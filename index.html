@@ -105,18 +105,23 @@ section[id],div[id]{scroll-margin-top:60px;}
 /* ── NAV ── */
 .nav{
   position:fixed;top:0;left:0;right:0;z-index:200;
-  display:flex;align-items:center;justify-content:space-between;
+  display:grid;grid-template-columns:1fr auto 1fr;align-items:center;
   padding:0 48px;height:60px;
   background:rgba(8,8,8,.9);backdrop-filter:blur(16px);
   border-bottom:1px solid var(--bd);
 }
+/* Grid (not flex+space-between) so .nav-links stays mathematically
+   centered in the bar regardless of how wide the logo vs. CTA button
+   are -- with flex/space-between the mismatched outer widths (logo
+   ~90px, CTA ~270px) pushed the links group noticeably off-center. */
 .nav-logo{font-family:var(--disp);font-size:16px;font-weight:900;color:var(--t1);text-decoration:none;letter-spacing:.06em;
   opacity:0;pointer-events:none;
   transition:opacity .5s ease;
+  justify-self:start;
 }
 .nav-logo.visible{opacity:1;pointer-events:auto;}
 .nav-logo em{color:var(--og);font-style:normal;}
-.nav-links{display:flex;gap:28px;list-style:none;}
+.nav-links{display:flex;gap:28px;list-style:none;justify-self:center;}
 .nav-links a{font-family:var(--mono);font-size:16px;color:var(--t2);text-decoration:none;letter-spacing:.14em;text-transform:uppercase;transition:color .2s;}
 .nav-links a:hover{color:var(--og);}
 .nav-cta{
@@ -124,6 +129,7 @@ section[id],div[id]{scroll-margin-top:60px;}
   background:var(--og);color:#000;border:none;padding:12px 28px;cursor:crosshair;
   clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);
   transition:background .2s;
+  justify-self:end;
 }
 .nav-cta:hover{background:var(--tiger);}
 
