@@ -412,19 +412,21 @@ section[id],div[id]{scroll-margin-top:60px;}
 .pl-dot.active{background:var(--og);transform:scale(1.5);}
 
 /* Workflow drone: an ambient background layer that flies a variable path
-   through the whole card as the visitor scrolls through the five stages
-   (DEFINE -> DELIVER) -- progressing left-to-right while alternating
-   up/down, like a controlled aerial pass rather than a simple horizontal
-   slide. Reuses the same video asset that previously sat in a small
-   step-2/3-only inset panel. Deliberately subdued -- environmental
-   storytelling behind the workflow content, never the focal point.
-   --dx/--dy (percentages of this container) and --ds (scale) are written by
-   updateDrone() in lockstep with the existing pipeline scroll progress; see
-   the reduced-motion block below for the static fallback. */
+   across the FULL width of the pinned viewport (not just the workflow card)
+   as the visitor scrolls through the five stages (DEFINE -> DELIVER) --
+   progressing left-to-right, edge to edge, while alternating up/down, like a
+   controlled aerial pass rather than a simple horizontal slide. It sits as a
+   sibling of .pl-content, painted first, so the card's own opaque background
+   naturally occludes it while it passes behind the card and reveals it again
+   in the open space on either side. Reuses the same video asset that
+   previously sat in a small step-2/3-only inset panel. --dx/--dy (percentages
+   of the pinned viewport) and --ds (scale) are written by updateDrone() in
+   lockstep with the existing pipeline scroll progress; see the
+   reduced-motion block below for the static fallback. */
 .pl-visual{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none;}
 .pl-bg-video{
   position:absolute;left:var(--dx,10%);top:var(--dy,34%);
-  width:clamp(320px,60%,560px);aspect-ratio:1.6;
+  width:clamp(650px,50vw,1200px);aspect-ratio:1.6;
   transform:translate(-50%,-50%) scale(var(--ds,1));
   transform-origin:center;
   object-fit:cover;object-position:center;
@@ -903,16 +905,16 @@ footer{
      appears at the CAPTURE→PROCESS transition. -->
 <div class="pipeline-zone" id="pipeline">
   <div class="pipeline-pin">
+    <div class="pl-visual" aria-hidden="true">
+      <video class="pl-bg-video" muted loop playsinline preload="none">
+        <source data-src="Matricet4_Floating.mp4" type="video/mp4">
+      </video>
+    </div>
     <div class="pl-content">
       <div class="sec-head" style="padding:0 0 24px;text-align:center;">
         <div class="sec-tag">OPERATIONAL WORKFLOW</div>
         <h2 class="sec-title">FROM CAPTURE <span>TO DECISION</span></h2>
         <p class="sec-desc">A disciplined five-stage workflow transforms mission requirements and aerial data into project intelligence teams can act on.</p>
-      </div>
-      <div class="pl-visual" aria-hidden="true">
-        <video class="pl-bg-video" muted loop playsinline preload="none">
-          <source data-src="Matricet4_Floating.mp4" type="video/mp4">
-        </video>
       </div>
       <div class="pl-scrim" aria-hidden="true"></div>
       <div class="pl-steps">
@@ -1314,17 +1316,20 @@ let curStep = 0;
 
 // Drone flies a variable path through the workflow canvas, tied to the same
 // scroll progress that drives the step transitions -- progressing left to
-// right while alternating up/down (a restrained wave, not a simple slide),
-// like a controlled aerial pass through DEFINE -> PLAN -> CAPTURE -> PROCESS
-// -> DELIVER. x/y are percentages of the workflow canvas; continuous
-// interpolation between these 5 keyframes means reversing scroll naturally
-// retraces the same path -- there is no time-based or looping animation.
+// right, edge to edge across the full pinned viewport, while alternating
+// up/down (a restrained wave, not a simple slide), like a controlled aerial
+// pass through DEFINE -> PLAN -> CAPTURE -> PROCESS -> DELIVER. x/y are
+// percentages of the pinned viewport (.pipeline-pin), not the workflow card;
+// continuous interpolation between these 5 keyframes means reversing scroll
+// naturally retraces the same path -- there is no time-based or looping
+// animation. x runs slightly past 0/100 so the drone enters and exits fully
+// off-screen rather than snapping into view mid-frame.
 const DRONE_PATH = [
-  {t:0.00, x:10, y:34, s:.92},
-  {t:0.25, x:28, y:62, s:.98},
-  {t:0.50, x:48, y:32, s:1.04},
-  {t:0.75, x:68, y:64, s:.97},
-  {t:1.00, x:88, y:36, s:.92},
+  {t:0.00, x:-8, y:34, s:.92},
+  {t:0.25, x:21, y:62, s:.98},
+  {t:0.50, x:50, y:32, s:1.04},
+  {t:0.75, x:79, y:64, s:.97},
+  {t:1.00, x:108, y:36, s:.92},
 ];
 function interpolateDronePath(progress) {
   const p = Math.min(1, Math.max(0, progress));
