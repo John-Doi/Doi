@@ -479,10 +479,22 @@ section[id],div[id]{scroll-margin-top:60px;}
    step text instead of being fully hidden behind an opaque card. */
 .mob-step-content{padding:32px 20px;background:rgba(14,14,14,.82);}
 .mob-visual{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none;}
-.mob-bg-video{
+/* Position (left/top/scale) is split from the flip (scaleX) onto two nested
+   elements: .mob-drone-pos updates every scroll frame with no transition so
+   the flight tracks scroll exactly, while .mob-bg-video's scaleX turn gets
+   its own CSS transition so the left/right facing-change eases smoothly
+   instead of snapping instantly -- a single shared `transform` couldn't
+   transition just the flip without also laggily easing the per-frame
+   position updates. */
+.mob-drone-pos{
   position:absolute;left:var(--mx,32%);top:var(--mtop,6%);
   width:min(72vw,320px);aspect-ratio:1.6;
-  transform:translate(-50%,-50%) scale(var(--ms,1)) scaleX(var(--mflip,-1));
+  transform:translate(-50%,-50%) scale(var(--ms,1));
+}
+.mob-bg-video{
+  width:100%;height:100%;
+  transform:scaleX(var(--mflip,-1));
+  transition:transform .5s cubic-bezier(.4,0,.2,1);
   object-fit:cover;object-position:center;
   opacity:.62;filter:brightness(.75) contrast(1.15) saturate(1.1) blur(.5px);
   -webkit-mask-image:radial-gradient(ellipse 65% 65% at center,#000 0%,transparent 97%);
@@ -490,7 +502,7 @@ section[id],div[id]{scroll-margin-top:60px;}
   display:block;
 }
 @media(prefers-reduced-motion:reduce){
-  .mob-bg-video{left:50% !important;top:50% !important;transform:translate(-50%,-50%) !important;}
+  .mob-drone-pos{left:50% !important;top:50% !important;transform:translate(-50%,-50%) !important;}
 }
 
 /* ── WHY CARDS ── */
@@ -1027,9 +1039,11 @@ footer{
 <!-- Mobile fallback — simplified vertical progression, no sticky pin -->
 <div class="mob-pipeline" id="pipeline-mob">
   <div class="mob-visual" aria-hidden="true">
-    <video class="mob-bg-video" muted loop playsinline preload="none">
-      <source data-src="Matricet4_Floating.mp4" type="video/mp4">
-    </video>
+    <div class="mob-drone-pos">
+      <video class="mob-bg-video" muted loop playsinline preload="none">
+        <source data-src="Matricet4_Floating.mp4" type="video/mp4">
+      </video>
+    </div>
   </div>
   <div class="mob-pipeline-content">
   <div class="sec-head">
