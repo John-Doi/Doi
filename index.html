@@ -187,6 +187,11 @@ section[id],div[id]{scroll-margin-top:60px;}
 .hero-left{display:flex;flex-direction:column;gap:22px;}
 .hero-stage2{display:flex;flex-direction:column;gap:22px;pointer-events:none;}
 .hero-stage2.stage2-active{pointer-events:auto;}
+.hero-bottom-info{
+  position:relative;z-index:1;flex-shrink:0;
+  padding:0 60px 28px;
+  display:flex;flex-direction:column;gap:14px;
+}
 /* Progressive disclosure on both desktop and mobile: the business
    description, capability line, and primary CTA reveal in sequence (not
    together) as the visitor scrolls through the hero, driven by --s1/--s2/--s3
@@ -450,23 +455,18 @@ section[id],div[id]{scroll-margin-top:60px;}
 .why-section{position:relative;z-index:1;padding:0 0 80px;background:var(--bg);border-top:1px solid var(--bd);}
 .why-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.06;pointer-events:none;}
 .why-title-wrap{text-align:center;display:block;width:100%;transform:translateX(30px);}
-/* Full-width list with a left accent stripe instead of a bordered card
-   grid -- the fourth distinct shape on the page (Capabilities keeps the
-   canonical module grid; Industries is a numbered editorial list; Deliverables
-   is a manifest; this reads like a spec/FAQ list). */
 .why-grid{
-  position:relative;display:flex;flex-direction:column;
-  border-top:1px solid var(--bd);margin:40px 60px 0;
+  position:relative;display:grid;grid-template-columns:repeat(3,1fr);
+  gap:1px;background:var(--bd);border:1px solid var(--bd);margin:40px 60px 0;
 }
 .why-card{
-  background:var(--bg);position:relative;overflow:hidden;
-  border-bottom:1px solid var(--bd);border-left:3px solid transparent;
-  opacity:0;transform:translateY(14px);
-  transition:opacity .5s,transform .5s cubic-bezier(.16,1,.3,1),background .25s,border-color .25s;
+  background:var(--card);position:relative;overflow:hidden;
+  opacity:0;transform:translateY(18px);
+  transition:opacity .5s,transform .5s cubic-bezier(.16,1,.3,1),background .3s;
 }
 .why-card.revealed{opacity:1;transform:translateY(0);}
-.why-card:hover,.why-card.open{background:var(--card);border-left-color:var(--og);}
-.why-head{width:100%;display:flex;align-items:center;gap:16px;padding:28px 40px;background:none;border:none;cursor:crosshair;text-align:left;font:inherit;color:inherit;-webkit-appearance:none;appearance:none;}
+.why-card:hover{background:var(--card2);}
+.why-head{width:100%;display:flex;align-items:center;gap:16px;padding:40px;background:none;border:none;cursor:crosshair;text-align:left;font:inherit;color:inherit;-webkit-appearance:none;appearance:none;}
 .why-head-l{display:flex;flex-direction:column;gap:10px;flex:1;min-width:0;}
 .why-icon{
   width:56px;height:56px;border:1px solid var(--bd2);flex-shrink:0;
@@ -618,27 +618,20 @@ footer{
 
 /* ── DELIVERABLES (Phase 7) ── */
 .del-section{position:relative;z-index:1;padding:0 0 80px;background:var(--surf);border-top:1px solid var(--bd);}
-/* Manifest-style list instead of a bordered card grid: type+title inline on
-   the left, a format tag visible up front on the right (like a packing-list
-   line item), expanding only for the fuller description. Plain fade on
-   reveal -- no translate -- the third distinct reveal treatment on the page
-   alongside Industries' slide and Capabilities'/Why DØi's translateY. */
-.del-list{margin:40px 60px 0;border:1px solid var(--bd);}
-.del-card{background:var(--card);opacity:0;transition:opacity .5s;border-bottom:1px solid var(--bd);}
-.del-card:last-child{border-bottom:none;}
-.del-card.revealed{opacity:1;}
-.del-head{width:100%;display:flex;align-items:center;gap:16px;padding:22px 32px;background:none;border:none;cursor:crosshair;text-align:left;font:inherit;color:inherit;-webkit-appearance:none;appearance:none;}
-.del-head-l{display:flex;align-items:baseline;gap:16px;flex:1;min-width:0;}
-.del-type{font-family:var(--mono);font-size:11px;color:var(--og);letter-spacing:.2em;flex-shrink:0;}
+.del-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--bd);border:1px solid var(--bd);margin:40px 60px 0;}
+.del-card{background:var(--card);opacity:0;transform:translateY(14px);transition:opacity .5s,transform .5s cubic-bezier(.16,1,.3,1);}
+.del-card.revealed{opacity:1;transform:translateY(0);}
+.del-head{width:100%;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:28px 40px;background:none;border:none;cursor:crosshair;text-align:left;font:inherit;color:inherit;-webkit-appearance:none;appearance:none;}
+.del-head-l{display:flex;flex-direction:column;gap:10px;}
+.del-type{font-family:var(--mono);font-size:11px;color:var(--og);letter-spacing:.2em;}
 .del-title{font-family:var(--disp);font-size:15px;font-weight:700;color:var(--t1);letter-spacing:.02em;}
-.del-tag{font-family:var(--mono);font-size:10px;color:var(--t3);letter-spacing:.08em;border:1px solid var(--bd2);padding:5px 10px;flex-shrink:0;white-space:nowrap;}
 .del-toggle{position:relative;width:16px;height:16px;flex-shrink:0;}
 .del-toggle::before,.del-toggle::after{content:'';position:absolute;top:50%;left:50%;background:var(--og);transition:transform .3s ease;}
 .del-toggle::before{width:14px;height:1.5px;transform:translate(-50%,-50%);}
 .del-toggle::after{width:1.5px;height:14px;transform:translate(-50%,-50%);}
 .del-card.open .del-toggle::after{transform:translate(-50%,-50%) rotate(90deg);}
-.del-content{max-height:0;overflow:hidden;padding:0 32px;transition:max-height .4s cubic-bezier(.16,1,.3,1),padding .4s cubic-bezier(.16,1,.3,1);}
-.del-card.open .del-content{max-height:320px;padding:0 32px 26px;}
+.del-content{max-height:0;overflow:hidden;padding:0 40px;transition:max-height .4s cubic-bezier(.16,1,.3,1),padding .4s cubic-bezier(.16,1,.3,1);}
+.del-card.open .del-content{max-height:320px;padding:0 40px 32px;}
 .del-body{font-size:14px;color:var(--t2);line-height:1.65;}
 .del-format{margin-top:14px;font-family:var(--mono);font-size:11px;color:var(--t3);letter-spacing:.1em;padding-top:12px;border-top:1px solid var(--bd);}
 
@@ -659,6 +652,7 @@ footer{
   .hero-zone{height:150vh;height:150svh;}
   .hero-pin{height:100vh;height:100svh;}
   .hero-inner{padding:80px var(--mobile-gutter) 20px;}
+  .hero-bottom-info{padding:0 var(--mobile-gutter) 20px;}
   /* Mobile opening stays to logo/headline/description/capability line only;
      the sticky .mobile-cta bar (REQUEST CONSULTATION) already appears once
      the visitor scrolls past the hero, so the CTAs aren't lost, just not
@@ -672,11 +666,7 @@ footer{
   .proof-num{font-size:clamp(20px,6vw,36px);}
   .pipeline-zone,.pipeline-pin{display:none;}
   .mob-pipeline{display:block;}
-  .svc-grid{grid-template-columns:1fr;margin:40px var(--mobile-gutter) 0;}
-  .why-grid{margin:40px var(--mobile-gutter) 0;}
-  .why-head{padding:22px var(--mobile-gutter);}
-  .why-card.open .why-content{padding:0 var(--mobile-gutter) 28px;}
-  .why-content{padding:0 var(--mobile-gutter);}
+  .why-grid,.svc-grid{grid-template-columns:1fr;margin:40px var(--mobile-gutter) 0;}
   .why-title-wrap{display:flex;flex-direction:column;align-items:center;gap:8px;transform:none;}
   .trust-section{padding:0 var(--mobile-gutter) 60px;}
   .trust-grid{grid-template-columns:repeat(3,1fr);}
@@ -685,13 +675,10 @@ footer{
   footer{padding:40px var(--mobile-gutter) 24px;}
   .foot-inner{grid-template-columns:1fr;gap:36px;}
   .sec-head{padding:60px var(--mobile-gutter) 0;}
-  .ind-list,.del-list{margin:40px var(--mobile-gutter) 0;}
+  .ind-list{margin:40px var(--mobile-gutter) 0;}
   .ind-row{grid-template-columns:36px 1fr;gap:16px;padding:24px 0;}
   .ind-num{font-size:20px;}
-  .del-head{flex-wrap:wrap;row-gap:10px;padding:18px var(--mobile-gutter);}
-  .del-head-l{flex:1 1 100%;}
-  .del-content{padding:0 var(--mobile-gutter);}
-  .del-card.open .del-content{padding:0 var(--mobile-gutter) 20px;}
+  .del-grid{grid-template-columns:1fr;margin:40px var(--mobile-gutter) 0;}
   /* Same gutter as every other mobile section (was inheriting the desktop
      60px margin, which made this grid look narrower/offset from its
      neighbors); 2 columns keeps longer labels like "AIRSPACE COORDINATION"
@@ -853,14 +840,16 @@ footer{
         <img class="hero-logo-img" src="DOiLabs_Logo2.png" alt="DØi Labs">
         <h1 class="hero-h1">AERIAL<br><span class="og">INTELLIGENCE</span></h1>
         <div class="hero-stage2">
-          <p class="hero-sub">DØi Labs captures, processes, and transforms aerial data into actionable intelligence using mission-specific aircraft, sensors, and data workflows.</p>
-          <div class="hero-platform">AERIAL RECONNAISSANCE · MAPPING · THERMAL · PROJECT DOCUMENTATION · DATA ANALYSIS</div>
           <div class="hero-btns">
             <button class="btn-p" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">REQUEST MISSION BRIEF</button>
             <button class="btn-g" onclick="document.getElementById('pipeline').scrollIntoView({behavior:'smooth'})">VIEW PROCESS →</button>
           </div>
         </div>
       </div>
+    </div>
+    <div class="hero-bottom-info">
+      <p class="hero-sub">DØi Labs captures, processes, and transforms aerial data into actionable intelligence using mission-specific aircraft, sensors, and data workflows.</p>
+      <div class="hero-platform">AERIAL RECONNAISSANCE · MAPPING · THERMAL · PROJECT DOCUMENTATION · DATA ANALYSIS</div>
     </div>
     <div class="hero-ticker"><div class="ticker-track" id="tickerTrack"></div></div>
   </div>
@@ -1032,13 +1021,13 @@ footer{
 <div class="del-section">
   <div class="sec-tag" style="margin:0 0 10px;">WHAT YOU RECEIVE</div>
   <p class="sec-desc" style="margin:0 auto 28px;text-align:center;">The tangible outputs of the capabilities and workflow above, configured to each mission's specific requirements.</p>
-  <div class="del-list">
-    <div class="del-card"><button class="del-head" type="button" aria-expanded="false" aria-controls="del-content-1"><span class="del-head-l"><span class="del-type">DEL · 01</span><span class="del-title">ORTHOMOSAIC GEOTIFF</span></span><span class="del-tag">GEOTIFF</span><span class="del-toggle" aria-hidden="true"></span></button><div class="del-content" id="del-content-1"><p class="del-body">Georeferenced aerial imagery stitched for site measurement, design overlays, and record documentation.</p><div class="del-format">FORMAT: GeoTIFF · GEOREFERENCED OUTPUT</div></div></div>
-    <div class="del-card"><button class="del-head" type="button" aria-expanded="false" aria-controls="del-content-2"><span class="del-head-l"><span class="del-type">DEL · 02</span><span class="del-title">3D POINT CLOUD</span></span><span class="del-tag">LAS / LAZ</span><span class="del-toggle" aria-hidden="true"></span></button><div class="del-content" id="del-content-2"><p class="del-body">Dense photogrammetric point clouds for site documentation, earthwork analysis, change assessment, and integration with compatible design and project workflows.</p><div class="del-format">FORMAT: LAS / LAZ · PROJECT-SPECIFIC SPATIAL OUTPUT</div></div></div>
-    <div class="del-card"><button class="del-head" type="button" aria-expanded="false" aria-controls="del-content-3"><span class="del-head-l"><span class="del-type">DEL · 03</span><span class="del-title">THERMAL REPORT</span></span><span class="del-tag">PDF + TIFF</span><span class="del-toggle" aria-hidden="true"></span></button><div class="del-content" id="del-content-3"><p class="del-body">Annotated thermal maps with defect classifications, GPS coordinates, and severity ratings. Ready for maintenance scheduling.</p><div class="del-format">FORMAT: PDF + GEOTIFF · RADIOMETRIC</div></div></div>
-    <div class="del-card"><button class="del-head" type="button" aria-expanded="false" aria-controls="del-content-4"><span class="del-head-l"><span class="del-type">DEL · 04</span><span class="del-title">PROGRESS REPORT PDF</span></span><span class="del-tag">PDF</span><span class="del-toggle" aria-hidden="true"></span></button><div class="del-content" id="del-content-4"><p class="del-body">Timestamped site documentation with overlays, issue flags, and completion percentage, organized for project management recordkeeping.</p><div class="del-format">FORMAT: PDF · TIMESTAMPED · GPS-TAGGED</div></div></div>
-    <div class="del-card"><button class="del-head" type="button" aria-expanded="false" aria-controls="del-content-5"><span class="del-head-l"><span class="del-type">DEL · 05</span><span class="del-title">SURFACE MODEL (DSM/DTM)</span></span><span class="del-tag">GEOTIFF / XYZ</span><span class="del-toggle" aria-hidden="true"></span></button><div class="del-content" id="del-content-5"><p class="del-body">Digital surface and terrain models for drainage analysis, cut/fill quantification, and grading plan verification.</p><div class="del-format">FORMAT: GeoTIFF / XYZ · PROJECT-SPECIFIC RESOLUTION</div></div></div>
-    <div class="del-card"><button class="del-head" type="button" aria-expanded="false" aria-controls="del-content-6"><span class="del-head-l"><span class="del-type">DEL · 06</span><span class="del-title">INTELLIGENCE BRIEF</span></span><span class="del-tag">PDF</span><span class="del-toggle" aria-hidden="true"></span></button><div class="del-content" id="del-content-6"><p class="del-body">AI-assisted anomaly detection with prioritized action items. Change detection between missions. Decision-ready summary for project leads.</p><div class="del-format">FORMAT: PDF + ANNOTATED IMAGERY</div></div></div>
+  <div class="del-grid">
+    <div class="del-card"><button class="del-head" type="button" aria-expanded="false" aria-controls="del-content-1"><span class="del-head-l"><span class="del-type">DEL · 01</span><span class="del-title">ORTHOMOSAIC GEOTIFF</span></span><span class="del-toggle" aria-hidden="true"></span></button><div class="del-content" id="del-content-1"><p class="del-body">Georeferenced aerial imagery stitched for site measurement, design overlays, and record documentation.</p><div class="del-format">FORMAT: GeoTIFF · GEOREFERENCED OUTPUT</div></div></div>
+    <div class="del-card"><button class="del-head" type="button" aria-expanded="false" aria-controls="del-content-2"><span class="del-head-l"><span class="del-type">DEL · 02</span><span class="del-title">3D POINT CLOUD</span></span><span class="del-toggle" aria-hidden="true"></span></button><div class="del-content" id="del-content-2"><p class="del-body">Dense photogrammetric point clouds for site documentation, earthwork analysis, change assessment, and integration with compatible design and project workflows.</p><div class="del-format">FORMAT: LAS / LAZ · PROJECT-SPECIFIC SPATIAL OUTPUT</div></div></div>
+    <div class="del-card"><button class="del-head" type="button" aria-expanded="false" aria-controls="del-content-3"><span class="del-head-l"><span class="del-type">DEL · 03</span><span class="del-title">THERMAL REPORT</span></span><span class="del-toggle" aria-hidden="true"></span></button><div class="del-content" id="del-content-3"><p class="del-body">Annotated thermal maps with defect classifications, GPS coordinates, and severity ratings. Ready for maintenance scheduling.</p><div class="del-format">FORMAT: PDF + GEOTIFF · RADIOMETRIC</div></div></div>
+    <div class="del-card"><button class="del-head" type="button" aria-expanded="false" aria-controls="del-content-4"><span class="del-head-l"><span class="del-type">DEL · 04</span><span class="del-title">PROGRESS REPORT PDF</span></span><span class="del-toggle" aria-hidden="true"></span></button><div class="del-content" id="del-content-4"><p class="del-body">Timestamped site documentation with overlays, issue flags, and completion percentage, organized for project management recordkeeping.</p><div class="del-format">FORMAT: PDF · TIMESTAMPED · GPS-TAGGED</div></div></div>
+    <div class="del-card"><button class="del-head" type="button" aria-expanded="false" aria-controls="del-content-5"><span class="del-head-l"><span class="del-type">DEL · 05</span><span class="del-title">SURFACE MODEL (DSM/DTM)</span></span><span class="del-toggle" aria-hidden="true"></span></button><div class="del-content" id="del-content-5"><p class="del-body">Digital surface and terrain models for drainage analysis, cut/fill quantification, and grading plan verification.</p><div class="del-format">FORMAT: GeoTIFF / XYZ · PROJECT-SPECIFIC RESOLUTION</div></div></div>
+    <div class="del-card"><button class="del-head" type="button" aria-expanded="false" aria-controls="del-content-6"><span class="del-head-l"><span class="del-type">DEL · 06</span><span class="del-title">INTELLIGENCE BRIEF</span></span><span class="del-toggle" aria-hidden="true"></span></button><div class="del-content" id="del-content-6"><p class="del-body">AI-assisted anomaly detection with prioritized action items. Change detection between missions. Decision-ready summary for project leads.</p><div class="del-format">FORMAT: PDF + ANNOTATED IMAGERY</div></div></div>
   </div>
 </div>
 
