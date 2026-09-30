@@ -41,7 +41,7 @@
   --og-grad:linear-gradient(135deg,#FF8C00 0%,#FF6B00 45%,#CC4400 100%);
   --og-grad-h:linear-gradient(90deg,#FF8C00 0%,#FF6B00 50%,#CC4400 100%);
   --oglow:rgba(255,107,0,0.2);--bo:rgba(255,107,0,0.2);
-  --t1:#f0f0f0;--t2:#a8a8a8;--t3:#555;
+  --t1:#f0f0f0;--t2:#a8a8a8;--t3:#808080;
   --mono:'Share Tech Mono',monospace;
   --disp:'Orbitron',sans-serif;
   --body:'Rajdhani',sans-serif;
@@ -202,10 +202,14 @@ section[id],div[id]{scroll-margin-top:60px;}
    description, capability line, and primary CTA reveal in sequence (not
    together) as the visitor scrolls through the hero, driven by --s1/--s2/--s3
    set in updateHeroStage() from the same scroll-progress value that already
-   drives the hero on both breakpoints. */
-.hero-sub{opacity:var(--s1,0);transform:translateY(calc((1 - var(--s1,0)) * 14px));}
-.hero-platform{opacity:var(--s2,0);transform:translateY(calc((1 - var(--s2,0)) * 14px));}
-.hero-btns{opacity:var(--s3,0);transform:translateY(calc((1 - var(--s3,0)) * 14px));}
+   drives the hero on both breakpoints. Each stage starts at a .8 floor (not 0)
+   and fully resolves within a short scroll distance, so the description and
+   REQUEST MISSION BRIEF CTA are already legible and clickable at rest --
+   the remaining reveal is a quick settle-in, not a comprehension gate. The .8
+   floor keeps --t2 body text at ~5.6:1 contrast even mid-transition. */
+.hero-sub{opacity:var(--s1,.8);transform:translateY(calc((1 - var(--s1,.8)) * 14px));}
+.hero-platform{opacity:var(--s2,.8);transform:translateY(calc((1 - var(--s2,.8)) * 14px));}
+.hero-btns{opacity:var(--s3,.8);transform:translateY(calc((1 - var(--s3,.8)) * 14px));}
 .hero-eyebrow{
   font-family:var(--mono);font-size:13px;letter-spacing:.2em;color:var(--og);
   text-transform:uppercase;display:flex;align-items:center;gap:12px;
@@ -680,11 +684,14 @@ footer{
   .hero-pin{height:100vh;height:100svh;}
   .hero-inner{padding:80px var(--mobile-gutter) 20px;}
   .hero-bottom-info{padding:0 var(--mobile-gutter) 20px;}
-  /* Mobile opening stays to logo/headline/description/capability line only;
-     the sticky .mobile-cta bar (REQUEST MISSION BRIEF) already appears once
-     the visitor scrolls past the hero, so the CTAs aren't lost, just not
-     competing for space in the first frame. */
-  .hero-btns{display:none;}
+  /* Mobile hero keeps the primary REQUEST MISSION BRIEF action (a real,
+     reachable CTA during the hero itself -- see Phase 1 hero audit finding),
+     but drops the secondary VIEW PROCESS ghost button to keep the mobile
+     opening compact. .mobile-cta (the sticky bar) stays hidden the whole
+     time the hero is on screen (see updateMobileCta()) so this is never a
+     duplicate/competing CTA -- the sticky bar only takes over once the
+     visitor scrolls past the hero. */
+  .hero-btns .btn-g{display:none;}
   .proof-band{grid-template-columns:repeat(2,1fr);}
   .proof-item{padding:32px var(--mobile-gutter);border-right:none;border-bottom:1px solid var(--bd);min-width:0;}
   /* recalibrated against real Orbitron metrics for "CAPTURE" (the widest
@@ -858,9 +865,9 @@ footer{
 <section class="hero-zone" id="hero">
   <div class="hero-pin">
     <div class="hero-video">
-      <video class="hero-bg-video" autoplay muted playsinline>
-        <source src="Dual_MatriceT4_3.mp4" type="video/mp4">
-        <source src="Dual_MatriceT4_3.mov" type="video/quicktime">
+      <video class="hero-bg-video" muted playsinline preload="none">
+        <source data-src="Dual_MatriceT4_3.mp4" type="video/mp4">
+        <source data-src="Dual_MatriceT4_3.mov" type="video/quicktime">
       </video>
       <div class="hero-glow-bg">
         <div class="hero-scanline"></div>
@@ -1097,7 +1104,7 @@ footer{
         <div class="why-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
         <span class="why-head-l"><span class="why-code">CAP-05 · INTEL</span><span class="why-title">AI-ASSISTED ANALYSIS</span></span>
         <span class="why-toggle" aria-hidden="true"></span>
-      </button><div class="why-content" id="why-content-5"><div class="why-body">Machine learning-enhanced object detection, anomaly flagging, and change detection. We don't just collect data — we extract intelligence from it.</div></div></div>
+      </button><div class="why-content" id="why-content-5"><div class="why-body">AI-assisted processing, organization, and comparison of captured mission data — flagging anomalies and areas of interest for review. Every flagged result is verified by a trained analyst before delivery, turning raw imagery into structured, decision-ready outputs.</div></div></div>
       <div class="why-card"><button class="why-head" type="button" aria-expanded="false" aria-controls="why-content-6">
         <div class="why-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
         <span class="why-head-l"><span class="why-code">CAP-06 · RAPID</span><span class="why-title">RAPID DEPLOYMENT</span></span>
@@ -1279,19 +1286,13 @@ footer{
 </div>
 
 <script>
-// ── HERO BG VIDEO: fade in as soon as video can play ──
+// ── HERO BG VIDEO: fade in as soon as video can play (triggered once the
+// deferred load below actually starts — see PHASE 2 · DEFERRED VIDEO LOAD) ──
 const heroBgVid = document.querySelector('.hero-bg-video');
-if (heroBgVid) {
-  function showDrone() {
-    heroBgVid.style.transition = 'opacity 1.5s ease-out';
-    heroBgVid.style.opacity = '0.82';
-  }
-  if (heroBgVid.readyState >= 3) {
-    showDrone();
-  } else {
-    heroBgVid.addEventListener('canplay', showDrone, {once:true});
-    setTimeout(showDrone, 800); // fallback if canplay never fires
-  }
+function showHeroVideo() {
+  if (!heroBgVid) return;
+  heroBgVid.style.transition = 'opacity 1.5s ease-out';
+  heroBgVid.style.opacity = '0.82';
 }
 
 // ── CORNER LOGO: show once hero glow logo scrolls out of view ──
@@ -1317,7 +1318,16 @@ const REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 // whichever hero-zone height is active at the current breakpoint. ──
 const mobileHeroQuery = window.matchMedia('(max-width:900px)');
 const heroStage2El = document.querySelector('.hero-stage2');
-function stagedOpacity(p, start, end){ return Math.max(0, Math.min(1, (p - start) / (end - start))); }
+// Floor of .8 (not 0) so the description/capability-line/CTA are already
+// legible and clickable at rest -- the ramp from floor->1 is a quick settle
+// animation, not a comprehension or interaction gate (see doi-responsive-qa
+// Phase 1 hero audit finding). Thresholds are compressed into the first ~20%
+// of hero scroll so the full sequence resolves within a short scroll, not
+// most of the hero zone.
+function stagedOpacity(p, start, end, floor){
+  const t = Math.max(0, Math.min(1, (p - start) / (end - start)));
+  return floor + (1 - floor) * t;
+}
 function updateHeroStage(){
   if (!heroZoneEl || !heroStage2El) return;
   if (REDUCE) {
@@ -1331,10 +1341,12 @@ function updateHeroStage(){
   const total = heroZoneEl.offsetHeight - window.innerHeight;
   const progress = total > 0 ? Math.min(1, Math.max(0, window.scrollY / total)) : 1;
   heroZoneEl.style.setProperty('--hp', progress.toFixed(3));
-  heroZoneEl.style.setProperty('--s1', stagedOpacity(progress, 0, 0.35).toFixed(3));
-  heroZoneEl.style.setProperty('--s2', stagedOpacity(progress, 0.3, 0.65).toFixed(3));
-  heroZoneEl.style.setProperty('--s3', stagedOpacity(progress, 0.55, 0.85).toFixed(3));
-  heroStage2El.classList.toggle('stage2-active', progress > 0.1);
+  heroZoneEl.style.setProperty('--s1', stagedOpacity(progress, 0, 0.12, .8).toFixed(3));
+  heroZoneEl.style.setProperty('--s2', stagedOpacity(progress, 0.04, 0.16, .8).toFixed(3));
+  heroZoneEl.style.setProperty('--s3', stagedOpacity(progress, 0.08, 0.20, .8).toFixed(3));
+  // CTA is legible and usable from the first frame, not just after a scroll
+  // nudge -- matches the new floor above.
+  heroStage2El.classList.add('stage2-active');
 }
 updateHeroStage();
 window.addEventListener('resize', updateHeroStage, {passive:true});
@@ -1593,28 +1605,25 @@ document.addEventListener('click', closeGlossPopup);
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeGlossPopup(); });
 
 // ── PHASE 2 · DEFERRED VIDEO LOAD ──
-// IMG_4044.webp (preloaded) handles LCP. The 4MB+ mp4 is injected only after the
-// page is fully interactive — never blocks first paint or LCP.
+// The hero background video and both workflow drone videos (desktop pl-visual +
+// mobile mob-visual) all use the same <source data-src="..."> pattern and are
+// only injected once the page is fully interactive — none of them block first
+// paint or compete with the hero logo/headline for LCP.
 window.addEventListener('load', () => {
   if (REDUCE) return; // honour reduced-motion — no autoplay
-  const vid = document.getElementById('heroVideo');
-  if (vid) {
-    const source = vid.querySelector('[data-src]');
-    if (source) {
-      source.setAttribute('src', source.dataset.src);
-      vid.load();
-      vid.play().catch(() => {}); // swallow autoplay policy errors gracefully
+  document.querySelectorAll('.hero-bg-video, .pl-bg-video, .mob-bg-video').forEach(v => {
+    v.querySelectorAll('source[data-src]').forEach(s => s.setAttribute('src', s.dataset.src));
+    v.load();
+    v.play().catch(() => {}); // swallow autoplay policy errors gracefully
+  });
+  if (heroBgVid) {
+    if (heroBgVid.readyState >= 3) {
+      showHeroVideo();
+    } else {
+      heroBgVid.addEventListener('canplay', showHeroVideo, {once:true});
+      setTimeout(showHeroVideo, 800); // fallback if canplay never fires
     }
   }
-  // Repurposed CAPTURE→PROCESS visual (desktop pl-visual + mobile mob-visual)
-  document.querySelectorAll('.pl-bg-video, .mob-bg-video').forEach(v => {
-    const source = v.querySelector('[data-src]');
-    if (source) {
-      source.setAttribute('src', source.dataset.src);
-      v.load();
-      v.play().catch(() => {});
-    }
-  });
 }, {once: true});
 
 // ── FORM ──
