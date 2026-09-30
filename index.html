@@ -424,9 +424,10 @@ section[id],div[id]{scroll-margin-top:60px;}
    lockstep with the existing pipeline scroll progress; --dflip mirrors the
    video horizontally once the drone crosses the midpoint so it always
    appears to face back toward the workflow card rather than away from it;
-   see the reduced-motion block below for the static fallback. A radial mask
-   fades the video's own rectangular frame out at the edges so its studio
-   background doesn't read as a hard grey box against the page background. */
+   see the reduced-motion block below for the static fallback. A wide, soft
+   radial mask plus a heavily darkened filter fade the video's own
+   rectangular studio background down until it reads as part of the page
+   background rather than a visible shape. */
 .pl-visual{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none;}
 .pl-bg-video{
   position:absolute;left:var(--dx,10%);top:var(--dy,34%);
@@ -434,9 +435,9 @@ section[id],div[id]{scroll-margin-top:60px;}
   transform:translate(-50%,-50%) scale(var(--ds,1)) scaleX(var(--dflip,1));
   transform-origin:center;
   object-fit:cover;object-position:center;
-  opacity:.18;filter:brightness(.4) contrast(1.05) saturate(1.05);
-  -webkit-mask-image:radial-gradient(ellipse 60% 60% at center,#000 45%,transparent 85%);
-  mask-image:radial-gradient(ellipse 60% 60% at center,#000 45%,transparent 85%);
+  opacity:.16;filter:brightness(.22) contrast(1.15) saturate(1.05);
+  -webkit-mask-image:radial-gradient(ellipse 60% 60% at center,#000 15%,transparent 92%);
+  mask-image:radial-gradient(ellipse 60% 60% at center,#000 15%,transparent 92%);
   display:block;
 }
 /* Scrim between the drone and the content; slightly stronger toward the
@@ -1356,10 +1357,10 @@ function updateDrone(progress) {
   plDroneVideo.style.setProperty('--dx', pos.x.toFixed(2) + '%');
   plDroneVideo.style.setProperty('--dy', pos.y.toFixed(2) + '%');
   plDroneVideo.style.setProperty('--ds', pos.s.toFixed(3));
-  // Source footage faces right by default; mirror it past the midpoint so
+  // Source footage faces left by default; mirror it before the midpoint so
   // the drone always appears to look back toward the workflow card instead
   // of away from it.
-  plDroneVideo.style.setProperty('--dflip', pos.x < 50 ? 1 : -1);
+  plDroneVideo.style.setProperty('--dflip', pos.x < 50 ? -1 : 1);
 }
 
 function updatePipeline() {
