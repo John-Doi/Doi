@@ -450,18 +450,23 @@ section[id],div[id]{scroll-margin-top:60px;}
 .why-section{position:relative;z-index:1;padding:0 0 80px;background:var(--bg);border-top:1px solid var(--bd);}
 .why-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.06;pointer-events:none;}
 .why-title-wrap{text-align:center;display:block;width:100%;transform:translateX(30px);}
+/* Full-width list with a left accent stripe instead of a bordered card
+   grid -- the fourth distinct shape on the page (Capabilities keeps the
+   canonical module grid; Industries is a numbered editorial list; Deliverables
+   is a manifest; this reads like a spec/FAQ list). */
 .why-grid{
-  position:relative;display:grid;grid-template-columns:repeat(3,1fr);
-  gap:1px;background:var(--bd);border:1px solid var(--bd);margin:40px 60px 0;
+  position:relative;display:flex;flex-direction:column;
+  border-top:1px solid var(--bd);margin:40px 60px 0;
 }
 .why-card{
-  background:var(--card);position:relative;overflow:hidden;
-  opacity:0;transform:translateY(18px);
-  transition:opacity .5s,transform .5s cubic-bezier(.16,1,.3,1),background .3s;
+  background:var(--bg);position:relative;overflow:hidden;
+  border-bottom:1px solid var(--bd);border-left:3px solid transparent;
+  opacity:0;transform:translateY(14px);
+  transition:opacity .5s,transform .5s cubic-bezier(.16,1,.3,1),background .25s,border-color .25s;
 }
 .why-card.revealed{opacity:1;transform:translateY(0);}
-.why-card:hover{background:var(--card2);}
-.why-head{width:100%;display:flex;align-items:center;gap:16px;padding:40px;background:none;border:none;cursor:crosshair;text-align:left;font:inherit;color:inherit;-webkit-appearance:none;appearance:none;}
+.why-card:hover,.why-card.open{background:var(--card);border-left-color:var(--og);}
+.why-head{width:100%;display:flex;align-items:center;gap:16px;padding:28px 40px;background:none;border:none;cursor:crosshair;text-align:left;font:inherit;color:inherit;-webkit-appearance:none;appearance:none;}
 .why-head-l{display:flex;flex-direction:column;gap:10px;flex:1;min-width:0;}
 .why-icon{
   width:56px;height:56px;border:1px solid var(--bd2);flex-shrink:0;
@@ -513,29 +518,6 @@ section[id],div[id]{scroll-margin-top:60px;}
   font-size:72px;font-weight:900;color:rgba(255,107,26,.04);
   line-height:1;pointer-events:none;user-select:none;
 }
-
-/* ── MISSION PLATFORMS ── */
-.plat-section{position:relative;z-index:1;padding:0 0 80px;background:var(--bg);border-top:1px solid var(--bd);}
-/* Asymmetric columns give the Matrice 4T roughly 55% of the row's visual
-   weight; Avata 2 and Neo 2 split the rest -- deliberately not three equal
-   cards, so the primary/secondary platform hierarchy reads immediately. */
-.plat-grid{display:grid;grid-template-columns:2.4fr 1fr 1fr;gap:1px;background:var(--bd);border:1px solid var(--bd);margin:40px 60px 0;}
-.plat-card{background:var(--card);padding:36px 40px;position:relative;overflow:hidden;opacity:0;transform:translateY(18px);transition:opacity .5s,transform .5s cubic-bezier(.16,1,.3,1),background .3s;}
-.plat-card.revealed{opacity:1;transform:translateY(0);}
-.plat-card:hover{background:var(--card2);}
-.plat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--og),transparent);opacity:0;transition:opacity .3s;}
-.plat-card:hover::before{opacity:1;}
-.plat-primary::before{opacity:.7;background:linear-gradient(90deg,var(--og),var(--tiger));}
-.plat-badge{font-family:var(--mono);font-size:10px;color:var(--og);letter-spacing:.18em;margin-bottom:18px;}
-.plat-icon{width:48px;height:48px;border:1px solid var(--bd2);margin-bottom:18px;display:flex;align-items:center;justify-content:center;color:var(--og);}
-.plat-icon svg{width:24px;height:24px;}
-.plat-primary .plat-icon{width:64px;height:64px;}
-.plat-primary .plat-icon svg{width:34px;height:34px;}
-.plat-name{font-family:var(--disp);font-size:18px;font-weight:900;color:var(--t1);letter-spacing:.02em;margin-bottom:6px;}
-.plat-primary .plat-name{font-size:24px;}
-.plat-role{font-family:var(--mono);font-size:11px;color:var(--t3);letter-spacing:.12em;text-transform:uppercase;margin-bottom:16px;}
-.plat-body{font-size:14px;color:var(--t2);line-height:1.65;}
-.plat-primary .plat-body{font-size:15px;max-width:520px;}
 
 /* ── TRUST ── */
 .trust-section{
@@ -617,36 +599,46 @@ footer{
 
 /* ── INDUSTRIES (Phase 3) ── */
 .ind-section{position:relative;z-index:1;padding:0 0 80px;background:var(--surf);border-top:1px solid var(--bd);}
-.ind-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--bd);border:1px solid var(--bd);margin:40px 60px 0;}
-.ind-card{background:var(--card);padding:36px 40px;position:relative;overflow:hidden;opacity:0;transform:translateY(18px);transition:opacity .5s,transform .5s cubic-bezier(.16,1,.3,1),background .3s;}
-.ind-card.revealed{opacity:1;transform:translateY(0);}
-.ind-card:hover{background:var(--card2);}
-.ind-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--og),transparent);opacity:0;transition:opacity .3s;}
-.ind-card:hover::before{opacity:1;}
-.ind-label{font-family:var(--mono);font-size:11px;color:var(--og);letter-spacing:.2em;margin-bottom:14px;}
-.ind-title{font-family:var(--disp);font-size:16px;font-weight:700;color:var(--t1);margin-bottom:10px;letter-spacing:.02em;}
-.ind-body{font-size:14px;color:var(--t2);line-height:1.65;}
-.ind-wm{position:absolute;bottom:-12px;right:-6px;font-family:var(--disp);font-size:64px;font-weight:900;color:rgba(255,107,26,.04);line-height:1;pointer-events:none;user-select:none;}
+/* Editorial numbered list instead of a bordered card grid -- deliberately a
+   different shape from Capabilities/Deliverables so the page doesn't read as
+   one card component repeated down the page. Reveal is a left-slide fade,
+   not the translateY used by the grid sections. */
+.ind-list{margin:40px 60px 0;border-top:1px solid var(--bd);}
+.ind-row{display:grid;grid-template-columns:64px 1fr;gap:28px;padding:32px 0;border-bottom:1px solid var(--bd);opacity:0;transform:translateX(-16px);transition:opacity .5s,transform .5s cubic-bezier(.16,1,.3,1),background .25s;}
+.ind-row.revealed{opacity:1;transform:translateX(0);}
+.ind-row:hover{background:rgba(255,107,26,.03);}
+.ind-row:hover .ind-num{color:var(--og);}
+.ind-num{font-family:var(--disp);font-size:32px;font-weight:900;color:rgba(255,107,26,.32);line-height:1;transition:color .25s;}
+.ind-main{min-width:0;}
+.ind-title{font-family:var(--disp);font-size:19px;font-weight:700;color:var(--t1);margin-bottom:10px;letter-spacing:.02em;}
+.ind-body{font-size:15px;color:var(--t2);line-height:1.65;max-width:660px;}
 
 /* Oversized titles for Deliverables + Why sections */
 .del-section .sec-title,.why-section .sec-title{font-size:clamp(38px,5vw,80px);}
 
 /* ── DELIVERABLES (Phase 7) ── */
 .del-section{position:relative;z-index:1;padding:0 0 80px;background:var(--surf);border-top:1px solid var(--bd);}
-.del-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--bd);border:1px solid var(--bd);margin:40px 60px 0;}
-.del-card{background:var(--card);opacity:0;transform:translateY(14px);transition:opacity .5s,transform .5s cubic-bezier(.16,1,.3,1);}
-.del-card.revealed{opacity:1;transform:translateY(0);}
-.del-head{width:100%;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:28px 40px;background:none;border:none;cursor:crosshair;text-align:left;font:inherit;color:inherit;-webkit-appearance:none;appearance:none;}
-.del-head-l{display:flex;flex-direction:column;gap:10px;}
-.del-type{font-family:var(--mono);font-size:11px;color:var(--og);letter-spacing:.2em;}
+/* Manifest-style list instead of a bordered card grid: type+title inline on
+   the left, a format tag visible up front on the right (like a packing-list
+   line item), expanding only for the fuller description. Plain fade on
+   reveal -- no translate -- the third distinct reveal treatment on the page
+   alongside Industries' slide and Capabilities'/Why DØi's translateY. */
+.del-list{margin:40px 60px 0;border:1px solid var(--bd);}
+.del-card{background:var(--card);opacity:0;transition:opacity .5s;border-bottom:1px solid var(--bd);}
+.del-card:last-child{border-bottom:none;}
+.del-card.revealed{opacity:1;}
+.del-head{width:100%;display:flex;align-items:center;gap:16px;padding:22px 32px;background:none;border:none;cursor:crosshair;text-align:left;font:inherit;color:inherit;-webkit-appearance:none;appearance:none;}
+.del-head-l{display:flex;align-items:baseline;gap:16px;flex:1;min-width:0;}
+.del-type{font-family:var(--mono);font-size:11px;color:var(--og);letter-spacing:.2em;flex-shrink:0;}
 .del-title{font-family:var(--disp);font-size:15px;font-weight:700;color:var(--t1);letter-spacing:.02em;}
+.del-tag{font-family:var(--mono);font-size:10px;color:var(--t3);letter-spacing:.08em;border:1px solid var(--bd2);padding:5px 10px;flex-shrink:0;white-space:nowrap;}
 .del-toggle{position:relative;width:16px;height:16px;flex-shrink:0;}
 .del-toggle::before,.del-toggle::after{content:'';position:absolute;top:50%;left:50%;background:var(--og);transition:transform .3s ease;}
 .del-toggle::before{width:14px;height:1.5px;transform:translate(-50%,-50%);}
 .del-toggle::after{width:1.5px;height:14px;transform:translate(-50%,-50%);}
 .del-card.open .del-toggle::after{transform:translate(-50%,-50%) rotate(90deg);}
-.del-content{max-height:0;overflow:hidden;padding:0 40px;transition:max-height .4s cubic-bezier(.16,1,.3,1),padding .4s cubic-bezier(.16,1,.3,1);}
-.del-card.open .del-content{max-height:320px;padding:0 40px 32px;}
+.del-content{max-height:0;overflow:hidden;padding:0 32px;transition:max-height .4s cubic-bezier(.16,1,.3,1),padding .4s cubic-bezier(.16,1,.3,1);}
+.del-card.open .del-content{max-height:320px;padding:0 32px 26px;}
 .del-body{font-size:14px;color:var(--t2);line-height:1.65;}
 .del-format{margin-top:14px;font-family:var(--mono);font-size:11px;color:var(--t3);letter-spacing:.1em;padding-top:12px;border-top:1px solid var(--bd);}
 
@@ -667,6 +659,11 @@ footer{
   .hero-zone{height:150vh;height:150svh;}
   .hero-pin{height:100vh;height:100svh;}
   .hero-inner{padding:80px var(--mobile-gutter) 20px;}
+  /* Mobile opening stays to logo/headline/description/capability line only;
+     the sticky .mobile-cta bar (REQUEST CONSULTATION) already appears once
+     the visitor scrolls past the hero, so the CTAs aren't lost, just not
+     competing for space in the first frame. */
+  .hero-btns{display:none;}
   .proof-band{grid-template-columns:repeat(2,1fr);}
   .proof-item{padding:32px var(--mobile-gutter);border-right:none;border-bottom:1px solid var(--bd);min-width:0;}
   /* recalibrated against real Orbitron metrics for "CAPTURE" (the widest
@@ -675,7 +672,11 @@ footer{
   .proof-num{font-size:clamp(20px,6vw,36px);}
   .pipeline-zone,.pipeline-pin{display:none;}
   .mob-pipeline{display:block;}
-  .why-grid,.svc-grid{grid-template-columns:1fr;margin:40px var(--mobile-gutter) 0;}
+  .svc-grid{grid-template-columns:1fr;margin:40px var(--mobile-gutter) 0;}
+  .why-grid{margin:40px var(--mobile-gutter) 0;}
+  .why-head{padding:22px var(--mobile-gutter);}
+  .why-card.open .why-content{padding:0 var(--mobile-gutter) 28px;}
+  .why-content{padding:0 var(--mobile-gutter);}
   .why-title-wrap{display:flex;flex-direction:column;align-items:center;gap:8px;transform:none;}
   .trust-section{padding:0 var(--mobile-gutter) 60px;}
   .trust-grid{grid-template-columns:repeat(3,1fr);}
@@ -684,14 +685,13 @@ footer{
   footer{padding:40px var(--mobile-gutter) 24px;}
   .foot-inner{grid-template-columns:1fr;gap:36px;}
   .sec-head{padding:60px var(--mobile-gutter) 0;}
-  .ind-grid,.del-grid,.plat-grid{grid-template-columns:1fr;margin:40px var(--mobile-gutter) 0;}
-  /* All three platform cards read at equal size once stacked full-width;
-     the primary/secondary hierarchy comes from the badge + PRIMARY PLATFORM
-     accent line, not from oversized type in a single narrow column. */
-  .plat-primary .plat-icon{width:48px;height:48px;}
-  .plat-primary .plat-icon svg{width:24px;height:24px;}
-  .plat-primary .plat-name{font-size:18px;}
-  .plat-primary .plat-body{font-size:14px;max-width:none;}
+  .ind-list,.del-list{margin:40px var(--mobile-gutter) 0;}
+  .ind-row{grid-template-columns:36px 1fr;gap:16px;padding:24px 0;}
+  .ind-num{font-size:20px;}
+  .del-head{flex-wrap:wrap;row-gap:10px;padding:18px var(--mobile-gutter);}
+  .del-head-l{flex:1 1 100%;}
+  .del-content{padding:0 var(--mobile-gutter);}
+  .del-card.open .del-content{padding:0 var(--mobile-gutter) 20px;}
   /* Same gutter as every other mobile section (was inheriting the desktop
      60px margin, which made this grid look narrower/offset from its
      neighbors); 2 columns keeps longer labels like "AIRSPACE COORDINATION"
@@ -852,7 +852,6 @@ footer{
       <div class="hero-left">
         <img class="hero-logo-img" src="DOiLabs_Logo2.png" alt="DØi Labs">
         <h1 class="hero-h1">AERIAL<br><span class="og">INTELLIGENCE</span></h1>
-        <p class="hero-sub-head">FOR COMPLEX OPERATIONS</p>
         <div class="hero-stage2">
           <p class="hero-sub">DØi Labs captures, processes, and transforms aerial data into actionable intelligence using mission-specific aircraft, sensors, and data workflows.</p>
           <div class="hero-platform">AERIAL RECONNAISSANCE · MAPPING · THERMAL · PROJECT DOCUMENTATION · DATA ANALYSIS</div>
@@ -882,13 +881,13 @@ footer{
     <h2 class="sec-title">BUILT FOR <span>THE FIELD</span></h2>
     <p class="sec-desc">Specialized aerial intelligence for the operations that can't afford to guess.</p>
   </div>
-  <div class="ind-grid">
-    <div class="ind-card"><div class="ind-label">IND · 01</div><div class="ind-title">CONSTRUCTION</div><p class="ind-body">Repeatable aerial documentation gives project teams a clearer view of site conditions, progress, and change over time. DØi supports milestone documentation, progress assessment, site observation, earthwork/<span class="gloss" data-term="volumetric">volumetric</span> observation, and project coordination with consistent aerial data and project-specific outputs.</p><div class="ind-wm">CON</div></div>
-    <div class="ind-card"><div class="ind-label">IND · 02</div><div class="ind-title">SOLAR & UTILITIES</div><p class="ind-body">Panel and electrical assets are difficult to fully assess from the ground. Calibrated thermal and visual aerial imaging help identify hotspots, anomalies, and condition issues across a site, supporting inspection and maintenance planning.</p><div class="ind-wm">SOL</div></div>
-    <div class="ind-card"><div class="ind-label">IND · 03</div><div class="ind-title">REAL ESTATE</div><p class="ind-body">Ground-level photos rarely capture a property's full context. High-resolution aerial imagery documents site layout, condition, and surrounding context to support listings, marketing, and pre-acquisition review.</p><div class="ind-wm">RE</div></div>
-    <div class="ind-card"><div class="ind-label">IND · 04</div><div class="ind-title">PUBLIC SAFETY</div><p class="ind-body">Ground teams can't always safely or quickly assess an active incident or large area. Aerial observation provides real-time visual context and documentation to support search, incident response, and situational awareness for public safety teams.</p><div class="ind-wm">SAF</div></div>
-    <div class="ind-card"><div class="ind-label">IND · 05</div><div class="ind-title">AGRICULTURE</div><p class="ind-body">Ground-level crop inspection is slow and often incomplete. <span class="gloss" data-term="ndvi">NDVI</span> and visual aerial imagery help identify irrigation issues, stress patterns, and crop health variation across a field, supporting management decisions.</p><div class="ind-wm">AGR</div></div>
-    <div class="ind-card"><div class="ind-label">IND · 06</div><div class="ind-title">INFRASTRUCTURE</div><p class="ind-body"><span class="gloss" data-term="rgb">Visual</span>, thermal, and spatial data help teams document asset conditions and observe areas that are difficult or inefficient to assess from the ground. DØi supports condition documentation, inspection workflows, change assessment, and site intelligence.</p><div class="ind-wm">INF</div></div>
+  <div class="ind-list">
+    <div class="ind-row"><div class="ind-num">01</div><div class="ind-main"><div class="ind-title">CONSTRUCTION</div><p class="ind-body">Repeatable aerial documentation gives project teams a clearer view of site conditions, progress, and change over time. DØi supports milestone documentation, progress assessment, site observation, earthwork/<span class="gloss" data-term="volumetric">volumetric</span> observation, and project coordination with consistent aerial data and project-specific outputs.</p></div></div>
+    <div class="ind-row"><div class="ind-num">02</div><div class="ind-main"><div class="ind-title">SOLAR & UTILITIES</div><p class="ind-body">Panel and electrical assets are difficult to fully assess from the ground. Calibrated thermal and visual aerial imaging help identify hotspots, anomalies, and condition issues across a site, supporting inspection and maintenance planning.</p></div></div>
+    <div class="ind-row"><div class="ind-num">03</div><div class="ind-main"><div class="ind-title">REAL ESTATE</div><p class="ind-body">Ground-level photos rarely capture a property's full context. High-resolution aerial imagery documents site layout, condition, and surrounding context to support listings, marketing, and pre-acquisition review.</p></div></div>
+    <div class="ind-row"><div class="ind-num">04</div><div class="ind-main"><div class="ind-title">PUBLIC SAFETY</div><p class="ind-body">Ground teams can't always safely or quickly assess an active incident or large area. Aerial observation provides real-time visual context and documentation to support search, incident response, and situational awareness for public safety teams.</p></div></div>
+    <div class="ind-row"><div class="ind-num">05</div><div class="ind-main"><div class="ind-title">AGRICULTURE</div><p class="ind-body">Ground-level crop inspection is slow and often incomplete. <span class="gloss" data-term="ndvi">NDVI</span> and visual aerial imagery help identify irrigation issues, stress patterns, and crop health variation across a field, supporting management decisions.</p></div></div>
+    <div class="ind-row"><div class="ind-num">06</div><div class="ind-main"><div class="ind-title">INFRASTRUCTURE</div><p class="ind-body"><span class="gloss" data-term="rgb">Visual</span>, thermal, and spatial data help teams document asset conditions and observe areas that are difficult or inefficient to assess from the ground. DØi supports condition documentation, inspection workflows, change assessment, and site intelligence.</p></div></div>
   </div>
 </section>
 
@@ -906,43 +905,6 @@ footer{
     <div class="svc-card"><button class="svc-head" type="button" aria-expanded="false" aria-controls="svc-content-4"><span class="svc-head-l"><span class="svc-div">DIV · THM</span><span class="svc-title">THERMAL INSPECTION</span></span><span class="svc-toggle" aria-hidden="true"></span></button><div class="svc-content" id="svc-content-4"><div class="svc-body">Solar panel efficiency analysis, electrical inspection, HVAC assessment, roof moisture mapping, and wildfire perimeter monitoring using calibrated thermal sensors.</div></div><div class="svc-wm">THM</div></div>
     <div class="svc-card"><button class="svc-head" type="button" aria-expanded="false" aria-controls="svc-content-5"><span class="svc-head-l"><span class="svc-div">DIV · XLAB</span><span class="svc-title">DATA PROCESSING + ANALYSIS</span></span><span class="svc-toggle" aria-hidden="true"></span></button><div class="svc-content" id="svc-content-5"><div class="svc-body">AI-enhanced object detection, change analysis, and anomaly identification. Transforms captured aerial data into organized comparisons, observations, and analytical outputs teams can act on.</div></div><div class="svc-wm">XLAB</div></div>
     <div class="svc-card"><button class="svc-head" type="button" aria-expanded="false" aria-controls="svc-content-6"><span class="svc-head-l"><span class="svc-div">DIV · FAB</span><span class="svc-title">CUSTOM MISSION DESIGN</span></span><span class="svc-toggle" aria-hidden="true"></span></button><div class="svc-content" id="svc-content-6"><div class="svc-body">Bespoke operational planning for complex, multi-objective missions. Specialized payload integration, extended <span class="gloss" data-term="bvlos">BVLOS</span> coordination, and custom data pipeline development.</div></div><div class="svc-wm">FAB</div></div>
-  </div>
-</section>
-
-<!-- MISSION PLATFORMS — the aircraft as an operating system, not a catalog.
-     Matrice 4T is the primary multi-sensor platform; Avata 2 and Neo 2 are
-     smaller complementary platforms selected for specific visual-capture
-     requirements. Capabilities above stay organized by function (RCN/OPS/
-     SYN/THM/XLAB/FAB); this section shows how DØi selects a platform to
-     execute them, not the other way around. -->
-<section class="plat-section" id="platforms">
-  <div class="sec-head">
-    <div class="sec-tag">MISSION PLATFORMS</div>
-    <h2 class="sec-title">THE RIGHT <span>AIRCRAFT</span> FOR THE REQUIREMENT</h2>
-    <p class="sec-desc">One operation, multiple capture tools. DØi selects the platform based on the mission — not the other way around.</p>
-  </div>
-  <div class="plat-grid">
-    <div class="plat-card plat-primary">
-      <div class="plat-badge">PRIMARY PLATFORM</div>
-      <div class="plat-icon"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="6" cy="6" r="3"/><circle cx="26" cy="6" r="3"/><circle cx="6" cy="26" r="3"/><circle cx="26" cy="26" r="3"/><path d="M8 8l6 6M24 8l-6 6M8 24l6-6M24 24l-6-6"/><rect x="12" y="12" width="8" height="8" rx="1"/></svg></div>
-      <div class="plat-name">DJI MATRICE 4T</div>
-      <div class="plat-role">Primary Multi-Sensor Platform</div>
-      <p class="plat-body">DØi's primary aerial platform, flying a multi-sensor payload built around wide-angle visual, telephoto, thermal, and laser-rangefinding capture. Supports mapping, inspection, reconnaissance, and repeatable site-documentation workflows, with low-light capability for mission-specific night operations.</p>
-    </div>
-    <div class="plat-card">
-      <div class="plat-badge">SPECIALIZED VISUAL PLATFORM</div>
-      <div class="plat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/></svg></div>
-      <div class="plat-name">DJI AVATA 2</div>
-      <div class="plat-role">Specialized Visual Platform</div>
-      <p class="plat-body">Compact FPV capture platform supporting dynamic visual documentation and mission-specific perspectives where a smaller aircraft and immersive camera movement provide useful context. Deployed alongside the Matrice 4T, not in place of it.</p>
-    </div>
-    <div class="plat-card">
-      <div class="plat-badge">LIGHTWEIGHT VISUAL PLATFORM</div>
-      <div class="plat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="6"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/></svg></div>
-      <div class="plat-name">DJI NEO 2</div>
-      <div class="plat-role">Lightweight Visual Platform</div>
-      <p class="plat-body">DØi's smallest platform, used for lightweight visual capture, rapid contextual imagery, and supplementary project documentation when a compact aircraft is operationally useful.</p>
-    </div>
   </div>
 </section>
 
@@ -1070,13 +1032,13 @@ footer{
 <div class="del-section">
   <div class="sec-tag" style="margin:0 0 10px;">WHAT YOU RECEIVE</div>
   <p class="sec-desc" style="margin:0 auto 28px;text-align:center;">The tangible outputs of the capabilities and workflow above, configured to each mission's specific requirements.</p>
-  <div class="del-grid">
-    <div class="del-card"><button class="del-head" type="button" aria-expanded="false" aria-controls="del-content-1"><span class="del-head-l"><span class="del-type">DEL · 01</span><span class="del-title">ORTHOMOSAIC GEOTIFF</span></span><span class="del-toggle" aria-hidden="true"></span></button><div class="del-content" id="del-content-1"><p class="del-body">Georeferenced aerial imagery stitched for site measurement, design overlays, and record documentation.</p><div class="del-format">FORMAT: GeoTIFF · GEOREFERENCED OUTPUT</div></div></div>
-    <div class="del-card"><button class="del-head" type="button" aria-expanded="false" aria-controls="del-content-2"><span class="del-head-l"><span class="del-type">DEL · 02</span><span class="del-title">3D POINT CLOUD</span></span><span class="del-toggle" aria-hidden="true"></span></button><div class="del-content" id="del-content-2"><p class="del-body">Dense photogrammetric point clouds for site documentation, earthwork analysis, change assessment, and integration with compatible design and project workflows.</p><div class="del-format">FORMAT: LAS / LAZ · PROJECT-SPECIFIC SPATIAL OUTPUT</div></div></div>
-    <div class="del-card"><button class="del-head" type="button" aria-expanded="false" aria-controls="del-content-3"><span class="del-head-l"><span class="del-type">DEL · 03</span><span class="del-title">THERMAL REPORT</span></span><span class="del-toggle" aria-hidden="true"></span></button><div class="del-content" id="del-content-3"><p class="del-body">Annotated thermal maps with defect classifications, GPS coordinates, and severity ratings. Ready for maintenance scheduling.</p><div class="del-format">FORMAT: PDF + GEOTIFF · RADIOMETRIC</div></div></div>
-    <div class="del-card"><button class="del-head" type="button" aria-expanded="false" aria-controls="del-content-4"><span class="del-head-l"><span class="del-type">DEL · 04</span><span class="del-title">PROGRESS REPORT PDF</span></span><span class="del-toggle" aria-hidden="true"></span></button><div class="del-content" id="del-content-4"><p class="del-body">Timestamped site documentation with overlays, issue flags, and completion percentage, organized for project management recordkeeping.</p><div class="del-format">FORMAT: PDF · TIMESTAMPED · GPS-TAGGED</div></div></div>
-    <div class="del-card"><button class="del-head" type="button" aria-expanded="false" aria-controls="del-content-5"><span class="del-head-l"><span class="del-type">DEL · 05</span><span class="del-title">SURFACE MODEL (DSM/DTM)</span></span><span class="del-toggle" aria-hidden="true"></span></button><div class="del-content" id="del-content-5"><p class="del-body">Digital surface and terrain models for drainage analysis, cut/fill quantification, and grading plan verification.</p><div class="del-format">FORMAT: GeoTIFF / XYZ · PROJECT-SPECIFIC RESOLUTION</div></div></div>
-    <div class="del-card"><button class="del-head" type="button" aria-expanded="false" aria-controls="del-content-6"><span class="del-head-l"><span class="del-type">DEL · 06</span><span class="del-title">INTELLIGENCE BRIEF</span></span><span class="del-toggle" aria-hidden="true"></span></button><div class="del-content" id="del-content-6"><p class="del-body">AI-assisted anomaly detection with prioritized action items. Change detection between missions. Decision-ready summary for project leads.</p><div class="del-format">FORMAT: PDF + ANNOTATED IMAGERY</div></div></div>
+  <div class="del-list">
+    <div class="del-card"><button class="del-head" type="button" aria-expanded="false" aria-controls="del-content-1"><span class="del-head-l"><span class="del-type">DEL · 01</span><span class="del-title">ORTHOMOSAIC GEOTIFF</span></span><span class="del-tag">GEOTIFF</span><span class="del-toggle" aria-hidden="true"></span></button><div class="del-content" id="del-content-1"><p class="del-body">Georeferenced aerial imagery stitched for site measurement, design overlays, and record documentation.</p><div class="del-format">FORMAT: GeoTIFF · GEOREFERENCED OUTPUT</div></div></div>
+    <div class="del-card"><button class="del-head" type="button" aria-expanded="false" aria-controls="del-content-2"><span class="del-head-l"><span class="del-type">DEL · 02</span><span class="del-title">3D POINT CLOUD</span></span><span class="del-tag">LAS / LAZ</span><span class="del-toggle" aria-hidden="true"></span></button><div class="del-content" id="del-content-2"><p class="del-body">Dense photogrammetric point clouds for site documentation, earthwork analysis, change assessment, and integration with compatible design and project workflows.</p><div class="del-format">FORMAT: LAS / LAZ · PROJECT-SPECIFIC SPATIAL OUTPUT</div></div></div>
+    <div class="del-card"><button class="del-head" type="button" aria-expanded="false" aria-controls="del-content-3"><span class="del-head-l"><span class="del-type">DEL · 03</span><span class="del-title">THERMAL REPORT</span></span><span class="del-tag">PDF + TIFF</span><span class="del-toggle" aria-hidden="true"></span></button><div class="del-content" id="del-content-3"><p class="del-body">Annotated thermal maps with defect classifications, GPS coordinates, and severity ratings. Ready for maintenance scheduling.</p><div class="del-format">FORMAT: PDF + GEOTIFF · RADIOMETRIC</div></div></div>
+    <div class="del-card"><button class="del-head" type="button" aria-expanded="false" aria-controls="del-content-4"><span class="del-head-l"><span class="del-type">DEL · 04</span><span class="del-title">PROGRESS REPORT PDF</span></span><span class="del-tag">PDF</span><span class="del-toggle" aria-hidden="true"></span></button><div class="del-content" id="del-content-4"><p class="del-body">Timestamped site documentation with overlays, issue flags, and completion percentage, organized for project management recordkeeping.</p><div class="del-format">FORMAT: PDF · TIMESTAMPED · GPS-TAGGED</div></div></div>
+    <div class="del-card"><button class="del-head" type="button" aria-expanded="false" aria-controls="del-content-5"><span class="del-head-l"><span class="del-type">DEL · 05</span><span class="del-title">SURFACE MODEL (DSM/DTM)</span></span><span class="del-tag">GEOTIFF / XYZ</span><span class="del-toggle" aria-hidden="true"></span></button><div class="del-content" id="del-content-5"><p class="del-body">Digital surface and terrain models for drainage analysis, cut/fill quantification, and grading plan verification.</p><div class="del-format">FORMAT: GeoTIFF / XYZ · PROJECT-SPECIFIC RESOLUTION</div></div></div>
+    <div class="del-card"><button class="del-head" type="button" aria-expanded="false" aria-controls="del-content-6"><span class="del-head-l"><span class="del-type">DEL · 06</span><span class="del-title">INTELLIGENCE BRIEF</span></span><span class="del-tag">PDF</span><span class="del-toggle" aria-hidden="true"></span></button><div class="del-content" id="del-content-6"><p class="del-body">AI-assisted anomaly detection with prioritized action items. Change detection between missions. Decision-ready summary for project leads.</p><div class="del-format">FORMAT: PDF + ANNOTATED IMAGERY</div></div></div>
   </div>
 </div>
 
@@ -1480,7 +1442,7 @@ window.addEventListener('scroll', () => {
 }, {passive:true});
 
 // ── INTERSECTION REVEALS ──
-const revealEls = document.querySelectorAll('.why-card, .svc-card, .trust-item, .proof-item, .ind-card, .del-card, .plat-card');
+const revealEls = document.querySelectorAll('.why-card, .svc-card, .trust-item, .proof-item, .ind-row, .del-card');
 const io = new IntersectionObserver((entries) => {
   entries.forEach((e, i) => {
     if (e.isIntersecting) {
