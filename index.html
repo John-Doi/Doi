@@ -461,14 +461,36 @@ section[id],div[id]{scroll-margin-top:60px;}
   .pl-bg-video{left:45% !important;top:45% !important;transform:translate(-50%,-50%) !important;}
 }
 
-/* Mobile pipeline (replaces sticky on small screens) */
-.mob-pipeline{display:none;}
+/* Mobile pipeline (replaces sticky on small screens). The drone is now an
+   ambient full-section background layer -- same concept as the desktop
+   .pl-visual/.pl-bg-video treatment (masked, dimmed, blurred so it reads as
+   part of the page rather than a boxed video clip) -- instead of a separate
+   boxed insert between two steps. It starts near the top of the section and
+   flies further down as the visitor scrolls through it, tied to scroll
+   progress via --mtop (written by updateMobilePipeline()), so it responds to
+   scrolling rather than just looping in place. Step content sits in
+   .mob-pipeline-content, stacked above it via position+z-index. */
+.mob-pipeline{display:none;position:relative;overflow:hidden;}
+.mob-pipeline-content{position:relative;z-index:1;}
 .mob-step{border-bottom:1px solid var(--bd);}
-.mob-step-content{padding:32px 20px;background:var(--surf);}
-.mob-visual{position:relative;width:100%;height:150px;overflow:hidden;background:#000;border-bottom:1px solid var(--bd);}
-.mob-bg-video{width:100%;height:100%;object-fit:cover;object-position:center;transform:scaleX(-1);filter:brightness(.6) saturate(1.05);display:block;}
-.mob-visual::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,8,8,.05) 0%,rgba(8,8,8,.65) 100%);}
-.mob-visual-label{position:absolute;bottom:10px;left:16px;z-index:1;font-family:var(--mono);font-size:10px;letter-spacing:.18em;color:var(--og);text-transform:uppercase;}
+/* Same translucent near-black used by desktop's .pl-content (rgba(14,14,14,.82)
+   is literally --surf at 82% opacity) so the drone reads faintly through the
+   step text instead of being fully hidden behind an opaque card. */
+.mob-step-content{padding:32px 20px;background:rgba(14,14,14,.82);}
+.mob-visual{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none;}
+.mob-bg-video{
+  position:absolute;left:50%;top:var(--mtop,6%);
+  width:min(78vw,340px);aspect-ratio:1.6;
+  transform:translate(-50%,-50%) scaleX(-1);
+  object-fit:cover;object-position:center;
+  opacity:.35;filter:brightness(.48) contrast(1.25) saturate(1.05) blur(1.5px);
+  -webkit-mask-image:radial-gradient(ellipse 60% 60% at center,#000 0%,transparent 96%);
+  mask-image:radial-gradient(ellipse 60% 60% at center,#000 0%,transparent 96%);
+  display:block;
+}
+@media(prefers-reduced-motion:reduce){
+  .mob-bg-video{top:50% !important;}
+}
 
 /* ── WHY CARDS ── */
 .why-section{position:relative;z-index:1;padding:0 0 80px;background:var(--bg);border-top:1px solid var(--bd);}
@@ -1003,6 +1025,12 @@ footer{
 
 <!-- Mobile fallback — simplified vertical progression, no sticky pin -->
 <div class="mob-pipeline" id="pipeline-mob">
+  <div class="mob-visual" aria-hidden="true">
+    <video class="mob-bg-video" muted loop playsinline preload="none">
+      <source data-src="Matricet4_Floating.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div class="mob-pipeline-content">
   <div class="sec-head">
     <div class="sec-tag">OPERATIONAL WORKFLOW</div>
     <h2 class="sec-title">FROM CAPTURE <span>TO DECISION</span></h2>
@@ -1032,12 +1060,6 @@ footer{
         <p class="step-body">Collect repeatable visual, thermal, and spatial data according to the mission plan and required deliverables.</p>
       </div>
     </div>
-    <div class="mob-visual" aria-hidden="true">
-      <video class="mob-bg-video" muted loop playsinline preload="none">
-        <source data-src="Matricet4_Floating.mp4" type="video/mp4">
-      </video>
-      <div class="mob-visual-label">CAPTURE → PROCESS</div>
-    </div>
     <div class="mob-step">
       <div class="mob-step-content">
         <div class="step-code">04 · PROCESS</div>
@@ -1055,6 +1077,7 @@ footer{
         <p class="step-body">Package mission outputs into project-specific deliverables designed to support documentation, assessment, coordination, and informed decision-making.</p>
       </div>
     </div>
+  </div>
 </div>
 
 <div class="del-section">
@@ -1429,6 +1452,24 @@ function updatePipeline() {
 }
 updatePipeline();
 
+// ── MOBILE WORKFLOW DRONE: same ambient-background-video concept as the
+// desktop pipeline's drone above, adapted for mobile's normal (non-sticky)
+// vertical scroll -- the drone starts near the top of #pipeline-mob and
+// flies further down the section as the visitor scrolls through it, instead
+// of sitting static in a boxed clip between two steps. ──
+const mobPipelineEl = document.getElementById('pipeline-mob');
+const mobDroneVideo = document.querySelector('.mob-bg-video');
+function updateMobilePipeline(){
+  if (!mobPipelineEl || !mobDroneVideo || REDUCE || !mobileHeroQuery.matches) return;
+  const rect = mobPipelineEl.getBoundingClientRect();
+  const total = rect.height + window.innerHeight;
+  const progress = total > 0 ? Math.min(1, Math.max(0, (window.innerHeight - rect.top) / total)) : 0;
+  const top = 6 + progress * 82; // 6% (near the top) -> 88% (near the bottom) of the section
+  mobPipelineEl.style.setProperty('--mtop', top.toFixed(1) + '%');
+}
+updateMobilePipeline();
+window.addEventListener('resize', updateMobilePipeline, {passive:true});
+
 // ── PHASE 1 · SCROLL PROGRESS BAR ──
 const progressBar = document.getElementById('scrollProgress');
 function updateProgress(){
@@ -1482,6 +1523,7 @@ function onScrollFrame(){
   updateHeroStage();
   updateMobileCta();
   updatePipeline();
+  updateMobilePipeline();
   updateProgress();
   updateRail();
   if (typeof closeGlossPopup === 'function') closeGlossPopup();
