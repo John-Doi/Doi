@@ -421,16 +421,22 @@ section[id],div[id]{scroll-margin-top:60px;}
    in the open space on either side. Reuses the same video asset that
    previously sat in a small step-2/3-only inset panel. --dx/--dy (percentages
    of the pinned viewport) and --ds (scale) are written by updateDrone() in
-   lockstep with the existing pipeline scroll progress; see the
-   reduced-motion block below for the static fallback. */
+   lockstep with the existing pipeline scroll progress; --dflip mirrors the
+   video horizontally once the drone crosses the midpoint so it always
+   appears to face back toward the workflow card rather than away from it;
+   see the reduced-motion block below for the static fallback. A radial mask
+   fades the video's own rectangular frame out at the edges so its studio
+   background doesn't read as a hard grey box against the page background. */
 .pl-visual{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none;}
 .pl-bg-video{
   position:absolute;left:var(--dx,10%);top:var(--dy,34%);
   width:clamp(650px,50vw,1200px);aspect-ratio:1.6;
-  transform:translate(-50%,-50%) scale(var(--ds,1));
+  transform:translate(-50%,-50%) scale(var(--ds,1)) scaleX(var(--dflip,1));
   transform-origin:center;
   object-fit:cover;object-position:center;
-  opacity:.18;filter:brightness(.55) contrast(.9) saturate(1.05);
+  opacity:.18;filter:brightness(.4) contrast(1.05) saturate(1.05);
+  -webkit-mask-image:radial-gradient(ellipse 60% 60% at center,#000 45%,transparent 85%);
+  mask-image:radial-gradient(ellipse 60% 60% at center,#000 45%,transparent 85%);
   display:block;
 }
 /* Scrim between the drone and the content; slightly stronger toward the
@@ -1350,6 +1356,10 @@ function updateDrone(progress) {
   plDroneVideo.style.setProperty('--dx', pos.x.toFixed(2) + '%');
   plDroneVideo.style.setProperty('--dy', pos.y.toFixed(2) + '%');
   plDroneVideo.style.setProperty('--ds', pos.s.toFixed(3));
+  // Source footage faces right by default; mirror it past the midpoint so
+  // the drone always appears to look back toward the workflow card instead
+  // of away from it.
+  plDroneVideo.style.setProperty('--dflip', pos.x < 50 ? 1 : -1);
 }
 
 function updatePipeline() {
