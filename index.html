@@ -828,6 +828,17 @@ footer{
 .dcheck.checked .dcheck-box svg{opacity:1;}
 .dcheck-lbl{font-family:var(--body);font-size:15px;color:var(--t2);font-weight:500;}
 .dcheck.checked .dcheck-lbl{color:var(--t1);}
+/* Real checkbox input per .dcheck, kept in the a11y tree (not display:none) so
+   it's keyboard-reachable and announced natively -- visual state still comes
+   from the existing .checked class above, toggled in sync by JS. */
+.dcheck-input{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none;}
+.dcheck-input:focus-visible ~ .dcheck-box{outline:2px solid var(--og);outline-offset:2px;}
+/* Fieldset/legend reset -- browsers apply default border/padding/min-width to
+   <fieldset> and block display to <legend>; strip that so .dgroup reuses the
+   existing .fg/.sect-divider look exactly rather than looking like a new
+   component. */
+.dgroup{border:none;margin:0;padding:0;min-width:0;}
+.dgroup legend{padding:0;width:100%;float:none;}
 .legal-list{display:flex;flex-direction:column;gap:6px;}
 .lcheck{display:flex;align-items:flex-start;gap:10px;padding:11px 13px;background:rgba(255,255,255,0.012);border:1px solid var(--bd);cursor:pointer;transition:border-color .2s;user-select:none;}
 .lcheck:hover{border-color:rgba(255,107,0,0.18);}
@@ -1235,6 +1246,22 @@ footer{
             </div>
             <div class="fg span2"><label class="flbl">Site Address / Location <span class="req">*</span></label><input type="text" class="finp" id="f-address" placeholder="Full address or general location" autocomplete="street-address"></div>
             <div class="fg span2"><label class="flbl">Project Description <span class="req">*</span></label><textarea class="ftxt" id="f-desc" placeholder="What do you need and why? Include property type, site size, access details, or any specific requirements."></textarea></div>
+            <fieldset class="fg span2 dgroup">
+              <legend class="sect-divider">Desired Deliverables <span class="req">*</span></legend>
+              <div class="flbl" style="margin-bottom:8px;letter-spacing:normal;text-transform:none;font-family:var(--body);font-size:15px;color:var(--t2);">What should we deliver? Select all that apply — not sure is fine.</div>
+              <div class="deliverables-grid" id="deliverablesGrid">
+                <label class="dcheck"><input type="checkbox" class="dcheck-input" data-deliverable="Progress Documentation"><span class="dcheck-box" aria-hidden="true"><svg viewBox="0 0 12 10"><polyline points="1,5 4.5,9 11,1"/></svg></span><span class="dcheck-lbl">Progress Documentation</span></label>
+                <label class="dcheck"><input type="checkbox" class="dcheck-input" data-deliverable="Inspection Documentation"><span class="dcheck-box" aria-hidden="true"><svg viewBox="0 0 12 10"><polyline points="1,5 4.5,9 11,1"/></svg></span><span class="dcheck-lbl">Inspection Documentation</span></label>
+                <label class="dcheck"><input type="checkbox" class="dcheck-input" data-deliverable="Thermal Findings"><span class="dcheck-box" aria-hidden="true"><svg viewBox="0 0 12 10"><polyline points="1,5 4.5,9 11,1"/></svg></span><span class="dcheck-lbl">Thermal Findings</span></label>
+                <label class="dcheck"><input type="checkbox" class="dcheck-input" data-deliverable="Mapping / Orthomosaic"><span class="dcheck-box" aria-hidden="true"><svg viewBox="0 0 12 10"><polyline points="1,5 4.5,9 11,1"/></svg></span><span class="dcheck-lbl">Mapping / Orthomosaic</span></label>
+                <label class="dcheck"><input type="checkbox" class="dcheck-input" data-deliverable="3D Model / Reconstruction"><span class="dcheck-box" aria-hidden="true"><svg viewBox="0 0 12 10"><polyline points="1,5 4.5,9 11,1"/></svg></span><span class="dcheck-lbl">3D Model / Reconstruction</span></label>
+                <label class="dcheck"><input type="checkbox" class="dcheck-input" data-deliverable="Site Condition Documentation"><span class="dcheck-box" aria-hidden="true"><svg viewBox="0 0 12 10"><polyline points="1,5 4.5,9 11,1"/></svg></span><span class="dcheck-lbl">Site Condition Documentation</span></label>
+                <label class="dcheck"><input type="checkbox" class="dcheck-input" data-deliverable="Comparison / Change Documentation"><span class="dcheck-box" aria-hidden="true"><svg viewBox="0 0 12 10"><polyline points="1,5 4.5,9 11,1"/></svg></span><span class="dcheck-lbl">Comparison / Change Documentation</span></label>
+                <label class="dcheck"><input type="checkbox" class="dcheck-input" data-deliverable="Analytical Outputs"><span class="dcheck-box" aria-hidden="true"><svg viewBox="0 0 12 10"><polyline points="1,5 4.5,9 11,1"/></svg></span><span class="dcheck-lbl">Analytical Outputs</span></label>
+                <label class="dcheck"><input type="checkbox" class="dcheck-input" data-deliverable="Aerial Imagery / Video"><span class="dcheck-box" aria-hidden="true"><svg viewBox="0 0 12 10"><polyline points="1,5 4.5,9 11,1"/></svg></span><span class="dcheck-lbl">Aerial Imagery / Video</span></label>
+                <label class="dcheck"><input type="checkbox" class="dcheck-input" data-deliverable="Not Sure — Recommend Deliverables"><span class="dcheck-box" aria-hidden="true"><svg viewBox="0 0 12 10"><polyline points="1,5 4.5,9 11,1"/></svg></span><span class="dcheck-lbl">Not sure — recommend deliverables</span></label>
+              </div>
+            </fieldset>
           </div>
         </div>
         <div class="step-nav"><button class="btn-wiz-ghost" onclick="goStep(1)">← BACK</button><div class="step-info">STEP 2 / 3</div><button class="btn-wiz-pri" onclick="goStep(3)">REVIEW &amp; SUBMIT <svg width="9" height="9" viewBox="0 0 10 10" fill="currentColor"><polygon points="0,0 10,5 0,10"/></svg></button></div>
@@ -1724,6 +1751,7 @@ function goStep(n){
     var addr=document.getElementById('f-address').value.trim();
     var desc=document.getElementById('f-desc').value.trim();
     if(!proj||!addr||!desc){alert('Please fill in Project Name, Site Address, and Project Description before continuing.');return;}
+    if(getSelectedDeliverables().length===0){alert('Please select at least one desired deliverable (or "Not sure — recommend deliverables") before continuing.');return;}
     buildReview();
   }
   document.getElementById('sp'+wizStep).classList.remove('active');
@@ -1734,8 +1762,68 @@ function goStep(n){
   document.getElementById('contact').scrollIntoView({behavior:'smooth',block:'start'});
 }
 function toggleLegal(el){el.classList.toggle('checked');}
+
+// ── DESIRED DELIVERABLES (multi-select) ──
+// Real <input type="checkbox"> per .dcheck keeps native keyboard/screen-reader
+// semantics; this just keeps the existing .checked CSS class (already defined
+// for .dcheck) in sync with the input's real checked state, and implements
+// the one piece of custom behavior: "Not sure" is mutually exclusive with any
+// specific selection (picking one clears the other), since combining "I don't
+// know" with specific picks would be contradictory.
+var NOT_SURE_KEY='Not Sure — Recommend Deliverables';
+function getSelectedDeliverables(){
+  return Array.from(document.querySelectorAll('.dcheck-input:checked')).map(function(i){return i.dataset.deliverable;});
+}
+document.querySelectorAll('.dcheck-input').forEach(function(input){
+  input.addEventListener('change',function(){
+    input.closest('.dcheck').classList.toggle('checked',input.checked);
+    var all=Array.from(document.querySelectorAll('.dcheck-input'));
+    if(input.checked && input.dataset.deliverable===NOT_SURE_KEY){
+      all.forEach(function(other){
+        if(other!==input && other.checked){other.checked=false;other.closest('.dcheck').classList.remove('checked');}
+      });
+    } else if(input.checked){
+      var notSure=all.find(function(o){return o.dataset.deliverable===NOT_SURE_KEY;});
+      if(notSure && notSure.checked){notSure.checked=false;notSure.closest('.dcheck').classList.remove('checked');}
+    }
+  });
+});
+
+// Simple reordering (not hiding) of the deliverables list based on the
+// selected mission requirement, so the most relevant options surface first --
+// no branching logic, no recommendation engine, every option always stays
+// available and selectable.
+var DELIVERABLE_PRIORITY={
+  'Construction Progress + QA':['Progress Documentation','Site Condition Documentation','Comparison / Change Documentation','Mapping / Orthomosaic'],
+  'Commercial / Industrial Inspection':['Inspection Documentation','Site Condition Documentation','Aerial Imagery / Video'],
+  'Thermal Inspection':['Thermal Findings','Inspection Documentation','Aerial Imagery / Video'],
+  'Mapping + 3D':['Mapping / Orthomosaic','3D Model / Reconstruction','Site Condition Documentation'],
+  'Infrastructure / Project Support':['Progress Documentation','Inspection Documentation','Analytical Outputs'],
+  'Advanced Facility / Manufacturing':['Inspection Documentation','Thermal Findings','Site Condition Documentation'],
+  'Commercial Property / Media':['Aerial Imagery / Video','Mapping / Orthomosaic','Site Condition Documentation']
+};
+var fTypeEl=document.getElementById('f-type');
+if(fTypeEl){
+  fTypeEl.addEventListener('change',function(){
+    var priority=DELIVERABLE_PRIORITY[this.value]||[];
+    var grid=document.getElementById('deliverablesGrid');
+    var rows=Array.from(grid.children);
+    rows.sort(function(a,b){
+      var ka=a.querySelector('.dcheck-input').dataset.deliverable;
+      var kb=b.querySelector('.dcheck-input').dataset.deliverable;
+      if(ka===NOT_SURE_KEY)return 1;
+      if(kb===NOT_SURE_KEY)return -1;
+      var ia=priority.indexOf(ka);if(ia===-1)ia=999;
+      var ib=priority.indexOf(kb);if(ib===-1)ib=999;
+      return ia-ib;
+    });
+    rows.forEach(function(r){grid.appendChild(r);});
+  });
+}
+
 function buildReview(){
-  var rows=[['Name',document.getElementById('f-name').value||'—'],['Company',document.getElementById('f-company').value||'—'],['Email',document.getElementById('f-email').value||'—'],['Phone',document.getElementById('f-phone').value||'—'],['Project',document.getElementById('f-project').value||'—'],['Service',document.getElementById('f-type').value||'—'],['Frequency',document.getElementById('f-frequency').value||'—'],['Urgency',document.getElementById('f-urgency').value||'—'],['Date',document.getElementById('f-date').value||'—'],['Time Window',document.getElementById('f-time-window').value||'—'],['Location',document.getElementById('f-address').value||'—'],['Description',document.getElementById('f-desc').value||'—']];
+  var deliverables=getSelectedDeliverables();
+  var rows=[['Name',document.getElementById('f-name').value||'—'],['Company',document.getElementById('f-company').value||'—'],['Email',document.getElementById('f-email').value||'—'],['Phone',document.getElementById('f-phone').value||'—'],['Project',document.getElementById('f-project').value||'—'],['Service',document.getElementById('f-type').value||'—'],['Frequency',document.getElementById('f-frequency').value||'—'],['Deliverables',deliverables.length?deliverables.join(', '):'—'],['Urgency',document.getElementById('f-urgency').value||'—'],['Date',document.getElementById('f-date').value||'—'],['Time Window',document.getElementById('f-time-window').value||'—'],['Location',document.getElementById('f-address').value||'—'],['Description',document.getElementById('f-desc').value||'—']];
   document.getElementById('reviewGrid').innerHTML=rows.map(function(r){return'<div style="display:flex;gap:10px;background:rgba(7,7,7,0.98);border:1px solid var(--bd);padding:10px 13px;"><span style="font-family:var(--mono);font-size:9px;letter-spacing:2px;color:var(--t3);text-transform:uppercase;min-width:96px;flex-shrink:0;">'+r[0]+'</span><span style="font-family:var(--body);font-size:15px;color:var(--t1);font-weight:500;">'+r[1]+'</span></div>';}).join('');
 }
 function submitForm(){
@@ -1746,6 +1834,8 @@ function submitForm(){
   if(!Array.from(document.querySelectorAll('.lcheck')).every(function(l){return l.classList.contains('checked');})){alert('Please confirm all items before submitting.');return;}
   var missionType=document.getElementById('f-type').value;
   if(!missionType){alert('Please select a mission type in Step 2.');goStep(2);return;}
+  var desiredDeliverables=getSelectedDeliverables();
+  if(desiredDeliverables.length===0){alert('Please select at least one desired deliverable in Step 2.');goStep(2);return;}
   var payload={
     'Project Name':document.getElementById('f-project').value.trim(),
     'Organization':document.getElementById('f-company').value.trim(),
@@ -1754,6 +1844,7 @@ function submitForm(){
     'Client Phone':phone,
     'Mission Type Value':missionType,
     'Mission Frequency':document.getElementById('f-frequency').value,
+    'Desired Deliverables':desiredDeliverables,
     'Requested Date':document.getElementById('f-date').value,
     'Requested Time Window':document.getElementById('f-time-window')?document.getElementById('f-time-window').value:'',
     'Urgency Level':document.getElementById('f-urgency').value,
