@@ -257,3 +257,24 @@ npx @claude-flow/cli@latest doctor --fix
 ```
 
 **Agent tool** handles execution (agents, files, code, git). **MCP tools** handle coordination (swarm, memory, hooks). **CLI** is the same via Bash.
+
+## DØi Frontend Design & QA System
+
+Repository-local skills govern frontend visual/QA work: `doi-design-system` (authoritative visual/interaction standard — supersedes the `Design System` CSS-var snippet above if the two ever disagree; read `index.html`'s actual `:root` block or the skill itself as the source of truth), `doi-ux-critic` (reviews changes, doesn't redesign), `doi-accessibility`, `doi-responsive-qa`, `doi-performance`. See `.claude/skills/*/SKILL.md`. QA tooling (screenshot capture across required breakpoints) lives in `.claude/qa/` — see `.claude/qa/README.md`.
+
+Permanent rules for all frontend work on this site:
+
+- `doi-design-system` governs frontend visual work; consult it before styling changes.
+- Inspect before redesigning — read the actual current markup/CSS, don't assume from memory or from the narrative sections above (some of which describe an earlier version of the site and may be stale).
+- Extend existing components (card grid, accordion, icon-box, micro-label patterns) before creating new ones.
+- Preserve established brand identity: colors, fonts, logo, card/button geometry.
+- Never modify the official logo assets or generate an alternate mark without explicit authorization.
+- Never introduce new colors or fonts without explicit authorization.
+- Never add decorative complexity (animation, "technical" flourishes, new visual effects) without a functional reason.
+- Significant (Level 2+, see `doi-design-system`) frontend changes require a `doi-responsive-qa` pass and, for interactive/semantic changes, a `doi-accessibility` pass, before considering the change done; run `doi-ux-critic` to catch drift.
+- Review performance (`doi-performance`) when a change adds media, animation, or non-trivial DOM/JS.
+- Preserve working backend/API behavior (`api/mission-intake.js`) unless explicitly tasked with backend work.
+- Never fabricate client logos, testimonials, case studies, statistics, certifications, or performance claims.
+- Never deploy automatically unless explicitly instructed.
+- This repo has no build step, linter, formatter, or test suite (`package.json` has no `scripts` block) — this is a deliberate architecture choice, not a gap to silently "fix" by installing a toolchain. See `.claude/qa/README.md` for what QA *is* available and why no validation hooks were added to `.claude/settings.json`.
+
