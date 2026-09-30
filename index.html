@@ -463,13 +463,14 @@ section[id],div[id]{scroll-margin-top:60px;}
 
 /* Mobile pipeline (replaces sticky on small screens). The drone is now an
    ambient full-section background layer -- same concept as the desktop
-   .pl-visual/.pl-bg-video treatment (masked, dimmed, blurred so it reads as
-   part of the page rather than a boxed video clip) -- instead of a separate
-   boxed insert between two steps. It starts near the top of the section and
-   flies further down as the visitor scrolls through it, tied to scroll
-   progress via --mtop (written by updateMobilePipeline()), so it responds to
-   scrolling rather than just looping in place. Step content sits in
-   .mob-pipeline-content, stacked above it via position+z-index. */
+   .pl-visual/.pl-bg-video treatment -- instead of a separate boxed insert
+   between two steps. It sways left/right while flying down the section as
+   the visitor scrolls, tied to scroll progress via --mx/--mtop/--ms/--mflip
+   (written by updateMobilePipeline()). --mflip mirrors the footage (which
+   faces left by default) whenever the drone is left-of-center, so it always
+   appears to face back toward the center of the page -- same technique as
+   the desktop drone's --dflip. Step content sits in .mob-pipeline-content,
+   stacked above it via position+z-index. */
 .mob-pipeline{display:none;position:relative;overflow:hidden;}
 .mob-pipeline-content{position:relative;z-index:1;}
 .mob-step{border-bottom:1px solid var(--bd);}
@@ -479,17 +480,17 @@ section[id],div[id]{scroll-margin-top:60px;}
 .mob-step-content{padding:32px 20px;background:rgba(14,14,14,.82);}
 .mob-visual{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none;}
 .mob-bg-video{
-  position:absolute;left:50%;top:var(--mtop,6%);
-  width:min(78vw,340px);aspect-ratio:1.6;
-  transform:translate(-50%,-50%) scaleX(-1);
+  position:absolute;left:var(--mx,32%);top:var(--mtop,6%);
+  width:min(72vw,320px);aspect-ratio:1.6;
+  transform:translate(-50%,-50%) scale(var(--ms,1)) scaleX(var(--mflip,-1));
   object-fit:cover;object-position:center;
-  opacity:.35;filter:brightness(.48) contrast(1.25) saturate(1.05) blur(1.5px);
-  -webkit-mask-image:radial-gradient(ellipse 60% 60% at center,#000 0%,transparent 96%);
-  mask-image:radial-gradient(ellipse 60% 60% at center,#000 0%,transparent 96%);
+  opacity:.62;filter:brightness(.75) contrast(1.15) saturate(1.1) blur(.5px);
+  -webkit-mask-image:radial-gradient(ellipse 65% 65% at center,#000 0%,transparent 97%);
+  mask-image:radial-gradient(ellipse 65% 65% at center,#000 0%,transparent 97%);
   display:block;
 }
 @media(prefers-reduced-motion:reduce){
-  .mob-bg-video{top:50% !important;}
+  .mob-bg-video{left:50% !important;top:50% !important;transform:translate(-50%,-50%) !important;}
 }
 
 /* ── WHY CARDS ── */
@@ -1454,18 +1455,45 @@ updatePipeline();
 
 // ── MOBILE WORKFLOW DRONE: same ambient-background-video concept as the
 // desktop pipeline's drone above, adapted for mobile's normal (non-sticky)
-// vertical scroll -- the drone starts near the top of #pipeline-mob and
-// flies further down the section as the visitor scrolls through it, instead
-// of sitting static in a boxed clip between two steps. ──
+// vertical scroll -- the drone sways left/right while flying down through
+// #pipeline-mob as the visitor scrolls, instead of sitting static in a boxed
+// clip between two steps. x/y are percentages of the section; continuous
+// interpolation between keyframes means reversing scroll retraces the same
+// path, same technique as the desktop DRONE_PATH. ──
 const mobPipelineEl = document.getElementById('pipeline-mob');
 const mobDroneVideo = document.querySelector('.mob-bg-video');
+const MOB_DRONE_PATH = [
+  {t:0.00, x:32, y:6,  s:1.00},
+  {t:0.22, x:74, y:24, s:1.05},
+  {t:0.45, x:24, y:45, s:1.00},
+  {t:0.68, x:76, y:66, s:1.05},
+  {t:1.00, x:34, y:88, s:1.00},
+];
+function interpolateMobDronePath(progress) {
+  const p = Math.min(1, Math.max(0, progress));
+  let i = 0;
+  while (i < MOB_DRONE_PATH.length - 2 && p > MOB_DRONE_PATH[i + 1].t) i++;
+  const a = MOB_DRONE_PATH[i], b = MOB_DRONE_PATH[i + 1];
+  const t = (p - a.t) / (b.t - a.t || 1);
+  return {
+    x: a.x + (b.x - a.x) * t,
+    y: a.y + (b.y - a.y) * t,
+    s: a.s + (b.s - a.s) * t,
+  };
+}
 function updateMobilePipeline(){
   if (!mobPipelineEl || !mobDroneVideo || REDUCE || !mobileHeroQuery.matches) return;
   const rect = mobPipelineEl.getBoundingClientRect();
   const total = rect.height + window.innerHeight;
   const progress = total > 0 ? Math.min(1, Math.max(0, (window.innerHeight - rect.top) / total)) : 0;
-  const top = 6 + progress * 82; // 6% (near the top) -> 88% (near the bottom) of the section
-  mobPipelineEl.style.setProperty('--mtop', top.toFixed(1) + '%');
+  const pos = interpolateMobDronePath(progress);
+  mobPipelineEl.style.setProperty('--mx', pos.x.toFixed(2) + '%');
+  mobPipelineEl.style.setProperty('--mtop', pos.y.toFixed(2) + '%');
+  mobPipelineEl.style.setProperty('--ms', pos.s.toFixed(3));
+  // Source footage faces left by default; mirror it whenever the drone is
+  // left-of-center so it always appears to face back toward the center of
+  // the page, same technique as the desktop drone's --dflip.
+  mobPipelineEl.style.setProperty('--mflip', pos.x < 50 ? -1 : 1);
 }
 updateMobilePipeline();
 window.addEventListener('resize', updateMobilePipeline, {passive:true});
