@@ -698,12 +698,19 @@ footer{
 /* ── DELIVERABLES (Phase 7) ── */
 .del-section{position:relative;z-index:1;padding:0 0 80px;background:var(--surf);border-top:1px solid var(--bd);}
 .del-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--bd);border:1px solid var(--bd);margin:40px 60px 0;}
-/* 8 cards in a 3-column grid leaves an empty bordered cell in row 3 --
-   have the last card span the remaining width instead of introducing a
-   4-column grid (tried first; its fixed 80px/card padding forced a ~905px
-   content-width floor that overflowed below ~1150px, a real regression in
-   the same 900-1150px range already fixed once for the nav). */
-.del-grid .del-card:last-child{grid-column:span 2;}
+/* The 8th deliverable card doesn't fill a 3-column grid evenly, so the last
+   2 cards (DEL·07/08) sit in their own row, left- and right-justified, with
+   real empty space (the section's own background) between them -- rather
+   than an empty bordered grid cell, or a wide spanned card with a large gap
+   between its own title and toggle. Reuses the grid's own column math
+   (same repeat(3,1fr)) so DEL·07/08 line up with columns 1 and 3 of the
+   grid above, but each card carries its own border instead of relying on
+   the shared container-background/gap trick, since the empty middle
+   column must show nothing, not a filled --bd rectangle. */
+.del-grid-last{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin:1px 60px 0;}
+.del-grid-last .del-card{border:1px solid var(--bd);}
+.del-grid-last .del-card:first-child{grid-column:1;}
+.del-grid-last .del-card:last-child{grid-column:3;}
 .del-card{background:var(--card);opacity:0;transform:translateY(14px);transition:opacity .5s,transform .5s cubic-bezier(.16,1,.3,1);}
 .del-card.revealed{opacity:1;transform:translateY(0);}
 .del-head{width:100%;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:28px 40px;background:none;border:none;cursor:crosshair;text-align:left;font:inherit;color:inherit;-webkit-appearance:none;appearance:none;}
@@ -772,7 +779,8 @@ footer{
   #industries .sec-title{display:block;}
   #industries .sec-title::before,#industries .sec-title::after{display:none;}
   .del-grid{grid-template-columns:1fr;margin:40px var(--mobile-gutter) 0;}
-  .del-grid .del-card:last-child{grid-column:span 1;}
+  .del-grid-last{grid-template-columns:1fr;margin:1px var(--mobile-gutter) 0;}
+  .del-grid-last .del-card:first-child,.del-grid-last .del-card:last-child{grid-column:1;}
   /* Same gutter as every other mobile section (was inheriting the desktop
      60px margin, which made this grid look narrower/offset from its
      neighbors); 2 columns keeps longer labels like "AIRSPACE COORDINATION"
@@ -1140,6 +1148,8 @@ footer{
     <div class="del-card"><button class="del-head" type="button" aria-expanded="false" aria-controls="del-content-4"><span class="del-head-l"><span class="del-type">DEL · 04</span><span class="del-title">MAPPING + 3D PRODUCTS</span></span><span class="del-toggle" aria-hidden="true"></span></button><div class="del-content" id="del-content-4"><p class="del-body">Georeferenced imagery, photogrammetric reconstruction, spatial data, and project-specific models generated from structured aerial capture — including orthomosaics, point clouds, and surface models.</p><div class="del-format">FORMAT: GeoTIFF / LAS-LAZ / XYZ · PROJECT-SPECIFIC OUTPUT</div></div></div>
     <div class="del-card"><button class="del-head" type="button" aria-expanded="false" aria-controls="del-content-5"><span class="del-head-l"><span class="del-type">DEL · 05</span><span class="del-title">SITE CONDITION DOCUMENTATION</span></span><span class="del-toggle" aria-hidden="true"></span></button><div class="del-content" id="del-content-5"><p class="del-body">Structured visual records of assets, facilities, or project areas, organized for consistent reference across inspection, planning, and operational review.</p><div class="del-format">FORMAT: PDF + ORGANIZED IMAGERY</div></div></div>
     <div class="del-card"><button class="del-head" type="button" aria-expanded="false" aria-controls="del-content-6"><span class="del-head-l"><span class="del-type">DEL · 06</span><span class="del-title">ANALYTICAL OUTPUTS</span></span><span class="del-toggle" aria-hidden="true"></span></button><div class="del-content" id="del-content-6"><p class="del-body">AI-assisted comparisons, flagged areas of interest, organized datasets, and decision-support reporting for project leads.</p><div class="del-format">FORMAT: PDF + ANNOTATED IMAGERY</div></div></div>
+  </div>
+  <div class="del-grid-last">
     <div class="del-card"><button class="del-head" type="button" aria-expanded="false" aria-controls="del-content-7"><span class="del-head-l"><span class="del-type">DEL · 07</span><span class="del-title">COMPARISON + CHANGE DOCUMENTATION</span></span><span class="del-toggle" aria-hidden="true"></span></button><div class="del-content" id="del-content-7"><p class="del-body">Side-by-side imagery and organized comparisons across capture dates, highlighting changes in site conditions, progress, or asset status over time.</p><div class="del-format">FORMAT: PDF + SIDE-BY-SIDE IMAGERY</div></div></div>
     <div class="del-card"><button class="del-head" type="button" aria-expanded="false" aria-controls="del-content-8"><span class="del-head-l"><span class="del-type">DEL · 08</span><span class="del-title">AERIAL IMAGERY + VIDEO</span></span><span class="del-toggle" aria-hidden="true"></span></button><div class="del-content" id="del-content-8"><p class="del-body">Organized aerial photography and video from the mission, delivered in standard formats for direct use in documentation, internal review, or visual media.</p><div class="del-format">FORMAT: JPEG/RAW + MP4 · ORGANIZED BY CAPTURE DATE</div></div></div>
   </div>
