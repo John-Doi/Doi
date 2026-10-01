@@ -122,7 +122,7 @@ section[id],div[id]{scroll-margin-top:60px;}
 .nav-logo.visible{opacity:1;pointer-events:auto;}
 .nav-logo em{color:var(--og);font-style:normal;}
 .nav-links{display:flex;gap:28px;list-style:none;justify-self:center;}
-.nav-links a{font-family:var(--mono);font-size:16px;color:var(--t2);text-decoration:none;letter-spacing:.14em;text-transform:uppercase;transition:color .2s;}
+.nav-links a{font-family:var(--mono);font-size:16px;color:var(--t2);text-decoration:none;letter-spacing:.14em;text-transform:uppercase;transition:color .2s;white-space:nowrap;}
 .nav-links a:hover{color:var(--og);}
 .nav-cta{
   font-family:var(--mono);font-size:16px;letter-spacing:.12em;font-weight:700;
@@ -130,8 +130,21 @@ section[id],div[id]{scroll-margin-top:60px;}
   clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);
   transition:background .2s;
   justify-self:end;
+  white-space:nowrap;
 }
 .nav-cta:hover{background:var(--tiger);}
+/* PHASE 5 (website) · at intermediate desktop widths (~901-1200px) the center
+   .nav-links track leaves too little room in the two 1fr tracks either side,
+   and -- before white-space:nowrap was added above -- "REQUEST MISSION BRIEF"
+   wrapped to 3 lines inside the clip-path button, visibly breaking the
+   primary CTA. Tightening the gap/padding here reclaims enough width for a
+   single-line button without touching 1280px+ (unaffected) or mobile
+   (nav-links/.nav-cta are hidden entirely below 900px). */
+@media (max-width:1200px) and (min-width:901px){
+  .nav{padding:0 24px;}
+  .nav-links{gap:14px;}
+  .nav-links a{letter-spacing:.08em;}
+}
 
 /* ── HERO SCROLL ZONE ── */
 .hero-zone{height:190vh;position:relative;}
@@ -907,6 +920,10 @@ footer{
   <button class="nav-cta" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">REQUEST MISSION BRIEF</button>
 </nav>
 
+<!-- PHASE 5 (website) · landmark fix: the page previously had <nav>/<footer>
+     but no <main> wrapping the primary content between them. -->
+<main>
+
 <!-- HERO SCROLL ZONE -->
 <section class="hero-zone" id="hero">
   <div class="hero-pin">
@@ -1301,6 +1318,8 @@ footer{
     </div>
   </div>
 </section>
+
+</main>
 
 <!-- FOOTER -->
 <footer>
