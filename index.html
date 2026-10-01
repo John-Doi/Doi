@@ -204,8 +204,13 @@ section[id],div[id]{scroll-margin-top:60px;}
   padding:96px 60px 48px;
 }
 .hero-left{display:flex;flex-direction:column;gap:22px;}
-.hero-stage2{display:flex;flex-direction:column;gap:22px;pointer-events:none;}
-.hero-stage2.stage2-active{pointer-events:auto;}
+/* Hidden at rest so the paragraph + VIEW PROCESS button appear only once the
+   hero drone background video has faded in (see showHeroVideo() / the
+   'stage2-active' class toggle), not simultaneously with the logo/headline.
+   The transition-delay lets the text settle in just after the video's own
+   1.5s fade rather than racing it. */
+.hero-stage2{display:flex;flex-direction:column;gap:22px;pointer-events:none;opacity:0;transition:opacity .8s ease-out .7s;}
+.hero-stage2.stage2-active{pointer-events:auto;opacity:1;}
 .hero-bottom-info{
   position:relative;z-index:1;flex-shrink:0;
   padding:0 60px 28px;
@@ -245,7 +250,7 @@ section[id],div[id]{scroll-margin-top:60px;}
   text-align:center;
 }
 .hero-platform span{color:var(--og);}
-.hero-btns{display:flex;gap:14px;flex-wrap:wrap;}
+.hero-btns{display:flex;gap:14px;flex-wrap:wrap;max-width:440px;justify-content:center;}
 .btn-p{
   font-family:var(--mono);font-size:12px;letter-spacing:.12em;font-weight:700;
   background:var(--og);color:#000;border:none;padding:14px 32px;cursor:crosshair;
@@ -769,14 +774,10 @@ footer{
   .hero-pin{height:100vh;height:100svh;}
   .hero-inner{padding:80px var(--mobile-gutter) 20px;}
   .hero-bottom-info{padding:0 var(--mobile-gutter) 20px;}
-  /* Mobile hero keeps the primary REQUEST MISSION BRIEF action (a real,
-     reachable CTA during the hero itself -- see Phase 1 hero audit finding),
-     but drops the secondary VIEW PROCESS ghost button to keep the mobile
-     opening compact. .mobile-cta (the sticky bar) stays hidden the whole
-     time the hero is on screen (see updateMobileCta()) so this is never a
-     duplicate/competing CTA -- the sticky bar only takes over once the
-     visitor scrolls past the hero. */
-  .hero-btns .btn-g{display:none;}
+  /* The hero's own REQUEST MISSION BRIEF button was removed (now just VIEW
+     PROCESS, centered under the sub paragraph) -- REQUEST MISSION BRIEF
+     stays reachable via the sticky .mobile-cta bar, which takes over once
+     the visitor scrolls past the hero (see updateMobileCta()). */
   .proof-band{grid-template-columns:repeat(2,1fr);}
   .proof-item{padding:32px var(--mobile-gutter);border-right:none;border-bottom:1px solid var(--bd);min-width:0;}
   /* recalibrated against real Orbitron metrics for "CAPTURE" (the widest
@@ -835,7 +836,7 @@ footer{
 @media(max-width:1023px){.section-rail{display:none;}}
 
 @media(prefers-reduced-motion:reduce){
-  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;animation-iteration-count:1!important;}
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;transition-delay:0s!important;animation-iteration-count:1!important;}
   .scroll-progress{transition:none!important;}
 }
 /* ── MULTI-STEP WIZARD ── */
@@ -980,15 +981,15 @@ footer{
         <img class="hero-logo-img" src="DOiLabs_Logo2.png" alt="DØi Labs">
         <h1 class="hero-h1">AERIAL<br><span class="og">INTELLIGENCE</span></h1>
         <div class="hero-stage2">
+          <p class="hero-sub">DØi Labs captures, processes, and transforms aerial data into actionable intelligence using mission-specific aircraft, sensors, and data workflows.</p>
           <div class="hero-btns">
-            <button class="btn-p" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">REQUEST MISSION BRIEF</button>
             <button class="btn-g" onclick="document.getElementById('pipeline').scrollIntoView({behavior:'smooth'})">VIEW PROCESS →</button>
           </div>
         </div>
+        <noscript><style>.hero-stage2{opacity:1!important;}</style></noscript>
       </div>
     </div>
     <div class="hero-bottom-info">
-      <p class="hero-sub">DØi Labs captures, processes, and transforms aerial data into actionable intelligence using mission-specific aircraft, sensors, and data workflows.</p>
       <div class="hero-platform">AERIAL RECONNAISSANCE · MAPPING · THERMAL · PROJECT DOCUMENTATION · DATA ANALYSIS</div>
     </div>
   </div>
@@ -1416,7 +1417,15 @@ footer{
 // ── HERO BG VIDEO: fade in as soon as video can play (triggered once the
 // deferred load below actually starts — see PHASE 2 · DEFERRED VIDEO LOAD) ──
 const heroBgVid = document.querySelector('.hero-bg-video');
+// Reveals the hero paragraph + VIEW PROCESS button (see .hero-stage2 CSS) --
+// gated on the drone video becoming visible rather than firing at load, so
+// the text settles in after the video, not alongside the logo/headline.
+function revealHeroStage2() {
+  const el = document.querySelector('.hero-stage2');
+  if (el) el.classList.add('stage2-active');
+}
 function showHeroVideo() {
+  revealHeroStage2();
   if (!heroBgVid) return;
   heroBgVid.style.transition = 'opacity 1.5s ease-out';
   heroBgVid.style.opacity = '0.82';
@@ -1471,9 +1480,9 @@ function updateHeroStage(){
   heroZoneEl.style.setProperty('--s1', stagedOpacity(progress, 0, 0.12, .8).toFixed(3));
   heroZoneEl.style.setProperty('--s2', stagedOpacity(progress, 0.04, 0.16, .8).toFixed(3));
   heroZoneEl.style.setProperty('--s3', stagedOpacity(progress, 0.08, 0.20, .8).toFixed(3));
-  // CTA is legible and usable from the first frame, not just after a scroll
-  // nudge -- matches the new floor above.
-  heroStage2El.classList.add('stage2-active');
+  // Once revealed (see revealHeroStage2()), the CTA stays legible and usable
+  // from scroll frame to scroll frame -- matches the floor above. The initial
+  // reveal itself is gated on the drone video, not on scroll.
 }
 updateHeroStage();
 window.addEventListener('resize', updateHeroStage, {passive:true});
@@ -1796,6 +1805,8 @@ window.addEventListener('load', () => {
       heroBgVid.addEventListener('canplay', showHeroVideo, {once:true});
       setTimeout(showHeroVideo, 800); // fallback if canplay never fires
     }
+  } else {
+    revealHeroStage2(); // no video element -- reveal the hero text anyway
   }
 }, {once: true});
 
