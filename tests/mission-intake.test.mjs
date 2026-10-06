@@ -85,7 +85,7 @@ test("endpoint 200/received (duplicate submission_id): client sees success, back
     contact_name: "Jordan Lee",
     contact_phone: "(562) 555-0134",
     contact_email: "jordan@leeconstruction.example",
-    site_access_notes: "NOT PROVIDED",
+    site_access_notes: "",
     notes: "Roof-mounted HVAC units, need thermal pass before the rainy season.",
     attachments: [],
     intake_ref: "INT-20261101-001",
@@ -198,6 +198,138 @@ test("endpoint 429: client is asked to retry shortly, not told it succeeded", as
   assert.equal(sentMail.length, 2, "backup email is still sent even on 429");
 });
 
+test("endpoint 422: client sees field errors (not silent success), backup email still sent", async () => {
+  const sentMail = [];
+  const req = { method: "POST", headers: {}, body: { ...SAMPLE_BODY } };
+  const res = fakeRes();
+
+  await handleIntakeRequest(req, res, {
+    ...FIXED_DEPS,
+    callIntakeEndpoint: fakeEndpoint({ ok: false, status: 422, intakeRef: null, errors: ["mission_type is not a recognized value"], retried: false }),
+    sendEmail: async (msg) => { sentMail.push(msg); return { messageId: "test" }; }
+  });
+
+  assert.equal(res.statusCode, 422);
+  assert.equal(res.body.success, false);
+  assert.deepEqual(res.body.errors, ["mission_type is not a recognized value"]);
+  assert.equal(sentMail.length, 2, "backup email is still sent even on 422");
+});
+
+test("endpoint 413: client sees a too-large message (not silent success), backup email still sent", async () => {
+  const sentMail = [];
+  const req = { method: "POST", headers: {}, body: { ...SAMPLE_BODY } };
+  const res = fakeRes();
+
+  await handleIntakeRequest(req, res, {
+    ...FIXED_DEPS,
+    callIntakeEndpoint: fakeEndpoint({ ok: false, status: 413, intakeRef: null, errors: null, retried: false }),
+    sendEmail: async (msg) => { sentMail.push(msg); return { messageId: "test" }; }
+  });
+
+  assert.equal(res.statusCode, 413);
+  assert.equal(res.body.success, false);
+  assert.equal(sentMail.length, 2);
+});
+
+test("a payload within every per-field character limit can still exceed 16KB in bytes (multi-byte UTF-8) and is rejected with 413, before the endpoint or mailer are ever touched", async () => {
+  let endpointCalled = false;
+  let mailerCalled = false;
+  // A 3-byte-per-character CJK string at each field's own max *character*
+  // count defeats character-count limits alone but not the explicit
+  // byte-length guard -- this is exactly the gap that guard exists to close.
+  const wide = (n) => "测".repeat(n);
+  const req = {
+    method: "POST",
+    headers: {},
+    body: {
+      client: wide(200),
+      organization: wide(200),
+      site_address: wide(500),
+      mission_type: wide(120),
+      requested_window: wide(200),
+      deliverables: wide(1000),
+      contact_name: wide(200),
+      contact_phone: "5551234567",
+      contact_email: "a@example.com",
+      site_access_notes: wide(1000),
+      notes: wide(2000),
+      attachments: [],
+      hp_website: "",
+      captchaToken: ""
+    }
+  };
+  const res = fakeRes();
+
+  await handleIntakeRequest(req, res, {
+    ...FIXED_DEPS,
+    callIntakeEndpoint: async () => { endpointCalled = true; return { ok: true, status: 200 }; },
+    sendEmail: async () => { mailerCalled = true; }
+  });
+
+  assert.equal(res.statusCode, 413);
+  assert.equal(res.body.success, false);
+  assert.equal(endpointCalled, false, "the oversized payload must never reach the endpoint");
+  assert.equal(mailerCalled, false, "an oversized/malformed submission is rejected outright, not emailed");
+});
+
+test("submission_id provided by the client (a valid UUID) is reused verbatim, not regenerated", async () => {
+  const sentMail = [];
+  const clientId = "7f3b2a10-9c4e-4d2a-8b1e-6a2f5c9d0e11";
+  const req = { method: "POST", headers: {}, body: { ...SAMPLE_BODY, submission_id: clientId } };
+  const res = fakeRes();
+  let capturedPayload = null;
+
+  await handleIntakeRequest(req, res, {
+    ...FIXED_DEPS,
+    callIntakeEndpoint: async (payload) => { capturedPayload = payload; return { ok: true, status: 200, intakeRef: "INT-1" }; },
+    sendEmail: async (msg) => { sentMail.push(msg); return { messageId: "test" }; }
+  });
+
+  assert.equal(capturedPayload.submission_id, clientId);
+  assert.equal(extractJsonBlock(sentMail[0].text).submission_id, clientId);
+});
+
+test("a missing or malformed client submission_id falls back to a server-generated one instead of failing the request", async () => {
+  const req = { method: "POST", headers: {}, body: { ...SAMPLE_BODY, submission_id: "not-a-uuid" } };
+  const res = fakeRes();
+  let capturedPayload = null;
+
+  await handleIntakeRequest(req, res, {
+    ...FIXED_DEPS,
+    callIntakeEndpoint: async (payload) => { capturedPayload = payload; return { ok: true, status: 200 }; },
+    sendEmail: async () => ({ messageId: "test" })
+  });
+
+  assert.equal(capturedPayload.submission_id, "00000000-0000-4000-8000-000000000000");
+});
+
+test("mismatched Turnstile env vars (only one of secret/site key set) fail closed with a config error, before touching the endpoint or mailer", async () => {
+  let endpointCalled = false;
+  let mailerCalled = false;
+  const req = { method: "POST", headers: {}, body: { ...SAMPLE_BODY } };
+  const res = fakeRes();
+  const originalSecret = process.env.TURNSTILE_SECRET_KEY;
+  const originalSite = process.env.TURNSTILE_SITE_KEY;
+  process.env.TURNSTILE_SECRET_KEY = "a-secret";
+  delete process.env.TURNSTILE_SITE_KEY;
+
+  try {
+    await handleIntakeRequest(req, res, {
+      ...FIXED_DEPS,
+      callIntakeEndpoint: async () => { endpointCalled = true; return { ok: true, status: 200 }; },
+      sendEmail: async () => { mailerCalled = true; }
+    });
+  } finally {
+    if (originalSecret === undefined) delete process.env.TURNSTILE_SECRET_KEY; else process.env.TURNSTILE_SECRET_KEY = originalSecret;
+    if (originalSite === undefined) delete process.env.TURNSTILE_SITE_KEY; else process.env.TURNSTILE_SITE_KEY = originalSite;
+  }
+
+  assert.equal(res.statusCode, 503);
+  assert.equal(res.body.success, false);
+  assert.equal(endpointCalled, false);
+  assert.equal(mailerCalled, false);
+});
+
 test("endpoint AND backup email both fail: this is the one real failure shown to the client", async () => {
   const req = { method: "POST", headers: {}, body: { ...SAMPLE_BODY } };
   const res = fakeRes();
@@ -210,6 +342,33 @@ test("endpoint AND backup email both fail: this is the one real failure shown to
 
   assert.equal(res.statusCode, 502);
   assert.equal(res.body.success, false);
+});
+
+test("a mailer failure is logged with a short error code, never the raw error message", async () => {
+  const req = { method: "POST", headers: {}, body: { ...SAMPLE_BODY } };
+  const res = fakeRes();
+  const originalError = console.error;
+  const errorCalls = [];
+  console.error = (...args) => { errorCalls.push(args); };
+
+  const sensitiveMessage = "Postmark rejected recipient jordan@leeconstruction.example: invalid mailbox";
+  const mailerErr = new Error(sensitiveMessage);
+  mailerErr.code = "POSTMARK_SEND_FAILED_422";
+
+  try {
+    await handleIntakeRequest(req, res, {
+      ...FIXED_DEPS,
+      callIntakeEndpoint: fakeEndpoint({ ok: true, status: 200, intakeRef: "INT-1" }),
+      sendEmail: async () => { throw mailerErr; }
+    });
+  } finally {
+    console.error = originalError;
+  }
+
+  const logged = errorCalls.map((a) => a.join(" ")).join("\n");
+  assert.match(logged, /backup email failed/);
+  assert.match(logged, /POSTMARK_SEND_FAILED_422/);
+  assert.doesNotMatch(logged, /invalid mailbox/, "the raw mailer error message must never be logged");
 });
 
 test("missing required fields are rejected with 400 before the endpoint or mailer are ever touched", async () => {
@@ -251,6 +410,30 @@ test("honeypot field being filled silently drops the submission before endpoint/
   assert.deepEqual(res.body, { success: true });
   assert.equal(endpointCalled, false);
   assert.equal(mailerCalled, false);
+});
+
+test("honeypot log never includes the raw client IP, only a short fingerprint", async () => {
+  const rawIp = "203.0.113.42";
+  const req = { method: "POST", headers: { "x-forwarded-for": rawIp }, body: { ...SAMPLE_BODY, hp_website: "http://spam.example" } };
+  const res = fakeRes();
+  const originalWarn = console.warn;
+  const warnCalls = [];
+  console.warn = (...args) => { warnCalls.push(args); };
+
+  try {
+    await handleIntakeRequest(req, res, {
+      ...FIXED_DEPS,
+      callIntakeEndpoint: async () => ({ ok: true, status: 200 }),
+      sendEmail: async () => ({ messageId: "test" })
+    });
+  } finally {
+    console.warn = originalWarn;
+  }
+
+  const logged = warnCalls.map((a) => a.join(" ")).join("\n");
+  assert.match(logged, /honeypot triggered/);
+  assert.doesNotMatch(logged, new RegExp(rawIp.replace(/\./g, "\\.")), "the raw IP must never appear in logs");
+  assert.match(logged, /ip_fp: [0-9a-f]{8}/, "a short fingerprint should appear instead");
 });
 
 test("rate-limited requests are rejected with 429 before anything else runs", async () => {

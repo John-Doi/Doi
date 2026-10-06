@@ -1271,10 +1271,10 @@ footer{
           <div class="panel-sub">How should we reach you? All information is kept confidential.</div>
           <div class="hp-field" aria-hidden="true"><label>Website<input type="text" id="f-hp" name="hp_website" tabindex="-1" autocomplete="off"></label></div>
           <div class="form-2col">
-            <div class="fg span2"><label class="flbl">Full Name <span class="req">*</span></label><input type="text" class="finp" id="f-name" placeholder="First and last name" autocomplete="name"></div>
-            <div class="fg span2"><label class="flbl">Company / Organization</label><input type="text" class="finp" id="f-company" placeholder="Your business name" autocomplete="organization"></div>
-            <div class="fg"><label class="flbl">Email <span class="req">*</span></label><input type="email" class="finp" id="f-email" placeholder="you@company.com" autocomplete="email" inputmode="email"></div>
-            <div class="fg"><label class="flbl">Phone <span class="req">*</span></label><input type="tel" class="finp" id="f-phone" placeholder="+1 (___) ___-____" autocomplete="tel" inputmode="tel"></div>
+            <div class="fg span2"><label class="flbl">Full Name <span class="req">*</span></label><input type="text" class="finp" id="f-name" placeholder="First and last name" autocomplete="name" maxlength="200"></div>
+            <div class="fg span2"><label class="flbl">Company / Organization</label><input type="text" class="finp" id="f-company" placeholder="Your business name" autocomplete="organization" maxlength="200"></div>
+            <div class="fg"><label class="flbl">Email <span class="req">*</span></label><input type="email" class="finp" id="f-email" placeholder="you@company.com" autocomplete="email" inputmode="email" maxlength="254"></div>
+            <div class="fg"><label class="flbl">Phone <span class="req">*</span></label><input type="tel" class="finp" id="f-phone" placeholder="+1 (___) ___-____" autocomplete="tel" inputmode="tel" maxlength="25"></div>
           </div>
         </div>
         <div class="step-nav"><div class="step-info">STEP 1 / 3</div><button class="btn-wiz-pri" onclick="goStep(2)">NEXT <svg width="9" height="9" viewBox="0 0 10 10" fill="currentColor"><polygon points="0,0 10,5 0,10"/></svg></button></div>
@@ -1317,10 +1317,10 @@ footer{
                 <option value="Evening (5pm–9pm)">Evening (5pm–9pm)</option>
               </select>
             </div>
-            <div class="fg span2"><label class="flbl">Site Address / Location <span class="req">*</span></label><input type="text" class="finp" id="f-address" placeholder="Full address or general location" autocomplete="street-address"></div>
-            <div class="fg span2"><label class="flbl">Project Description <span class="req">*</span></label><textarea class="ftxt" id="f-desc" placeholder="What do you need and why? Include property type, site size, access details, or any specific requirements."></textarea></div>
+            <div class="fg span2"><label class="flbl">Site Address / Location <span class="req">*</span></label><input type="text" class="finp" id="f-address" placeholder="Full address or general location" autocomplete="street-address" maxlength="500"></div>
+            <div class="fg span2"><label class="flbl">Project Description <span class="req">*</span></label><textarea class="ftxt" id="f-desc" placeholder="What do you need and why? Include property type, site size, access details, or any specific requirements." maxlength="2000"></textarea></div>
             <div class="fg span2"><label class="flbl" for="f-attachments">Attachments</label><input type="file" class="finp" id="f-attachments" multiple accept=".pdf,.jpg,.jpeg,.png,.heic" aria-describedby="attachHint attachError">
-              <div class="attach-hint" id="attachHint">Optional. PDF, JPG, PNG, or HEIC — up to 10MB per file, 25MB total.</div>
+              <div class="attach-hint" id="attachHint">Optional. PDF, JPG, PNG, or HEIC — up to 3MB total.</div>
               <div class="attach-list" id="attachList"></div>
               <div class="attach-error" id="attachError" role="alert" style="display:none;"></div>
             </div>
@@ -1915,20 +1915,31 @@ if(fTypeEl){
 // ── ATTACHMENTS (optional, client-side gate ahead of the server's own
 // authoritative checks in api/mission-intake.js) ──
 var ATTACH_TYPES=['pdf','jpg','jpeg','png','heic'];
-var ATTACH_MAX_FILE=10*1024*1024;
-var ATTACH_MAX_TOTAL=25*1024*1024;
+var ATTACH_MAX_FILE=3*1024*1024;
+var ATTACH_MAX_TOTAL=3*1024*1024;
 var ATTACH_MAX_COUNT=10;
 var selectedAttachments=[];
+// Built via DOM APIs with textContent (not innerHTML string interpolation)
+// since the filename is fully attacker-controlled -- a filename containing
+// markup must never be parsed as HTML.
 function renderAttachList(){
   var list=document.getElementById('attachList');
-  list.innerHTML=selectedAttachments.map(function(f,i){
-    return '<div class="attach-item"><span>'+f.name+' ('+(f.size/1024/1024).toFixed(1)+'MB)</span><button type="button" data-idx="'+i+'">REMOVE</button></div>';
-  }).join('');
-  Array.from(list.querySelectorAll('button')).forEach(function(btn){
+  list.innerHTML='';
+  selectedAttachments.forEach(function(f,i){
+    var item=document.createElement('div');
+    item.className='attach-item';
+    var label=document.createElement('span');
+    label.textContent=f.name+' ('+(f.size/1024/1024).toFixed(1)+'MB)';
+    var btn=document.createElement('button');
+    btn.type='button';
+    btn.textContent='REMOVE';
     btn.addEventListener('click',function(){
-      selectedAttachments.splice(Number(btn.dataset.idx),1);
+      selectedAttachments.splice(i,1);
       renderAttachList();
     });
+    item.appendChild(label);
+    item.appendChild(btn);
+    list.appendChild(item);
   });
 }
 var attachInput=document.getElementById('f-attachments');
@@ -1943,10 +1954,10 @@ if(attachInput){
     combined.forEach(function(f){
       var ext=(f.name.split('.').pop()||'').toLowerCase();
       if(ATTACH_TYPES.indexOf(ext)===-1){errors.push(f.name+' is not a supported file type (PDF, JPG, PNG, HEIC only).');}
-      if(f.size>ATTACH_MAX_FILE){errors.push(f.name+' exceeds the 10MB per-file limit.');}
+      if(f.size>ATTACH_MAX_FILE){errors.push(f.name+' exceeds the 3MB per-file limit.');}
       total+=f.size;
     });
-    if(total>ATTACH_MAX_TOTAL){errors.push('Total attachment size exceeds the 25MB limit.');}
+    if(total>ATTACH_MAX_TOTAL){errors.push('Total attachment size exceeds the 3MB limit.');}
     if(errors.length){
       errEl.textContent=errors[0];
       errEl.style.display='block';
@@ -1966,6 +1977,20 @@ function readFileAsBase64(file){
     reader.readAsDataURL(file);
   });
 }
+
+// ── SUBMISSION ID ──
+// Generated once per form fill (here, at script load -- this page never
+// navigates away without a reload) so that resubmitting after a 429/422
+// reuses the same id instead of minting a new one on every attempt.
+function generateUUID(){
+  if(window.crypto&&window.crypto.randomUUID){return window.crypto.randomUUID();}
+  // Fallback for older browsers without crypto.randomUUID.
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,function(c){
+    var r=Math.random()*16|0,v=c==='x'?r:(r&0x3|0x8);
+    return v.toString(16);
+  });
+}
+var clientSubmissionId=generateUUID();
 
 // ── CAPTCHA (Cloudflare Turnstile, optional) ──
 // The site key is fetched from the server rather than hardcoded, since this
@@ -2026,6 +2051,7 @@ function submitForm(){
     });
   })).then(function(attachments){
     var payload={
+      submission_id:clientSubmissionId,
       client:name,
       organization:company,
       site_address:address,

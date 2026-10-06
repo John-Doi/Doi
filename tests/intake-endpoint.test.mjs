@@ -34,16 +34,41 @@ test("200 (duplicate -- same submission_id already received) + status:received -
   assert.equal(calls, 1);
 });
 
-test("400 -> ok:false, errors passed through, no retry (deterministic failure)", async () => {
+test("400 -> ok:false, errors read from error.fields (not a top-level errors key), no retry", async () => {
   let calls = 0;
   const fetchImpl = async () => {
     calls++;
-    return jsonResponse(400, { errors: ["site_address is required"] });
+    return jsonResponse(400, { error: { fields: ["site_address is required"] } });
   };
   const result = await callIntakeEndpoint(PAYLOAD, { url: "https://example.test/intake", apiKey: "k", fetchImpl });
   assert.equal(result.ok, false);
   assert.equal(result.status, 400);
   assert.deepEqual(result.errors, ["site_address is required"]);
+  assert.equal(calls, 1);
+});
+
+test("422 -> ok:false, errors read from error.fields, no retry (deterministic failure)", async () => {
+  let calls = 0;
+  const fetchImpl = async () => {
+    calls++;
+    return jsonResponse(422, { error: { fields: ["mission_type is not a recognized value"] } });
+  };
+  const result = await callIntakeEndpoint(PAYLOAD, { url: "https://example.test/intake", apiKey: "k", fetchImpl });
+  assert.equal(result.ok, false);
+  assert.equal(result.status, 422);
+  assert.deepEqual(result.errors, ["mission_type is not a recognized value"]);
+  assert.equal(calls, 1);
+});
+
+test("413 -> ok:false, no retry (deterministic -- the payload itself is the problem)", async () => {
+  let calls = 0;
+  const fetchImpl = async () => {
+    calls++;
+    return jsonResponse(413, {});
+  };
+  const result = await callIntakeEndpoint(PAYLOAD, { url: "https://example.test/intake", apiKey: "k", fetchImpl });
+  assert.equal(result.ok, false);
+  assert.equal(result.status, 413);
   assert.equal(calls, 1);
 });
 

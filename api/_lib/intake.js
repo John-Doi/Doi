@@ -3,23 +3,59 @@
 // testable -- see tests/mission-intake.test.js.
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-// Accepts common phone punctuation (+, spaces, dashes, parens, dots) and
-// requires at least 7 digits -- loose on purpose, since international formats
-// vary and this is a lead-gen form, not a billing system.
-const PHONE_RE = /^[+()\d\s.-]{7,20}$/;
+// Accepts common phone punctuation (+, spaces, dashes, parens, dots); the
+// digit count (checked separately below) is what actually bounds validity.
+const PHONE_RE = /^[+()\d\s.-]{1,25}$/;
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 const NOT_PROVIDED = "NOT PROVIDED";
 const ATTACHMENT_EXTENSIONS = ["pdf", "jpg", "jpeg", "png", "heic"];
-const MAX_ATTACHMENT_BYTES = 10 * 1024 * 1024; // 10 MB per file
-const MAX_TOTAL_ATTACHMENT_BYTES = 25 * 1024 * 1024; // 25 MB total
+const MAX_ATTACHMENT_BYTES = 3 * 1024 * 1024; // 3 MB per file
+const MAX_TOTAL_ATTACHMENT_BYTES = 3 * 1024 * 1024; // 3 MB total
 const MAX_ATTACHMENT_COUNT = 10;
+
+// Per-field character caps, enforced both here (server, authoritative) and
+// as `maxlength` on the corresponding index.html inputs (advisory only --
+// never trust the client). Chosen so the full intake JSON payload sent to
+// the Azure endpoint comfortably stays under MAX_PAYLOAD_BYTES even in the
+// worst case; see the explicit byte-length guard in mission-intake.js for
+// the actual enforcement (character counts alone don't bound multi-byte
+// UTF-8 input).
+const FIELD_LIMITS = {
+  client: 200,
+  organization: 200,
+  contact_name: 200,
+  requested_window: 200,
+  site_address: 500,
+  mission_type: 120,
+  contact_email: 254,
+  contact_phone: 25,
+  deliverables: 1000,
+  site_access_notes: 1000,
+  notes: 2000,
+  // Not part of the Azure payload schema (free-text context shown only in
+  // the backup email's prose summary), so it doesn't count toward
+  // MAX_PAYLOAD_BYTES -- kept here anyway as the single source of truth.
+  extraContext: 4000
+};
+const MAX_PAYLOAD_BYTES = 16 * 1024; // 16 KB, the full JSON sent to the intake endpoint
 
 function isValidEmail(value) {
   return typeof value === "string" && EMAIL_RE.test(value.trim());
 }
 
+// 7-15 digits (E.164's own max is 15) within an overall 25-character string
+// that may also carry +, spaces, parens, dashes, and dots.
 function isValidPhone(value) {
-  return typeof value === "string" && PHONE_RE.test(value.trim()) && value.replace(/\D/g, "").length >= 7;
+  if (typeof value !== "string") return false;
+  const trimmed = value.trim();
+  if (!PHONE_RE.test(trimmed)) return false;
+  const digits = trimmed.replace(/\D/g, "").length;
+  return digits >= 7 && digits <= 15;
+}
+
+function isValidUuid(value) {
+  return typeof value === "string" && UUID_RE.test(value.trim());
 }
 
 function orNotProvided(value) {
@@ -28,14 +64,24 @@ function orNotProvided(value) {
   return str.length ? str : NOT_PROVIDED;
 }
 
+// Azure's intake schema expects an empty string for "no value", not the
+// human-readable "NOT PROVIDED" placeholder (sending the latter is what
+// produced some of the 422s this was fixed in response to) -- NOT PROVIDED
+// is only for display, in the backup email's prose summary.
+function orEmptyString(value) {
+  if (value === null || value === undefined) return "";
+  return String(value).trim();
+}
+
 // Required: (client or organization) AND site_address AND mission_type AND
-// (contact_email or contact_phone). Returns { valid, errors: string[] }.
+// contact_name AND (contact_email or contact_phone). Returns { valid, errors: string[] }.
 function validateSubmission(fields) {
   const errors = [];
   const hasClientOrOrg = (fields.client || "").trim() || (fields.organization || "").trim();
   if (!hasClientOrOrg) errors.push("Provide your name or organization.");
   if (!(fields.site_address || "").trim()) errors.push("Site address is required.");
   if (!(fields.mission_type || "").trim()) errors.push("Mission type is required.");
+  if (!(fields.contact_name || "").trim()) errors.push("Contact name is required.");
 
   const email = (fields.contact_email || "").trim();
   const phone = (fields.contact_phone || "").trim();
@@ -87,17 +133,17 @@ function buildIntakeJson(fields, { submissionId, submittedAtUtc }) {
     intake_channel: "website",
     submission_id: submissionId,
     submitted_at_utc: submittedAtUtc,
-    client: orNotProvided(fields.client),
-    organization: orNotProvided(fields.organization),
-    site_address: orNotProvided(fields.site_address),
-    mission_type: orNotProvided(fields.mission_type),
-    requested_window: orNotProvided(fields.requested_window),
-    deliverables: orNotProvided(fields.deliverables),
-    contact_name: orNotProvided(fields.contact_name),
-    contact_phone: orNotProvided(fields.contact_phone),
-    contact_email: orNotProvided(fields.contact_email),
-    site_access_notes: orNotProvided(fields.site_access_notes),
-    notes: orNotProvided(fields.notes),
+    client: orEmptyString(fields.client),
+    organization: orEmptyString(fields.organization),
+    site_address: orEmptyString(fields.site_address),
+    mission_type: orEmptyString(fields.mission_type),
+    requested_window: orEmptyString(fields.requested_window),
+    deliverables: orEmptyString(fields.deliverables),
+    contact_name: orEmptyString(fields.contact_name),
+    contact_phone: orEmptyString(fields.contact_phone),
+    contact_email: orEmptyString(fields.contact_email),
+    site_access_notes: orEmptyString(fields.site_access_notes),
+    notes: orEmptyString(fields.notes),
     attachments: Array.isArray(fields.attachmentFilenames) ? fields.attachmentFilenames : []
   };
 }
@@ -162,9 +208,13 @@ export {
   MAX_ATTACHMENT_BYTES,
   MAX_TOTAL_ATTACHMENT_BYTES,
   MAX_ATTACHMENT_COUNT,
+  FIELD_LIMITS,
+  MAX_PAYLOAD_BYTES,
   isValidEmail,
   isValidPhone,
+  isValidUuid,
   orNotProvided,
+  orEmptyString,
   validateSubmission,
   validateAttachments,
   buildSubject,

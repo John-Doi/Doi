@@ -29,7 +29,9 @@ async function sendViaPostmark({ to, from, subject, text, attachments }, { apiTo
   });
   const body = await resp.json().catch(() => ({}));
   if (!resp.ok) {
-    throw new Error(`Postmark send failed (${resp.status}): ${body.Message || "unknown error"}`);
+    const err = new Error(`Postmark send failed (${resp.status})`);
+    err.code = `POSTMARK_SEND_FAILED_${resp.status}`;
+    throw err;
   }
   return { messageId: body.MessageID };
 }
@@ -58,7 +60,9 @@ async function sendViaResend({ to, from, subject, text, attachments }, { apiKey,
   });
   const body = await resp.json().catch(() => ({}));
   if (!resp.ok) {
-    throw new Error(`Resend send failed (${resp.status}): ${body.message || "unknown error"}`);
+    const err = new Error(`Resend send failed (${resp.status})`);
+    err.code = `RESEND_SEND_FAILED_${resp.status}`;
+    throw err;
   }
   return { messageId: body.id };
 }
@@ -70,11 +74,19 @@ export async function sendEmail(message, { fetchImpl = fetch } = {}) {
 
   if (provider === "resend") {
     const apiKey = process.env.RESEND_API_KEY;
-    if (!apiKey) throw new Error("RESEND_API_KEY is not configured");
+    if (!apiKey) {
+      const err = new Error("RESEND_API_KEY is not configured");
+      err.code = "MAIL_PROVIDER_NOT_CONFIGURED";
+      throw err;
+    }
     return sendViaResend(message, { apiKey, fetchImpl });
   }
 
   const apiToken = process.env.POSTMARK_API_TOKEN;
-  if (!apiToken) throw new Error("POSTMARK_API_TOKEN is not configured");
+  if (!apiToken) {
+    const err = new Error("POSTMARK_API_TOKEN is not configured");
+    err.code = "MAIL_PROVIDER_NOT_CONFIGURED";
+    throw err;
+  }
   return sendViaPostmark(message, { apiToken, fetchImpl });
 }

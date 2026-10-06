@@ -37,7 +37,8 @@ async function attemptOnce(fetchImpl, url, apiKey, payload, timeoutMs) {
 //   ok           -- true only on a clean 2xx "received" response
 //   status       -- the HTTP status from the last attempt (0 = network/timeout)
 //   intakeRef    -- internal reference, NEVER sent to the browser
-//   errors       -- field errors, when status is 400
+//   errors       -- field errors, read from the endpoint's { error: { fields: [...] } }
+//                   shape (not a top-level "errors" key), on 400/422/413
 //   retried      -- whether a retry was attempted
 export async function callIntakeEndpoint(payload, { url, apiKey, fetchImpl = fetch, timeoutMs = DEFAULT_TIMEOUT_MS } = {}) {
   if (!url || !apiKey) {
@@ -71,7 +72,7 @@ export async function callIntakeEndpoint(payload, { url, apiKey, fetchImpl = fet
     ok: false,
     status,
     intakeRef: body.intake_ref || null,
-    errors: Array.isArray(body.errors) ? body.errors : null,
+    errors: Array.isArray(body.error && body.error.fields) ? body.error.fields : null,
     retried
   };
 }

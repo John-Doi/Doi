@@ -1,5 +1,8 @@
 {
   "outputDirectory": ".",
+  "functions": {
+    "api/mission-intake.js": { "maxDuration": 60 }
+  },
   "redirects": [
     {
       "source": "/:path*",

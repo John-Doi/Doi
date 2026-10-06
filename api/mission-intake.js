@@ -1,17 +1,17 @@
-import { randomUUID } from "node:crypto";
+import { randomUUID, createHash } from "node:crypto";
 import {
   validateSubmission,
   validateAttachments,
   buildSubject,
   buildIntakeJson,
   buildBackupEmailBody,
-  buildClientConfirmationEmail
+  buildClientConfirmationEmail,
+  isValidUuid,
+  FIELD_LIMITS,
+  MAX_PAYLOAD_BYTES
 } from "./_lib/intake.js";
 import { callIntakeEndpoint as realCallIntakeEndpoint } from "./_lib/intake-endpoint.js";
 import { sendEmail as realSendEmail } from "./_lib/mailer.js";
-
-const MAX_LEN = 2000;
-const MAX_NOTES_LEN = 4000;
 
 const DEFAULT_INTAKE_ENDPOINT_URL =
   "https://func-doi-int-prod-8585-eydjf7gtbacwh0fs.westus2-01.azurewebsites.net/api/intake/web";
@@ -36,6 +36,16 @@ function getClientIp(req) {
   const fwd = req.headers["x-forwarded-for"];
   if (typeof fwd === "string" && fwd.length) return fwd.split(",")[0].trim();
   return (req.socket && req.socket.remoteAddress) || "unknown";
+}
+
+// A short, non-reversible fingerprint for correlating repeated activity
+// from the same IP across log lines without ever logging the raw address.
+function fingerprintIp(ip) {
+  return createHash("sha256").update(String(ip)).digest("hex").slice(0, 8);
+}
+
+function mailErrorCode(err) {
+  return (err && err.code) || "MAIL_SEND_ERROR";
 }
 
 async function verifyTurnstile(token, ip) {
@@ -77,30 +87,42 @@ export async function handleIntakeRequest(req, res, deps = {}) {
     return res.status(429).json({ success: false, error: "Too many requests. Please try again later." });
   }
 
+  // ── TURNSTILE CONFIG SANITY CHECK ──
+  // Exactly one of the pair set is a misconfiguration, not "captcha
+  // disabled" -- failing open here would silently skip captcha protection
+  // on a deploy where someone only set one of the two env vars.
+  const turnstileSecretSet = Boolean(process.env.TURNSTILE_SECRET_KEY);
+  const turnstileSiteSet = Boolean(process.env.TURNSTILE_SITE_KEY);
+  if (turnstileSecretSet !== turnstileSiteSet) {
+    console.error("[mission-intake] CONFIG ERROR: TURNSTILE_SECRET_KEY/TURNSTILE_SITE_KEY mismatched -- exactly one is set");
+    return res.status(503).json({ success: false, error: "Service temporarily unavailable. Please try again shortly or contact us directly." });
+  }
+
   const body = req.body || {};
 
   // ── HONEYPOT ──
   // Hidden field real users never see or fill. Any non-empty value is
   // almost certainly a bot -- respond with the same shape a real success
-  // would use, skip the endpoint call and both emails, log without PII.
+  // would use, skip the endpoint call and both emails. Logged with a
+  // short IP fingerprint only, never the raw address.
   if (typeof body.hp_website === "string" && body.hp_website.trim()) {
-    console.warn("[mission-intake] honeypot triggered, dropping submission from ip:", ip);
+    console.warn("[mission-intake] honeypot triggered, ip_fp:", fingerprintIp(ip));
     return res.status(200).json({ success: true });
   }
 
   const fields = {
-    client: String(body.client || "").slice(0, MAX_LEN),
-    organization: String(body.organization || "").slice(0, MAX_LEN),
-    site_address: String(body.site_address || "").slice(0, MAX_LEN),
-    mission_type: String(body.mission_type || "").slice(0, MAX_LEN),
-    requested_window: String(body.requested_window || "").slice(0, MAX_LEN),
-    deliverables: String(body.deliverables || "").slice(0, MAX_LEN),
-    contact_name: String(body.contact_name || "").slice(0, MAX_LEN),
-    contact_phone: String(body.contact_phone || "").slice(0, MAX_LEN),
-    contact_email: String(body.contact_email || "").slice(0, MAX_LEN),
-    site_access_notes: String(body.site_access_notes || "").slice(0, MAX_LEN),
-    notes: String(body.notes || "").slice(0, MAX_NOTES_LEN),
-    extraContext: String(body.extraContext || "").slice(0, MAX_NOTES_LEN)
+    client: String(body.client || "").slice(0, FIELD_LIMITS.client),
+    organization: String(body.organization || "").slice(0, FIELD_LIMITS.organization),
+    site_address: String(body.site_address || "").slice(0, FIELD_LIMITS.site_address),
+    mission_type: String(body.mission_type || "").slice(0, FIELD_LIMITS.mission_type),
+    requested_window: String(body.requested_window || "").slice(0, FIELD_LIMITS.requested_window),
+    deliverables: String(body.deliverables || "").slice(0, FIELD_LIMITS.deliverables),
+    contact_name: String(body.contact_name || "").slice(0, FIELD_LIMITS.contact_name),
+    contact_phone: String(body.contact_phone || "").slice(0, FIELD_LIMITS.contact_phone),
+    contact_email: String(body.contact_email || "").slice(0, FIELD_LIMITS.contact_email),
+    site_access_notes: String(body.site_access_notes || "").slice(0, FIELD_LIMITS.site_access_notes),
+    notes: String(body.notes || "").slice(0, FIELD_LIMITS.notes),
+    extraContext: String(body.extraContext || "").slice(0, FIELD_LIMITS.extraContext)
   };
 
   const { valid, errors } = validateSubmission(fields);
@@ -121,9 +143,22 @@ export async function handleIntakeRequest(req, res, deps = {}) {
 
   fields.attachmentFilenames = attachments.map((a) => a.filename);
 
-  const submissionId = uuid();
+  // The client generates submission_id once per form fill and resends the
+  // same value on a retry (e.g. after a 429/422) so a resubmission is
+  // recognized as a duplicate rather than a new request. A missing or
+  // malformed value falls back to a server-generated one rather than
+  // failing the request.
+  const submissionId = isValidUuid(body.submission_id) ? body.submission_id.trim() : uuid();
   const submittedAtUtc = now().toISOString();
   const azurePayload = buildIntakeJson(fields, { submissionId, submittedAtUtc });
+
+  const payloadBytes = Buffer.byteLength(JSON.stringify(azurePayload), "utf8");
+  if (payloadBytes > MAX_PAYLOAD_BYTES) {
+    return res.status(413).json({
+      success: false,
+      error: "Your submission is too large. Please shorten your details and try again."
+    });
+  }
 
   // ── PRIMARY PATH: the intake endpoint. Attachment CONTENT never goes
   // here -- only filenames (already in azurePayload.attachments). ──
@@ -164,7 +199,7 @@ export async function handleIntakeRequest(req, res, deps = {}) {
     });
   } catch (err) {
     backupEmailFailed = true;
-    console.error("[mission-intake] backup email failed, submission_id:", submissionId, "error:", err.message);
+    console.error("[mission-intake] backup email failed, submission_id:", submissionId, "code:", mailErrorCode(err));
   }
 
   // Client confirmation is best-effort on top of an already-best-effort
@@ -174,7 +209,7 @@ export async function handleIntakeRequest(req, res, deps = {}) {
       const confirmation = buildClientConfirmationEmail(fields);
       await sendEmail({ to: fields.contact_email, from: mailFrom, subject: confirmation.subject, text: confirmation.text });
     } catch (err) {
-      console.error("[mission-intake] confirmation email failed, submission_id:", submissionId, "error:", err.message);
+      console.error("[mission-intake] confirmation email failed, submission_id:", submissionId, "code:", mailErrorCode(err));
     }
   }
 
@@ -185,14 +220,21 @@ export async function handleIntakeRequest(req, res, deps = {}) {
     return res.status(200).json({ success: true });
   }
 
-  if (endpointResult.status === 400) {
+  if (endpointResult.status === 400 || endpointResult.status === 422) {
     // The endpoint rejected the data itself. The backup email above still
     // went out (so DOi has a record), but the client needs to know
     // something about their submission needs attention.
-    return res.status(400).json({
+    return res.status(endpointResult.status).json({
       success: false,
       error: "Validation failed",
       errors: endpointResult.errors || ["Your request could not be processed. Please check your details and try again."]
+    });
+  }
+
+  if (endpointResult.status === 413) {
+    return res.status(413).json({
+      success: false,
+      error: "Your request is too large. Please shorten your details or remove attachments and try again."
     });
   }
 
