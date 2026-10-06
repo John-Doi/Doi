@@ -17,10 +17,17 @@ import { sendEmail as realSendEmail } from "./_lib/mailer.js";
 const DEFAULT_INTAKE_ENDPOINT_URL =
   "https://func-doi-int-prod-8585-eydjf7gtbacwh0fs.westus2-01.azurewebsites.net/api/intake/web";
 
-// Overall budget for sequential attachment uploads, well under the 60s
-// maxDuration (vercel.json) once the intake-record call (up to 10s, once
-// retried = up to 20s) is accounted for.
-const ATTACHMENT_UPLOAD_BUDGET_MS = 40000;
+// Deadline for sequential attachment uploads is measured from handler
+// entry, not from when uploads start -- the intake-record call itself can
+// take up to 20s (10s timeout + one retry), so a budget measured only
+// across the upload loop doesn't bound total runtime against the 60s
+// maxDuration (vercel.json). 45s leaves ~15s for the backup/confirmation
+// emails and the response.
+const ATTACHMENT_UPLOAD_DEADLINE_MS = 45000;
+// Below this much remaining time, don't even start a file (a single
+// attempt can take up to its timeoutMs) or a retry (attemptOnce + its
+// own timeout needs a few seconds of headroom to be worth it).
+const MIN_REMAINING_FOR_UPLOAD_MS = 3000;
 
 // ── IN-MEMORY RATE LIMIT ──
 // Best-effort only: see README -- this Map lives for the lifetime of one
@@ -84,6 +91,12 @@ async function verifyTurnstile(token, ip) {
 // see tests/mission-intake.test.mjs. `deps` defaults to the real
 // implementations used in production.
 export async function handleIntakeRequest(req, res, deps = {}) {
+  // Real wall-clock time, deliberately NOT the injectable `now()` below
+  // (that's for submittedAtUtc semantics and may be fixed/fake in tests) --
+  // this deadline has to track actual elapsed time so it bounds real
+  // runtime against Vercel's maxDuration.
+  const handlerStart = Date.now();
+  const uploadDeadline = handlerStart + ATTACHMENT_UPLOAD_DEADLINE_MS;
   const callIntakeEndpoint = deps.callIntakeEndpoint || realCallIntakeEndpoint;
   const uploadAttachment = deps.uploadAttachment || realUploadAttachment;
   const sendEmail = deps.sendEmail || realSendEmail;
@@ -203,12 +216,13 @@ export async function handleIntakeRequest(req, res, deps = {}) {
     attachmentResults = [];
     const attachUrl = process.env.INTAKE_ATTACH_URL
       || `${process.env.INTAKE_ENDPOINT_URL || DEFAULT_INTAKE_ENDPOINT_URL}/attachment`;
-    const uploadsStartedAt = Date.now();
     for (const att of attachments) {
-      if (Date.now() - uploadsStartedAt > ATTACHMENT_UPLOAD_BUDGET_MS) {
-        // Out of budget -- treat remaining files as not stored rather than
-        // risk running past maxDuration. status:0 matches the existing
-        // network/timeout convention (see intake-endpoint.js).
+      const remaining = uploadDeadline - Date.now();
+      if (remaining < MIN_REMAINING_FOR_UPLOAD_MS) {
+        // Not enough time left to even attempt this file -- treat it (and
+        // everything after it) as not stored rather than risk running past
+        // maxDuration. status:0 matches the existing network/timeout
+        // convention (see intake-endpoint.js).
         attachmentResults.push({ filename: att.filename, ok: false, status: 0 });
         continue;
       }
@@ -216,7 +230,9 @@ export async function handleIntakeRequest(req, res, deps = {}) {
         submissionId,
         intakeRef: endpointResult.intakeRef,
         url: attachUrl,
-        apiKey: process.env.INTAKE_WEB_KEY
+        apiKey: process.env.INTAKE_WEB_KEY,
+        timeoutMs: Math.min(10000, remaining),
+        deadline: uploadDeadline
       });
       attachmentResults.push({ filename: att.filename, ok: result.ok, status: result.status });
     }

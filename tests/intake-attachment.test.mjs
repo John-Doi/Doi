@@ -155,3 +155,30 @@ test("the API key never appears in the returned result", async () => {
   const result = await uploadAttachment(ATTACHMENT, { ...OPTS_BASE, apiKey: "super-secret-key", fetchImpl });
   assert.equal(JSON.stringify(result).includes("super-secret-key"), false);
 });
+
+test("a retryable failure (e.g. 500) is NOT retried when less than 3s remain before the deadline", async () => {
+  let calls = 0;
+  const fetchImpl = async () => { calls++; return jsonResponse(500, {}); };
+  const result = await uploadAttachment(ATTACHMENT, {
+    ...OPTS_BASE,
+    fetchImpl,
+    deadline: Date.now() + 2000 // less than the 3s retry floor
+  });
+  assert.equal(result.ok, false);
+  assert.equal(result.retried, false);
+  assert.equal(calls, 1);
+});
+
+test("a retryable failure IS retried with >= 3s remaining before the deadline", async () => {
+  let calls = 0;
+  const fetchImpl = async () => { calls++; return calls === 1 ? jsonResponse(500, {}) : jsonResponse(201, { status: "stored" }); };
+  const result = await uploadAttachment(ATTACHMENT, {
+    ...OPTS_BASE,
+    fetchImpl,
+    timeoutMs: 10000,
+    deadline: Date.now() + 5000
+  });
+  assert.equal(result.ok, true);
+  assert.equal(result.retried, true);
+  assert.equal(calls, 2);
+});

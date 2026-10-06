@@ -7,6 +7,10 @@
 import { createHash } from "node:crypto";
 
 const DEFAULT_TIMEOUT_MS = 10000;
+// Below this much time left before `deadline`, a retry isn't worth
+// attempting -- attemptOnce needs a few seconds of headroom to be
+// meaningful, not just a non-zero timeout.
+const MIN_REMAINING_FOR_RETRY_MS = 3000;
 
 function withTimeout(fetchImpl, url, options, timeoutMs) {
   const controller = new AbortController();
@@ -39,7 +43,8 @@ export async function uploadAttachment(attachment, {
   url,
   apiKey,
   fetchImpl = fetch,
-  timeoutMs = DEFAULT_TIMEOUT_MS
+  timeoutMs = DEFAULT_TIMEOUT_MS,
+  deadline = Infinity
 } = {}) {
   if (!url || !apiKey) {
     return { ok: false, status: 401, filename: attachment.filename, retried: false, configMissing: true };
@@ -66,9 +71,10 @@ export async function uploadAttachment(attachment, {
   // retry 503 -- the two endpoints disagree on purpose, per DOi's spec for
   // each.
   const shouldRetry = result.networkError || result.status === 429 || (result.status >= 500 && result.status !== 503);
-  if (shouldRetry) {
+  const remainingForRetry = deadline - Date.now();
+  if (shouldRetry && remainingForRetry >= MIN_REMAINING_FOR_RETRY_MS) {
     retried = true;
-    result = await attemptOnce(fetchImpl, url, headers, bytes, timeoutMs);
+    result = await attemptOnce(fetchImpl, url, headers, bytes, Math.min(timeoutMs, remainingForRetry));
   }
 
   if (result.networkError) {

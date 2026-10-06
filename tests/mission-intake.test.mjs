@@ -721,3 +721,46 @@ test("INTAKE_WEB_KEY never appears in the client-facing response, even on a part
 
   assert.equal(JSON.stringify(res.body).includes("super-secret-intake-key"), false);
 });
+
+test("the attachment upload loop is bounded by a real wall-clock deadline measured from handler entry: slow uploads stop before maxDuration, files it didn't reach land in attachmentsFailed", async (t) => {
+  // Fakes Date (not setTimeout) so each simulated upload can instantly
+  // "consume" wall-clock time via tick() without the test actually
+  // waiting -- the handler's own Date.now() deadline checks see the same
+  // advanced clock. Node tears this mock down automatically after the test.
+  t.mock.timers.enable({ apis: ["Date"] });
+
+  const req = {
+    method: "POST",
+    headers: {},
+    body: {
+      ...SAMPLE_BODY,
+      attachments: [
+        { filename: "a.pdf", contentType: "application/pdf", base64: "JVBERi0xLjQK" },
+        { filename: "b.pdf", contentType: "application/pdf", base64: "JVBERi0xLjQK" },
+        { filename: "c.pdf", contentType: "application/pdf", base64: "JVBERi0xLjQK" }
+      ]
+    }
+  };
+  const res = fakeRes();
+  const attempted = [];
+  const start = Date.now();
+
+  await handleIntakeRequest(req, res, {
+    ...FIXED_DEPS,
+    callIntakeEndpoint: fakeEndpoint({ ok: true, status: 201, intakeRef: "INT-1", errors: null, retried: false }),
+    // Simulates an upload call that ignores its own timeout/abort signal
+    // and simply takes ~21.5s of real time -- a worst case the per-file
+    // deadline check (not the per-call timeout) has to protect against.
+    uploadAttachment: async (att) => {
+      attempted.push(att.filename);
+      t.mock.timers.tick(21500);
+      return { ok: true, status: 201 };
+    },
+    sendEmail: async () => ({ messageId: "test" })
+  });
+
+  const elapsed = Date.now() - start;
+  assert.ok(elapsed < 50000, `handler must finish comfortably under maxDuration, took ${elapsed}ms`);
+  assert.deepEqual(attempted, ["a.pdf", "b.pdf"], "the third file must never be attempted once too little budget remains");
+  assert.deepEqual(res.body, { success: true, attachmentsFailed: ["c.pdf"] });
+});
