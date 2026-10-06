@@ -868,6 +868,11 @@ footer{
 .panel-sub{font-family:var(--body);font-size:16px;color:var(--t2);margin-bottom:24px;line-height:1.65;font-weight:500;}
 .form-2col{display:grid;grid-template-columns:1fr 1fr;gap:14px 16px;}
 .form-2col .span2{grid-column:1/-1;}
+/* City/state/ZIP sub-row inside the site-address block -- city gets more
+   room than the short state/ZIP fields. Full-width within .form-2col via
+   .span2 above; collapses to one column alongside .form-2col itself at
+   the same breakpoint (see the @media(max-width:700px) block). */
+.addr-row{display:grid;grid-template-columns:2fr 1fr 1fr;gap:14px 16px;}
 .fg{display:flex;flex-direction:column;gap:6px;}
 .flbl{font-family:var(--mono);font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--t2);display:block;}
 .flbl .req{background:var(--og-grad-h);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-left:2px;}
@@ -952,6 +957,7 @@ footer{
   .intake-wrap{padding:0 22px;}
   .panel{padding:26px 16px;}
   .form-2col{grid-template-columns:1fr;}
+  .addr-row{grid-template-columns:1fr;}
   .deliverables-grid{grid-template-columns:1fr 1fr;}
   .intake-stepper{display:none;}
 }
@@ -1324,7 +1330,17 @@ footer{
                 <option value="Evening (5pm–9pm)">Evening (5pm–9pm)</option>
               </select>
             </div>
-            <div class="fg span2"><label class="flbl">Site Address / Location <span class="req">*</span></label><input type="text" class="finp" id="f-address" placeholder="Full address or general location" autocomplete="street-address" maxlength="500"></div>
+            <div class="fg span2"><label class="flbl" for="f-street">Street Address <span class="req">*</span></label><input type="text" class="finp" id="f-street" placeholder="e.g. 19200 Soledad Canyon Rd" autocomplete="address-line1" maxlength="200"></div>
+            <div class="span2 addr-row">
+              <div class="fg"><label class="flbl" for="f-city">City <span class="req">*</span></label><input type="text" class="finp" id="f-city" placeholder="City" autocomplete="address-level2" maxlength="100"></div>
+              <div class="fg"><label class="flbl" for="f-state">State <span class="req">*</span></label>
+                <select class="fsel" id="f-state" autocomplete="address-level1">
+                  <option value="AL">AL</option><option value="AK">AK</option><option value="AZ">AZ</option><option value="AR">AR</option><option value="CA" selected>CA</option><option value="CO">CO</option><option value="CT">CT</option><option value="DE">DE</option><option value="DC">DC</option><option value="FL">FL</option><option value="GA">GA</option><option value="HI">HI</option><option value="ID">ID</option><option value="IL">IL</option><option value="IN">IN</option><option value="IA">IA</option><option value="KS">KS</option><option value="KY">KY</option><option value="LA">LA</option><option value="ME">ME</option><option value="MD">MD</option><option value="MA">MA</option><option value="MI">MI</option><option value="MN">MN</option><option value="MS">MS</option><option value="MO">MO</option><option value="MT">MT</option><option value="NE">NE</option><option value="NV">NV</option><option value="NH">NH</option><option value="NJ">NJ</option><option value="NM">NM</option><option value="NY">NY</option><option value="NC">NC</option><option value="ND">ND</option><option value="OH">OH</option><option value="OK">OK</option><option value="OR">OR</option><option value="PA">PA</option><option value="RI">RI</option><option value="SC">SC</option><option value="SD">SD</option><option value="TN">TN</option><option value="TX">TX</option><option value="UT">UT</option><option value="VT">VT</option><option value="VA">VA</option><option value="WA">WA</option><option value="WV">WV</option><option value="WI">WI</option><option value="WY">WY</option><option value="AS">AS</option><option value="GU">GU</option><option value="MP">MP</option><option value="PR">PR</option><option value="VI">VI</option>
+                </select>
+              </div>
+              <div class="fg"><label class="flbl" for="f-zip">ZIP <span class="req">*</span></label><input type="text" class="finp" id="f-zip" placeholder="91351" inputmode="numeric" autocomplete="postal-code" maxlength="10"></div>
+            </div>
+            <div class="span2 attach-hint">Street, city, state and ZIP of the site to be flown.</div>
             <div class="fg span2"><label class="flbl">Project Description <span class="req">*</span></label><textarea class="ftxt" id="f-desc" placeholder="What do you need and why? Include property type, site size, access details, or any specific requirements." maxlength="2000"></textarea></div>
             <div class="fg span2"><label class="flbl" for="f-attachments">Attachments</label><input type="file" class="finp" id="f-attachments" multiple accept=".pdf,.jpg,.jpeg,.png,.heic" aria-describedby="attachHint attachError">
               <div class="attach-hint" id="attachHint">Optional. PDF, JPG, PNG, or HEIC — up to 3MB total.</div>
@@ -1861,6 +1877,21 @@ window.addEventListener('load', () => {
 
 // ── FORM ──
 var wizStep=1;
+// Site address is collected as 4 required parts (street/city/state/ZIP)
+// rather than one freeform field -- partial addresses (e.g. just a street,
+// no city/ZIP) were stalling feasibility review. Composed here for display
+// only; the server rebuilds and validates this same string independently
+// from the same 4 parts and never trusts this client-composed value (see
+// resolveSiteAddress in api/_lib/intake.js).
+var ZIP_RE=/^\d{5}(-\d{4})?$/;
+function composeSiteAddress(){
+  var street=document.getElementById('f-street').value.trim();
+  var city=document.getElementById('f-city').value.trim();
+  var state=document.getElementById('f-state').value;
+  var zip=document.getElementById('f-zip').value.trim();
+  if(!street&&!city&&!state&&!zip)return'';
+  return street+', '+city+', '+state+' '+zip;
+}
 function goStep(n){
   if(n===2 && wizStep===1){
     var nm=document.getElementById('f-name').value.trim();
@@ -1870,9 +1901,20 @@ function goStep(n){
   }
   if(n===3 && wizStep===2){
     var proj=document.getElementById('f-project').value.trim();
-    var addr=document.getElementById('f-address').value.trim();
+    var street=document.getElementById('f-street').value.trim();
+    var city=document.getElementById('f-city').value.trim();
+    var state=document.getElementById('f-state').value;
+    var zip=document.getElementById('f-zip').value.trim();
     var desc=document.getElementById('f-desc').value.trim();
-    if(!proj||!addr||!desc){alert('Please fill in Project Name, Site Address, and Project Description before continuing.');return;}
+    var missing=[];
+    if(!proj)missing.push('Project Name');
+    if(!street)missing.push('Street Address');
+    if(!city)missing.push('City');
+    if(!state)missing.push('State');
+    if(!zip)missing.push('ZIP');
+    else if(!ZIP_RE.test(zip))missing.push('a valid ZIP (5 digits, or ZIP+4)');
+    if(!desc)missing.push('Project Description');
+    if(missing.length){alert('Please fill in '+missing.join(', ')+' before continuing.');return;}
     if(getSelectedDeliverables().length===0){alert('Please select at least one desired deliverable (or "Not sure — recommend deliverables") before continuing.');return;}
     buildReview();
   }
@@ -2051,7 +2093,7 @@ fetch('/api/captcha-config').then(function(r){return r.json();}).then(function(d
 
 function buildReview(){
   var deliverables=getSelectedDeliverables();
-  var rows=[['Name',document.getElementById('f-name').value||'—'],['Company',document.getElementById('f-company').value||'—'],['Email',document.getElementById('f-email').value||'—'],['Phone',document.getElementById('f-phone').value||'—'],['Project',document.getElementById('f-project').value||'—'],['Service',document.getElementById('f-type').value||'—'],['Frequency',document.getElementById('f-frequency').value||'—'],['Deliverables',deliverables.length?deliverables.join(', '):'—'],['Urgency',document.getElementById('f-urgency').value||'—'],['Date',document.getElementById('f-date').value||'—'],['Time Window',document.getElementById('f-time-window').value||'—'],['Location',document.getElementById('f-address').value||'—'],['Description',document.getElementById('f-desc').value||'—'],['Attachments',selectedAttachments.length?selectedAttachments.length+' file(s)':'—']];
+  var rows=[['Name',document.getElementById('f-name').value||'—'],['Company',document.getElementById('f-company').value||'—'],['Email',document.getElementById('f-email').value||'—'],['Phone',document.getElementById('f-phone').value||'—'],['Project',document.getElementById('f-project').value||'—'],['Service',document.getElementById('f-type').value||'—'],['Frequency',document.getElementById('f-frequency').value||'—'],['Deliverables',deliverables.length?deliverables.join(', '):'—'],['Urgency',document.getElementById('f-urgency').value||'—'],['Date',document.getElementById('f-date').value||'—'],['Time Window',document.getElementById('f-time-window').value||'—'],['Location',composeSiteAddress()||'—'],['Description',document.getElementById('f-desc').value||'—'],['Attachments',selectedAttachments.length?selectedAttachments.length+' file(s)':'—']];
   document.getElementById('reviewGrid').innerHTML=rows.map(function(r){return'<div style="display:flex;gap:10px;background:rgba(7,7,7,0.98);border:1px solid var(--bd);padding:10px 13px;"><span style="font-family:var(--mono);font-size:9px;letter-spacing:2px;color:var(--t3);text-transform:uppercase;min-width:96px;flex-shrink:0;">'+r[0]+'</span><span style="font-family:var(--body);font-size:15px;color:var(--t1);font-weight:500;">'+r[1]+'</span></div>';}).join('');
 }
 function submitForm(){
@@ -2065,7 +2107,12 @@ function submitForm(){
   var desiredDeliverables=getSelectedDeliverables();
   if(desiredDeliverables.length===0){alert('Please select at least one desired deliverable in Step 2.');goStep(2);return;}
   var company=document.getElementById('f-company').value.trim();
-  var address=document.getElementById('f-address').value.trim();
+  var street=document.getElementById('f-street').value.trim();
+  var city=document.getElementById('f-city').value.trim();
+  var state=document.getElementById('f-state').value;
+  var zip=document.getElementById('f-zip').value.trim();
+  if(!street||!city||!state||!zip||!ZIP_RE.test(zip)){alert('Please fill in a complete site address (street, city, state, ZIP) in Step 2.');goStep(2);return;}
+  var address=composeSiteAddress();
   var dateVal=document.getElementById('f-date').value;
   var windowVal=document.getElementById('f-time-window')?document.getElementById('f-time-window').value:'';
   var requestedWindow=[dateVal,windowVal].filter(Boolean).join(' — ');
@@ -2085,6 +2132,10 @@ function submitForm(){
       submission_id:clientSubmissionId,
       client:name,
       organization:company,
+      site_street:street,
+      site_city:city,
+      site_state:state,
+      site_zip:zip,
       site_address:address,
       mission_type:missionType,
       requested_window:requestedWindow,
