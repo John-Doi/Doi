@@ -128,11 +128,16 @@ section[id],div[id]{scroll-margin-top:60px;}
   font-family:var(--mono);font-size:16px;letter-spacing:.12em;font-weight:700;
   background:var(--og);color:#000;border:none;padding:12px 28px;cursor:crosshair;
   clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);
-  transition:background .2s;
+  transition:background .2s,opacity .3s ease;
   justify-self:end;
   white-space:nowrap;
 }
 .nav-cta:hover{background:var(--tiger);}
+/* Faded out once the visitor reaches the intake form itself (see
+   updateCtaVisibility()) -- clicking REQUEST MISSION BRIEF there would just
+   scroll to where they already are. Grid column keeps its width (opacity,
+   not display:none), so the centered nav-links group never shifts. */
+.nav-cta.cta-hide{opacity:0;pointer-events:none;}
 /* PHASE 5 (website) · at intermediate desktop widths (~901-1200px) the center
    .nav-links track leaves too little room in the two 1fr tracks either side,
    and -- before white-space:nowrap was added above -- "REQUEST MISSION BRIEF"
@@ -777,7 +782,7 @@ footer{
   /* The hero's own REQUEST MISSION BRIEF button was removed (now just VIEW
      PROCESS, centered under the sub paragraph) -- REQUEST MISSION BRIEF
      stays reachable via the sticky .mobile-cta bar, which takes over once
-     the visitor scrolls past the hero (see updateMobileCta()). */
+     the visitor scrolls past the hero (see updateCtaVisibility()). */
   .proof-band{grid-template-columns:repeat(2,1fr);}
   .proof-item{padding:32px var(--mobile-gutter);border-right:none;border-bottom:1px solid var(--bd);min-width:0;}
   /* recalibrated against real Orbitron metrics for "CAPTURE" (the widest
@@ -821,11 +826,12 @@ footer{
     border-top:1px solid var(--bd);
     transition:transform .3s ease;
   }
-  /* Hidden while any part of the hero is still on screen so it never
-     competes with the hero's own REQUEST MISSION BRIEF CTA; reappears once
-     the visitor has scrolled past the hero (same trigger point as the
-     corner logo reveal). */
-  .mobile-cta.hide-in-hero{transform:translateY(120%);}
+  /* Hidden while any part of the hero is still on screen (so it never
+     competes with the hero's own CTA) and again once the intake form
+     (#contact) comes into view, since tapping it there would just scroll to
+     where the visitor already is -- see updateCtaVisibility(). Reappears in
+     between (same trigger point as the corner logo reveal). */
+  .mobile-cta.cta-hide{transform:translateY(120%);}
   .mobile-cta button{
     width:100%;font-family:var(--mono);font-size:12px;letter-spacing:.12em;font-weight:700;
     background:var(--og);color:#000;border:none;padding:14px;cursor:pointer;
@@ -1507,15 +1513,38 @@ function updateHeroStage(){
 updateHeroStage();
 window.addEventListener('resize', updateHeroStage, {passive:true});
 
-// ── MOBILE STICKY CTA: hidden while the hero is in view so it never
-// duplicates the hero's own REQUEST MISSION BRIEF button ──
+// ── STICKY CTA VISIBILITY: hides REQUEST MISSION BRIEF (both the fixed nav
+// button and the mobile sticky bar) while the hero is still in view, so it
+// never duplicates the hero's own CTA, and again once the visitor reaches
+// the intake form (#contact) -- clicking it there would just scroll to
+// where they already are. #contact is the last section before the footer,
+// so once its top has scrolled past there's nothing further down that
+// needs the CTA back. ──
 const mobileCtaEl = document.querySelector('.mobile-cta');
-function updateMobileCta(){
-  if (!mobileCtaEl || !heroZoneEl) return;
-  if (!mobileHeroQuery.matches) { mobileCtaEl.classList.remove('hide-in-hero'); return; }
-  mobileCtaEl.classList.toggle('hide-in-hero', heroZoneEl.getBoundingClientRect().bottom > 0);
+const mobileCtaBtn = mobileCtaEl ? mobileCtaEl.querySelector('button') : null;
+const navCtaEl = document.querySelector('.nav-cta');
+const contactEl = document.getElementById('contact');
+// A translateY/opacity-hidden button is still in the page and, without this,
+// still reachable by Tab -- a keyboard user could land focus on a CTA
+// that's invisible (nav) or slid off the bottom of the screen (mobile),
+// with no visible focus ring. Pulling it out of the tab order while hidden
+// (and restoring it once visible) keeps the fix purely behavioral, no
+// change to the established visual hide treatment.
+function setCtaInert(el, hidden){
+  if (!el) return;
+  if (hidden) { el.setAttribute('tabindex', '-1'); el.setAttribute('aria-hidden', 'true'); }
+  else { el.removeAttribute('tabindex'); el.removeAttribute('aria-hidden'); }
 }
-updateMobileCta();
+function updateCtaVisibility(){
+  const atContact = Boolean(contactEl && contactEl.getBoundingClientRect().top < window.innerHeight);
+  if (navCtaEl) { navCtaEl.classList.toggle('cta-hide', atContact); setCtaInert(navCtaEl, atContact); }
+  if (!mobileCtaEl || !heroZoneEl) return;
+  const inHero = mobileHeroQuery.matches && heroZoneEl.getBoundingClientRect().bottom > 0;
+  const mobileHidden = inHero || atContact;
+  mobileCtaEl.classList.toggle('cta-hide', mobileHidden);
+  setCtaInert(mobileCtaBtn, mobileHidden);
+}
+updateCtaVisibility();
 
 // ── PIPELINE SCROLL ──
 const plZone = document.querySelector('.pipeline-zone');
@@ -1681,7 +1710,7 @@ let scrollTicking = false;
 function onScrollFrame(){
   updateCornerLogo();
   updateHeroStage();
-  updateMobileCta();
+  updateCtaVisibility();
   updatePipeline();
   updateMobilePipeline();
   updateProgress();
