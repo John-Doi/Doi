@@ -2,6 +2,7 @@ import { randomUUID, createHash, createHmac } from "node:crypto";
 import {
   validateSubmission,
   validateAttachments,
+  resolveSiteAddress,
   buildSubject,
   buildIntakeJson,
   buildBackupEmailBody,
@@ -148,10 +149,17 @@ export async function handleIntakeRequest(req, res, deps = {}) {
     return res.status(200).json({ success: true });
   }
 
+  // Authoritative: built server-side from site_street/site_city/site_state/
+  // site_zip, never trusting a client-composed site_address string (see
+  // resolveSiteAddress). Falls back to accepting a legacy single
+  // site_address field -- only when it already contains a ZIP -- for a
+  // stale cached page that predates the 4-part form.
+  const addressResult = resolveSiteAddress(body);
+
   const fields = {
     client: String(body.client || "").slice(0, FIELD_LIMITS.client),
     organization: String(body.organization || "").slice(0, FIELD_LIMITS.organization),
-    site_address: String(body.site_address || "").slice(0, FIELD_LIMITS.site_address),
+    site_address: addressResult.site_address,
     mission_type: String(body.mission_type || "").slice(0, FIELD_LIMITS.mission_type),
     requested_window: String(body.requested_window || "").slice(0, FIELD_LIMITS.requested_window),
     deliverables: String(body.deliverables || "").slice(0, FIELD_LIMITS.deliverables),
@@ -163,7 +171,9 @@ export async function handleIntakeRequest(req, res, deps = {}) {
     extraContext: String(body.extraContext || "").slice(0, FIELD_LIMITS.extraContext)
   };
 
-  const { valid, errors } = validateSubmission(fields);
+  const submissionResult = validateSubmission(fields);
+  const valid = addressResult.valid && submissionResult.valid;
+  const errors = [...addressResult.errors, ...submissionResult.errors];
   if (!valid) {
     return res.status(400).json({ success: false, error: "Validation failed", errors });
   }

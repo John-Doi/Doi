@@ -32,7 +32,11 @@ function fakeEndpoint(result) {
 const SAMPLE_BODY = {
   client: "Jordan Lee",
   organization: "Lee Construction Group",
-  site_address: "4821 Harbor Blvd, Long Beach, CA",
+  site_street: "4821 Harbor Blvd",
+  site_city: "Long Beach",
+  site_state: "CA",
+  site_zip: "90805",
+  site_address: "4821 Harbor Blvd, Long Beach, CA 90805",
   mission_type: "Thermal Inspection",
   requested_window: "2026-11-03 — Morning (6am–12pm)",
   deliverables: "Thermal Findings, Inspection Documentation",
@@ -79,7 +83,7 @@ test("endpoint 200/received (duplicate submission_id): client sees success, back
     submitted_at_utc: "2026-11-01T18:30:00.000Z",
     client: "Jordan Lee",
     organization: "Lee Construction Group",
-    site_address: "4821 Harbor Blvd, Long Beach, CA",
+    site_address: "4821 Harbor Blvd, Long Beach, CA 90805",
     mission_type: "Thermal Inspection",
     requested_window: "2026-11-03 — Morning (6am–12pm)",
     deliverables: "Thermal Findings, Inspection Documentation",
@@ -274,6 +278,12 @@ test("a payload within every per-field character limit can still exceed 16KB in 
   // A 3-byte-per-character CJK string at each field's own max *character*
   // count defeats character-count limits alone but not the explicit
   // byte-length guard -- this is exactly the gap that guard exists to close.
+  // Splitting site_address into 4 server-capped parts (street 200 + city
+  // 100 chars, vs. the old single 500-char field) shrinks the max address
+  // contribution enough that maxing out every text field alone no longer
+  // crosses 16KB -- one attachment filename at its own max length
+  // (MAX_FILENAME_LENGTH, also CJK) closes the gap, since filenames are
+  // part of the same Azure payload (attachments: [name, ...]).
   const wide = (n) => "测".repeat(n);
   const req = {
     method: "POST",
@@ -281,7 +291,10 @@ test("a payload within every per-field character limit can still exceed 16KB in 
     body: {
       client: wide(200),
       organization: wide(200),
-      site_address: wide(500),
+      site_street: wide(200),
+      site_city: wide(100),
+      site_state: "CA",
+      site_zip: "91351",
       mission_type: wide(120),
       requested_window: wide(200),
       deliverables: wide(1000),
@@ -290,7 +303,7 @@ test("a payload within every per-field character limit can still exceed 16KB in 
       contact_email: "a@example.com",
       site_access_notes: wide(1000),
       notes: wide(2000),
-      attachments: [],
+      attachments: [{ filename: wide(251) + ".pdf", contentType: "application/pdf", base64: "" }],
       hp_website: "",
       captchaToken: ""
     }
@@ -832,4 +845,182 @@ test("a hanging Turnstile verification call returns false at ~5s instead of hang
   } finally {
     if (originalSecret === undefined) delete process.env.TURNSTILE_SECRET_KEY; else process.env.TURNSTILE_SECRET_KEY = originalSecret;
   }
+});
+
+// ── SITE ADDRESS AS 4 REQUIRED PARTS (street/city/state/ZIP) ──
+// End-to-end (handleIntakeRequest) coverage, complementing the pure
+// resolveSiteAddress unit tests in tests/intake.test.mjs.
+
+test("a submission missing one address part (city) is rejected with 400 naming it, before the endpoint or mailer are ever touched", async () => {
+  let endpointCalled = false;
+  let mailerCalled = false;
+  const req = { method: "POST", headers: {}, body: { ...SAMPLE_BODY, site_city: "" } };
+  const res = fakeRes();
+
+  await handleIntakeRequest(req, res, {
+    ...FIXED_DEPS,
+    callIntakeEndpoint: async () => { endpointCalled = true; return { ok: true, status: 200 }; },
+    sendEmail: async () => { mailerCalled = true; }
+  });
+
+  assert.equal(res.statusCode, 400);
+  assert.equal(res.body.success, false);
+  assert.ok(res.body.errors.some((e) => /site city is required/i.test(e)));
+  assert.equal(endpointCalled, false);
+  assert.equal(mailerCalled, false);
+});
+
+test("a malformed ZIP is rejected with 400 before the endpoint or mailer are ever touched", async () => {
+  let endpointCalled = false;
+  for (const badZip of ["9135", "ABCDE"]) {
+    const req = { method: "POST", headers: {}, body: { ...SAMPLE_BODY, site_zip: badZip } };
+    const res = fakeRes();
+    await handleIntakeRequest(req, res, {
+      ...FIXED_DEPS,
+      callIntakeEndpoint: async () => { endpointCalled = true; return { ok: true, status: 200 }; },
+      sendEmail: async () => ({ messageId: "test" })
+    });
+    assert.equal(res.statusCode, 400, `ZIP "${badZip}" should be rejected`);
+    assert.ok(res.body.errors.some((e) => /zip/i.test(e)));
+  }
+  assert.equal(endpointCalled, false);
+});
+
+test("a ZIP+4 is accepted end-to-end", async () => {
+  let capturedPayload = null;
+  const req = { method: "POST", headers: {}, body: { ...SAMPLE_BODY, site_zip: "90805-1234" } };
+  const res = fakeRes();
+
+  await handleIntakeRequest(req, res, {
+    ...FIXED_DEPS,
+    callIntakeEndpoint: async (payload) => { capturedPayload = payload; return { ok: true, status: 200, intakeRef: "INT-1" }; },
+    sendEmail: async () => ({ messageId: "test" })
+  });
+
+  assert.equal(res.statusCode, 200);
+  assert.equal(res.body.success, true);
+  assert.equal(capturedPayload.site_address, "4821 Harbor Blvd, Long Beach, CA 90805-1234");
+});
+
+test("the endpoint mock receives site_address composed from the 4 parts, in the documented format", async () => {
+  let capturedPayload = null;
+  const req = {
+    method: "POST",
+    headers: {},
+    body: {
+      ...SAMPLE_BODY,
+      site_street: "19200 Soledad Canyon Rd",
+      site_city: "Canyon Country",
+      site_state: "CA",
+      site_zip: "91351"
+    }
+  };
+  const res = fakeRes();
+
+  await handleIntakeRequest(req, res, {
+    ...FIXED_DEPS,
+    callIntakeEndpoint: async (payload) => { capturedPayload = payload; return { ok: true, status: 200, intakeRef: "INT-1" }; },
+    sendEmail: async () => ({ messageId: "test" })
+  });
+
+  assert.equal(res.statusCode, 200);
+  assert.equal(capturedPayload.site_address, "19200 Soledad Canyon Rd, Canyon Country, CA 91351");
+});
+
+test("a client-composed site_address that disagrees with the 4 parts is replaced by the server-composed value, in both the endpoint payload and the backup email", async () => {
+  let capturedPayload = null;
+  const sentMail = [];
+  const req = {
+    method: "POST",
+    headers: {},
+    body: {
+      ...SAMPLE_BODY,
+      site_street: "19200 Soledad Canyon Rd",
+      site_city: "Canyon Country",
+      site_state: "CA",
+      site_zip: "91351",
+      // Deliberately disagrees with the parts above -- must never reach
+      // either the endpoint payload or the email.
+      site_address: "1 Fake Mismatched Ave, Nowhere, ZZ 00000"
+    }
+  };
+  const res = fakeRes();
+
+  await handleIntakeRequest(req, res, {
+    ...FIXED_DEPS,
+    callIntakeEndpoint: async (payload) => { capturedPayload = payload; return { ok: true, status: 200, intakeRef: "INT-1" }; },
+    sendEmail: async (msg) => { sentMail.push(msg); return { messageId: "test" }; }
+  });
+
+  assert.equal(res.statusCode, 200);
+  assert.equal(capturedPayload.site_address, "19200 Soledad Canyon Rd, Canyon Country, CA 91351");
+  assert.doesNotMatch(capturedPayload.site_address, /Fake Mismatched|Nowhere|ZZ 00000/);
+  assert.match(sentMail[0].text, /19200 Soledad Canyon Rd, Canyon Country, CA 91351/);
+  assert.doesNotMatch(sentMail[0].text, /Fake Mismatched/);
+});
+
+// Builds a SAMPLE_BODY-based body with the 4 address parts entirely absent
+// (not just blank) and a single legacy site_address -- simulating a stale
+// cached page's JS, built before this change, which never had
+// site_street/city/state/zip in its payload object at all.
+function legacyBody(siteAddress) {
+  const body = { ...SAMPLE_BODY, site_address: siteAddress };
+  delete body.site_street;
+  delete body.site_city;
+  delete body.site_state;
+  delete body.site_zip;
+  return body;
+}
+
+test("legacy fallback: a stale cached page sending only site_address (no parts) is rejected without a ZIP, accepted with one", async () => {
+  const noZipReq = { method: "POST", headers: {}, body: legacyBody("19200 Soledad Canyon Road") };
+  const noZipRes = fakeRes();
+  await handleIntakeRequest(noZipReq, noZipRes, {
+    ...FIXED_DEPS,
+    callIntakeEndpoint: async () => ({ ok: true, status: 200 }),
+    sendEmail: async () => ({ messageId: "test" })
+  });
+  assert.equal(noZipRes.statusCode, 400);
+  assert.ok(noZipRes.body.errors.some((e) => /street, city, state and zip/i.test(e)));
+
+  const withZipReq = { method: "POST", headers: {}, body: legacyBody("19200 Soledad Canyon Road, Canyon Country, CA 91351") };
+  const withZipRes = fakeRes();
+  let capturedPayload = null;
+  await handleIntakeRequest(withZipReq, withZipRes, {
+    ...FIXED_DEPS,
+    callIntakeEndpoint: async (payload) => { capturedPayload = payload; return { ok: true, status: 200, intakeRef: "INT-1" }; },
+    sendEmail: async () => ({ messageId: "test" })
+  });
+  assert.equal(withZipRes.statusCode, 200);
+  assert.equal(capturedPayload.site_address, "19200 Soledad Canyon Road, Canyon Country, CA 91351");
+});
+
+test("the Azure payload key set is unchanged by this change (snapshot) -- site_address is still a single composed field, no new keys added", async () => {
+  let capturedPayload = null;
+  const req = { method: "POST", headers: {}, body: { ...SAMPLE_BODY } };
+  const res = fakeRes();
+
+  await handleIntakeRequest(req, res, {
+    ...FIXED_DEPS,
+    callIntakeEndpoint: async (payload) => { capturedPayload = payload; return { ok: true, status: 200, intakeRef: "INT-1" }; },
+    sendEmail: async () => ({ messageId: "test" })
+  });
+
+  assert.deepEqual(Object.keys(capturedPayload).sort(), [
+    "attachments",
+    "client",
+    "contact_email",
+    "contact_name",
+    "contact_phone",
+    "deliverables",
+    "intake_channel",
+    "mission_type",
+    "notes",
+    "organization",
+    "requested_window",
+    "site_access_notes",
+    "site_address",
+    "submission_id",
+    "submitted_at_utc"
+  ].sort());
 });

@@ -7,6 +7,26 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 // digit count (checked separately below) is what actually bounds validity.
 const PHONE_RE = /^[+()\d\s.-]{1,25}$/;
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+const ZIP_RE = /^\d{5}(-\d{4})?$/;
+// Used only by the legacy single-field fallback in resolveSiteAddress.
+// Anchored to the END of the (trimmed) string, matching where a ZIP
+// actually appears in a real "...City, ST 91351" address -- an
+// unanchored "any 5 digits anywhere" check false-positives on a 5-digit
+// street number (e.g. "19200 Soledad Canyon Road" has no ZIP at all, but
+// "19200" would otherwise match). Still just a structural signal, not a
+// full address parse (deliberately avoided -- no geocoding/address API,
+// per spec).
+const EMBEDDED_ZIP_RE = /\d{5}(?:-\d{4})?$/;
+
+// 50 states + DC + the 5 inhabited territories, the standard USPS set.
+const US_STATE_CODES = [
+  "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "DC", "FL",
+  "GA", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME",
+  "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH",
+  "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI",
+  "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI",
+  "WY", "AS", "GU", "MP", "PR", "VI"
+];
 
 const NOT_PROVIDED = "NOT PROVIDED";
 const ATTACHMENT_EXTENSIONS = ["pdf", "jpg", "jpeg", "png", "heic"];
@@ -37,7 +57,14 @@ const FIELD_LIMITS = {
   // Not part of the Azure payload schema (free-text context shown only in
   // the backup email's prose summary), so it doesn't count toward
   // MAX_PAYLOAD_BYTES -- kept here anyway as the single source of truth.
-  extraContext: 4000
+  extraContext: 4000,
+  // The four parts behind the server-composed site_address above (see
+  // resolveSiteAddress) -- match the index.html input maxlengths exactly,
+  // same convention as every other field here.
+  site_street: 200,
+  site_city: 100,
+  site_state: 2,
+  site_zip: 10
 };
 const MAX_PAYLOAD_BYTES = 16 * 1024; // 16 KB, the full JSON sent to the intake endpoint
 
@@ -59,6 +86,47 @@ function isValidUuid(value) {
   return typeof value === "string" && UUID_RE.test(value.trim());
 }
 
+// Validates and composes the authoritative site_address from its four parts
+// (street/city/state/zip) submitted in the request body, or -- when none of
+// those parts are present at all -- falls back to accepting a legacy single
+// site_address field for a stale cached page that predates this 4-part
+// form. The legacy value is accepted only when it already contains a ZIP,
+// since that's the one structural signal checkable without a full address
+// parse (deliberately not attempted here -- no geocoding/address API).
+//
+// Returns { valid, errors, site_address }. When valid, site_address is
+// always the server's OWN composed (or legacy-accepted) value -- a
+// client-supplied site_address string is never trusted or passed through
+// when the four parts are present, even if it disagrees with them.
+function resolveSiteAddress(body) {
+  const street = String((body && body.site_street) || "").trim();
+  const city = String((body && body.site_city) || "").trim();
+  const state = String((body && body.site_state) || "").trim().toUpperCase();
+  const zip = String((body && body.site_zip) || "").trim();
+  const hasAnyPart = Boolean(street || city || state || zip);
+
+  if (!hasAnyPart) {
+    const legacyAddress = String((body && body.site_address) || "").trim();
+    if (EMBEDDED_ZIP_RE.test(legacyAddress)) {
+      return { valid: true, errors: [], site_address: legacyAddress.slice(0, FIELD_LIMITS.site_address) };
+    }
+    return { valid: false, errors: ["Site address must include street, city, state and ZIP."], site_address: "" };
+  }
+
+  const errors = [];
+  if (!street) errors.push("Site street address is required.");
+  if (!city) errors.push("Site city is required.");
+  if (!state) errors.push("Site state is required.");
+  else if (!US_STATE_CODES.includes(state)) errors.push("Site state must be a valid US state or territory code.");
+  if (!zip) errors.push("Site ZIP is required.");
+  else if (!ZIP_RE.test(zip)) errors.push("Site ZIP must be 5 digits (or ZIP+4).");
+
+  if (errors.length) return { valid: false, errors, site_address: "" };
+
+  const site_address = `${street}, ${city}, ${state} ${zip}`.slice(0, FIELD_LIMITS.site_address);
+  return { valid: true, errors: [], site_address };
+}
+
 function orNotProvided(value) {
   if (value === null || value === undefined) return NOT_PROVIDED;
   const str = String(value).trim();
@@ -76,11 +144,13 @@ function orEmptyString(value) {
 
 // Required: (client or organization) AND site_address AND mission_type AND
 // contact_name AND (contact_email or contact_phone). Returns { valid, errors: string[] }.
+// site_address itself is validated separately, before this runs -- see
+// resolveSiteAddress -- so its specific per-part errors aren't duplicated
+// here; fields.site_address is only ever non-empty once that's passed.
 function validateSubmission(fields) {
   const errors = [];
   const hasClientOrOrg = (fields.client || "").trim() || (fields.organization || "").trim();
   if (!hasClientOrOrg) errors.push("Provide your name or organization.");
-  if (!(fields.site_address || "").trim()) errors.push("Site address is required.");
   if (!(fields.mission_type || "").trim()) errors.push("Mission type is required.");
   if (!(fields.contact_name || "").trim()) errors.push("Contact name is required.");
 
@@ -245,12 +315,14 @@ export {
   MAX_FILENAME_LENGTH,
   FIELD_LIMITS,
   MAX_PAYLOAD_BYTES,
+  US_STATE_CODES,
   isValidEmail,
   isValidPhone,
   isValidUuid,
   orNotProvided,
   orEmptyString,
   truncateFilename,
+  resolveSiteAddress,
   validateSubmission,
   validateAttachments,
   buildSubject,

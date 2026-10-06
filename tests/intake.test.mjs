@@ -5,13 +5,17 @@ import {
   isValidUuid,
   validateSubmission,
   validateAttachments,
+  resolveSiteAddress,
   orEmptyString,
   orNotProvided,
   truncateFilename,
   FIELD_LIMITS,
   MAX_PAYLOAD_BYTES,
-  MAX_FILENAME_LENGTH
+  MAX_FILENAME_LENGTH,
+  US_STATE_CODES
 } from "../api/_lib/intake.js";
+
+const VALID_PARTS = { site_street: "19200 Soledad Canyon Rd", site_city: "Canyon Country", site_state: "CA", site_zip: "91351" };
 
 test("isValidPhone accepts 7-15 digits, rejects outside that range", () => {
   assert.equal(isValidPhone("5551234"), true); // 7 digits
@@ -78,6 +82,98 @@ test("FIELD_LIMITS matches the per-field caps this change specifies", () => {
   assert.equal(FIELD_LIMITS.mission_type, 120);
   assert.equal(FIELD_LIMITS.contact_email, 254);
   assert.equal(FIELD_LIMITS.contact_phone, 25);
+  assert.equal(FIELD_LIMITS.site_street, 200);
+  assert.equal(FIELD_LIMITS.site_city, 100);
+  assert.equal(FIELD_LIMITS.site_state, 2);
+  assert.equal(FIELD_LIMITS.site_zip, 10);
+});
+
+test("resolveSiteAddress: each missing part is named individually", () => {
+  const noStreet = resolveSiteAddress({ ...VALID_PARTS, site_street: "" });
+  assert.equal(noStreet.valid, false);
+  assert.ok(noStreet.errors.some((e) => /street/i.test(e)));
+
+  const noCity = resolveSiteAddress({ ...VALID_PARTS, site_city: "" });
+  assert.equal(noCity.valid, false);
+  assert.ok(noCity.errors.some((e) => /city/i.test(e)));
+
+  const noState = resolveSiteAddress({ ...VALID_PARTS, site_state: "" });
+  assert.equal(noState.valid, false);
+  assert.ok(noState.errors.some((e) => /state/i.test(e)));
+
+  const noZip = resolveSiteAddress({ ...VALID_PARTS, site_zip: "" });
+  assert.equal(noZip.valid, false);
+  assert.ok(noZip.errors.some((e) => /zip/i.test(e)));
+});
+
+test("resolveSiteAddress: a submission missing multiple parts names all of them", () => {
+  const result = resolveSiteAddress({ ...VALID_PARTS, site_city: "", site_zip: "" });
+  assert.equal(result.valid, false);
+  assert.equal(result.errors.length, 2);
+  assert.ok(result.errors.some((e) => /city/i.test(e)));
+  assert.ok(result.errors.some((e) => /zip/i.test(e)));
+});
+
+test("resolveSiteAddress: a ZIP that isn't 5 digits (or ZIP+4) is rejected, a valid ZIP+4 is accepted", () => {
+  assert.equal(resolveSiteAddress({ ...VALID_PARTS, site_zip: "9135" }).valid, false);
+  assert.equal(resolveSiteAddress({ ...VALID_PARTS, site_zip: "ABCDE" }).valid, false);
+  assert.equal(resolveSiteAddress({ ...VALID_PARTS, site_zip: "913511" }).valid, false);
+
+  const zipPlus4 = resolveSiteAddress({ ...VALID_PARTS, site_zip: "91351-1234" });
+  assert.equal(zipPlus4.valid, true);
+  assert.equal(zipPlus4.site_address, "19200 Soledad Canyon Rd, Canyon Country, CA 91351-1234");
+});
+
+test("resolveSiteAddress: an unrecognized state/territory code is rejected", () => {
+  const result = resolveSiteAddress({ ...VALID_PARTS, site_state: "ZZ" });
+  assert.equal(result.valid, false);
+  assert.ok(result.errors.some((e) => /state/i.test(e)));
+});
+
+test("resolveSiteAddress: a US_STATE_CODES territory (not just the 50 states) is accepted, case-insensitively", () => {
+  assert.ok(US_STATE_CODES.includes("PR"));
+  const result = resolveSiteAddress({ ...VALID_PARTS, site_state: "pr" });
+  assert.equal(result.valid, true);
+  assert.equal(result.site_address, "19200 Soledad Canyon Rd, Canyon Country, PR 91351");
+});
+
+test("resolveSiteAddress: valid parts compose the exact expected address string", () => {
+  const result = resolveSiteAddress(VALID_PARTS);
+  assert.equal(result.valid, true);
+  assert.deepEqual(result.errors, []);
+  assert.equal(result.site_address, "19200 Soledad Canyon Rd, Canyon Country, CA 91351");
+});
+
+test("resolveSiteAddress: a client-composed site_address is ignored -- the server recomposes from the parts even when they disagree", () => {
+  const result = resolveSiteAddress({ ...VALID_PARTS, site_address: "123 Totally Different St, Nowhere, TX 00000" });
+  assert.equal(result.valid, true);
+  assert.equal(result.site_address, "19200 Soledad Canyon Rd, Canyon Country, CA 91351");
+});
+
+test("resolveSiteAddress: legacy fallback (no parts at all) accepts a single site_address field only when it contains a ZIP", () => {
+  const noZip = resolveSiteAddress({ site_address: "19200 Soledad Canyon Road" });
+  assert.equal(noZip.valid, false);
+  assert.ok(noZip.errors.some((e) => /street, city, state and zip/i.test(e)));
+
+  const withZip = resolveSiteAddress({ site_address: "19200 Soledad Canyon Road, Canyon Country, CA 91351" });
+  assert.equal(withZip.valid, true);
+  assert.equal(withZip.site_address, "19200 Soledad Canyon Road, Canyon Country, CA 91351");
+
+  const noPartsAtAll = resolveSiteAddress({});
+  assert.equal(noPartsAtAll.valid, false);
+});
+
+test("resolveSiteAddress: a partial submission (at least one part present) is validated part-by-part, not treated as legacy", () => {
+  // Only site_street provided -- this must NOT fall back to the legacy
+  // single-field path (which would otherwise look at a nonexistent
+  // site_address and reject with the generic legacy message instead of
+  // naming the specific missing parts).
+  const result = resolveSiteAddress({ site_street: "19200 Soledad Canyon Rd" });
+  assert.equal(result.valid, false);
+  assert.ok(result.errors.some((e) => /city/i.test(e)));
+  assert.ok(result.errors.some((e) => /state/i.test(e)));
+  assert.ok(result.errors.some((e) => /zip/i.test(e)));
+  assert.ok(!result.errors.some((e) => /street, city, state and zip/i.test(e)), "must not use the legacy fallback message");
 });
 
 test("MAX_PAYLOAD_BYTES is 16 KB", () => {
