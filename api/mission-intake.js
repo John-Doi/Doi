@@ -68,21 +68,32 @@ function mailErrorCode(err) {
   return (err && err.code) || "MAIL_SEND_ERROR";
 }
 
-async function verifyTurnstile(token, ip) {
+const TURNSTILE_TIMEOUT_MS = 5000;
+
+// fetchImpl/timeoutMs are injectable so tests can exercise the timeout path
+// directly without waiting out a real 5s; production always uses the
+// defaults. On timeout, the AbortError lands in the catch below and returns
+// false -- the same fail-closed behavior as any other verification error.
+export async function verifyTurnstile(token, ip, { fetchImpl = fetch, timeoutMs = TURNSTILE_TIMEOUT_MS } = {}) {
   const secret = process.env.TURNSTILE_SECRET_KEY;
   if (!secret) return true; // captcha not configured -- treat as not required
   if (!token) return false;
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
   try {
-    const resp = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
+    const resp = await fetchImpl("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: new URLSearchParams({ secret, response: token, remoteip: ip })
+      body: new URLSearchParams({ secret, response: token, remoteip: ip }),
+      signal: controller.signal
     });
     const data = await resp.json();
     return Boolean(data && data.success);
   } catch (err) {
     console.error("[mission-intake] Turnstile verification error:", err.message);
     return false;
+  } finally {
+    clearTimeout(timer);
   }
 }
 

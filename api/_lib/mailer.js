@@ -3,6 +3,29 @@
 // ("postmark", the default, or "resend"); only that provider's API key env
 // var needs to be set.
 
+// Bounds how long a single mail-provider call can run. Without this, a
+// slow/hanging provider could run past the handler's remaining time budget
+// (see ATTACHMENT_UPLOAD_DEADLINE_MS in api/mission-intake.js -- the backup
+// and confirmation emails run sequentially after that budget is spent).
+const MAIL_TIMEOUT_MS = 6000;
+
+async function fetchOrTimeout(fetchImpl, url, options, timeoutMs) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    return await fetchImpl(url, { ...options, signal: controller.signal });
+  } catch (err) {
+    if (err.name === "AbortError") {
+      const timeoutErr = new Error("Mail request timed out");
+      timeoutErr.code = "MAIL_TIMEOUT";
+      throw timeoutErr;
+    }
+    throw err;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
 function toPostmarkAttachments(attachments) {
   return (attachments || []).map((a) => ({
     Name: a.filename,
@@ -11,8 +34,8 @@ function toPostmarkAttachments(attachments) {
   }));
 }
 
-async function sendViaPostmark({ to, from, subject, text, attachments }, { apiToken, fetchImpl }) {
-  const resp = await fetchImpl("https://api.postmarkapp.com/email", {
+async function sendViaPostmark({ to, from, subject, text, attachments }, { apiToken, fetchImpl, timeoutMs }) {
+  const resp = await fetchOrTimeout(fetchImpl, "https://api.postmarkapp.com/email", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -26,7 +49,7 @@ async function sendViaPostmark({ to, from, subject, text, attachments }, { apiTo
       TextBody: text,
       Attachments: toPostmarkAttachments(attachments)
     })
-  });
+  }, timeoutMs);
   const body = await resp.json().catch(() => ({}));
   if (!resp.ok) {
     const err = new Error(`Postmark send failed (${resp.status})`);
@@ -43,8 +66,8 @@ function toResendAttachments(attachments) {
   }));
 }
 
-async function sendViaResend({ to, from, subject, text, attachments }, { apiKey, fetchImpl }) {
-  const resp = await fetchImpl("https://api.resend.com/emails", {
+async function sendViaResend({ to, from, subject, text, attachments }, { apiKey, fetchImpl, timeoutMs }) {
+  const resp = await fetchOrTimeout(fetchImpl, "https://api.resend.com/emails", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -57,7 +80,7 @@ async function sendViaResend({ to, from, subject, text, attachments }, { apiKey,
       text,
       attachments: toResendAttachments(attachments)
     })
-  });
+  }, timeoutMs);
   const body = await resp.json().catch(() => ({}));
   if (!resp.ok) {
     const err = new Error(`Resend send failed (${resp.status})`);
@@ -69,7 +92,7 @@ async function sendViaResend({ to, from, subject, text, attachments }, { apiKey,
 
 // sendEmail({to, from, subject, text, attachments}) -> { messageId }
 // Throws on failure -- callers decide whether that's fatal for the request.
-export async function sendEmail(message, { fetchImpl = fetch } = {}) {
+export async function sendEmail(message, { fetchImpl = fetch, timeoutMs = MAIL_TIMEOUT_MS } = {}) {
   const provider = (process.env.MAIL_PROVIDER || "postmark").toLowerCase();
 
   if (provider === "resend") {
@@ -79,7 +102,7 @@ export async function sendEmail(message, { fetchImpl = fetch } = {}) {
       err.code = "MAIL_PROVIDER_NOT_CONFIGURED";
       throw err;
     }
-    return sendViaResend(message, { apiKey, fetchImpl });
+    return sendViaResend(message, { apiKey, fetchImpl, timeoutMs });
   }
 
   const apiToken = process.env.POSTMARK_API_TOKEN;
@@ -88,5 +111,5 @@ export async function sendEmail(message, { fetchImpl = fetch } = {}) {
     err.code = "MAIL_PROVIDER_NOT_CONFIGURED";
     throw err;
   }
-  return sendViaPostmark(message, { apiToken, fetchImpl });
+  return sendViaPostmark(message, { apiToken, fetchImpl, timeoutMs });
 }

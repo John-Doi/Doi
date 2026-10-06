@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { handleIntakeRequest } from "../api/mission-intake.js";
+import { handleIntakeRequest, verifyTurnstile } from "../api/mission-intake.js";
 import { callIntakeEndpoint } from "../api/_lib/intake-endpoint.js";
 
 function fakeRes() {
@@ -763,4 +763,73 @@ test("the attachment upload loop is bounded by a real wall-clock deadline measur
   assert.ok(elapsed < 50000, `handler must finish comfortably under maxDuration, took ${elapsed}ms`);
   assert.deepEqual(attempted, ["a.pdf", "b.pdf"], "the third file must never be attempted once too little budget remains");
   assert.deepEqual(res.body, { success: true, attachmentsFailed: ["c.pdf"] });
+});
+
+test("a hanging backup-email call times out at ~6s (MAIL_TIMEOUT) rather than hanging the request, and the client still sees success", async (t) => {
+  t.mock.timers.enable({ apis: ["setTimeout"] });
+  const originalToken = process.env.POSTMARK_API_TOKEN;
+  process.env.POSTMARK_API_TOKEN = "test-token";
+  const originalFetch = globalThis.fetch;
+  // Exercises the REAL mailer.js (sendEmail is not overridden in deps) --
+  // a provider that never responds, same as a real network hang.
+  globalThis.fetch = (url, options) => new Promise((resolve, reject) => {
+    options.signal.addEventListener("abort", () => {
+      const err = new Error("The operation was aborted");
+      err.name = "AbortError";
+      reject(err);
+    });
+  });
+
+  const req = { method: "POST", headers: {}, body: { ...SAMPLE_BODY, contact_email: "" } };
+  const res = fakeRes();
+  const originalError = console.error;
+  const errorCalls = [];
+  console.error = (...args) => { errorCalls.push(args); };
+
+  try {
+    const pending = handleIntakeRequest(req, res, {
+      ...FIXED_DEPS,
+      callIntakeEndpoint: fakeEndpoint({ ok: true, status: 200, intakeRef: "INT-1" })
+    });
+    // Several awaits (captcha, the intake endpoint call) run before the
+    // mailer even registers its setTimeout -- flush those microtask turns
+    // with real setImmediate hops (setTimeout alone is mocked, setImmediate
+    // isn't) before advancing the mocked clock past it.
+    for (let i = 0; i < 10; i++) await new Promise((resolve) => setImmediate(resolve));
+    t.mock.timers.tick(6000);
+    await pending;
+  } finally {
+    console.error = originalError;
+    globalThis.fetch = originalFetch;
+    if (originalToken === undefined) delete process.env.POSTMARK_API_TOKEN; else process.env.POSTMARK_API_TOKEN = originalToken;
+  }
+
+  assert.equal(res.statusCode, 200);
+  assert.deepEqual(res.body, { success: true });
+  const logged = errorCalls.map((a) => a.join(" ")).join("\n");
+  assert.match(logged, /backup email failed/);
+  assert.match(logged, /MAIL_TIMEOUT/);
+});
+
+test("a hanging Turnstile verification call returns false at ~5s instead of hanging the request", async (t) => {
+  t.mock.timers.enable({ apis: ["setTimeout"] });
+  const originalSecret = process.env.TURNSTILE_SECRET_KEY;
+  process.env.TURNSTILE_SECRET_KEY = "a-secret";
+
+  const fetchImpl = (url, options) => new Promise((resolve, reject) => {
+    options.signal.addEventListener("abort", () => {
+      const err = new Error("The operation was aborted");
+      err.name = "AbortError";
+      reject(err);
+    });
+  });
+
+  try {
+    const pending = verifyTurnstile("some-token", "203.0.113.5", { fetchImpl });
+    t.mock.timers.tick(5000);
+    const result = await pending;
+    assert.equal(result, false);
+  } finally {
+    if (originalSecret === undefined) delete process.env.TURNSTILE_SECRET_KEY; else process.env.TURNSTILE_SECRET_KEY = originalSecret;
+  }
 });
