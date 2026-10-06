@@ -3,40 +3,63 @@
 Single-file marketing site (`index.html`) deployed on Vercel, plus a small set
 of serverless functions in `api/`. No build step, no bundler.
 
-## Mission Intake Email Delivery
+## Mission Intake Delivery
 
 `POST /api/mission-intake` handles the "Deploy Recon Division" mission
-request form (`#contact` in `index.html`). On a valid submission it sends:
+request form (`#contact` in `index.html`). Each submission goes through two
+independent paths:
 
-1. **One intake email** to `INTAKE_TO` (defaults to `johnktoles@doilabs.la`
-   until `intake@doilabs.la` exists) with subject
-   `[WEB INTAKE] <Client or Organization> – <Mission Type>` and a body made
-   of a short readable summary (Part A) followed by a fenced ` ```json ` block
-   (Part B) with the exact shape in `api/_lib/intake.js` (`buildIntakeJson`).
-2. **One client confirmation email**, best-effort, to the submitter's email —
-   it thanks them and says DØi will review and follow up. It never promises
-   dates, availability, pricing, FAA/airspace approval, or results, and the
-   client-facing success panel never shows a mission ID or anything that
-   looks like a reference number — only "Request received".
+1. **Primary: DØi's intake endpoint** (an Azure Function). The server posts
+   the structured JSON record to `INTAKE_ENDPOINT_URL`, authenticated with
+   `X-DOI-Intake-Key: <INTAKE_WEB_KEY>`. The key never reaches the browser —
+   this call happens only in `api/mission-intake.js`, server-side. On a
+   transient failure (network error, timeout, or a non-503 5xx) it's retried
+   **once**, reusing the exact same payload (same `submission_id`).
+2. **Backup / notification email — always sent**, regardless of whether the
+   endpoint call succeeded, failed, or wasn't configured at all. This is the
+   durable record: a short readable summary plus the same JSON block sent to
+   the endpoint, with two extra fields that only ever appear in this email —
+   `intake_ref` (the endpoint's internal reference, or `"NOT LOGGED"`) and
+   `endpoint_status` (what the endpoint call actually returned). Sent via
+   Postmark or Resend's HTTP API — no SMTP, no mail server to configure.
 
-Both emails are sent server-side via SMTP (nodemailer). Nothing is sent from
-the browser, and nothing is written to SharePoint, Microsoft Graph, or any
-other DØi internal system — **this replaces the previous Power Automate
-webhook forward** (the `POWER_AUTOMATE_WEBHOOK_URL` env var and code path
-have been removed). Confirm that's the intended change before merging; the
-old webhook integration is gone, not kept as a fallback.
+A separate, best-effort **client confirmation email** also goes out: it
+thanks them and says DØi will review and follow up. It never promises dates,
+availability, pricing, FAA/airspace approval, or results, and it never
+mentions `intake_ref` or anything else. The client-facing success panel
+never shows a mission ID — only **"Request received."**
+
+Nothing is written to SharePoint, Microsoft Graph, or any other DØi internal
+system directly — the Azure intake endpoint is the only integration, and the
+backup email is a plain transactional send, not a write into any DØi system.
+
+### How each endpoint outcome is handled
+
+| Endpoint result | Backup email sent? | What the client sees |
+|---|---|---|
+| 200 + `status:"received"` | yes | `{success:true}` → "Request received" |
+| 400 (endpoint-side validation) | yes | 400 with field errors |
+| 401 (bad/missing key) | yes | logged as a `CONFIG ERROR` for ops; client still sees success (the email is the record) |
+| 429 (endpoint throttling) | yes | **429, "please try again in a few minutes"** — the one case that isn't shown as success |
+| 503 (deliberately switched off) | yes | `{success:true}` → "Request received" (no retry — 503 means "off on purpose", not transient) |
+| other 5xx / timeout, retried once, still failing | yes | `{success:true}` → "Request received" (the retried failure falls back to the email) |
+| endpoint not configured at all | yes | same as 401 — logged, client still sees success |
+
+If the backup email **also** fails (on top of the endpoint failing), that's
+the one real failure: the client sees a 502 with a friendly retry message,
+since nothing durable happened for that submission.
 
 ### Environment variables
 
 | Var | Required | Purpose |
 |---|---|---|
-| `SMTP_HOST` | yes | SMTP server host |
-| `SMTP_PORT` | no (default `587`) | SMTP server port |
-| `SMTP_SECURE` | no | `"true"` to force TLS; auto-true on port 465 |
-| `SMTP_USER` | yes | SMTP auth username |
-| `SMTP_PASS` | yes | SMTP auth password/app-password — **never commit this** |
-| `MAIL_FROM` | no (default `SMTP_USER`) | From address for both emails |
-| `INTAKE_TO` | no (default `johnktoles@doilabs.la`) | Where intake emails are delivered |
+| `INTAKE_ENDPOINT_URL` | no | Defaults to the production Azure Function URl. Override only for pointing at a different environment. |
+| `INTAKE_WEB_KEY` | yes | Sent as `X-DOI-Intake-Key`. Never put this (or anything like it) in client JS or a `NEXT_PUBLIC_*` var. |
+| `MAIL_PROVIDER` | no (default `postmark`) | `postmark` or `resend` |
+| `POSTMARK_API_TOKEN` | yes, if using Postmark | Server token for the Postmark server sending this mail |
+| `RESEND_API_KEY` | yes, if using Resend | API key |
+| `MAIL_FROM` | no (default `intake@doilabs.la`) | From address for both emails |
+| `INTAKE_TO` | no (default `johnktoles@doilabs.la`) | Where the backup/notification email is delivered, until `intake@doilabs.la` exists |
 | `TURNSTILE_SITE_KEY` | no | Public Cloudflare Turnstile site key; served to the browser via `GET /api/captcha-config`. Omit to skip the captcha widget entirely. |
 | `TURNSTILE_SECRET_KEY` | no | Server-side Turnstile secret. If unset, captcha verification is skipped (treated as not required) even if a token is sent. |
 
@@ -47,8 +70,8 @@ committed file.
 
 - **Honeypot**: a hidden `hp_website` field real users never see. Any
   non-empty value is treated as a bot and the request is silently dropped
-  (the API still returns `{ success: true }` so the bot gets no signal to
-  adapt on).
+  before the endpoint or mailer are ever touched (the API still returns
+  `{ success: true }` so the bot gets no signal to adapt on).
 - **Rate limiting**: a basic in-memory limiter (5 submissions / 10 minutes
   per IP) inside `api/mission-intake.js`. **This is best-effort, not a hard
   guarantee** — the Map only lives for the lifetime of one warm Vercel
@@ -62,8 +85,10 @@ committed file.
 ### Attachments
 
 Optional, PDF/JPG/JPEG/PNG/HEIC only, 10MB per file / 25MB total, validated
-both client-side (`index.html`) and server-side (`api/_lib/intake.js`), sent
-as email attachments (base64 over JSON) — never stored anywhere public.
+both client-side (`index.html`) and server-side (`api/_lib/intake.js`).
+**Attachment content is only ever sent to the backup email, never to the
+intake endpoint** — the endpoint's JSON payload carries filenames only.
+Attachments are never stored anywhere public.
 
 **Known platform constraint:** Vercel's default Node.js Serverless Function
 request body limit is much smaller than 25MB (historically ~4.5MB). Base64
@@ -79,13 +104,20 @@ flow, before relying on the full 25MB in production.
 npm test
 ```
 
-Runs `tests/mission-intake.test.mjs` (Node's built-in test runner, no extra
-dependency) against `handleIntakeRequest` with a fake SMTP transport — no
-network calls, no real email sent. It checks: the intake email's subject
-format, the exact JSON shape of Part B (including `"NOT PROVIDED"`
-fallbacks), the client confirmation's tone (no promises), required-field
-validation, the honeypot drop path, rate limiting, and that the HTTP
-response never contains anything resembling a mission ID.
+Runs (Node's built-in test runner, no extra dependency, no network calls):
+
+- `tests/intake-endpoint.test.mjs` — the Azure call itself: 200/received,
+  400, 503 (no retry), a transient 500 (retried once with the identical
+  payload), a timeout that succeeds on retry, a timeout that fails twice,
+  and missing config.
+- `tests/mission-intake.test.mjs` — the full handler with the endpoint and
+  mailer both faked: every row of the outcome table above, the exact
+  subject/JSON shape (including the email-only `intake_ref` /
+  `endpoint_status` fields and `"NOT PROVIDED"` fallbacks), the client
+  confirmation's tone, required-field validation, the honeypot drop path,
+  rate limiting, that attachment file contents never reach the intake
+  endpoint, and that the HTTP response to the browser never contains
+  anything resembling a mission ID.
 
 ### Known gaps / mapping notes
 
@@ -101,5 +133,10 @@ response never contains anything resembling a mission ID.
   client today.
 - Project Name, Mission Frequency, and Urgency Level (collected by the form
   but not part of the fixed intake JSON schema) are still included in the
-  email's plain-text summary (Part A) so that context isn't silently lost,
-  even though they're not keys in the Part B JSON block.
+  backup email's plain-text summary (Part A) so that context isn't silently
+  lost, even though they're not keys in the structured JSON block.
+- `doilabs-v2.html` (an archived alternate version of the site, not linked
+  from `index.html` or routed in `vercel.json`/`sitemap.xml`) also posts to
+  `/api/mission-intake`, with older field names from before this and the
+  prior intake-delivery change. It isn't part of the live site, so it
+  wasn't updated, but its form would fail validation if loaded directly.

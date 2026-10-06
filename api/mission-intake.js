@@ -1,34 +1,33 @@
 import { randomUUID } from "node:crypto";
-import nodemailer from "nodemailer";
 import {
   validateSubmission,
   validateAttachments,
   buildSubject,
   buildIntakeJson,
-  buildIntakeEmailBody,
+  buildBackupEmailBody,
   buildClientConfirmationEmail
 } from "./_lib/intake.js";
+import { callIntakeEndpoint as realCallIntakeEndpoint } from "./_lib/intake-endpoint.js";
+import { sendEmail as realSendEmail } from "./_lib/mailer.js";
 
 const MAX_LEN = 2000;
 const MAX_NOTES_LEN = 4000;
 
+const DEFAULT_INTAKE_ENDPOINT_URL =
+  "https://func-doi-int-prod-8585-eydjf7gtbacwh0fs.westus2-01.azurewebsites.net/api/intake/web";
+
 // ── IN-MEMORY RATE LIMIT ──
-// Best-effort only: this Map lives for the lifetime of one warm serverless
-// instance. Vercel can run several instances concurrently and recycles cold
-// ones, so a determined client can exceed this by landing on a fresh
-// instance. It stops casual retry-loops and simple scripts; it is not a
-// substitute for an edge/WAF-level rate limit if abuse becomes a real
-// problem (e.g. Vercel's own rate limiting, or a shared store like Upstash).
+// Best-effort only: see README -- this Map lives for the lifetime of one
+// warm serverless instance, not a durable shared store.
 const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;
 const RATE_LIMIT_MAX = 5;
-const rateLimitHits = new Map(); // ip -> timestamps[]
+const rateLimitHits = new Map();
 
 function isRateLimited(ip) {
   const now = Date.now();
   const hits = (rateLimitHits.get(ip) || []).filter((t) => now - t < RATE_LIMIT_WINDOW_MS);
   hits.push(now);
   rateLimitHits.set(ip, hits);
-  // Bound memory growth across many distinct IPs on a long-lived warm instance.
   if (rateLimitHits.size > 5000) rateLimitHits.clear();
   return hits.length > RATE_LIMIT_MAX;
 }
@@ -57,35 +56,13 @@ async function verifyTurnstile(token, ip) {
   }
 }
 
-function buildTransport() {
-  const host = process.env.SMTP_HOST;
-  const port = Number(process.env.SMTP_PORT || 587);
-  const user = process.env.SMTP_USER;
-  const pass = process.env.SMTP_PASS;
-  if (!host || !user || !pass) return null;
-  return nodemailer.createTransport({
-    host,
-    port,
-    secure: process.env.SMTP_SECURE === "true" || port === 465,
-    auth: { user, pass }
-  });
-}
-
-function toNodemailerAttachments(attachments) {
-  return (Array.isArray(attachments) ? attachments : []).map((a) => ({
-    filename: a.filename,
-    content: a.base64,
-    encoding: "base64",
-    contentType: a.contentType || undefined
-  }));
-}
-
-// Core request handling, factored out from the Vercel entry point so it can
-// be exercised in tests with a fake transport/clock instead of real SMTP --
+// Core request handling, factored out so tests can inject fakes for the
+// Azure endpoint call and the mailer instead of touching the network --
 // see tests/mission-intake.test.mjs. `deps` defaults to the real
 // implementations used in production.
 export async function handleIntakeRequest(req, res, deps = {}) {
-  const transport = deps.transport !== undefined ? deps.transport : buildTransport();
+  const callIntakeEndpoint = deps.callIntakeEndpoint || realCallIntakeEndpoint;
+  const sendEmail = deps.sendEmail || realSendEmail;
   const verifyCaptcha = deps.verifyCaptcha || verifyTurnstile;
   const now = deps.now || (() => new Date());
   const uuid = deps.uuid || randomUUID;
@@ -100,102 +77,145 @@ export async function handleIntakeRequest(req, res, deps = {}) {
     return res.status(429).json({ success: false, error: "Too many requests. Please try again later." });
   }
 
-  if (!transport) {
-    console.error("[mission-intake] SMTP env vars not configured (SMTP_HOST/SMTP_USER/SMTP_PASS)");
-    return res.status(503).json({ success: false, error: "Service unavailable" });
+  const body = req.body || {};
+
+  // ── HONEYPOT ──
+  // Hidden field real users never see or fill. Any non-empty value is
+  // almost certainly a bot -- respond with the same shape a real success
+  // would use, skip the endpoint call and both emails, log without PII.
+  if (typeof body.hp_website === "string" && body.hp_website.trim()) {
+    console.warn("[mission-intake] honeypot triggered, dropping submission from ip:", ip);
+    return res.status(200).json({ success: true });
   }
 
+  const fields = {
+    client: String(body.client || "").slice(0, MAX_LEN),
+    organization: String(body.organization || "").slice(0, MAX_LEN),
+    site_address: String(body.site_address || "").slice(0, MAX_LEN),
+    mission_type: String(body.mission_type || "").slice(0, MAX_LEN),
+    requested_window: String(body.requested_window || "").slice(0, MAX_LEN),
+    deliverables: String(body.deliverables || "").slice(0, MAX_LEN),
+    contact_name: String(body.contact_name || "").slice(0, MAX_LEN),
+    contact_phone: String(body.contact_phone || "").slice(0, MAX_LEN),
+    contact_email: String(body.contact_email || "").slice(0, MAX_LEN),
+    site_access_notes: String(body.site_access_notes || "").slice(0, MAX_LEN),
+    notes: String(body.notes || "").slice(0, MAX_NOTES_LEN),
+    extraContext: String(body.extraContext || "").slice(0, MAX_NOTES_LEN)
+  };
+
+  const { valid, errors } = validateSubmission(fields);
+  if (!valid) {
+    return res.status(400).json({ success: false, error: "Validation failed", errors });
+  }
+
+  const attachments = Array.isArray(body.attachments) ? body.attachments : [];
+  const attCheck = validateAttachments(attachments);
+  if (!attCheck.valid) {
+    return res.status(400).json({ success: false, error: "Validation failed", errors: attCheck.errors });
+  }
+
+  const captchaOk = await verifyCaptcha(body.captchaToken, ip);
+  if (!captchaOk) {
+    return res.status(400).json({ success: false, error: "Captcha verification failed" });
+  }
+
+  fields.attachmentFilenames = attachments.map((a) => a.filename);
+
+  const submissionId = uuid();
+  const submittedAtUtc = now().toISOString();
+  const azurePayload = buildIntakeJson(fields, { submissionId, submittedAtUtc });
+
+  // ── PRIMARY PATH: the intake endpoint. Attachment CONTENT never goes
+  // here -- only filenames (already in azurePayload.attachments). ──
+  const endpointResult = await callIntakeEndpoint(azurePayload, {
+    url: process.env.INTAKE_ENDPOINT_URL || DEFAULT_INTAKE_ENDPOINT_URL,
+    apiKey: process.env.INTAKE_WEB_KEY
+  });
+
+  if (endpointResult.configMissing) {
+    console.error("[mission-intake] CONFIG ERROR: INTAKE_ENDPOINT_URL/INTAKE_WEB_KEY not set, submission_id:", submissionId);
+  } else if (endpointResult.status === 401) {
+    console.error("[mission-intake] CONFIG ERROR: endpoint rejected credentials (401), submission_id:", submissionId);
+  } else if (!endpointResult.ok) {
+    console.error(
+      "[mission-intake] intake endpoint did not succeed, submission_id:", submissionId,
+      "status:", endpointResult.status, "retried:", endpointResult.retried
+    );
+  }
+
+  // ── BACKUP / NOTIFICATION EMAIL: always sent, regardless of the
+  // endpoint's outcome -- this is the durable record of the request. ──
+  const subject = buildSubject(fields);
+  const backupBodyText = buildBackupEmailBody(fields, azurePayload, {
+    intakeRef: endpointResult.intakeRef,
+    endpointStatus: endpointResult.status
+  });
+  const intakeTo = process.env.INTAKE_TO || "johnktoles@doilabs.la";
+  const mailFrom = process.env.MAIL_FROM || "intake@doilabs.la";
+
+  let backupEmailFailed = false;
   try {
-    const body = req.body || {};
-
-    // ── HONEYPOT ──
-    // Hidden field real users never see or fill. Any non-empty value here is
-    // almost certainly a bot. Respond with the same shape a real success
-    // would use so the bot has no signal to adapt on, and skip sending mail
-    // entirely. Logged without any of the submitted field values.
-    if (typeof body.hp_website === "string" && body.hp_website.trim()) {
-      console.warn("[mission-intake] honeypot triggered, dropping submission from ip:", ip);
-      return res.status(200).json({ success: true });
-    }
-
-    const fields = {
-      client: String(body.client || "").slice(0, MAX_LEN),
-      organization: String(body.organization || "").slice(0, MAX_LEN),
-      site_address: String(body.site_address || "").slice(0, MAX_LEN),
-      mission_type: String(body.mission_type || "").slice(0, MAX_LEN),
-      requested_window: String(body.requested_window || "").slice(0, MAX_LEN),
-      deliverables: String(body.deliverables || "").slice(0, MAX_LEN),
-      contact_name: String(body.contact_name || "").slice(0, MAX_LEN),
-      contact_phone: String(body.contact_phone || "").slice(0, MAX_LEN),
-      contact_email: String(body.contact_email || "").slice(0, MAX_LEN),
-      site_access_notes: String(body.site_access_notes || "").slice(0, MAX_LEN),
-      notes: String(body.notes || "").slice(0, MAX_NOTES_LEN),
-      extraContext: String(body.extraContext || "").slice(0, MAX_NOTES_LEN)
-    };
-
-    const { valid, errors } = validateSubmission(fields);
-    if (!valid) {
-      return res.status(400).json({ success: false, error: "Validation failed", errors });
-    }
-
-    const attachments = Array.isArray(body.attachments) ? body.attachments : [];
-    const attCheck = validateAttachments(attachments);
-    if (!attCheck.valid) {
-      return res.status(400).json({ success: false, error: "Validation failed", errors: attCheck.errors });
-    }
-
-    const captchaOk = await verifyCaptcha(body.captchaToken, ip);
-    if (!captchaOk) {
-      return res.status(400).json({ success: false, error: "Captcha verification failed" });
-    }
-
-    fields.attachmentFilenames = attachments.map((a) => a.filename);
-
-    const submissionId = uuid();
-    const submittedAtUtc = now().toISOString();
-    const intakeJson = buildIntakeJson(fields, { submissionId, submittedAtUtc });
-    const subject = buildSubject(fields);
-    const intakeBodyText = buildIntakeEmailBody(fields, intakeJson);
-
-    const intakeTo = process.env.INTAKE_TO || "johnktoles@doilabs.la";
-    const mailFrom = process.env.MAIL_FROM || process.env.SMTP_USER;
-
-    await transport.sendMail({
-      from: mailFrom,
+    await sendEmail({
       to: intakeTo,
-      replyTo: fields.contact_email || undefined,
+      from: mailFrom,
       subject,
-      text: intakeBodyText,
-      attachments: toNodemailerAttachments(attachments)
+      text: backupBodyText,
+      attachments
     });
+  } catch (err) {
+    backupEmailFailed = true;
+    console.error("[mission-intake] backup email failed, submission_id:", submissionId, "error:", err.message);
+  }
 
-    // Client confirmation is best-effort: the intake email above is the
-    // record of the request, so a failure here is logged but does not fail
-    // the request back to the client.
-    if (fields.contact_email) {
-      try {
-        const confirmation = buildClientConfirmationEmail(fields);
-        await transport.sendMail({
-          from: mailFrom,
-          to: fields.contact_email,
-          subject: confirmation.subject,
-          text: confirmation.text
-        });
-      } catch (err) {
-        console.error("[mission-intake] confirmation email failed, submission_id:", submissionId, "error:", err.message);
-      }
+  // Client confirmation is best-effort on top of an already-best-effort
+  // backup email: never let it change the response to the browser.
+  if (fields.contact_email) {
+    try {
+      const confirmation = buildClientConfirmationEmail(fields);
+      await sendEmail({ to: fields.contact_email, from: mailFrom, subject: confirmation.subject, text: confirmation.text });
+    } catch (err) {
+      console.error("[mission-intake] confirmation email failed, submission_id:", submissionId, "error:", err.message);
     }
+  }
 
-    // No mission ID / reference number is generated or returned -- the
-    // client sees only confirmation that the request was received.
+  // ── CLIENT-FACING RESPONSE ──
+  // Nothing here ever includes intake_ref or anything that looks like a
+  // mission ID -- only a plain success/failure signal.
+  if (endpointResult.ok) {
     return res.status(200).json({ success: true });
-  } catch (error) {
-    console.error("[mission-intake] Server error:", error.message);
+  }
+
+  if (endpointResult.status === 400) {
+    // The endpoint rejected the data itself. The backup email above still
+    // went out (so DOi has a record), but the client needs to know
+    // something about their submission needs attention.
+    return res.status(400).json({
+      success: false,
+      error: "Validation failed",
+      errors: endpointResult.errors || ["Your request could not be processed. Please check your details and try again."]
+    });
+  }
+
+  if (endpointResult.status === 429) {
+    // Endpoint-side throttling, not the client's fault -- but per spec this
+    // is the one case where we don't just say "received" even though the
+    // backup email was sent.
+    return res.status(429).json({ success: false, error: "Please try again in a few minutes." });
+  }
+
+  if (backupEmailFailed) {
+    // Both the primary endpoint AND the backup email failed -- nothing
+    // durable happened. This is the one real failure case.
     return res.status(502).json({
       success: false,
       error: "We couldn't send your request right now. Please try again in a moment or contact us directly."
     });
   }
+
+  // 401 (config error), 503 (endpoint switched off), 5xx/timeout after one
+  // retry, or no endpoint configured at all -- the backup email is the
+  // record of this request, so the client still sees success.
+  return res.status(200).json({ success: true });
 }
 
 export default async function handler(req, res) {

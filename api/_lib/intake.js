@@ -102,9 +102,12 @@ function buildIntakeJson(fields, { submissionId, submittedAtUtc }) {
   };
 }
 
-// Part A: short readable summary. Part B: fenced JSON block, exact shape.
-function buildIntakeEmailBody(fields, intakeJson) {
-  const who = orNotProvided(fields.client) !== NOT_PROVIDED ? fields.client : orNotProvided(fields.organization);
+// Backup/notification email body: Part A short readable summary, then Part B
+// the SAME fenced JSON sent to the intake endpoint, plus two fields that
+// only ever appear in this email -- intake_ref (the endpoint's internal
+// reference, or "NOT LOGGED" if we never got one) and endpoint_status (what
+// the primary endpoint call actually returned). Never sent to the browser.
+function buildBackupEmailBody(fields, azurePayload, { intakeRef, endpointStatus }) {
   const lines = [
     "New mission request submitted through the DØi Labs website.",
     "",
@@ -114,16 +117,22 @@ function buildIntakeEmailBody(fields, intakeJson) {
     `Requested Window: ${orNotProvided(fields.requested_window)}`,
     `Deliverables: ${orNotProvided(fields.deliverables)}`,
     `Contact: ${orNotProvided(fields.contact_name)} — ${orNotProvided(fields.contact_email)} — ${orNotProvided(fields.contact_phone)}`,
-    `Attachments: ${intakeJson.attachments.length ? intakeJson.attachments.join(", ") : "none"}`
+    `Attachments: ${azurePayload.attachments.length ? azurePayload.attachments.join(", ") : "none"}`,
+    `Intake endpoint status: ${endpointStatus}${intakeRef ? " (ref " + intakeRef + ")" : ""}`
   ];
   if (fields.extraContext) {
     lines.push("", "Additional project context (not part of the structured record below):", fields.extraContext);
   }
+  const emailJson = {
+    ...azurePayload,
+    intake_ref: intakeRef || "NOT LOGGED",
+    endpoint_status: String(endpointStatus)
+  };
   lines.push(
     "",
     "--- Structured record (do not edit) ---",
     "```json",
-    JSON.stringify(intakeJson, null, 2),
+    JSON.stringify(emailJson, null, 2),
     "```"
   );
   return lines.join("\n");
@@ -160,6 +169,6 @@ export {
   validateAttachments,
   buildSubject,
   buildIntakeJson,
-  buildIntakeEmailBody,
+  buildBackupEmailBody,
   buildClientConfirmationEmail
 };

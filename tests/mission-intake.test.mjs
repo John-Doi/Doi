@@ -17,21 +17,15 @@ function fakeRes() {
   };
 }
 
-function fakeTransport(sentMail) {
-  return {
-    async sendMail(opts) {
-      sentMail.push(opts);
-      return { messageId: "test" };
-    }
-  };
-}
-
-// Extracts the fenced ```json ... ``` block from the intake email body and
-// parses it, mirroring how a human reading the email would read Part B.
+// Extracts the fenced ```json ... ``` block from an email body.
 function extractJsonBlock(text) {
   const match = text.match(/```json\n([\s\S]*?)\n```/);
-  assert.ok(match, "intake email body must contain a fenced json block");
+  assert.ok(match, "email body must contain a fenced json block");
   return JSON.parse(match[1]);
+}
+
+function fakeEndpoint(result) {
+  return async () => result;
 }
 
 const SAMPLE_BODY = {
@@ -50,28 +44,34 @@ const SAMPLE_BODY = {
   captchaToken: ""
 };
 
-test("valid submission sends intake email with correct subject and JSON shape, and a client confirmation", async () => {
+const FIXED_DEPS = {
+  rateLimited: () => false,
+  verifyCaptcha: async () => true,
+  now: () => new Date("2026-11-01T18:30:00.000Z"),
+  uuid: () => "00000000-0000-4000-8000-000000000000"
+};
+
+test("endpoint 200/received: client sees success, backup + confirmation emails both sent with correct subject/shape", async () => {
   const sentMail = [];
   const req = { method: "POST", headers: {}, body: { ...SAMPLE_BODY } };
   const res = fakeRes();
 
   await handleIntakeRequest(req, res, {
-    transport: fakeTransport(sentMail),
-    rateLimited: () => false,
-    verifyCaptcha: async () => true,
-    now: () => new Date("2026-11-01T18:30:00.000Z"),
-    uuid: () => "00000000-0000-4000-8000-000000000000"
+    ...FIXED_DEPS,
+    callIntakeEndpoint: fakeEndpoint({ ok: true, status: 200, intakeRef: "INT-20261101-001", errors: null, retried: false }),
+    sendEmail: async (msg) => { sentMail.push(msg); return { messageId: "test" }; }
   });
 
   assert.equal(res.statusCode, 200);
   assert.deepEqual(res.body, { success: true });
-  assert.equal(sentMail.length, 2, "expected one intake email and one client confirmation");
+  assert.equal(sentMail.length, 2);
 
-  const intakeMail = sentMail[0];
-  assert.equal(intakeMail.to, "johnktoles@doilabs.la");
-  assert.equal(intakeMail.subject, "[WEB INTAKE] Jordan Lee – Thermal Inspection");
+  const backupMail = sentMail[0];
+  assert.equal(backupMail.to, "johnktoles@doilabs.la");
+  assert.equal(backupMail.from, "intake@doilabs.la");
+  assert.equal(backupMail.subject, "[WEB INTAKE] Jordan Lee – Thermal Inspection");
 
-  const json = extractJsonBlock(intakeMail.text);
+  const json = extractJsonBlock(backupMail.text);
   assert.deepEqual(json, {
     intake_channel: "website",
     submission_id: "00000000-0000-4000-8000-000000000000",
@@ -87,17 +87,114 @@ test("valid submission sends intake email with correct subject and JSON shape, a
     contact_email: "jordan@leeconstruction.example",
     site_access_notes: "NOT PROVIDED",
     notes: "Roof-mounted HVAC units, need thermal pass before the rainy season.",
-    attachments: []
+    attachments: [],
+    intake_ref: "INT-20261101-001",
+    endpoint_status: "200"
   });
 
   const confirmationMail = sentMail[1];
   assert.equal(confirmationMail.to, "jordan@leeconstruction.example");
-  assert.match(confirmationMail.text, /received your mission request/);
-  assert.doesNotMatch(confirmationMail.text, /\$|price|quote|FAA approval|availability/i);
+  assert.doesNotMatch(confirmationMail.text, /\$|price|quote|FAA approval|availability|INT-/i);
+
+  // The client-facing response never contains a reference number anywhere.
+  assert.deepEqual(Object.keys(res.body).sort(), ["success"]);
 });
 
-test("missing required fields are rejected with 400 and no email is sent", async () => {
+test("endpoint 400: client sees field errors, backup email still sent for the record", async () => {
   const sentMail = [];
+  const req = { method: "POST", headers: {}, body: { ...SAMPLE_BODY } };
+  const res = fakeRes();
+
+  await handleIntakeRequest(req, res, {
+    ...FIXED_DEPS,
+    callIntakeEndpoint: fakeEndpoint({ ok: false, status: 400, intakeRef: null, errors: ["mission_type must be a known value"], retried: false }),
+    sendEmail: async (msg) => { sentMail.push(msg); return { messageId: "test" }; }
+  });
+
+  assert.equal(res.statusCode, 400);
+  assert.equal(res.body.success, false);
+  assert.deepEqual(res.body.errors, ["mission_type must be a known value"]);
+  assert.equal(sentMail.length, 2, "backup + confirmation emails still sent even though the endpoint rejected the payload");
+
+  const json = extractJsonBlock(sentMail[0].text);
+  assert.equal(json.endpoint_status, "400");
+  assert.equal(json.intake_ref, "NOT LOGGED");
+});
+
+test("endpoint 503 (switched off): client still sees plain success, no ref exposed", async () => {
+  const sentMail = [];
+  const req = { method: "POST", headers: {}, body: { ...SAMPLE_BODY } };
+  const res = fakeRes();
+
+  await handleIntakeRequest(req, res, {
+    ...FIXED_DEPS,
+    callIntakeEndpoint: fakeEndpoint({ ok: false, status: 503, intakeRef: null, errors: null, retried: false }),
+    sendEmail: async (msg) => { sentMail.push(msg); return { messageId: "test" }; }
+  });
+
+  assert.equal(res.statusCode, 200);
+  assert.deepEqual(res.body, { success: true });
+  assert.equal(sentMail.length, 2);
+  assert.equal(extractJsonBlock(sentMail[0].text).endpoint_status, "503");
+});
+
+test("endpoint timeout: callIntakeEndpoint already retried once internally, then falls back to email -- client sees success", async () => {
+  const sentMail = [];
+  const req = { method: "POST", headers: {}, body: { ...SAMPLE_BODY } };
+  const res = fakeRes();
+  let callCount = 0;
+
+  await handleIntakeRequest(req, res, {
+    ...FIXED_DEPS,
+    // Simulates what api/_lib/intake-endpoint.js itself does on a timeout:
+    // one retry, same payload, still fails, surfaced here as a single
+    // normalized result with retried:true.
+    callIntakeEndpoint: async (payload) => {
+      callCount++;
+      return { ok: false, status: 0, intakeRef: null, errors: null, retried: true, networkError: true };
+    },
+    sendEmail: async (msg) => { sentMail.push(msg); return { messageId: "test" }; }
+  });
+
+  assert.equal(res.statusCode, 200);
+  assert.deepEqual(res.body, { success: true });
+  assert.equal(sentMail.length, 2, "falls back to the backup email after the retried timeout");
+  assert.equal(extractJsonBlock(sentMail[0].text).endpoint_status, "0");
+});
+
+test("endpoint 429: client is asked to retry shortly, not told it succeeded", async () => {
+  const sentMail = [];
+  const req = { method: "POST", headers: {}, body: { ...SAMPLE_BODY } };
+  const res = fakeRes();
+
+  await handleIntakeRequest(req, res, {
+    ...FIXED_DEPS,
+    callIntakeEndpoint: fakeEndpoint({ ok: false, status: 429, intakeRef: null, errors: null, retried: false }),
+    sendEmail: async (msg) => { sentMail.push(msg); return { messageId: "test" }; }
+  });
+
+  assert.equal(res.statusCode, 429);
+  assert.equal(res.body.success, false);
+  assert.equal(sentMail.length, 2, "backup email is still sent even on 429");
+});
+
+test("endpoint AND backup email both fail: this is the one real failure shown to the client", async () => {
+  const req = { method: "POST", headers: {}, body: { ...SAMPLE_BODY } };
+  const res = fakeRes();
+
+  await handleIntakeRequest(req, res, {
+    ...FIXED_DEPS,
+    callIntakeEndpoint: fakeEndpoint({ ok: false, status: 500, intakeRef: null, errors: null, retried: true }),
+    sendEmail: async () => { throw new Error("Postmark down"); }
+  });
+
+  assert.equal(res.statusCode, 502);
+  assert.equal(res.body.success, false);
+});
+
+test("missing required fields are rejected with 400 before the endpoint or mailer are ever touched", async () => {
+  let endpointCalled = false;
+  let mailerCalled = false;
   const req = {
     method: "POST",
     headers: {},
@@ -106,58 +203,69 @@ test("missing required fields are rejected with 400 and no email is sent", async
   const res = fakeRes();
 
   await handleIntakeRequest(req, res, {
-    transport: fakeTransport(sentMail),
-    rateLimited: () => false,
-    verifyCaptcha: async () => true
+    ...FIXED_DEPS,
+    callIntakeEndpoint: async () => { endpointCalled = true; return { ok: true, status: 200 }; },
+    sendEmail: async () => { mailerCalled = true; }
   });
 
   assert.equal(res.statusCode, 400);
   assert.equal(res.body.success, false);
   assert.ok(res.body.errors.length > 0);
-  assert.equal(sentMail.length, 0);
+  assert.equal(endpointCalled, false);
+  assert.equal(mailerCalled, false);
 });
 
-test("honeypot field being filled silently drops the submission", async () => {
-  const sentMail = [];
+test("honeypot field being filled silently drops the submission before endpoint/mailer", async () => {
+  let endpointCalled = false;
+  let mailerCalled = false;
   const req = { method: "POST", headers: {}, body: { ...SAMPLE_BODY, hp_website: "http://spam.example" } };
   const res = fakeRes();
 
   await handleIntakeRequest(req, res, {
-    transport: fakeTransport(sentMail),
-    rateLimited: () => false,
-    verifyCaptcha: async () => true
+    ...FIXED_DEPS,
+    callIntakeEndpoint: async () => { endpointCalled = true; return { ok: true, status: 200 }; },
+    sendEmail: async () => { mailerCalled = true; }
   });
 
   assert.equal(res.statusCode, 200);
   assert.deepEqual(res.body, { success: true });
-  assert.equal(sentMail.length, 0, "no mail should be sent for a honeypot-triggered submission");
+  assert.equal(endpointCalled, false);
+  assert.equal(mailerCalled, false);
 });
 
-test("rate-limited requests are rejected with 429 before SMTP is touched", async () => {
-  const sentMail = [];
+test("rate-limited requests are rejected with 429 before anything else runs", async () => {
+  let endpointCalled = false;
   const req = { method: "POST", headers: {}, body: { ...SAMPLE_BODY } };
   const res = fakeRes();
 
   await handleIntakeRequest(req, res, {
-    transport: fakeTransport(sentMail),
-    rateLimited: () => true
+    ...FIXED_DEPS,
+    rateLimited: () => true,
+    callIntakeEndpoint: async () => { endpointCalled = true; return { ok: true, status: 200 }; }
   });
 
   assert.equal(res.statusCode, 429);
-  assert.equal(sentMail.length, 0);
+  assert.equal(endpointCalled, false);
 });
 
-test("never generates or returns a mission ID / reference number to the client", async () => {
-  const sentMail = [];
-  const req = { method: "POST", headers: {}, body: { ...SAMPLE_BODY } };
+test("attachment content never appears in the endpoint payload, only filenames", async () => {
+  let capturedPayload = null;
+  const req = {
+    method: "POST",
+    headers: {},
+    body: {
+      ...SAMPLE_BODY,
+      attachments: [{ filename: "roof-plan.pdf", contentType: "application/pdf", base64: "JVBERi0xLjQK" }]
+    }
+  };
   const res = fakeRes();
 
   await handleIntakeRequest(req, res, {
-    transport: fakeTransport(sentMail),
-    rateLimited: () => false,
-    verifyCaptcha: async () => true
+    ...FIXED_DEPS,
+    callIntakeEndpoint: async (payload) => { capturedPayload = payload; return { ok: true, status: 200, intakeRef: "INT-1" }; },
+    sendEmail: async () => ({ messageId: "test" })
   });
 
-  const bodyKeys = Object.keys(res.body);
-  assert.deepEqual(bodyKeys.sort(), ["success"]);
+  assert.deepEqual(capturedPayload.attachments, ["roof-plan.pdf"]);
+  assert.equal(JSON.stringify(capturedPayload).includes("JVBERi0xLjQK"), false, "base64 content must never be sent to the intake endpoint");
 });
