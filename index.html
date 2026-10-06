@@ -941,6 +941,7 @@ footer{
 .success-h{font-family:var(--disp);font-size:20px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--t1);margin-bottom:10px;}
 .success-sub{font-family:var(--body);font-size:17px;color:var(--t2);line-height:1.78;max-width:420px;margin:0 auto;font-weight:500;}
 .success-code{font-family:var(--mono);font-size:10px;letter-spacing:4px;margin-top:14px;background:var(--og-grad-h);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.success-attach-warning{font-family:var(--body);font-size:14px;color:var(--tiger);line-height:1.6;max-width:420px;margin:14px auto 0;}
 @media(max-width:700px){
   .intake-wrap{padding:0 22px;}
   .panel{padding:26px 16px;}
@@ -1374,6 +1375,7 @@ footer{
         <div class="success-h">Request Submitted</div>
         <p class="success-sub">We've received your project details. We'll follow up within one business day to discuss your project.</p>
         <div class="success-code" id="successCode">Request received</div>
+        <div class="success-attach-warning" id="successAttachWarning" style="display:none;"></div>
       </div>
     </div>
   </div>
@@ -2077,6 +2079,13 @@ function submitForm(){
     return res.json().then(function(data){
       if(!res.ok){throw new Error((data.errors&&data.errors[0])||data.error||'HTTP '+res.status);}
       for(var i=1;i<=3;i++){var p=document.getElementById('sp'+i);if(p)p.classList.remove('active');}
+      var attachWarnEl=document.getElementById('successAttachWarning');
+      if(data.attachmentsFailed&&data.attachmentsFailed.length){
+        attachWarnEl.textContent="We couldn't receive these files: "+data.attachmentsFailed.join(', ')+". We'll ask for them when we follow up.";
+        attachWarnEl.style.display='block';
+      } else if(attachWarnEl){
+        attachWarnEl.style.display='none';
+      }
       document.getElementById('successPanel').classList.add('show');
       document.querySelectorAll('.step-node').forEach(function(nd){nd.classList.add('done');});
       document.getElementById('progFill').style.width='100%';

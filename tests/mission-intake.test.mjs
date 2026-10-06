@@ -540,9 +540,227 @@ test("attachment content never appears in the endpoint payload, only filenames",
   await handleIntakeRequest(req, res, {
     ...FIXED_DEPS,
     callIntakeEndpoint: async (payload) => { capturedPayload = payload; return { ok: true, status: 200, intakeRef: "INT-1" }; },
+    uploadAttachment: async () => ({ ok: true, status: 201 }),
     sendEmail: async () => ({ messageId: "test" })
   });
 
   assert.deepEqual(capturedPayload.attachments, ["roof-plan.pdf"]);
   assert.equal(JSON.stringify(capturedPayload).includes("JVBERi0xLjQK"), false, "base64 content must never be sent to the intake endpoint");
+});
+
+test("attachment uploads are skipped entirely when the intake row failed (no intakeRef) -- existing email-only behavior unchanged", async () => {
+  let uploadCalled = false;
+  const req = {
+    method: "POST",
+    headers: {},
+    body: { ...SAMPLE_BODY, attachments: [{ filename: "roof-plan.pdf", contentType: "application/pdf", base64: "JVBERi0xLjQK" }] }
+  };
+  const res = fakeRes();
+
+  await handleIntakeRequest(req, res, {
+    ...FIXED_DEPS,
+    callIntakeEndpoint: fakeEndpoint({ ok: false, status: 503, intakeRef: null, errors: null, retried: true }),
+    uploadAttachment: async () => { uploadCalled = true; return { ok: true, status: 201 }; },
+    sendEmail: async () => ({ messageId: "test" })
+  });
+
+  assert.equal(uploadCalled, false, "no upload should be attempted when there's no intake row to attach to");
+  assert.equal(res.statusCode, 200);
+  assert.deepEqual(res.body, { success: true }, "no attachmentsFailed field when uploads were never attempted");
+});
+
+test("attachment uploads are skipped when the intake row succeeded but returned no intakeRef", async () => {
+  let uploadCalled = false;
+  const req = {
+    method: "POST",
+    headers: {},
+    body: { ...SAMPLE_BODY, attachments: [{ filename: "roof-plan.pdf", contentType: "application/pdf", base64: "JVBERi0xLjQK" }] }
+  };
+  const res = fakeRes();
+
+  await handleIntakeRequest(req, res, {
+    ...FIXED_DEPS,
+    callIntakeEndpoint: fakeEndpoint({ ok: true, status: 200, intakeRef: null, errors: null, retried: false }),
+    uploadAttachment: async () => { uploadCalled = true; return { ok: true, status: 201 }; },
+    sendEmail: async () => ({ messageId: "test" })
+  });
+
+  assert.equal(uploadCalled, false);
+  assert.deepEqual(res.body, { success: true });
+});
+
+test("partial attachment failure: client still sees 200 success, plus attachmentsFailed listing only the files that weren't stored", async () => {
+  const sentMail = [];
+  const req = {
+    method: "POST",
+    headers: {},
+    body: {
+      ...SAMPLE_BODY,
+      attachments: [
+        { filename: "roof-plan.pdf", contentType: "application/pdf", base64: "JVBERi0xLjQK" },
+        { filename: "site-photo.jpg", contentType: "image/jpeg", base64: "JVBERi0xLjQK" }
+      ]
+    }
+  };
+  const res = fakeRes();
+  const uploadedFilenames = [];
+
+  await handleIntakeRequest(req, res, {
+    ...FIXED_DEPS,
+    callIntakeEndpoint: fakeEndpoint({ ok: true, status: 201, intakeRef: "INT-1", errors: null, retried: false }),
+    uploadAttachment: async (att) => {
+      uploadedFilenames.push(att.filename);
+      if (att.filename === "site-photo.jpg") return { ok: false, status: 503 }; // e.g. INTAKE_ATTACH_DISABLED
+      return { ok: true, status: 201 };
+    },
+    sendEmail: async (msg) => { sentMail.push(msg); return { messageId: "test" }; }
+  });
+
+  assert.deepEqual(uploadedFilenames, ["roof-plan.pdf", "site-photo.jpg"], "uploads happen sequentially, one request per file");
+  assert.equal(res.statusCode, 200);
+  assert.deepEqual(res.body, { success: true, attachmentsFailed: ["site-photo.jpg"] });
+
+  const backupMail = sentMail[0];
+  assert.match(backupMail.text, /roof-plan\.pdf: stored/);
+  assert.match(backupMail.text, /site-photo\.jpg: not stored \(503\)/);
+});
+
+test("all attachments stored successfully: no attachmentsFailed field in the response at all", async () => {
+  const req = {
+    method: "POST",
+    headers: {},
+    body: { ...SAMPLE_BODY, attachments: [{ filename: "roof-plan.pdf", contentType: "application/pdf", base64: "JVBERi0xLjQK" }] }
+  };
+  const res = fakeRes();
+
+  await handleIntakeRequest(req, res, {
+    ...FIXED_DEPS,
+    callIntakeEndpoint: fakeEndpoint({ ok: true, status: 201, intakeRef: "INT-1", errors: null, retried: false }),
+    uploadAttachment: async () => ({ ok: true, status: 201 }),
+    sendEmail: async () => ({ messageId: "test" })
+  });
+
+  assert.deepEqual(res.body, { success: true });
+  assert.deepEqual(Object.keys(res.body), ["success"]);
+});
+
+test("attachment upload headers carry the SAME submission_id sent to the intake endpoint, and the intake_ref it returned", async () => {
+  const req = {
+    method: "POST",
+    headers: {},
+    body: {
+      ...SAMPLE_BODY,
+      submission_id: "7f3b2a10-9c4e-4d2a-8b1e-6a2f5c9d0e11",
+      attachments: [{ filename: "roof-plan.pdf", contentType: "application/pdf", base64: "JVBERi0xLjQK" }]
+    }
+  };
+  const res = fakeRes();
+  let uploadOpts = null;
+
+  await handleIntakeRequest(req, res, {
+    ...FIXED_DEPS,
+    callIntakeEndpoint: fakeEndpoint({ ok: true, status: 201, intakeRef: "INT-xyz", errors: null, retried: false }),
+    uploadAttachment: async (att, opts) => { uploadOpts = opts; return { ok: true, status: 201 }; },
+    sendEmail: async () => ({ messageId: "test" })
+  });
+
+  assert.equal(uploadOpts.submissionId, "7f3b2a10-9c4e-4d2a-8b1e-6a2f5c9d0e11");
+  assert.equal(uploadOpts.intakeRef, "INT-xyz");
+});
+
+test("attachment upload logging never includes filenames, only submission_id/count/status codes", async () => {
+  const req = {
+    method: "POST",
+    headers: {},
+    body: {
+      ...SAMPLE_BODY,
+      attachments: [{ filename: "super-secret-project-name.pdf", contentType: "application/pdf", base64: "JVBERi0xLjQK" }]
+    }
+  };
+  const res = fakeRes();
+  const originalLog = console.log;
+  const logCalls = [];
+  console.log = (...args) => { logCalls.push(args); };
+
+  try {
+    await handleIntakeRequest(req, res, {
+      ...FIXED_DEPS,
+      callIntakeEndpoint: fakeEndpoint({ ok: true, status: 201, intakeRef: "INT-1", errors: null, retried: false }),
+      uploadAttachment: async () => ({ ok: true, status: 201 }),
+      sendEmail: async () => ({ messageId: "test" })
+    });
+  } finally {
+    console.log = originalLog;
+  }
+
+  const logged = logCalls.map((a) => a.join(" ")).join("\n");
+  assert.match(logged, /attachment uploads/);
+  assert.doesNotMatch(logged, /super-secret-project-name/, "filenames must never appear in logs");
+});
+
+test("INTAKE_WEB_KEY never appears in the client-facing response, even on a partial attachment failure", async () => {
+  const originalKey = process.env.INTAKE_WEB_KEY;
+  process.env.INTAKE_WEB_KEY = "super-secret-intake-key";
+  const req = {
+    method: "POST",
+    headers: {},
+    body: { ...SAMPLE_BODY, attachments: [{ filename: "roof-plan.pdf", contentType: "application/pdf", base64: "JVBERi0xLjQK" }] }
+  };
+  const res = fakeRes();
+
+  try {
+    await handleIntakeRequest(req, res, {
+      ...FIXED_DEPS,
+      callIntakeEndpoint: fakeEndpoint({ ok: true, status: 201, intakeRef: "INT-1", errors: null, retried: false }),
+      uploadAttachment: async () => ({ ok: false, status: 503 }),
+      sendEmail: async () => ({ messageId: "test" })
+    });
+  } finally {
+    if (originalKey === undefined) delete process.env.INTAKE_WEB_KEY; else process.env.INTAKE_WEB_KEY = originalKey;
+  }
+
+  assert.equal(JSON.stringify(res.body).includes("super-secret-intake-key"), false);
+});
+
+test("the attachment upload loop is bounded by a real wall-clock deadline measured from handler entry: slow uploads stop before maxDuration, files it didn't reach land in attachmentsFailed", async (t) => {
+  // Fakes Date (not setTimeout) so each simulated upload can instantly
+  // "consume" wall-clock time via tick() without the test actually
+  // waiting -- the handler's own Date.now() deadline checks see the same
+  // advanced clock. Node tears this mock down automatically after the test.
+  t.mock.timers.enable({ apis: ["Date"] });
+
+  const req = {
+    method: "POST",
+    headers: {},
+    body: {
+      ...SAMPLE_BODY,
+      attachments: [
+        { filename: "a.pdf", contentType: "application/pdf", base64: "JVBERi0xLjQK" },
+        { filename: "b.pdf", contentType: "application/pdf", base64: "JVBERi0xLjQK" },
+        { filename: "c.pdf", contentType: "application/pdf", base64: "JVBERi0xLjQK" }
+      ]
+    }
+  };
+  const res = fakeRes();
+  const attempted = [];
+  const start = Date.now();
+
+  await handleIntakeRequest(req, res, {
+    ...FIXED_DEPS,
+    callIntakeEndpoint: fakeEndpoint({ ok: true, status: 201, intakeRef: "INT-1", errors: null, retried: false }),
+    // Simulates an upload call that ignores its own timeout/abort signal
+    // and simply takes ~21.5s of real time -- a worst case the per-file
+    // deadline check (not the per-call timeout) has to protect against.
+    uploadAttachment: async (att) => {
+      attempted.push(att.filename);
+      t.mock.timers.tick(21500);
+      return { ok: true, status: 201 };
+    },
+    sendEmail: async () => ({ messageId: "test" })
+  });
+
+  const elapsed = Date.now() - start;
+  assert.ok(elapsed < 50000, `handler must finish comfortably under maxDuration, took ${elapsed}ms`);
+  assert.deepEqual(attempted, ["a.pdf", "b.pdf"], "the third file must never be attempted once too little budget remains");
+  assert.deepEqual(res.body, { success: true, attachmentsFailed: ["c.pdf"] });
 });

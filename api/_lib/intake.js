@@ -175,7 +175,17 @@ function buildIntakeJson(fields, { submissionId, submittedAtUtc }) {
 // only ever appear in this email -- intake_ref (the endpoint's internal
 // reference, or "NOT LOGGED" if we never got one) and endpoint_status (what
 // the primary endpoint call actually returned). Never sent to the browser.
-function buildBackupEmailBody(fields, azurePayload, { intakeRef, endpointStatus }) {
+// attachmentResults, when given, is an array of { filename, ok, status }
+// from the per-file attachment-endpoint uploads (see
+// api/_lib/intake-attachment.js) -- rendered as one "stored"/"not stored
+// (<status>)" line per file. Omitted (undefined) when uploads were never
+// attempted (e.g. the intake record itself failed), in which case the
+// attachment list falls back to the plain filename list it always had.
+function buildBackupEmailBody(fields, azurePayload, { intakeRef, endpointStatus, attachmentResults }) {
+  const attachmentLines = Array.isArray(attachmentResults)
+    ? attachmentResults.map((r) => `  - ${r.filename}: ${r.ok ? "stored" : `not stored (${r.status})`}`)
+    : null;
+
   const lines = [
     "New mission request submitted through the DØi Labs website.",
     "",
@@ -185,7 +195,9 @@ function buildBackupEmailBody(fields, azurePayload, { intakeRef, endpointStatus 
     `Requested Window: ${orNotProvided(fields.requested_window)}`,
     `Deliverables: ${orNotProvided(fields.deliverables)}`,
     `Contact: ${orNotProvided(fields.contact_name)} — ${orNotProvided(fields.contact_email)} — ${orNotProvided(fields.contact_phone)}`,
-    `Attachments: ${azurePayload.attachments.length ? azurePayload.attachments.join(", ") : "none"}`,
+    attachmentLines
+      ? `Attachments:\n${attachmentLines.join("\n")}`
+      : `Attachments: ${azurePayload.attachments.length ? azurePayload.attachments.join(", ") : "none"}`,
     `Intake endpoint status: ${endpointStatus}${intakeRef ? " (ref " + intakeRef + ")" : ""}`
   ];
   if (fields.extraContext) {

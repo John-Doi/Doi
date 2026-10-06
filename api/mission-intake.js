@@ -11,10 +11,23 @@ import {
   MAX_PAYLOAD_BYTES
 } from "./_lib/intake.js";
 import { callIntakeEndpoint as realCallIntakeEndpoint } from "./_lib/intake-endpoint.js";
+import { uploadAttachment as realUploadAttachment } from "./_lib/intake-attachment.js";
 import { sendEmail as realSendEmail } from "./_lib/mailer.js";
 
 const DEFAULT_INTAKE_ENDPOINT_URL =
   "https://func-doi-int-prod-8585-eydjf7gtbacwh0fs.westus2-01.azurewebsites.net/api/intake/web";
+
+// Deadline for sequential attachment uploads is measured from handler
+// entry, not from when uploads start -- the intake-record call itself can
+// take up to 20s (10s timeout + one retry), so a budget measured only
+// across the upload loop doesn't bound total runtime against the 60s
+// maxDuration (vercel.json). 45s leaves ~15s for the backup/confirmation
+// emails and the response.
+const ATTACHMENT_UPLOAD_DEADLINE_MS = 45000;
+// Below this much remaining time, don't even start a file (a single
+// attempt can take up to its timeoutMs) or a retry (attemptOnce + its
+// own timeout needs a few seconds of headroom to be worth it).
+const MIN_REMAINING_FOR_UPLOAD_MS = 3000;
 
 // ── IN-MEMORY RATE LIMIT ──
 // Best-effort only: see README -- this Map lives for the lifetime of one
@@ -78,7 +91,14 @@ async function verifyTurnstile(token, ip) {
 // see tests/mission-intake.test.mjs. `deps` defaults to the real
 // implementations used in production.
 export async function handleIntakeRequest(req, res, deps = {}) {
+  // Real wall-clock time, deliberately NOT the injectable `now()` below
+  // (that's for submittedAtUtc semantics and may be fixed/fake in tests) --
+  // this deadline has to track actual elapsed time so it bounds real
+  // runtime against Vercel's maxDuration.
+  const handlerStart = Date.now();
+  const uploadDeadline = handlerStart + ATTACHMENT_UPLOAD_DEADLINE_MS;
   const callIntakeEndpoint = deps.callIntakeEndpoint || realCallIntakeEndpoint;
+  const uploadAttachment = deps.uploadAttachment || realUploadAttachment;
   const sendEmail = deps.sendEmail || realSendEmail;
   const verifyCaptcha = deps.verifyCaptcha || verifyTurnstile;
   const now = deps.now || (() => new Date());
@@ -185,12 +205,52 @@ export async function handleIntakeRequest(req, res, deps = {}) {
     );
   }
 
+  // ── ATTACHMENT UPLOADS ──
+  // Only once the intake record itself exists (ok + an intake_ref to tag
+  // every file to) -- if the row failed, there's nothing to attach these
+  // to, so uploads are skipped entirely and existing behavior (attachment
+  // content only reaches the backup email) is unchanged. Sequential, not
+  // parallel, within an overall time budget well under maxDuration.
+  let attachmentResults = null;
+  if (endpointResult.ok && endpointResult.intakeRef && attachments.length > 0) {
+    attachmentResults = [];
+    const attachUrl = process.env.INTAKE_ATTACH_URL
+      || `${process.env.INTAKE_ENDPOINT_URL || DEFAULT_INTAKE_ENDPOINT_URL}/attachment`;
+    for (const att of attachments) {
+      const remaining = uploadDeadline - Date.now();
+      if (remaining < MIN_REMAINING_FOR_UPLOAD_MS) {
+        // Not enough time left to even attempt this file -- treat it (and
+        // everything after it) as not stored rather than risk running past
+        // maxDuration. status:0 matches the existing network/timeout
+        // convention (see intake-endpoint.js).
+        attachmentResults.push({ filename: att.filename, ok: false, status: 0 });
+        continue;
+      }
+      const result = await uploadAttachment(att, {
+        submissionId,
+        intakeRef: endpointResult.intakeRef,
+        url: attachUrl,
+        apiKey: process.env.INTAKE_WEB_KEY,
+        timeoutMs: Math.min(10000, remaining),
+        deadline: uploadDeadline
+      });
+      attachmentResults.push({ filename: att.filename, ok: result.ok, status: result.status });
+    }
+    // Status codes and a count only -- never filenames, IPs, or bodies.
+    console.log(
+      "[mission-intake] attachment uploads, submission_id:", submissionId,
+      "count:", attachments.length,
+      "statuses:", attachmentResults.map((r) => r.status)
+    );
+  }
+
   // ── BACKUP / NOTIFICATION EMAIL: always sent, regardless of the
   // endpoint's outcome -- this is the durable record of the request. ──
   const subject = buildSubject(fields);
   const backupBodyText = buildBackupEmailBody(fields, azurePayload, {
     intakeRef: endpointResult.intakeRef,
-    endpointStatus: endpointResult.status
+    endpointStatus: endpointResult.status,
+    attachmentResults
   });
   const intakeTo = process.env.INTAKE_TO || "johnktoles@doilabs.la";
   const mailFrom = process.env.MAIL_FROM || "intake@doilabs.la";
@@ -224,6 +284,12 @@ export async function handleIntakeRequest(req, res, deps = {}) {
   // Nothing here ever includes intake_ref or anything that looks like a
   // mission ID -- only a plain success/failure signal.
   if (endpointResult.ok) {
+    const attachmentsFailed = (attachmentResults || [])
+      .filter((r) => !r.ok)
+      .map((r) => r.filename);
+    if (attachmentsFailed.length > 0) {
+      return res.status(200).json({ success: true, attachmentsFailed });
+    }
     return res.status(200).json({ success: true });
   }
 
