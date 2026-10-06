@@ -1,6 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { handleIntakeRequest } from "../api/mission-intake.js";
+import { callIntakeEndpoint } from "../api/_lib/intake-endpoint.js";
 
 function fakeRes() {
   return {
@@ -213,6 +214,42 @@ test("endpoint 422: client sees field errors (not silent success), backup email 
   assert.equal(res.body.success, false);
   assert.deepEqual(res.body.errors, ["mission_type is not a recognized value"]);
   assert.equal(sentMail.length, 2, "backup email is still sent even on 422");
+});
+
+test("endpoint 422 with the real endpoint.fields OBJECT shape: client receives flattened 'field: message' strings end-to-end", async () => {
+  const sentMail = [];
+  const req = { method: "POST", headers: {}, body: { ...SAMPLE_BODY } };
+  const res = fakeRes();
+  // Uses the real callIntakeEndpoint (not a fake result), with only fetch
+  // faked, so this exercises the actual error.fields flattening logic as
+  // the handler would see it in production -- not just a pre-shaped mock.
+  const fetchImpl = async () => ({
+    status: 422,
+    ok: false,
+    json: async () => ({
+      error: {
+        code: "VALIDATION_FAILED",
+        message: "Request failed validation",
+        fields: {
+          contact_email: "not a valid email address",
+          attachments: "each name must be a non-empty string up to 255 chars"
+        }
+      }
+    })
+  });
+
+  await handleIntakeRequest(req, res, {
+    ...FIXED_DEPS,
+    callIntakeEndpoint: (payload, opts) => callIntakeEndpoint(payload, { ...opts, url: "https://example.test/intake", apiKey: "k", fetchImpl }),
+    sendEmail: async (msg) => { sentMail.push(msg); return { messageId: "test" }; }
+  });
+
+  assert.equal(res.statusCode, 422);
+  assert.equal(res.body.success, false);
+  assert.deepEqual(res.body.errors, [
+    "contact_email: not a valid email address",
+    "attachments: each name must be a non-empty string up to 255 chars"
+  ]);
 });
 
 test("endpoint 413: client sees a too-large message (not silent success), backup email still sent", async () => {
@@ -434,6 +471,43 @@ test("honeypot log never includes the raw client IP, only a short fingerprint", 
   assert.match(logged, /honeypot triggered/);
   assert.doesNotMatch(logged, new RegExp(rawIp.replace(/\./g, "\\.")), "the raw IP must never appear in logs");
   assert.match(logged, /ip_fp: [0-9a-f]{8}/, "a short fingerprint should appear instead");
+});
+
+test("the IP fingerprint is salted with LOG_HASH_SALT when set -- same IP produces a different fingerprint with vs without a salt", async () => {
+  const rawIp = "203.0.113.42";
+  const originalSalt = process.env.LOG_HASH_SALT;
+
+  async function runAndCaptureFingerprint() {
+    const req = { method: "POST", headers: { "x-forwarded-for": rawIp }, body: { ...SAMPLE_BODY, hp_website: "http://spam.example" } };
+    const res = fakeRes();
+    const originalWarn = console.warn;
+    const warnCalls = [];
+    console.warn = (...args) => { warnCalls.push(args); };
+    try {
+      await handleIntakeRequest(req, res, {
+        ...FIXED_DEPS,
+        callIntakeEndpoint: async () => ({ ok: true, status: 200 }),
+        sendEmail: async () => ({ messageId: "test" })
+      });
+    } finally {
+      console.warn = originalWarn;
+    }
+    const match = warnCalls.map((a) => a.join(" ")).join("\n").match(/ip_fp: ([0-9a-f]{8})/);
+    assert.ok(match, "expected an ip_fp to be logged");
+    return match[1];
+  }
+
+  try {
+    delete process.env.LOG_HASH_SALT;
+    const unsalted = await runAndCaptureFingerprint();
+
+    process.env.LOG_HASH_SALT = "test-salt-value";
+    const salted = await runAndCaptureFingerprint();
+
+    assert.notEqual(unsalted, salted, "the same IP should hash differently once a salt is configured");
+  } finally {
+    if (originalSalt === undefined) delete process.env.LOG_HASH_SALT; else process.env.LOG_HASH_SALT = originalSalt;
+  }
 });
 
 test("rate-limited requests are rejected with 429 before anything else runs", async () => {

@@ -1,4 +1,4 @@
-import { randomUUID, createHash } from "node:crypto";
+import { randomUUID, createHash, createHmac } from "node:crypto";
 import {
   validateSubmission,
   validateAttachments,
@@ -38,10 +38,17 @@ function getClientIp(req) {
   return (req.socket && req.socket.remoteAddress) || "unknown";
 }
 
-// A short, non-reversible fingerprint for correlating repeated activity
-// from the same IP across log lines without ever logging the raw address.
+// A short fingerprint for correlating repeated activity from the same IP
+// across log lines without ever logging the raw address. HMAC'd with
+// LOG_HASH_SALT when set -- plain SHA-256 of an IPv4 address is reversible
+// by simply enumerating the ~4 billion possible inputs, so an unsalted hash
+// isn't actually non-reversible. Falls back to plain SHA-256 (still useful
+// for correlation, just not collision/enumeration-resistant) if no salt is
+// configured, so this doesn't become a hard requirement to deploy.
 function fingerprintIp(ip) {
-  return createHash("sha256").update(String(ip)).digest("hex").slice(0, 8);
+  const salt = process.env.LOG_HASH_SALT;
+  const hash = salt ? createHmac("sha256", salt) : createHash("sha256");
+  return hash.update(String(ip)).digest("hex").slice(0, 8);
 }
 
 function mailErrorCode(err) {

@@ -4,10 +4,13 @@ import {
   isValidPhone,
   isValidUuid,
   validateSubmission,
+  validateAttachments,
   orEmptyString,
   orNotProvided,
+  truncateFilename,
   FIELD_LIMITS,
-  MAX_PAYLOAD_BYTES
+  MAX_PAYLOAD_BYTES,
+  MAX_FILENAME_LENGTH
 } from "../api/_lib/intake.js";
 
 test("isValidPhone accepts 7-15 digits, rejects outside that range", () => {
@@ -79,4 +82,37 @@ test("FIELD_LIMITS matches the per-field caps this change specifies", () => {
 
 test("MAX_PAYLOAD_BYTES is 16 KB", () => {
   assert.equal(MAX_PAYLOAD_BYTES, 16 * 1024);
+});
+
+test("validateAttachments error messages say 3 MB, matching the actual limits (not the old 10MB/25MB wording)", () => {
+  const bigBase64 = "A".repeat(4 * 1024 * 1024 + 8); // just over 3MB once decoded (base64 is 4/3 the size)
+  const perFile = validateAttachments([{ filename: "big.pdf", base64: bigBase64 }]);
+  assert.ok(perFile.errors.some((e) => /3 MB per-file limit/.test(e)));
+  assert.ok(!perFile.errors.some((e) => /10 ?MB/.test(e)));
+
+  const total = validateAttachments([
+    { filename: "a.pdf", base64: "A".repeat(2 * 1024 * 1024 + 8) },
+    { filename: "b.pdf", base64: "A".repeat(2 * 1024 * 1024 + 8) }
+  ]);
+  assert.ok(total.errors.some((e) => /Total attachment size exceeds the 3 MB limit/.test(e)));
+  assert.ok(!total.errors.some((e) => /25 ?MB/.test(e)));
+});
+
+test("truncateFilename keeps the extension and caps total length at MAX_FILENAME_LENGTH", () => {
+  const longName = "a".repeat(300) + ".pdf";
+  const truncated = truncateFilename(longName);
+  assert.equal(truncated.length, MAX_FILENAME_LENGTH);
+  assert.ok(truncated.endsWith(".pdf"));
+
+  const shortName = "roof-plan.pdf";
+  assert.equal(truncateFilename(shortName), shortName);
+});
+
+test("validateAttachments truncates an over-long filename in place rather than rejecting the submission", () => {
+  const longName = "a".repeat(300) + ".pdf";
+  const attachment = { filename: longName, base64: "AAAA" };
+  const result = validateAttachments([attachment]);
+  assert.equal(result.valid, true);
+  assert.equal(attachment.filename.length, MAX_FILENAME_LENGTH, "the object passed in should be mutated so downstream consumers see the truncated name");
+  assert.ok(attachment.filename.endsWith(".pdf"));
 });

@@ -33,12 +33,25 @@ async function attemptOnce(fetchImpl, url, apiKey, payload, timeoutMs) {
   }
 }
 
+// The endpoint's error.fields is an OBJECT keyed by field name
+// (e.g. { contact_email: "not a valid email address" }), not an array --
+// flatten it to "field: message" strings for display. Array.isArray guards
+// against a future/alternate shape without throwing.
+function flattenFieldErrors(fields) {
+  if (Array.isArray(fields)) return fields;
+  if (fields && typeof fields === "object") {
+    return Object.entries(fields).map(([key, value]) => `${key}: ${value}`);
+  }
+  return null;
+}
+
 // Returns a normalized result the handler maps to client-facing behavior:
 //   ok           -- true only on a clean 2xx "received" response
 //   status       -- the HTTP status from the last attempt (0 = network/timeout)
 //   intakeRef    -- internal reference, NEVER sent to the browser
-//   errors       -- field errors, read from the endpoint's { error: { fields: [...] } }
-//                   shape (not a top-level "errors" key), on 400/422/413
+//   errors       -- field errors, flattened from the endpoint's
+//                   { error: { fields: {...} } } shape (not a top-level
+//                   "errors" key), on 400/422/413
 //   retried      -- whether a retry was attempted
 export async function callIntakeEndpoint(payload, { url, apiKey, fetchImpl = fetch, timeoutMs = DEFAULT_TIMEOUT_MS } = {}) {
   if (!url || !apiKey) {
@@ -72,7 +85,7 @@ export async function callIntakeEndpoint(payload, { url, apiKey, fetchImpl = fet
     ok: false,
     status,
     intakeRef: body.intake_ref || null,
-    errors: Array.isArray(body.error && body.error.fields) ? body.error.fields : null,
+    errors: flattenFieldErrors(body.error && body.error.fields),
     retried
   };
 }

@@ -71,6 +71,7 @@ characters on their own, so this is an explicit belt-and-suspenders check.
 | `INTAKE_TO` | no (default `johnktoles@doilabs.la`) | Where the backup/notification email is delivered, until `intake@doilabs.la` exists |
 | `TURNSTILE_SITE_KEY` | no | Public Cloudflare Turnstile site key; served to the browser via `GET /api/captcha-config`. Omit (along with `TURNSTILE_SECRET_KEY`) to skip the captcha widget entirely. |
 | `TURNSTILE_SECRET_KEY` | no | Server-side Turnstile secret. If unset along with `TURNSTILE_SITE_KEY`, captcha verification is skipped (treated as not required). |
+| `LOG_HASH_SALT` | no | Salt for the honeypot path's IP log fingerprint (HMAC-SHA256). Without it, the fingerprint falls back to plain SHA-256 — see Logging below. |
 
 Set these in the Vercel project's environment variables, never in a
 committed file.
@@ -115,8 +116,8 @@ and contact email-or-phone were required).
   non-empty value is treated as a bot and the request is silently dropped
   before the endpoint or mailer are ever touched (the API still returns
   `{ success: true }` so the bot gets no signal to adapt on). Logged with a
-  short, non-reversible IP fingerprint (`ip_fp`, a truncated SHA-256) rather
-  than the raw IP address.
+  short IP fingerprint (`ip_fp`) rather than the raw IP address — see
+  Logging below for how that fingerprint is derived.
 - **Rate limiting**: a basic in-memory limiter (5 submissions / 10 minutes
   per IP) inside `api/mission-intake.js`. **This is best-effort, not a hard
   guarantee** — the Map only lives for the lifetime of one warm Vercel
@@ -135,6 +136,10 @@ validated both client-side (`index.html`) and server-side
 (`api/_lib/intake.js`). **Attachment content is only ever sent to the
 backup email, never to the intake endpoint** — the endpoint's JSON payload
 carries filenames only. Attachments are never stored anywhere public.
+
+Filenames longer than 255 characters (the intake endpoint 422s on anything
+over that) are truncated server-side, preserving the extension, rather than
+rejecting the whole submission over a long filename.
 
 Filenames are rendered in the attachment list via DOM `textContent`, never
 `innerHTML` — a filename is fully attacker-controlled (nothing stops someone
@@ -158,7 +163,13 @@ Failures are logged server-side with enough to correlate and triage, but
 never full PII, secrets, or raw provider error text:
 
 - The honeypot path logs a short IP fingerprint (`ip_fp`), never the raw
-  client IP.
+  client IP. It's HMAC-SHA256'd with `LOG_HASH_SALT` when that env var is
+  set — a plain unsalted SHA-256 of an IPv4 address isn't actually
+  non-reversible, since the ~4 billion possible addresses can just be
+  enumerated and re-hashed. Without `LOG_HASH_SALT` it falls back to plain
+  SHA-256 (still fine for correlating repeat activity across log lines,
+  just not resistant to that enumeration attack) rather than refusing to
+  log anything.
 - Mail provider failures (`api/_lib/mailer.js`) log a short `.code` (e.g.
   `POSTMARK_SEND_FAILED_422`), never `err.message` — a provider's error
   text can echo back request details (recipient address, body excerpts)

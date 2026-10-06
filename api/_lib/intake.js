@@ -13,6 +13,7 @@ const ATTACHMENT_EXTENSIONS = ["pdf", "jpg", "jpeg", "png", "heic"];
 const MAX_ATTACHMENT_BYTES = 3 * 1024 * 1024; // 3 MB per file
 const MAX_TOTAL_ATTACHMENT_BYTES = 3 * 1024 * 1024; // 3 MB total
 const MAX_ATTACHMENT_COUNT = 10;
+const MAX_FILENAME_LENGTH = 255; // the intake endpoint 422s on names longer than this
 
 // Per-field character caps, enforced both here (server, authoritative) and
 // as `maxlength` on the corresponding index.html inputs (advisory only --
@@ -92,6 +93,21 @@ function validateSubmission(fields) {
   return { valid: errors.length === 0, errors };
 }
 
+// Truncates a filename to MAX_FILENAME_LENGTH, keeping the extension intact
+// so type-detection (which reads the part after the last ".") still works
+// on the truncated name. Falls back to a hard truncate if there's no
+// usable extension to preserve.
+function truncateFilename(name) {
+  if (name.length <= MAX_FILENAME_LENGTH) return name;
+  const dotIdx = name.lastIndexOf(".");
+  if (dotIdx <= 0 || dotIdx === name.length - 1) {
+    return name.slice(0, MAX_FILENAME_LENGTH);
+  }
+  const ext = name.slice(dotIdx);
+  const base = name.slice(0, dotIdx);
+  return base.slice(0, Math.max(0, MAX_FILENAME_LENGTH - ext.length)) + ext;
+}
+
 function validateAttachments(attachments) {
   const errors = [];
   const list = Array.isArray(attachments) ? attachments : [];
@@ -100,6 +116,12 @@ function validateAttachments(attachments) {
   }
   let total = 0;
   for (const att of list) {
+    // Mutated in place (not just read) so every downstream consumer --
+    // the Azure payload's attachments array and the actual email
+    // attachment -- sees the same truncated name the endpoint will accept.
+    if (att && typeof att.filename === "string" && att.filename.length > MAX_FILENAME_LENGTH) {
+      att.filename = truncateFilename(att.filename);
+    }
     const name = String(att && att.filename || "");
     const ext = name.split(".").pop().toLowerCase();
     if (!ATTACHMENT_EXTENSIONS.includes(ext)) {
@@ -110,12 +132,12 @@ function validateAttachments(attachments) {
     // base64 -> raw byte length, without decoding the whole buffer.
     const bytes = Math.floor((base64.length * 3) / 4);
     if (bytes > MAX_ATTACHMENT_BYTES) {
-      errors.push(`${name} exceeds the 10 MB per-file limit.`);
+      errors.push(`${name} exceeds the 3 MB per-file limit.`);
     }
     total += bytes;
   }
   if (total > MAX_TOTAL_ATTACHMENT_BYTES) {
-    errors.push("Total attachment size exceeds the 25 MB limit.");
+    errors.push("Total attachment size exceeds the 3 MB limit.");
   }
   return { valid: errors.length === 0, errors, totalBytes: total };
 }
@@ -208,6 +230,7 @@ export {
   MAX_ATTACHMENT_BYTES,
   MAX_TOTAL_ATTACHMENT_BYTES,
   MAX_ATTACHMENT_COUNT,
+  MAX_FILENAME_LENGTH,
   FIELD_LIMITS,
   MAX_PAYLOAD_BYTES,
   isValidEmail,
@@ -215,6 +238,7 @@ export {
   isValidUuid,
   orNotProvided,
   orEmptyString,
+  truncateFilename,
   validateSubmission,
   validateAttachments,
   buildSubject,

@@ -34,29 +34,43 @@ test("200 (duplicate -- same submission_id already received) + status:received -
   assert.equal(calls, 1);
 });
 
-test("400 -> ok:false, errors read from error.fields (not a top-level errors key), no retry", async () => {
+test("400 -> ok:false, error.fields (an OBJECT keyed by field name, not an array) is flattened to 'field: message' strings, no retry", async () => {
   let calls = 0;
   const fetchImpl = async () => {
     calls++;
-    return jsonResponse(400, { error: { fields: ["site_address is required"] } });
+    return jsonResponse(400, {
+      error: { code: "VALIDATION_FAILED", message: "Request failed validation", fields: { site_address: "is required" } }
+    });
   };
   const result = await callIntakeEndpoint(PAYLOAD, { url: "https://example.test/intake", apiKey: "k", fetchImpl });
   assert.equal(result.ok, false);
   assert.equal(result.status, 400);
-  assert.deepEqual(result.errors, ["site_address is required"]);
+  assert.deepEqual(result.errors, ["site_address: is required"]);
   assert.equal(calls, 1);
 });
 
-test("422 -> ok:false, errors read from error.fields, no retry (deterministic failure)", async () => {
+test("422 -> ok:false, error.fields object with multiple keys is flattened to one string per field, no retry (deterministic failure)", async () => {
   let calls = 0;
   const fetchImpl = async () => {
     calls++;
-    return jsonResponse(422, { error: { fields: ["mission_type is not a recognized value"] } });
+    return jsonResponse(422, {
+      error: {
+        code: "VALIDATION_FAILED",
+        message: "...",
+        fields: {
+          contact_email: "not a valid email address",
+          attachments: "each name must be a non-empty string up to 255 chars"
+        }
+      }
+    });
   };
   const result = await callIntakeEndpoint(PAYLOAD, { url: "https://example.test/intake", apiKey: "k", fetchImpl });
   assert.equal(result.ok, false);
   assert.equal(result.status, 422);
-  assert.deepEqual(result.errors, ["mission_type is not a recognized value"]);
+  assert.deepEqual(result.errors, [
+    "contact_email: not a valid email address",
+    "attachments: each name must be a non-empty string up to 255 chars"
+  ]);
   assert.equal(calls, 1);
 });
 
