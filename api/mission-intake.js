@@ -11,10 +11,16 @@ import {
   MAX_PAYLOAD_BYTES
 } from "./_lib/intake.js";
 import { callIntakeEndpoint as realCallIntakeEndpoint } from "./_lib/intake-endpoint.js";
+import { uploadAttachment as realUploadAttachment } from "./_lib/intake-attachment.js";
 import { sendEmail as realSendEmail } from "./_lib/mailer.js";
 
 const DEFAULT_INTAKE_ENDPOINT_URL =
   "https://func-doi-int-prod-8585-eydjf7gtbacwh0fs.westus2-01.azurewebsites.net/api/intake/web";
+
+// Overall budget for sequential attachment uploads, well under the 60s
+// maxDuration (vercel.json) once the intake-record call (up to 10s, once
+// retried = up to 20s) is accounted for.
+const ATTACHMENT_UPLOAD_BUDGET_MS = 40000;
 
 // ── IN-MEMORY RATE LIMIT ──
 // Best-effort only: see README -- this Map lives for the lifetime of one
@@ -79,6 +85,7 @@ async function verifyTurnstile(token, ip) {
 // implementations used in production.
 export async function handleIntakeRequest(req, res, deps = {}) {
   const callIntakeEndpoint = deps.callIntakeEndpoint || realCallIntakeEndpoint;
+  const uploadAttachment = deps.uploadAttachment || realUploadAttachment;
   const sendEmail = deps.sendEmail || realSendEmail;
   const verifyCaptcha = deps.verifyCaptcha || verifyTurnstile;
   const now = deps.now || (() => new Date());
@@ -185,12 +192,49 @@ export async function handleIntakeRequest(req, res, deps = {}) {
     );
   }
 
+  // ── ATTACHMENT UPLOADS ──
+  // Only once the intake record itself exists (ok + an intake_ref to tag
+  // every file to) -- if the row failed, there's nothing to attach these
+  // to, so uploads are skipped entirely and existing behavior (attachment
+  // content only reaches the backup email) is unchanged. Sequential, not
+  // parallel, within an overall time budget well under maxDuration.
+  let attachmentResults = null;
+  if (endpointResult.ok && endpointResult.intakeRef && attachments.length > 0) {
+    attachmentResults = [];
+    const attachUrl = process.env.INTAKE_ATTACH_URL
+      || `${process.env.INTAKE_ENDPOINT_URL || DEFAULT_INTAKE_ENDPOINT_URL}/attachment`;
+    const uploadsStartedAt = Date.now();
+    for (const att of attachments) {
+      if (Date.now() - uploadsStartedAt > ATTACHMENT_UPLOAD_BUDGET_MS) {
+        // Out of budget -- treat remaining files as not stored rather than
+        // risk running past maxDuration. status:0 matches the existing
+        // network/timeout convention (see intake-endpoint.js).
+        attachmentResults.push({ filename: att.filename, ok: false, status: 0 });
+        continue;
+      }
+      const result = await uploadAttachment(att, {
+        submissionId,
+        intakeRef: endpointResult.intakeRef,
+        url: attachUrl,
+        apiKey: process.env.INTAKE_WEB_KEY
+      });
+      attachmentResults.push({ filename: att.filename, ok: result.ok, status: result.status });
+    }
+    // Status codes and a count only -- never filenames, IPs, or bodies.
+    console.log(
+      "[mission-intake] attachment uploads, submission_id:", submissionId,
+      "count:", attachments.length,
+      "statuses:", attachmentResults.map((r) => r.status)
+    );
+  }
+
   // ── BACKUP / NOTIFICATION EMAIL: always sent, regardless of the
   // endpoint's outcome -- this is the durable record of the request. ──
   const subject = buildSubject(fields);
   const backupBodyText = buildBackupEmailBody(fields, azurePayload, {
     intakeRef: endpointResult.intakeRef,
-    endpointStatus: endpointResult.status
+    endpointStatus: endpointResult.status,
+    attachmentResults
   });
   const intakeTo = process.env.INTAKE_TO || "johnktoles@doilabs.la";
   const mailFrom = process.env.MAIL_FROM || "intake@doilabs.la";
@@ -224,6 +268,12 @@ export async function handleIntakeRequest(req, res, deps = {}) {
   // Nothing here ever includes intake_ref or anything that looks like a
   // mission ID -- only a plain success/failure signal.
   if (endpointResult.ok) {
+    const attachmentsFailed = (attachmentResults || [])
+      .filter((r) => !r.ok)
+      .map((r) => r.filename);
+    if (attachmentsFailed.length > 0) {
+      return res.status(200).json({ success: true, attachmentsFailed });
+    }
     return res.status(200).json({ success: true });
   }
 
