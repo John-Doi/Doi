@@ -872,6 +872,17 @@ footer{
 .finp[type="date"]::-webkit-calendar-picker-indicator{filter:brightness(0) saturate(100%) invert(47%) sepia(93%) saturate(743%) hue-rotate(347deg) brightness(101%);cursor:pointer;}
 .finp:focus,.fsel:focus,.ftxt:focus{border-color:var(--bo);background:rgba(255,107,0,0.02);}
 .finp::placeholder,.ftxt::placeholder{color:#2a2a2a;}
+/* Spam honeypot: present in the DOM and the accessibility tree is avoided
+   entirely (aria-hidden + tabindex=-1 + off-screen position) so it is
+   invisible to sighted users and screen readers alike, but still gets
+   auto-filled by naive form-filling bots. */
+.hp-field{position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;overflow:hidden;}
+.attach-hint{font-family:var(--body);font-size:13px;color:var(--t3);margin-top:6px;line-height:1.5;}
+.attach-list{display:flex;flex-direction:column;gap:4px;margin-top:8px;}
+.attach-item{font-family:var(--mono);font-size:12px;color:var(--t2);display:flex;align-items:center;justify-content:space-between;gap:10px;padding:7px 10px;background:rgba(255,255,255,0.02);border:1px solid var(--bd);}
+.attach-item button{background:none;border:none;color:var(--t3);cursor:pointer;font-family:var(--mono);font-size:11px;letter-spacing:1px;padding:0;}
+.attach-item button:hover{color:var(--og2);}
+.attach-error{font-family:var(--body);font-size:13px;color:var(--tiger);margin-top:6px;line-height:1.5;}
 .deliverables-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;}
 .dcheck{display:flex;align-items:center;gap:10px;padding:11px 13px;background:rgba(255,255,255,0.012);border:1px solid var(--bd);cursor:pointer;transition:all .2s;user-select:none;}
 .dcheck:hover{border-color:rgba(255,107,0,0.18);background:rgba(255,107,0,0.02);}
@@ -1258,6 +1269,7 @@ footer{
         <div class="panel" data-label="STEP 01 — CONTACT INFO"><div class="bc tl"></div><div class="bc br"></div>
           <div class="panel-title">Your Contact Information</div>
           <div class="panel-sub">How should we reach you? All information is kept confidential.</div>
+          <div class="hp-field" aria-hidden="true"><label>Website<input type="text" id="f-hp" name="hp_website" tabindex="-1" autocomplete="off"></label></div>
           <div class="form-2col">
             <div class="fg span2"><label class="flbl">Full Name <span class="req">*</span></label><input type="text" class="finp" id="f-name" placeholder="First and last name" autocomplete="name"></div>
             <div class="fg span2"><label class="flbl">Company / Organization</label><input type="text" class="finp" id="f-company" placeholder="Your business name" autocomplete="organization"></div>
@@ -1307,6 +1319,11 @@ footer{
             </div>
             <div class="fg span2"><label class="flbl">Site Address / Location <span class="req">*</span></label><input type="text" class="finp" id="f-address" placeholder="Full address or general location" autocomplete="street-address"></div>
             <div class="fg span2"><label class="flbl">Project Description <span class="req">*</span></label><textarea class="ftxt" id="f-desc" placeholder="What do you need and why? Include property type, site size, access details, or any specific requirements."></textarea></div>
+            <div class="fg span2"><label class="flbl" for="f-attachments">Attachments</label><input type="file" class="finp" id="f-attachments" multiple accept=".pdf,.jpg,.jpeg,.png,.heic" aria-describedby="attachHint attachError">
+              <div class="attach-hint" id="attachHint">Optional. PDF, JPG, PNG, or HEIC — up to 10MB per file, 25MB total.</div>
+              <div class="attach-list" id="attachList"></div>
+              <div class="attach-error" id="attachError" role="alert" style="display:none;"></div>
+            </div>
             <fieldset class="fg span2 dgroup">
               <legend class="sect-divider">Desired Deliverables <span class="req">*</span></legend>
               <div class="flbl" style="margin-bottom:8px;letter-spacing:normal;text-transform:none;font-family:var(--body);font-size:15px;color:var(--t2);">What should we deliver? Select all that apply — not sure is fine.</div>
@@ -1343,6 +1360,7 @@ footer{
             <div id="reviewGrid" style="display:flex;flex-direction:column;gap:1px;"></div>
           </div>
           <div style="font-family:var(--body);font-size:15px;color:var(--t3);padding:12px 14px;background:rgba(255,107,0,0.025);border:1px solid var(--bo);line-height:1.62;font-weight:500;">All submissions are handled confidentially. We respond within one business day with a clear scope and quote.</div>
+          <div id="turnstileContainer" style="margin-top:16px;"></div>
         </div>
         <div class="step-nav">
           <button class="btn-wiz-ghost" onclick="goStep(2)">← BACK</button>
@@ -1355,7 +1373,7 @@ footer{
         <div class="success-icon"><svg viewBox="0 0 80 80"><polygon points="40,4 76,22 76,58 40,76 4,58 4,22" stroke-width="1"/><polyline points="24,40 34,52 56,28" stroke-width="2"/></svg></div>
         <div class="success-h">Request Submitted</div>
         <p class="success-sub">We've received your project details and will respond within one business day with a scope, timeline, and quote.</p>
-        <div class="success-code" id="successCode">REF: DØi-——</div>
+        <div class="success-code" id="successCode">Request received</div>
       </div>
     </div>
   </div>
@@ -1894,9 +1912,90 @@ if(fTypeEl){
   });
 }
 
+// ── ATTACHMENTS (optional, client-side gate ahead of the server's own
+// authoritative checks in api/mission-intake.js) ──
+var ATTACH_TYPES=['pdf','jpg','jpeg','png','heic'];
+var ATTACH_MAX_FILE=10*1024*1024;
+var ATTACH_MAX_TOTAL=25*1024*1024;
+var ATTACH_MAX_COUNT=10;
+var selectedAttachments=[];
+function renderAttachList(){
+  var list=document.getElementById('attachList');
+  list.innerHTML=selectedAttachments.map(function(f,i){
+    return '<div class="attach-item"><span>'+f.name+' ('+(f.size/1024/1024).toFixed(1)+'MB)</span><button type="button" data-idx="'+i+'">REMOVE</button></div>';
+  }).join('');
+  Array.from(list.querySelectorAll('button')).forEach(function(btn){
+    btn.addEventListener('click',function(){
+      selectedAttachments.splice(Number(btn.dataset.idx),1);
+      renderAttachList();
+    });
+  });
+}
+var attachInput=document.getElementById('f-attachments');
+if(attachInput){
+  attachInput.addEventListener('change',function(){
+    var errEl=document.getElementById('attachError');
+    var incoming=Array.from(attachInput.files||[]);
+    var combined=selectedAttachments.concat(incoming);
+    var errors=[];
+    if(combined.length>ATTACH_MAX_COUNT){errors.push('No more than '+ATTACH_MAX_COUNT+' attachments allowed.');}
+    var total=0;
+    combined.forEach(function(f){
+      var ext=(f.name.split('.').pop()||'').toLowerCase();
+      if(ATTACH_TYPES.indexOf(ext)===-1){errors.push(f.name+' is not a supported file type (PDF, JPG, PNG, HEIC only).');}
+      if(f.size>ATTACH_MAX_FILE){errors.push(f.name+' exceeds the 10MB per-file limit.');}
+      total+=f.size;
+    });
+    if(total>ATTACH_MAX_TOTAL){errors.push('Total attachment size exceeds the 25MB limit.');}
+    if(errors.length){
+      errEl.textContent=errors[0];
+      errEl.style.display='block';
+    } else {
+      errEl.style.display='none';
+      selectedAttachments=combined;
+      renderAttachList();
+    }
+    attachInput.value='';
+  });
+}
+function readFileAsBase64(file){
+  return new Promise(function(resolve,reject){
+    var reader=new FileReader();
+    reader.onload=function(){resolve(String(reader.result).split(',')[1]||'');};
+    reader.onerror=reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+// ── CAPTCHA (Cloudflare Turnstile, optional) ──
+// The site key is fetched from the server rather than hardcoded, since this
+// site has no build step; if Turnstile isn't configured server-side
+// (TURNSTILE_SITE_KEY unset), no widget is rendered and no token is sent --
+// the backend treats captcha as not required when TURNSTILE_SECRET_KEY is
+// also unset.
+var turnstileToken='';
+function loadTurnstile(siteKey){
+  var script=document.createElement('script');
+  script.src='https://challenges.cloudflare.com/turnstile/v0/api.js';
+  script.async=true;
+  script.onload=function(){
+    if(window.turnstile){
+      window.turnstile.render('#turnstileContainer',{
+        sitekey:siteKey,
+        callback:function(token){turnstileToken=token;},
+        'expired-callback':function(){turnstileToken='';}
+      });
+    }
+  };
+  document.head.appendChild(script);
+}
+fetch('/api/captcha-config').then(function(r){return r.json();}).then(function(data){
+  if(data&&data.siteKey){loadTurnstile(data.siteKey);}
+}).catch(function(){/* captcha is optional -- silently proceed without it */});
+
 function buildReview(){
   var deliverables=getSelectedDeliverables();
-  var rows=[['Name',document.getElementById('f-name').value||'—'],['Company',document.getElementById('f-company').value||'—'],['Email',document.getElementById('f-email').value||'—'],['Phone',document.getElementById('f-phone').value||'—'],['Project',document.getElementById('f-project').value||'—'],['Service',document.getElementById('f-type').value||'—'],['Frequency',document.getElementById('f-frequency').value||'—'],['Deliverables',deliverables.length?deliverables.join(', '):'—'],['Urgency',document.getElementById('f-urgency').value||'—'],['Date',document.getElementById('f-date').value||'—'],['Time Window',document.getElementById('f-time-window').value||'—'],['Location',document.getElementById('f-address').value||'—'],['Description',document.getElementById('f-desc').value||'—']];
+  var rows=[['Name',document.getElementById('f-name').value||'—'],['Company',document.getElementById('f-company').value||'—'],['Email',document.getElementById('f-email').value||'—'],['Phone',document.getElementById('f-phone').value||'—'],['Project',document.getElementById('f-project').value||'—'],['Service',document.getElementById('f-type').value||'—'],['Frequency',document.getElementById('f-frequency').value||'—'],['Deliverables',deliverables.length?deliverables.join(', '):'—'],['Urgency',document.getElementById('f-urgency').value||'—'],['Date',document.getElementById('f-date').value||'—'],['Time Window',document.getElementById('f-time-window').value||'—'],['Location',document.getElementById('f-address').value||'—'],['Description',document.getElementById('f-desc').value||'—'],['Attachments',selectedAttachments.length?selectedAttachments.length+' file(s)':'—']];
   document.getElementById('reviewGrid').innerHTML=rows.map(function(r){return'<div style="display:flex;gap:10px;background:rgba(7,7,7,0.98);border:1px solid var(--bd);padding:10px 13px;"><span style="font-family:var(--mono);font-size:9px;letter-spacing:2px;color:var(--t3);text-transform:uppercase;min-width:96px;flex-shrink:0;">'+r[0]+'</span><span style="font-family:var(--body);font-size:15px;color:var(--t1);font-weight:500;">'+r[1]+'</span></div>';}).join('');
 }
 function submitForm(){
@@ -1909,33 +2008,49 @@ function submitForm(){
   if(!missionType){alert('Please select a mission type in Step 2.');goStep(2);return;}
   var desiredDeliverables=getSelectedDeliverables();
   if(desiredDeliverables.length===0){alert('Please select at least one desired deliverable in Step 2.');goStep(2);return;}
-  var payload={
-    'Project Name':document.getElementById('f-project').value.trim(),
-    'Organization':document.getElementById('f-company').value.trim(),
-    'Client Name':name,
-    'Client Email':email,
-    'Client Phone':phone,
-    'Mission Type Value':missionType,
-    'Mission Frequency':document.getElementById('f-frequency').value,
-    'Desired Deliverables':desiredDeliverables,
-    'Requested Date':document.getElementById('f-date').value,
-    'Requested Time Window':document.getElementById('f-time-window')?document.getElementById('f-time-window').value:'',
-    'Urgency Level':document.getElementById('f-urgency').value,
-    'Site Address':document.getElementById('f-address').value.trim(),
-    'Special Instructions':document.getElementById('f-desc').value.trim()
-  };
+  var company=document.getElementById('f-company').value.trim();
+  var address=document.getElementById('f-address').value.trim();
+  var dateVal=document.getElementById('f-date').value;
+  var windowVal=document.getElementById('f-time-window')?document.getElementById('f-time-window').value:'';
+  var requestedWindow=[dateVal,windowVal].filter(Boolean).join(' — ');
+  var extraContextLines=[
+    'Project Name: '+(document.getElementById('f-project').value.trim()||'—'),
+    'Mission Frequency: '+(document.getElementById('f-frequency').value||'—'),
+    'Urgency Level: '+(document.getElementById('f-urgency').value||'—')
+  ];
   var btn=document.getElementById('submitBtn');
   if(btn){btn.disabled=true;btn.innerHTML='<svg width="9" height="9" viewBox="0 0 10 10" fill="currentColor"><polygon points="0,0 10,5 0,10"/></svg>SENDING...';}
-  fetch('/api/mission-intake',{
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify(payload)
+  Promise.all(selectedAttachments.map(function(f){
+    return readFileAsBase64(f).then(function(base64){
+      return {filename:f.name,contentType:f.type||'application/octet-stream',base64:base64};
+    });
+  })).then(function(attachments){
+    var payload={
+      client:name,
+      organization:company,
+      site_address:address,
+      mission_type:missionType,
+      requested_window:requestedWindow,
+      deliverables:desiredDeliverables.join(', '),
+      contact_name:name,
+      contact_phone:phone,
+      contact_email:email,
+      site_access_notes:'',
+      notes:document.getElementById('f-desc').value.trim(),
+      extraContext:extraContextLines.join('\n'),
+      attachments:attachments,
+      hp_website:document.getElementById('f-hp')?document.getElementById('f-hp').value:'',
+      captchaToken:turnstileToken
+    };
+    return fetch('/api/mission-intake',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(payload)
+    });
   }).then(function(res){
     return res.json().then(function(data){
-      if(!res.ok){throw new Error(data.error||'HTTP '+res.status);}
-      var ref='DØi-'+Date.now().toString(36).toUpperCase().slice(-6);
+      if(!res.ok){throw new Error((data.errors&&data.errors[0])||data.error||'HTTP '+res.status);}
       for(var i=1;i<=3;i++){var p=document.getElementById('sp'+i);if(p)p.classList.remove('active');}
-      document.getElementById('successCode').textContent='REF: '+ref;
       document.getElementById('successPanel').classList.add('show');
       document.querySelectorAll('.step-node').forEach(function(nd){nd.classList.add('done');});
       document.getElementById('progFill').style.width='100%';
@@ -1944,7 +2059,7 @@ function submitForm(){
   }).catch(function(err){
     if(btn){btn.disabled=false;btn.innerHTML='<svg width="9" height="9" viewBox="0 0 10 10" fill="currentColor"><polygon points="0,0 10,5 0,10"/></svg>SUBMIT REQUEST';}
     console.error('Submission error:',err);
-    alert('Submission failed. Please try again or contact us directly.\n\n'+err.message);
+    alert('We couldn\'t send your request. Please try again in a moment, or contact us directly.\n\n'+err.message);
   });
 }
 </script>
