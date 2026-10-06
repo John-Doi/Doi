@@ -48,11 +48,9 @@ export async function callIntakeEndpoint(payload, { url, apiKey, fetchImpl = fet
   let retried = false;
 
   // Retry once, with the SAME payload (same submission_id), on a network
-  // error/timeout or a transient 5xx -- not on 400/401/429 (deterministic,
-  // won't change on an immediate retry) and not on 503 specifically, which
-  // per spec means the endpoint was deliberately switched off, not a
-  // transient failure worth retrying.
-  const shouldRetry = result.networkError || (result.status >= 500 && result.status !== 503);
+  // error/timeout or any 5xx (503 included) -- not on 400/401/429, which
+  // are deterministic and won't change on an immediate retry.
+  const shouldRetry = result.networkError || result.status >= 500;
   if (shouldRetry) {
     retried = true;
     result = await attemptOnce(fetchImpl, url, apiKey, payload, timeoutMs);

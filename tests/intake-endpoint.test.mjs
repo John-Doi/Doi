@@ -8,7 +8,20 @@ function jsonResponse(status, body) {
 
 const PAYLOAD = { intake_channel: "website", submission_id: "sub-1" };
 
-test("200 + status:received -> ok:true, intakeRef captured, no retry", async () => {
+test("201 (new) + status:received -> ok:true, intakeRef captured, no retry", async () => {
+  let calls = 0;
+  const fetchImpl = async () => {
+    calls++;
+    return jsonResponse(201, { status: "received", intake_ref: "INT-20261101-001" });
+  };
+  const result = await callIntakeEndpoint(PAYLOAD, { url: "https://example.test/intake", apiKey: "k", fetchImpl });
+  assert.equal(result.ok, true);
+  assert.equal(result.intakeRef, "INT-20261101-001");
+  assert.equal(result.retried, false);
+  assert.equal(calls, 1);
+});
+
+test("200 (duplicate -- same submission_id already received) + status:received -> ok:true, no retry", async () => {
   let calls = 0;
   const fetchImpl = async () => {
     calls++;
@@ -34,16 +47,20 @@ test("400 -> ok:false, errors passed through, no retry (deterministic failure)",
   assert.equal(calls, 1);
 });
 
-test("503 -> ok:false, no retry (not a 5xx-retriable condition per spec: endpoint deliberately off)", async () => {
+test("503 -> retried once with the same payload, still fails -> ok:false, retried:true, caller falls back to email", async () => {
   let calls = 0;
-  const fetchImpl = async () => {
+  const seenPayloads = [];
+  const fetchImpl = async (url, options) => {
     calls++;
+    seenPayloads.push(JSON.parse(options.body));
     return jsonResponse(503, {});
   };
   const result = await callIntakeEndpoint(PAYLOAD, { url: "https://example.test/intake", apiKey: "k", fetchImpl });
   assert.equal(result.ok, false);
   assert.equal(result.status, 503);
-  assert.equal(calls, 1);
+  assert.equal(result.retried, true);
+  assert.equal(calls, 2);
+  assert.deepEqual(seenPayloads[0], seenPayloads[1], "retry must reuse the exact same payload/submission_id");
 });
 
 test("500 -> retried once with the same payload, still fails -> ok:false, retried:true", async () => {

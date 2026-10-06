@@ -51,7 +51,7 @@ const FIXED_DEPS = {
   uuid: () => "00000000-0000-4000-8000-000000000000"
 };
 
-test("endpoint 200/received: client sees success, backup + confirmation emails both sent with correct subject/shape", async () => {
+test("endpoint 200/received (duplicate submission_id): client sees success, backup + confirmation emails both sent with correct subject/shape", async () => {
   const sentMail = [];
   const req = { method: "POST", headers: {}, body: { ...SAMPLE_BODY } };
   const res = fakeRes();
@@ -100,6 +100,24 @@ test("endpoint 200/received: client sees success, backup + confirmation emails b
   assert.deepEqual(Object.keys(res.body).sort(), ["success"]);
 });
 
+test("endpoint 201/received (new submission): client sees plain success, no ref exposed", async () => {
+  const sentMail = [];
+  const req = { method: "POST", headers: {}, body: { ...SAMPLE_BODY } };
+  const res = fakeRes();
+
+  await handleIntakeRequest(req, res, {
+    ...FIXED_DEPS,
+    callIntakeEndpoint: fakeEndpoint({ ok: true, status: 201, intakeRef: "INT-20261101-099", errors: null, retried: false }),
+    sendEmail: async (msg) => { sentMail.push(msg); return { messageId: "test" }; }
+  });
+
+  assert.equal(res.statusCode, 200);
+  assert.deepEqual(res.body, { success: true });
+  assert.equal(sentMail.length, 2);
+  assert.equal(extractJsonBlock(sentMail[0].text).endpoint_status, "201");
+  assert.equal(extractJsonBlock(sentMail[0].text).intake_ref, "INT-20261101-099");
+});
+
 test("endpoint 400: client sees field errors, backup email still sent for the record", async () => {
   const sentMail = [];
   const req = { method: "POST", headers: {}, body: { ...SAMPLE_BODY } };
@@ -121,14 +139,16 @@ test("endpoint 400: client sees field errors, backup email still sent for the re
   assert.equal(json.intake_ref, "NOT LOGGED");
 });
 
-test("endpoint 503 (switched off): client still sees plain success, no ref exposed", async () => {
+test("endpoint 503, retried internally and still failing: client still sees plain success, no ref exposed", async () => {
   const sentMail = [];
   const req = { method: "POST", headers: {}, body: { ...SAMPLE_BODY } };
   const res = fakeRes();
 
   await handleIntakeRequest(req, res, {
     ...FIXED_DEPS,
-    callIntakeEndpoint: fakeEndpoint({ ok: false, status: 503, intakeRef: null, errors: null, retried: false }),
+    // callIntakeEndpoint already retried once internally (see
+    // tests/intake-endpoint.test.mjs) by the time the handler sees this.
+    callIntakeEndpoint: fakeEndpoint({ ok: false, status: 503, intakeRef: null, errors: null, retried: true }),
     sendEmail: async (msg) => { sentMail.push(msg); return { messageId: "test" }; }
   });
 

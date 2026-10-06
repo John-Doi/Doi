@@ -13,8 +13,9 @@ independent paths:
    the structured JSON record to `INTAKE_ENDPOINT_URL`, authenticated with
    `X-DOI-Intake-Key: <INTAKE_WEB_KEY>`. The key never reaches the browser —
    this call happens only in `api/mission-intake.js`, server-side. On a
-   transient failure (network error, timeout, or a non-503 5xx) it's retried
-   **once**, reusing the exact same payload (same `submission_id`).
+   network error, timeout, or any 5xx (503 included) it's retried **once**,
+   reusing the exact same payload (same `submission_id`), before falling
+   back to the backup email below.
 2. **Backup / notification email — always sent**, regardless of whether the
    endpoint call succeeded, failed, or wasn't configured at all. This is the
    durable record: a short readable summary plus the same JSON block sent to
@@ -37,12 +38,12 @@ backup email is a plain transactional send, not a write into any DØi system.
 
 | Endpoint result | Backup email sent? | What the client sees |
 |---|---|---|
-| 200 + `status:"received"` | yes | `{success:true}` → "Request received" |
+| 201 (new submission) + `status:"received"` | yes | `{success:true}` → "Request received" |
+| 200 (duplicate `submission_id`, already received) + `status:"received"` | yes | `{success:true}` → "Request received" |
 | 400 (endpoint-side validation) | yes | 400 with field errors |
 | 401 (bad/missing key) | yes | logged as a `CONFIG ERROR` for ops; client still sees success (the email is the record) |
 | 429 (endpoint throttling) | yes | **429, "please try again in a few minutes"** — the one case that isn't shown as success |
-| 503 (deliberately switched off) | yes | `{success:true}` → "Request received" (no retry — 503 means "off on purpose", not transient) |
-| other 5xx / timeout, retried once, still failing | yes | `{success:true}` → "Request received" (the retried failure falls back to the email) |
+| 503, or timeout, or any other 5xx — retried once, still failing | yes | `{success:true}` → "Request received" (the retried failure falls back to the email) |
 | endpoint not configured at all | yes | same as 401 — logged, client still sees success |
 
 If the backup email **also** fails (on top of the endpoint failing), that's
@@ -53,7 +54,7 @@ since nothing durable happened for that submission.
 
 | Var | Required | Purpose |
 |---|---|---|
-| `INTAKE_ENDPOINT_URL` | no | Defaults to the production Azure Function URl. Override only for pointing at a different environment. |
+| `INTAKE_ENDPOINT_URL` | no | Defaults to the production Azure Function URL. Override only for pointing at a different environment. |
 | `INTAKE_WEB_KEY` | yes | Sent as `X-DOI-Intake-Key`. Never put this (or anything like it) in client JS or a `NEXT_PUBLIC_*` var. |
 | `MAIL_PROVIDER` | no (default `postmark`) | `postmark` or `resend` |
 | `POSTMARK_API_TOKEN` | yes, if using Postmark | Server token for the Postmark server sending this mail |
@@ -106,10 +107,10 @@ npm test
 
 Runs (Node's built-in test runner, no extra dependency, no network calls):
 
-- `tests/intake-endpoint.test.mjs` — the Azure call itself: 200/received,
-  400, 503 (no retry), a transient 500 (retried once with the identical
-  payload), a timeout that succeeds on retry, a timeout that fails twice,
-  and missing config.
+- `tests/intake-endpoint.test.mjs` — the Azure call itself: 201 (new), 200
+  (duplicate submission_id), 400, 503 (retried once, same payload, falls
+  back), a transient 500 (same), a timeout that succeeds on retry, a
+  timeout that fails twice, and missing config.
 - `tests/mission-intake.test.mjs` — the full handler with the endpoint and
   mailer both faked: every row of the outcome table above, the exact
   subject/JSON shape (including the email-only `intake_ref` /
